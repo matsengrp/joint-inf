@@ -12,8 +12,11 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\graphicspath{ {figures/} }
 
 \title{Possible Inconsistency in Maximum Likelihood Calculation of Ancestral States}
 \author{Shaw, Matsen, Minin}
@@ -146,21 +149,26 @@ with $\hat{t}_1$ and $\hat{t}_2$ estimated by maximizing \eqref{eq:profile_likel
 
 \subsection{Parameter setting}
 
-Define the ``Farris zone'' topology $\tau_1$ as \cite{farris}
-\begin{verbatim}
-1\ /3
-  | 
-2/ \4
-\end{verbatim}
-and the ``Felsenstein zone'' topology $\tau_2$ as \cite{felsenstein}
-\begin{verbatim}
-1\      /3
-   >--< 
-2/      \4
-\end{verbatim}
-where, for generating data $t^*$, the probability of a change in character along the top two branches and the middle branch is $p_x$ and the probability of a change in character along the bottom two branches is $p_y$.
-In our estimand $t$, we modify the classical topologies by allowing the middle branch to be unequal to either $p_x$ or $p_y$ and denote this probability $p_w$; the parameters $p_x, p_y$ and $p_w$ all lie in interval $[0,1/2]$.
-To obtain branch length parameters, we transform these probabilities using the function $f(p)=1-2p$ so that $t=\{x,y,w\}:=\{f(p_x), f(p_y), f(p_w)\}$; the parameters $x, y$ and $w$ all lie in the interval $[0,1]$.
+Define the Farris topology $\tau_1$ and the Felsenstein topology $\tau_2$ as in Figure~\ref{fig:farris-fels-top}.
+
+\begin{figure}
+\centering
+\begin{subfigure}{.45\linewidth}
+\centering
+\includegraphics[width=.95\textwidth]{farris_blank}
+\caption[short]{Farris topology $\tau_1$}
+\end{subfigure}
+\begin{subfigure}{.45\linewidth}
+\centering
+\includegraphics[width=.95\textwidth]{felsenstein_blank}
+\caption[short]{Felsenstein topology $\tau_2$}
+\end{subfigure}
+\caption{Two simple topologies}
+\end{figure}
+
+Call $t=\{x,y,w\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ is the case where the bottom three branches all share the same parameter, the classical construction of this topology.
+The branch length parameters are such that the probability of a change in character along the top two branches is $p_x=1-2x$, with corresponding equalities for the other two branches.
+Here, $\{p_x,p_y,p_z\}\in[0,1/2]^3$ and $\{x,y,z\}\in[0,1]^3$.
 
 \textbf{Justification for estimand:} It might be worth arguing why this form of the estimand $t$ is necessary.
 I think the idea is that for either of these topologies, any maximum obtained will occur where the top two and bottom two branches are equal, though not necessarily the middle branch.
@@ -174,7 +182,7 @@ Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed
 \begin{tabular}{|l|l|l|}
 \multicolumn{3}{c}{Classical}\\
     \hline
-$s_j$   &$P(s_j|\tau_1,t)$&$P(s_j|\tau_2,t)$\\
+$s_j$   &$P(s_j|\tau_1,t^*)$&$P(s_j|\tau_2,t^*)$\\
     \hline
 0000&$1+x^2+y^2+4xy^2+x^2y^2$&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
 0001&$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
@@ -189,14 +197,14 @@ $s_j$   &$P(s_j|\tau_1,t)$&$P(s_j|\tau_2,t)$\\
     \hline
 $s_j$   &$P(s_j|\tau_1,t)$&$P(s_j|\tau_2,t)$\\
     \hline
-0000&$1+x^2+w^2+4xyw+x^2w^2$&$1+2xw+2xyw+x^2y+w^2y+x^2w^2$\\
-0001&$1+x^2-w^2-x^2w^2$&$1+x^2y-w^2y-x^2w^2$\\
-0010&$1-x^2+w^2-x^2w^2$&$1-x^2y+w^2y-x^2w^2$\\
-0100&$1+x^2-w^2-x^2w^2$&$1+x^2y-w^2y-x^2w^2$\\
-1000&$1-x^2+w^2-x^2w^2$&$1-x^2y+w^2y-x^2w^2$\\
-0011&$1-x^2-w^2+x^2w^2$&$1+2xw-2xyw-x^2y-w^2y+x^2w^2$\\
-0101&$1+x^2+w^2-4xyw+x^2w^2$&$1-2xw-2xyw+x^2y+w^2y+x^2w^2$\\
-1001&$1-x^2-w^2+x^2w^2$&$1-2xw+2xyw-x^2y-w^2y+x^2w^2$\\
+0000&$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
+0001&$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
+0010&$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
+0100&$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
+1000&$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
+0011&$1-x^2-y^2+x^2y^2$&$1+2xy-2xyw-x^2w-y^2w+x^2y^2$\\
+0101&$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
+1001&$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
     \hline
 \end{tabular}    
 \caption{Site pattern probabilities.
@@ -213,26 +221,26 @@ All values are multiplied by $1/8$.}
     \hline
 $s_j$    &00                              &01\\
     \hline
-0000&$(1+x)^2(1+y)(1+w)^{2*}$          &$(1+x)^2(1-y)(1-w)^2$\\
-0001&$(1+x)^2(1+y)(1+w)(1-w)^*$       &$(1+x)^2(1-y)(1+w)(1-w)$\\
-0010&$(1+x)^2(1+y)(1+w)(1-w)^*$       &$(1+x)^2(1-y)(1+w)(1-w)$\\
-0100&$(1+x)(1-x)(1+y)(1+w)^{2*}$       &$(1+x)(1-x)(1-y)(1-w)^2$\\
-1000&$(1+x)(1-x)(1+y)(1+w)^{2*}$       &$(1+x)(1-x)(1-y)(1-w)^2$\\
-0011&$(1+x)(1-x)(1+y)(1+w)(1-w)^{\dagger}$    &$(1+x)(1-x)(1-y)(1+w)(1-w)$\\
-0101&$(1+x)^2(1+y)(1-w)^{2\ddagger}$          &$(1+x)^2(1-y)(1+w)^{2\ddagger}$\\
-1001&$(1+x)(1-x)(1+y)(1+w)(1-w)^{\dagger}$    &$(1+x)(1-x)(1-y)(1+w)(1-w)$\\
+0000&$(1+x)^2   (1+w)(1+y)^{2*}$          &$(1+x)^2   (1-w)(1-y)^2$\\
+0001&$(1+x)^2   (1+w)(1+y)(1-y)^*$        &$(1+x)^2   (1-w)(1+y)(1-y)$\\
+0010&$(1+x)^2   (1+w)(1+y)(1-y)^*$        &$(1+x)^2   (1-w)(1+y)(1-y)$\\
+0100&$(1+x)(1-x)(1+w)(1+y)^{2*}$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
+1000&$(1+x)(1-x)(1+w)(1+y)^{2*}$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
+0011&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$&$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
+0101&$(1+x)^2   (1+w)(1-y)^{2\ddagger}$   &$(1+x)^2   (1-w)(1+y)^{2\ddagger}$\\
+1001&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$&$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
     \hline
     \hline
 &10                           &11\\
     \hline
-0000&$(1-x)^2(1-y)(1+w)^2$        &$(1-x)^2(1+y)(1-w)^2$\\
-0001&$(1-x)^2(1-y)(1+w)(1-w)$     &$(1-x)^2(1+y)(1+w)(1-w)$\\
-0010&$(1-x)^2(1-y)(1+w)(1-w)$     &$(1-x)^2(1+y)(1+w)(1-w)$\\
-0100&$(1+x)(1-x)(1-y)(1+w)^2$     &$(1+x)(1-x)(1+y)(1-w)^2$\\
-1000&$(1+x)(1-x)(1-y)(1+w)^2$     &$(1+x)(1-x)(1+y)(1-w)^2$\\
-0011&$(1+x)(1-x)(1-y)(1+w)(1-w)$  &$(1+x)(1-x)(1+y)(1+w)(1-w)^{\dagger}$\\
-0101&$(1-x)^2(1-y)(1-w)^2$       &$(1-x)^2(1+y)(1+w)^{2\ddagger}$\\
-1001&$(1+x)(1-x)(1-y)(1+w)(1-w)$  &$(1+x)(1-x)(1+y)(1+w)(1-w)^{\dagger}$\\
+0000&$(1-x)^2   (1-w)(1+y)^2$     &$(1-x)^2   (1+w)(1-y)^2$\\
+0001&$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
+0010&$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
+0100&$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
+1000&$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
+0011&$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$\\
+0101&$(1-x)^2   (1-w)(1-y)^2$     &$(1-x)^2   (1+w)(1+y)^{2\ddagger}$\\
+1001&$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$\\
     \hline
     \multicolumn{3}{c}{$P(z_j|s_j,\tau_2,t)$}\\
 \hline
@@ -240,26 +248,26 @@ $s_j$    &00                              &01\\
     \hline
 $s_j$    &00                              &01\\
     \hline
-0000&$(1+x)^2(1+y)(1+w)^{2*}$          &$(1+x)(1-x)(1-y)(1+w)(1-w)$\\
-0001&$(1+x)^2(1+y)(1+w)(1-w)^{\ddagger}$       &$(1+x)(1-x)(1-y)(1+w)^{2\ddagger}$\\
-0010&$(1+x)(1-x)(1+y)(1+w)^{2\ddagger}$       &$(1+x)^2(1-y)(1+w)(1-w)^{\ddagger}$\\
-0100&$(1+x)^2(1+y)(1+w)(1-w)^{\ddagger}$       &$(1+x)(1-x)(1-y)(1-w)^2$\\
-1000&$(1+x)(1-x)(1+y)(1+w)^{2\ddagger}$       &$(1-x)^2(1-y)(1+w)(1-w)$\\
-0011&$(1+x)(1-x)(1+y)(1+w)(1-w)^{\ddagger}$          &$(1+x)^2(1-y)(1+w)^{2\ddagger}$\\
-0101&$(1+x)^2(1+y)(1-w)^{2\ddagger}$    &$(1+x)(1-x)(1-y)(1+w)(1-w)^{\ddagger}$\\
-1001&$(1+x)(1-x)(1+y)(1+w)(1-w)^{\ddagger}$    &$(1-x)^2(1-y)(1+w)^{2\ddagger}$\\
+0000&$(1+x)^2   (1+w)(1+y)^{2*}$           &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
+0001&$(1+x)^2   (1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)(1-x)(1-w)(1+y)^{2\ddagger}$\\
+0010&$(1+x)(1-x)(1+w)(1+y)^{2\ddagger}$    &$(1+x)^2   (1-w)(1+y)(1-y)^{\ddagger}$\\
+0100&$(1+x)^2   (1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)(1-x)(1-w)(1-y)^2$\\
+1000&$(1+x)(1-x)(1+w)(1+y)^{2\ddagger}$    &$(1-x)^2   (1-w)(1+y)(1-y)$\\
+0011&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)^2   (1-w)(1+y)^{2\ddagger}$\\
+0101&$(1+x)^2   (1+w)(1-y)^{2\ddagger}$    &$(1+x)(1-x)(1-w)(1+y)(1-y)^{\ddagger}$\\
+1001&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$&$(1-x)^2   (1-w)(1+y)^{2\ddagger}$\\
     \hline
     \hline
 &10                           &11\\
     \hline
-0000&$(1+x)(1-x)(1-y)(1+w)(1-w)$        &$(1-x)^2(1+y)(1-w)^2$\\
-0001&$(1+x)(1-x)(1-y)(1-w)^2$     &$(1-x)^2(1+y)(1+w)(1-w)$\\
-0010&$(1-x)^2(1-y)(1+w)(1-w)$     &$(1+x)(1-x)(1+y)(1-w)^2$\\
-0100&$(1+x)(1-x)(1-y)(1+w)^{2\ddagger}$     &$(1-x)^2(1+y)(1+w)(1-w)$\\
-1000&$(1+x)^2(1-y)(1+w)(1-w)^{\ddagger}$     &$(1+x)(1-x)(1+y)(1-w)^2$\\
-0011&$(1-x)^2(1-y)(1-w)^2$       &$(1+x)(1-x)(1+y)(1+w)(1-w)^{\ddagger}$\\
-0101&$(1+x)(1-x)(1-y)(1+w)(1-w)^{\ddagger}$  &$(1-x)^2(1+y)(1+w)^{2\ddagger}$\\
-1001&$(1+x)^2(1-y)(1-w)^{2\ddagger}$  &$(1+x)(1-x)(1+y)(1+w)(1-w)^{\ddagger}$\\
+0000&$(1+x)(1-x)(1-w)(1+y)(1-y)$             &$(1-x)^2   (1+w)(1-y)^2$\\
+0001&$(1+x)(1-x)(1-w)(1-y)^2$                &$(1-x)^2   (1+w)(1+y)(1-y)$\\
+0010&$(1-x)^2   (1-w)(1+y)(1-y)$             &$(1+x)(1-x)(1+w)(1-y)^2$\\
+0100&$(1+x)(1-x)(1-w)(1+y)^{2\ddagger}$      &$(1-x)^2   (1+w)(1+y)(1-y)$\\
+1000&$(1+x)^2   (1-w)(1+y)(1-y)^{\ddagger}$  &$(1+x)(1-x)(1+w)(1-y)^2$\\
+0011&$(1-x)^2   (1-w)(1-y)^2$                &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$\\
+0101&$(1+x)(1-x)(1-w)(1+y)(1-y)^{\ddagger}$  &$(1-x)^2   (1+w)(1+y)^{2\ddagger}$\\
+1001&$(1+x)^2   (1-w)(1-y)^{2\ddagger}$      &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$\\
 \hline
 \end{tabular}    
 \caption{Likelihood calculations for all site patterns and internal states of Farris topology.
@@ -288,59 +296,44 @@ Ideally we would seek tight bounds $(\underline{x}, \overline{x})$ and $(\underl
 \subsection{Simplifying the likelihoods}
 
 To simplify matters, we will first focus on bounding the the terms with the generating probabilities as they are more complicated.
-Let
+Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$ so that
 \begin{align}
 \label{eq:information}
-H(\mathbf{p};x, y, w) &= \sum_{j} P(s_j | \tau^*, \{x^*,y^*\}) \cdot \log P(s_j | \tau', \{x,y,w\}) \nonumber \\ 
-&:= \sum_{j} p(s_j) \cdot \log P(s_j | \tau', \{x,y,w\}).
+H_{\tau_1}(x, y;x', y', w') &= \sum_{j} P(s_j | \tau_1, \{x,y,y\}) \cdot \log P(s_j | \tau', \{x',y',w'\}) \nonumber \\ 
+&:= \sum_{j} p(s_j) \cdot \log P(s_j | \tau', \{x',y',w'\}).
 \end{align}
 By Gibbs inequality,
 $$
-H(\mathbf{p};x, y, w) \le H(\mathbf{p};x^*,y^*, y^*),
+H_{\tau_1}(x, y;x', y', w') \le H_{\tau_1}(x, y;x, y, y),
 $$
 though this bound can be made tighter.
 In our simplifications we will make use of the constants
 $$
-a = p(0100) + p(1000) + p(0011) + p(1001) = \left\{
-	\begin{array}{ll}
-		(4-2x^{*2}-2y^{*2})/8  & \mbox{Farris zone,} \\
-		(4-2x^{*2}y^{*}-2y^{*3})/8  & \mbox{Felsenstein zone,}
-	\end{array}
-\right.
+a = p(0100) + p(1000) + p(0011) + p(1001) = (4-2x^2-2y^2)/8,
 $$
 $$
-b = p(0101) = \left\{
-	\begin{array}{ll}
-		(1+x^{*2}+y^{*2}-4x^{*}y^{*2}+x^{*2}y^{*2})/8  & \mbox{Farris zone,} \\
-		(1-2x^{*}y^{*}-2x^{*}y^{*2}+x^{*2}y^{*}+y^{*3}+x^{*2}y^{*2})/8  & \mbox{Felsenstein zone,}
-	\end{array}
-\right.
+b = p(1000) + p(0010) + p(0011) + p(1001) = (4-2x^2-2y^2)/8,
 $$
 $$
-c = p(0001) + p(0010) + p(0100) + p(1000) = (4-4x^{*2}y^{*2})/8
+c = p(0001) + p(0010) + p(0100) + p(1000) = (4-4x^2y^2)/8
 $$
 and
 $$
-d = p(0101) + p(1001) = \left\{
-	\begin{array}{ll}
-		(2-4x^{*}y^{*2}+2x^{*2}y^{*2})/8  & \mbox{Farris zone} \\
-		(2-4x^{*}y^{*}+2x^{*2}y^{*2})/8  & \mbox{Felsenstein zone}
-	\end{array}
-\right.
+d = p(0101) + p(1001) = (2-4xy^2+2x^2y^2)/8
 $$
 with corresponding bounds
 $$
-0 \le a,c \le \frac{1}{2}
+0 \le a,b,c \le \frac{1}{2}
 $$
 and
 $$
-0 \le b,d \le \frac{1}{4}.
+0 \le d \le \frac{1}{4}.
 $$
 
 Our key approach will be to decompose the likelihood as
 \begin{equation}
 \label{eq:partial-likelihood}
-L^{(i)}(x, y, w) = H(\mathbf{p}; x, y, w) + L^{p,(i)}(x,y,w)
+L^{(i)}(x', y', w') = H_{\tau_1}(x,y;x',y',w') + L^{p,(i)}(x',y',w')
 \end{equation}
 where the first term is \eqref{eq:information} and the second term will be a weighted sum of the $\log$s of values from Table~\ref{tab:likelihoods}, the superscript indicating which choices for ancestral state likelihood values we choose.
 Define
@@ -349,7 +342,7 @@ $$
 $$
 We have upper and lower bounds for \eqref{eq:partial-likelihood} in the form
 $$
-H(\mathbf{p}; \hat{x}, \hat{y}, \hat{w}) + L^{p,(\hat{i})}(\hat{x}, \hat{y}, \hat{w}) \le \max_{x,y,w} \ L^{(i)}(x,y,w) \le H(\mathbf{p}; x^{*}, y^{*}, y^{*}) + L^{p,(\hat{i})}(\hat{x}, \hat{y}, \hat{w}).
+H_{\tau_1}(x,y; \hat{x}, \hat{y}, \hat{w}) + L^{p,(\hat{i})}(\hat{x}, \hat{y}, \hat{w}) \le \max_{x,y,w} \ L^{(i)}(x,y,w) \le H(x,y;x,y,y) + L^{p,(\hat{i})}(\hat{x}, \hat{y}, \hat{w}).
 $$
 
 \textbf{Argument for lower bound}: This makes intuitive sense, though may be difficult to show in general.
@@ -364,52 +357,39 @@ For a fixed $\{x^*, y^*\}$ we can calculate this upper bound directly---can we o
 
 \subsubsection{A simplified Farris likelihood}
 
-The likelihood for the Farris zone topology is less complicated than that of the Felsenstein zone since only one site pattern has an ambiguous likelihood---all site patterns except \texttt{0101} have a fixed value for their likelihood when taking the maximum.
-We decompose the full likelihood
-
-where $L_{fa}^{(i)}(x,y,w)$ takes one of three forms:
+The likelihood for the Farris topology is less complicated than that of the Felsenstein since only one site pattern has an ambiguous likelihood---all site patterns except \texttt{0101} have a fixed value for their likelihood when taking the maximum.
+To fix this value, we will consider an upper bound on the partial likelihood by setting the value for site pattern 0011 to $(1+x)^2(1+w)(1+y)^2$.
+Here the partial likelihood $L_{fa}^{p,(i)}(x,y,w)$ takes the form:
 $$
-L_{fa}^{(1)} = (2-a)\log(1+x)+a\log(1-x)+(2-a-2b)\log(1+w)+(a+2b)\log(1-w)+\log(1+y),
+L_{fa}^{p} = (2-a)\log(1+x)+a\log(1-x)+(2-b)\log(1+y)+b\log(1-y)+\log(1+w),
 $$
+and this has a maximum
 $$
-L_{fa}^{(2)} = (2-a-2b)\log(1+x)+(a+2b)\log(1-x)+(2-a)\log(1+w)+a\log(1-w)+\log(1+y),
+\hat{L}_{fa}^{p} = (2-a)\log(2-a)+a\log(a)+(2-b)\log(2-b)+b\log(b)+\log(2).
 $$
-$$
-L_{fa}^{(3)} = (2-a)\log(1+x)+a\log(1-x)+(2-a)\log(1+w)+a\log(1-w)+(1-b)\log(1+y)+b\log(1-y).
-$$
-These likelihoods have maxima
-$$
-\hat{L}_{fa}^{(1)} = \hat{L}_{fa}^{(2)} = (2-a)\log(2-a)+a\log(a)+(2-a-2b)\log(2-a-2b)+(a+2b)\log(a+2b)+\log(2),
-$$
-$$
-\hat{L}_{fa}^{(3)} = (2-a)\log(2-a)+a\log(a)+(2-a)\log(2-a)+a\log(a)+(1-b)\log(1-b)+b\log(b)+\log(2).
-$$
-
-\textbf{TODO}: cases for $\{x^{*}, y^{*}\}$ where each of the above is the corresponding maximum.
-I think the first is greater than or equal to the second in most cases, though not all (i.e., when $b$ is large but $a$ is small).
 
 \subsubsection{A simplified Felsenstein likelihood}
 
-We construct similar bounds on the Felsenstein likelihood, though to make matters simpler we replace all $(1+y)$ terms in Table~\ref{tab:likelihoods} with $(1-y)$ to obtain a lower bound, performing the reverse substitution to obtain upper bounds.
-As in \eqref{eq:partial-likelihood} we see that the likelihood in this case has one of six forms:
+We construct similar bounds on the Felsenstein likelihood, though to make matters simpler we replace all $(1+y)$ terms in Table~\ref{tab:likelihoods} with $(1-y)$ to obtain a lower bound.
+Unlike the Farris partial likelihood, the likelihood in this case has one of six forms:
 $$
-L_{fe}^{(1)} = 2\log(1+x)+(2-c-2d)\log(1+w)+(c+2d)\log(1-w)+\log(1-y),
-$$
-$$
-L_{fe}^{(2)} = (2-c-2d)\log(1+x)+(c+2d)\log(1-x)+2\log(1+w)+\log(1-y),
+L_{fe}^{(1)} = 2\log(1+x)+(2-c-2d)\log(1+y)+(c+2d)\log(1-y)+\log(1-w),
 $$
 $$
-L_{fe}^{(3)} = (2-2d)\log(1+x)+2d\log(1-x)+(2-c)\log(1+w)+c\log(1-w)+\log(1-y),
+L_{fe}^{(2)} = (2-c-2d)\log(1+x)+(c+2d)\log(1-x)+2\log(1+y)+\log(1-w),
 $$
 $$
-L_{fe}^{(4)} = (2-c)\log(1+x)+c\log(1-x)+(2-2d)\log(1+w)+2d\log(1-w)+\log(1-y),
+L_{fe}^{(3)} = (2-2d)\log(1+x)+2d\log(1-x)+(2-c)\log(1+y)+c\log(1-y)+\log(1-w),
 $$
 $$
-L_{fe}^{(5)} = (2-d)\log(1+x)+d\log(1-x)+(2-c-d)\log(1+w)+(c+d)\log(1-w)+\log(1-y)
+L_{fe}^{(4)} = (2-c)\log(1+x)+c\log(1-x)+(2-2d)\log(1+y)+2d\log(1-y)+\log(1-w),
+$$
+$$
+L_{fe}^{(5)} = (2-d)\log(1+x)+d\log(1-x)+(2-c-d)\log(1+y)+(c+d)\log(1-y)+\log(1-w)
 $$
 and
 $$
-L_{fe}^{(6)} = (2-c-d)\log(1+x)+(c+d)\log(1-x)+(2-d)\log(1+w)+d\log(1-w)+\log(1-y)
+L_{fe}^{(6)} = (2-c-d)\log(1+x)+(c+d)\log(1-x)+(2-d)\log(1+y)+d\log(1-y)+\log(1-w)
 $$
 with maxima
 $$
@@ -423,81 +403,74 @@ $$
 \hat{L}_{fe}^{(5)} = \hat{L}_{fe}^{(6)} = (2-d)\log(2-d)+d\log(d)+(2-c-d)\log(2-c-d)+(c+d)\log(c+d).
 $$
 
-\textbf{TODO}: cases for $\{x^{*}, y^{*}\}$ where each of the above is the corresponding maximum.
+\textbf{TODO}: cases for $\{x, y\}$ where each of the above is the corresponding maximum.
 I think the first is always greater than or equal to the other two, but I haven't been able to show it yet.
 It may take a little information theory--fu, or just standard application of the bounds in the introduction to this section.
 
 \paragraph{Example}
 
-Set $\{x^*, y^*\} = \{0.5, 0.5\}$.
+Set $\{x, y\} = \{0.25, 0.25\}$.
 For a Farris zone generating topology, we have
 $$
-a =  0.375, \ b =  0.1328125,
+a = b = 0.46875
 $$
 resulting in
 $$
-L_{fa}^{(1)} = L_{fa}^{(2)} \approx 1.24637119863,
-$$
-$$
-L_{fa}^{(3)} \approx 1.14372724688
+\hat{L}_{fa}^{p}(\hat{x}, \hat{y}, \hat{w}) \approx -2.17803560694
 $$
 and
 $$
-H_{fa}(\mathbf{p};x^*,y^*, y^*) \approx -1.99591752302.
+H_{fa}(x,y;x,y,y) \approx -2.07509999739.
 $$
-Thus computing the upper bound yields
+Computing the upper bound yields
 $$
-\max_{x,y,w} \ L_{fa}(x,y,w) \le -0.749546324382
+\max_{x,y,w} \ L_{fa}(x,y,w) \le -4.25313560433
 $$
 and it remains to show that 
 $$
-\max_{x,y,w} \ L_{fe}(x,y,w) \ge -0.749546324382.
+\max_{x,y,w} \ L_{fe}(x,y,w) \ge -4.25313560433
 $$
 
 For the same generating parameters,
 $$
-c = 0.46875, \ d = 0.203125,
+c = 0.498046875, \ d = 0.2431640625,
 $$
 resulting in
 $$
-L_{fe}^{(1)} = L_{fe}^{(2)} \approx 1.40196030769, 
+\hat{L}_{fe}(\hat{x}, \hat{y}, \hat{w}) \approx -2.07919739112
 $$
+Calculating shows%
+    %
+    \footnote{It's not a typo that $\hat{L}_{fe}$ and $H_{fe}(x,y; \hat{x}, \hat{y}, \hat{w})$ are the same---at least not in the code.
+        I should try to show why this is the case.
+        }
+    %
 $$
-L_{fe}^{(3)} = L_{fe}^{(4)} \approx 0.674162530673
-$$
-and
-$$
-L_{fe}^{(5)} = L_2^{(6)} \approx 0.838975450706.
-$$
-Calculating shows
-$$
-H_{fe}(\mathbf{p}; \hat{x}, \hat{y}, \hat{w}) = -2.06377559511,
+H_{fe}(x,y; \hat{x}, \hat{y}, \hat{w}) \approx -2.07919739112
 $$
 and
 $$
-\max_{x,y,w} \ L_{fe}(x,y,w) \ge -0.661815287426 > -0.749546324382 \ge \max_{x,y,w} \ L_{fa}(x,y,w)
+\max_{x,y,w} \ L_{fe}(x,y,w) \ge -4.15839478224 > -4.25313560433 \ge \max_{x,y,w} \ L_{fa}(x,y,w)
 $$
 where site patterns are generated from the Farris zone topology.
-Wait, really?
-Did I just show something???
-
-\paragraph{Example}
-
-Say we have found values for $\{x^{*}, y^{*}\}$ where the likelihoods we need to consider are
+Confirming, run \texttt{python}'s numerical optimization solver for $\{.25, .25\}$.
+Since we are computing a constrained maximization, we can find a global maximum using basin hopping, and doing so yields
 $$
-\hat{L}_{fa}(a,b) = (2-a)\log(2-a)+a\log(a)+(2-a-2b)\log(2-a-2b)+(a+2b)\log(a+2b)+\log(2)
+\max_{x,y,w} \ L_{fa}(x,y,w) \approx -4.5101771294218045
 $$
 and
 $$
-\hat{L}_{fe}(c,d) = 2\log(2)+(2-c-2d)\log(2-c-2d)+(c+2d)\log(c+2d).
+\max_{x,y,w} \ L_{fe}(x,y,w) \approx -4.1544859851260281.
 $$
-This is true in the case of $\{.5, .5\}$ so there is at least measurable support for this case.
-What we need to show now is the support of this intersects with the support of
+Woohoo!
+
+\paragraph{General example}
+
+We want to find values for $\{x,y\}$ where
 $$
-H(\mathbf{p}; 1, 0, 1-c-2d) + \hat{L}_{fe}(c,d) \ge H(\mathbf{p}; x^{*}, y^{*}, y^{*}) + \hat{L}_{fa}(a,b)
+H_{fe}(x,y; 1, 0, 1-c-2d) + \hat{L}_{fe}(c,d) \ge H_{fa}(x,y; x, y, y) + \hat{L}_{fa}(a,b).
 $$
-in some measurable set where data are generated on a Farris topology.
-All of these inequalities are functions of $\{x^{*}, y^{*}\}$ only, and we can cheat a bit and plot the values at which this is true.
+We can cheat a bit and plot the values at which this is true.
 This may give us some insight into what form these regions of inconsistency take---see Fig.~\ref{fig:inconsistency-farris}.
 
 \begin{figure}
@@ -507,20 +480,31 @@ This may give us some insight into what form these regions of inconsistency take
 \label{fig:inconsistency-farris}
 \end{figure}
 
-Some scratch work letting $\{x, y\}=\{x^*,y^*\}$:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\section{Temporarily unused text I may want later to show more general results on the likelihood estimates}
+
+Some scratch work:
+$$
+a = b = (4-2x^2-2y^2)/8,
+$$
 $$
 c+2d = 1-xy^2, \ 2-c-2d = 1+xy^2
 $$
 $$
-H(\mathbf{p}; 1, 0, 1-c-2d) \propto (2-4xy^2+2x^2y^2)\log(1-2xy^2+x^2y^4) + (2+4xy^2+2x^2y^2)\log(1+2xy^2+x^2y^4)+(4-4x^2y^2)\log(1-x^2y^4)
+H_{fe}(x,y; 1, 0, 1-c-2d) \propto (2-4xy^2+2x^2y^2)\log(1-2xy^2+x^2y^4) + (2+4xy^2+2x^2y^2)\log(1+2xy^2+x^2y^4)+(4-4x^2y^2)\log(1-x^2y^4)
 $$
 $$
-\hat{L}_{fe}(c,d) = 2\log(2) + (1+xy^2)\log(1+xy^2) + (1-xy^2)\log(1-xy^2)
+H_{fa}(x,y; x, y, y) \propto (2-4xy^2+2x^2y^2)\log(1-2xy^2+x^2y^4) + (2+4xy^2+2x^2y^2)\log(1+2xy^2+x^2y^4)+(4-4x^2y^2)\log(1-x^2y^4)
+$$
+$$
+\hat{L}_{fe} \propto 2\log(2) + (1+xy^2)\log(1+xy^2) + (1-xy^2)\log(1-xy^2)
+$$
+$$
+\hat{L}_{fa} \propto \log(2) + (4-2a)\log(2-a)+2a\log(a).
 $$
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\section{Temporarily unused text I may want later to show more general results on the likelihood estimates}
 
 \subsubsection{A counterexample in branch lengths}
 
@@ -1126,5 +1110,8 @@ In other words, data are generated from the ``Farris zone'' topology, and we see
 Using \texttt{python}, we can numerically maximize \eqref{eq:site_pattern_profile_likelihood_mean} over $t$ separately for fixed topologies $\tau^*$ and $\tau'$.
 For $t^*$, we can calculate these values over a grid of values for $(x^*, y^*)\in[0,1]^2$.
 At worst, this will show us if we're on a fool's errand, but if not then we could benefit by gaining insight into what form a refinement of branch lengths yielding inconsistency would take.
+
+\bibliographystyle{plain}
+\bibliography{sample}
 
 \end{document}
