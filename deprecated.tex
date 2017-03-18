@@ -1,0 +1,628 @@
+\section{Temporarily unused text I may want later to show more general results on the likelihood estimates}
+
+Some scratch work:
+$$
+a = b = (4-2x^2-2y^2)/8,
+$$
+$$
+c+2d = 1-xy^2, \ 2-c-2d = 1+xy^2
+$$
+$$
+H_{fe}(x,y; 1, 0, 1-c-2d) \propto (2-4xy^2+2x^2y^2)\log(1-2xy^2+x^2y^4) + (2+4xy^2+2x^2y^2)\log(1+2xy^2+x^2y^4)+(4-4x^2y^2)\log(1-x^2y^4)
+$$
+$$
+H_{fa}(x,y; x, y, y) \propto (2-4xy^2+2x^2y^2)\log(1-2xy^2+x^2y^4) + (2+4xy^2+2x^2y^2)\log(1+2xy^2+x^2y^4)+(4-4x^2y^2)\log(1-x^2y^4)
+$$
+$$
+\hat{L}_{fe} \propto 2\log(2) + (1+xy^2)\log(1+xy^2) + (1-xy^2)\log(1-xy^2)
+$$
+$$
+\hat{L}_{fa} \propto \log(2) + (4-2a)\log(2-a)+2a\log(a).
+$$
+
+
+\subsubsection{A counterexample in branch lengths}
+
+Let $(\tau^*, t^*)=(\tau_1, \{x,y,x\})$.
+We claim there exist $\{x,y\}$ and $\{x, \tilde{y}\}$ such that
+$$
+L'(\tau^*, t^*; \tau^*, \{x, \tilde{y}\}) > L'(\tau^*, t^*; \tau^*, t^*).
+$$
+The model is given by values in the Table.
+Set $x=0$ to obtain
+$$
+L'(\tau^*, t^*; \tau^*, t^*) \propto 8\log(1+y)
+$$
+and
+$$
+L'(\tau^*, t^*; \tau^*, \{0, \tilde{y}\}) \propto 8\log(1+\tilde{y}).
+$$
+Therefore, if $\tilde{y} > y$ we have an inconsistency.
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l|l|}
+    \hline
+$s_j$   &$P(s_j|\tau_1,t)$&$\max_{z_j} \ P(s_j,z_j|\tau_1,t)$\\
+    \hline
+0000&$1+2x^2+4x^2y+x^4$&$(1+x)^4(1+y)$\\
+0001&$1-x^4$&$(1+x)^3(1+y)(1-x)$\\
+0010&$1-x^4$&$(1+x)^3(1+y)(1-x)$\\
+0100&$1-x^4$&$(1+x)^3(1+y)(1-x)$\\
+1000&$1-x^4$&$(1+x)^3(1+y)(1-x)$\\
+0011&$1+2x^2-4x^2y+x^4$&max$\{(1+x)^2(1+y)(1-x)^2,(1+x)^4(1-y)\}$\\
+0101&$1-2x^2+x^4$&$(1+x)^2(1+y)(1-x)^2$\\
+1001&$1-2x^2+x^4$&$(1+x)^2(1+y)(1-x)^2$\\
+    \hline
+\end{tabular}    
+\caption{Counterexample 1.}
+\label{tab:sitepatprob_case1}
+\end{table}
+
+\subsubsection{A counterexample in topologies}
+
+Let $(\tau^*, t^*)=(\tau_1, \{x,y,y\})$.
+We claim there exist $\{x,y\}$ such that
+$$
+L'(\tau^*, t^*; \tau_2, t^*) > L'(\tau^*, t^*; \tau^*, t^*).
+$$
+Set $y=0$ to obtain parameters given in Table.
+We have
+$$
+L'(\tau^*, t^*; \tau^*, t^*) \propto 4(1+x^2)\log(1+x^2)+4(1-x^2)\log(1-x^2)+4(1+x^2)\log((1+x)^2)+4(1-x^2)\log((1+x)(1-x))
+$$
+and
+$$
+L'(\tau^*, t^*; \tau_2, t^*) \propto 3(1+x^2)\log((1+x)^2)+3(1-x^2)\log((1+x)^2)+(1+x^2)\log((1+x)(1-x))+(1-x^2)\log((1+x)(1-x)).
+$$
+The difference being greater than zero, i.e.,
+$$
+L'(\tau^*, t^*; \tau_2, t^*) - L'(\tau^*, t^*; \tau^*, t^*) > 0,
+$$
+simplifies to
+$$
+4x^2(\log(1-x^2)-\log(1+x^2)+\log(1-x)-\log(1+x)) - 2(2\log(1+x^2)+2\log(1-x^2)-\log(1+x)+\log(1-x)) > 0.
+$$
+Let $0 < x < 1/\sqrt{2}$ so that the above inequality becomes
+$$
+-\log(1-x^2)-3\log(1+x^2) > 0
+$$
+or
+$$
+(1+x^2)^3(1-x^2) < 1.
+$$
+Applying $x<1/\sqrt{2}$ shows if
+$$
+x < \sqrt{-1+2^{1/3}} \approx 0.5098
+$$
+we have an inconsistency.
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l|l||l|l|}
+    \hline
+$s_j$   &$P(s_j|\tau_1,t)$&$\max_{z_j} \ P(s_j,z_j|\tau_1,t)$&$P(s_j|\tau_2,t)$&$\max_{z_j} \ P(s_j,z_j|\tau_2,t)$\\
+    \hline
+0000&    $1+x^2$ & $(1+x)^2$ & 1 & $(1+x)^2$\\
+0001&    $1+x^2$ & $(1+x)^2$ & 1 & $(1+x)^2$\\
+0010&    $1+x^2$ & $(1+x)^2$ & 1 & $(1+x)^2$\\
+0100&    $1-x^2$ & $(1+x)(1-x)$ & 1 & $(1+x)^2$\\
+1000&    $1-x^2$ & $(1+x)(1-x)$ & 1 & $(1+x)^2$\\
+0011&    $1+x^2$ & $(1+x)^2$ & 1 & $(1+x)(1-x)$\\
+0101&    $1-x^2$ & $(1+x)(1-x)$ & 1 & $(1+x)^2$\\
+1001&    $1-x^2$ & $(1+x)(1-x)$ & 1 & $(1+x)(1-x)$\\
+    \hline
+\end{tabular}    
+\caption{Counterexample 2.}
+\label{tab:sitepatprob_case2}
+\end{table}
+
+\subsubsection{More fleshed out counterexamples}
+
+The above counterexamples are highly pathological, but they show there exist whole spaces of parameters yielding inconsistencies.
+It seems as long as $x$ and $y$ are ``small enough'' we see inconsistency.
+
+\subsection{start}
+
+We can calculate the probability of a particular site pattern under this topology from the probability that all character states are equal as
+$$
+P(0000|\tau^*,t) = \frac{1}{8}(1+x^2+z^2+4xyz+x^2z^2)
+$$
+where the probability of any site pattern will be the same as above with the corresponding branch length parameter replaced with its negative.
+For example, if we have the pattern $0001$, since the last branch has length $z$ we replace it with $-z$ and obtain
+$$
+P(0001|\tau^*,t) = \frac{1}{8}(1+x^2-z^2-x^2z^2).
+$$
+All possible site pattern probabilities are given in Table~\ref{tab:sitepatprob}.
+All likelihoods and their maximal values are given in Table~\ref{tab:likelihoods}.
+
+It can be shown (I'll do it later) that for our $t^*$ the right-hand term above is $-16\log 8$.
+Moreover, for $t=\{x,y,z\}$
+\begin{equation}
+\sum_{s} \log P(s | \tau^*, t) + \log P(\xi | s, \tau^*, t) = -16\log 8 + f(x,y,z) + g(x,y,z)
+\end{equation}
+where
+\begin{align}
+f(x,y,z) &= 4\log(1+x)+4\log(1-x)+4\log(1+z)+4\log(1-z)+\\
+& 3\log(1+x^2)+3\log(1+z^2)+\\
+& \log((1+x^2)(1+z^2)+4xyz) + \log((1+x^2)(1+z^2)-4xyz).
+\end{align}
+and
+\begin{align}
+g(x,y,z) &= 10\log(1+x)+10\log(1+z)+4\log(1-x)+4\log(1-z)+7\log(1+y)+\\
+& \left\{ 
+  \begin{array}{l}
+  2\log(1+x)+2\log(1-z)+\log(1+y)\\
+  2\log(1+x)+2\log(1+z)+\log(1-y)\\
+  2\log(1-x)+2\log(1-z)+\log(1+y)\\
+  \end{array} \right.
+\end{align}
+whose component will be chosen based on whichever yields the maximum value for $\log L''$.
+
+\subsection{Two fixed topologies}
+
+\subsection{Special case: $x=z=0$}
+
+Consider now setting all data-generating branch length parameters $t^*$ to zero; this yields equal probabilities of $1/8$ for each site pattern.
+By the inequality of Gibbs we have
+$$
+\sum_{s} P(s|\tau^*,t^*)\log P(s|\tau^*,t^*) \geq \sum_{s} P(s|\tau^*,t^*)\log P(s|\tau^*,t)
+$$
+summing over all site patterns, which is equivalent to
+$$
+\sum_{s} \log P(s|\tau^*,t^*) \geq \sum_{s} \log P(s|\tau^*,t).
+$$
+We must show, then, that there exist $t\neq t^*$ such that
+$$
+\max_{\xi_s} \ \sum_{s} \log P(s | \tau^*, t) + \log P(\xi_s | s, \tau^*, t) > \max_{\xi_s} \sum_{s} \log P(s | \tau^*, t^*) + \log P(\xi_s | s, \tau^*, t^*).
+$$
+Assume for $t$ that $x=z=0$ but $y\neq 0$.
+Clearly site pattern probabilities are still all equal, and the first summand of each side of the inequality can be ignored in this case.
+Call
+$$
+f(x,y,z) = \sum_{s} \log P(\xi_s | s, \tau^*, t=\{x,y,z\}).
+$$
+For branch lengths $\{x,y,z\}$, by considering all eight cases (see Table~\ref{tab:likelihoods}) of site patterns we can show that in terms of branch length \emph{probabilities}%
+	%
+    \footnote{The function $f$ has inverse $f^{-1}(u)=(1-u)/2$ so that the probability of a change along a branch of length $x$ maps to $(1-x)/2$ and the probability of no change maps to $(1+x)/2$.}
+    %
+\begin{align}
+f(x,y,z) \propto & \ 10\log(1+x)+10\log(1+z)+4\log(1-x)+4\log(1-z)+7\log(1+y)+\\
+& \left\{ 
+  \begin{array}{l}
+  2\log(1+x)+2\log(1-z)+\log(1+y)\\
+  2\log(1+x)+2\log(1+z)+\log(1-y)\\
+  2\log(1-x)+2\log(1-z)+\log(1+y)\\
+  \end{array} \right.
+\end{align}
+whose last summand will be chosen based on whichever yields the maximum value and where the proportionality is due to requiring branch length parameters $\{x,y,z\}$ to be multiplied by $1/2$ to map them to probabilities.
+We see that
+$$
+f(x,y,z)|_{x=z=0} = 8\log(1+y)
+$$
+and thus require the constraint
+$$
+8\log(1+y) > 0
+$$
+or that $y$ is any value bounded away from zero, and will obtain a maximum at $y=1$ or $p_y=0$.
+
+\subsection{Special case: $x=z\neq 0$}
+
+
+Fixing $x=z=0$ is a little too pathological---anything can happen when we're flipping coins to determine terminal characters.
+Let's investigate a relaxed yet still special case where branches to the tips are all equal but allowed to be nonzero.
+So we set $\tau^*=\tau$, $t^*=\{x,x,y\}$ and $t=\{x,x,\tilde{y}\}$ where the same terminal branches are used for both parameter sets with only the internal branch different.
+Removing terms involving only $x$ and redundant $y$ shows that we need only concern ourselves with the objective functions
+\begin{align*}
+L_1(u) =& 8\log(1+u) + \\
+  &(1+2x^2+4x^2y+x^4)\log(1+2x^2+4x^2u+x^4) + \\
+  &(1+2x^2-4x^2y+x^4)\log(1+2x^2-4x^2u+x^4)
+\end{align*}
+if $(1+u)(1-x)^2 > (1-u)(1+x)^2$---or, more simply, if $u > 2x / (1+x^2)$---and
+\begin{align*}
+L_2(u) =& (7-2x^2+4x^2y-x^4)\log(1+u) + \\
+  &(1+2x^2-4x^2y+x^4)\log(1-u) + \\
+  &(1+2x^2+4x^2y+x^4)\log(1+2x^2+4x^2u+x^4) + \\
+  &(1+2x^2-4x^2y+x^4)\log(1+2x^2-4x^2u+x^4)
+\end{align*}
+otherwise.
+We can rule out the case where $\tilde{y} < y$ in $L_1$ by the inequality of Gibbs and using a similar argument along with the inequality
+$$
+1+2x^2-4x^2y+x^4 \le 7-2x^2+4x^2y-x^4
+$$
+implies we can rule out $\tilde{y} < y$ in $L_2$ as well (actually I'm not sure if I believe this anymore; the case of $L_1$ definitely holds, though).
+This leaves us with four sets of inequalities where an inconsistency will arise,
+$$
+\left\{\tilde{y} > y > \frac{2x}{1+x^2}, \ L_1(\tilde{y}) > L_1(y)\right\}, 
+$$
+$$
+\left\{\tilde{y} > \frac{2x}{1+x^2} > y, \ L_1(\tilde{y}) > L_2(y)\right\}, 
+$$
+$$
+\left\{\frac{2x}{1+x^2} > \tilde{y} > y, \ L_2(\tilde{y}) > L_2(y)\right\},
+$$
+and
+$$
+\left\{\frac{2x}{1+x^2} > y > \tilde{y}, \ L_2(\tilde{y}) > L_2(y)\right\}.
+$$
+Simplifying shows
+$$
+L_2(u) = L_1(u) + (1+2x^2-4x^2y+x^4)\log\frac{1-u}{1+u} \le L_1(u).
+$$
+Can we use this fact?
+I believe in my heart of hearts, perhaps foolishly, that the first set of inequalities holds categorically.
+The fact above will then imply the second set of inequalities must also hold.
+The tricky bits are the last two sets of inequalities.
+
+If you'll allow me to indulge in a bit of cheating, I provide a few plots showing---for fixed $x$---the regions where inconsistencies arise.
+It looks like there is some regularity that we must be able to exploit somehow, if only to show that for a fixed $x$ there are inequalities in $y$ and $\tilde{y}$ governing consistency.
+
+%\begin{figure}
+%\centering
+%\includegraphics[width=.3\textwidth]{ineqs-x-0_25}\hfill
+%\includegraphics[width=.3\textwidth]{ineqs-x-0_75}\hfill
+%\includegraphics[width=.3\textwidth]{ineqs-x-0_9}
+%\caption{Various regions of inconsistency for fixed $x$}
+%\end{figure}
+
+Say $\tau_1$ is the ``Felsenstein zone'' tree and $\tau_2$ is the ``Farris zone'' tree, but both trees have a different value for its middle, connecting branch.
+%EM widdershins!! This still depends on how we draw them, no?
+The tips are labeled widdershins proceeding from the top-left tip.
+\begin{verbatim}
+Felsenstein:
+1\      /3
+   >--< 
+2/      \4
+
+Farris:
+1\ /3
+  | 
+2/ \4
+\end{verbatim}
+Our branch length parameters $t=\{x,y,z\}$ will consist of transformed probabilities where $y$ corresponds to this middle branch.
+For $p_x\in[0,1/2]$ defined as
+$$p_x = Pr(\mbox{change occurred along branch})$$
+then $x = 1-2p_x$.
+The parameter $x$ takes values in $[0,1]$ and will appear in likelihood calculations as either $(1+x)$ or $(1-x)$.
+Properties for $y$ and $z$ are identical.
+Assume for the moment that $\tau^*=\tau_1$ and $t^*=\{x,y,z\}$.
+
+\subsubsection{Example site pattern: \texttt{0101}}
+
+It can be shown that the only $A$ for which there is more than one partition for $\tau_2$ is for the site pattern \texttt{0101}.
+In this case
+$$A_1(\tau_1) = \{(1+x)^2(1-z)^2 = (1-x)^2(1+z)^2\},$$
+$$A_2(\tau_1) = \{(1+x)(1+y)(1-z) = (1-x)(1-y)(1+z)\},$$
+$$A_3(\tau_1) = \{(1-x)(1+y)(1+z) = (1+x)(1-y)(1-z)\}$$
+and
+$$A_1(\tau_2) = \{(1-z)^2(1+y) = (1+z)^2(1-y)\},$$
+$$A_2(\tau_2) = \{(1-z)^2(1+x)^2 = (1+z)^2(1-x)^2\},$$
+$$A_3(\tau_2) = \{(1+x)^2(1-y) = (1-x)^2(1+y)\}.$$
+
+Now, the probability of generating this site pattern under $\tau^*$ is given as
+$$
+Pr(\texttt{0101} | \tau^*, t^*) = \frac{1}{8}(1-2xz+y(x^2+z^2-2xz)+x^2z^2).
+$$
+
+\subsubsection{Example site pattern: \texttt{0000}}
+
+In the case of site pattern \texttt{0000} the refinements $A$ for both topologies are single-element partitions.
+In other words, no configuration of branch lengths will result in an ancestral state other than \texttt{00}.
+Here we have the probability
+$$
+Pr(\texttt{0000} | \tau^*, t^*) = \frac{1}{8}(1+2xz+y(x^2+z^2+2xz)+x^2z^2)
+$$
+and the maximum value for $Pr(\xi | \texttt{0000}, \tau, t^*)$ for both $\tau_1$ and $\tau_2$ is
+$$
+Pr(\xi | \texttt{0000}, \tau, t^*) = (1+x)^2(1+z)^2(1+y).
+$$
+
+\subsubsection{All refinements with multi-element partitions}
+
+(show calculations for all refinements that have multiple partitions)
+
+\subsection{Numerical sanity check}
+
+Let's suppose site pattern \texttt{0101} is the only one that drives some disconcert between the generating tree and the maximum likelihood tree.
+For a number of combinations of $\{x,y,z\}$ we need to calculate first
+$$
+Pr(\texttt{0101} | \tau^*, t^*) = \frac{1}{8}(1-2xz+y(x^2+z^2-2xz)+x^2z^2)
+$$
+and the maximum value over each $A_i(\tau)$ of $Pr(\xi | \texttt{0101}, \tau, t^*)$ for $\tau\in\{\tau_1, \tau_2\}$.
+In other words, say we have the triplet $\{x,y,z\}=\{0.8,0.5,0.8\}$.
+Then we have
+$$
+\max_{\xi} Pr(\xi | \texttt{0101}, \tau_1, t^*) = 0.0243, \ \max_{\xi} Pr(\xi | \texttt{0101}, \tau_2, t^*) = 0.6561, \ Pr(\texttt{0101} | \tau^*, t^*) = 0.0162.
+$$
+This doesn't yet tell us anything, as the probabilities for other site patterns may overwhelm this particular one, but gives a general flavor of how these computations will be performed.
+Moreover, a different triplet of $\{x,y,z\}$ could obtain a different maximum value for $Pr(\xi | s, \tau, t^*)$.
+This can be seen with the pattern \texttt{0011} where
+$$
+\max_{\xi} Pr(\xi | \texttt{0011}, \tau_1, t^*) = 0.6561, \ \max_{\xi} Pr(\xi | \texttt{0011}, \tau_2, t^*) = 0.0243, \ Pr(\texttt{0011} | \tau^*, t^*) = 0.1762
+$$
+meaning that if all else were equal---i.e., $\max_{\xi} Pr(\xi | s, \tau, t^*)$ were the same for $\tau_1$ and $\tau_2$ for all $s$---and that the maximum value actually occurs at this particular triplet $\{x,y,z\}$ then
+$$
+L(\tau_1) = 0.928 > 0.119 = L(\tau_2)
+$$
+and we have no contradiction.
+That's a lot of ``if'' statements, so let's investigate in a little more generality.
+
+\subsection{Differing branch lengths}
+
+First, we do not wish to assume $\{x,y,z\}$ are the same for both trees.
+
+\subsubsection{General case}
+
+The generating probability $Pr(s | \tau^*, t^*)$ has a specific form given a Hadamard transformation of the branch length parameters, while the term proportional to $Pr(\xi | s, \tau, t^*)$ relies on taking the maximum over a function with multiple components.
+All of this is easy to write into a computer program, and we can numerically find the maximum value over $\{\theta_1, \ldots, \theta_5\}\in[0,1]$ of each $L(\tau_1)$ and $L(\tau_2)$.
+If $L(\tau_1) < L(\tau_2)$ we see that jointly maximizing branch lengths and ancestral states results in a contradiction.
+
+In sufficient enough generality, we would look for any combination of $\{\tau_1,\tau_2\}$ that would result in this contradiction, but let's first focus on the two from the previous section.
+
+\subsubsection{Classic formulations of topologies}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l|}
+    \hline
+s   &$P(s)$\\
+    \hline
+0000&$1+x^2+y^2+4xy^2+x^2y^2$\\
+0001&$1+x^2-y^2-x^2y^2$\\
+0010&$1+x^2-y^2-x^2y^2$\\
+0100&$1-x^2+y^2-x^2y^2$\\
+1000&$1-x^2+y^2-x^2y^2$\\
+0011&$1+x^2+y^2-4xy^2+x^2y^2$\\
+0101&$1-x^2-y^2+x^2y^2$\\
+1001&$1-x^2-y^2+x^2y^2$\\
+    \hline
+\end{tabular}    
+\caption{Site pattern probabilities for Farris zone topology.
+All values are multiplied by $1/8$.}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l|}
+    \hline
+s   &$P(s)$\\
+    \hline
+0000&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
+0001&$1+x^2y-y^3-x^2y^2$\\
+0010&$1-x^2y+y^3-x^2y^2$\\
+0100&$1+x^2y-y^3-x^2y^2$\\
+1000&$1-x^2y+y^3-x^2y^2$\\
+0011&$1+2xy-2xy^2-x^2y-y^3+x^2y^2$\\
+0101&$1-2xy-2xy^2+x^2y+y^3+x^2y^2$\\
+1001&$1-2xy+2xy^2-x^2y-y^3+x^2y^2$\\
+    \hline
+\end{tabular}    
+\caption{Site pattern probabilities for Felsenstein zone topology.
+All values are multiplied by $1/8$.}
+\label{tab:sitepatprob-fels}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|ll|}
+    \hline
+    &00                              &01\\
+    \hline
+0000&$(1+x)^2(1+y)^{3*}$          &$(1+x)^2(1-y)^3$\\
+0001&$(1+x)^2(1+y)^2(1-y)^*$       &$(1+x)^2(1+y)(1-y)^2$\\
+0010&$(1+x)^2(1+y)^2(1-y)^*$       &$(1+x)^2(1+y)(1-y)^2$\\
+0100&$(1+x)(1-x)(1+y)^{3*}$       &$(1+x)(1-x)(1-y)^3$\\
+1000&$(1+x)(1-x)(1+y)^{3*}$       &$(1+x)(1-x)(1-y)^3$\\
+0011&$(1+x)^2(1+y)(1-y)^{2}$          &$(1+x)^2(1-y)(1+y)^{2\ddagger}$\\
+0101&$(1+x)(1-x)(1+y)^2(1-y)^{\dagger}$    &$(1+x)(1-x)(1+y)(1-y)^2$\\
+1001&$(1+x)(1-x)(1+y)^2(1-y)^{\dagger}$    &$(1+x)(1-x)(1+y)(1-y)^2$\\
+    \hline
+    \hline
+&10                           &11\\
+    \hline
+0000&$(1-x)^2(1+y)^2(1-y)$        &$(1-x)^2(1+y)(1-y)^2$\\
+0001&$(1-x)^2(1+y)(1-y)^2$     &$(1-x)^2(1+y)^2(1-y)$\\
+0010&$(1-x)^2(1+y)(1-y)^2$     &$(1-x)^2(1+y)^2(1-y)$\\
+0100&$(1+x)(1-x)(1+y)^2(1-y)$     &$(1+x)(1-x)(1+y)(1-y)^2$\\
+1000&$(1+x)(1-x)(1+y)^2(1-y)$     &$(1+x)(1-x)(1+y)(1-y)^2$\\
+0011&$(1-x)^2(1-y)^3$       &$(1-x)^2(1+y)^{3\ddagger}$\\
+0101&$(1+x)(1-x)(1+y)(1-y)^2$  &$(1+x)(1-x)(1+y)^2(1-y)^{\dagger}$\\
+1001&$(1+x)(1-x)(1+y)(1-y)^2$  &$(1+x)(1-x)(1+y)^2(1-y)^{\dagger}$\\
+    \hline
+\end{tabular}    
+\caption{Likelihood calculations for all site patterns and internal states of Farris topology.
+Maxima determined row-wise (i.e., by site pattern).
+Key: $^*$ unique maximum value corresponding to unique internal state; $^\dagger$ unique maximum value corresponding to multiple internal states; $^\ddagger$ multiple maximum values corresponding to multiple internal states.}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|ll|}
+    \hline
+    &00                              &01\\
+    \hline
+0000&$(1+x)^2(1+y)^{3*}$          &$(1+x)(1-x)(1+y)(1-y)^2$\\
+0001&$(1+x)^2(1+y)^2(1-y)^{*}$       &$(1+x)(1-x)(1+y)^2(1-y)$\\
+0010&$(1+x)(1-x)(1+y)^{3\ddagger}$       &$(1+x)^2(1+y)(1-y)^{2\ddagger}$\\
+0100&$(1+x)^2(1+y)^2(1-y)^*$       &$(1+x)(1-x)(1-y)^3$\\
+1000&$(1+x)(1-x)(1+y)^{3\ddagger}$       &$(1-x)^2(1+y)(1-y)^2$\\
+0011&$(1+x)(1-x)(1+y)^2(1-y)^{\dagger}$          &$(1+x)^2(1+y)^2(1-y)$\\
+0101&$(1+x)^2(1+y)(1-y)^{2\ddagger}$    &$(1+x)(1-x)(1+y)(1-y)^2$\\
+1001&$(1+x)(1-x)(1+y)^2(1-y)^{\dagger}$    &$(1+x)(1-x)(1+y)(1-y)^2$\\
+    \hline
+    \hline
+&10                           &11\\
+    \hline
+0000&$(1+x)(1-x)(1+y)(1-y)^2$        &$(1-x)^2(1+y)(1-y)^2$\\
+0001&$(1+x)(1-x)(1-y)^3$     &$(1-x)^2(1+y)^2(1-y)$\\
+0010&$(1-x)^2(1+y)(1-y)^2$     &$(1+x)(1-x)(1+y)(1-y)^2$\\
+0100&$(1+x)(1-x)(1+y)^2(1-y)^{\ddagger}$     &$(1-x)^2(1+y)^2(1-y)$\\
+1000&$(1+x)^2(1+y)(1-y)^{2\ddagger}$     &$(1+x)(1-x)(1+y)(1-y)^2$\\
+0011&$(1-x)^2(1-y)^3$       &$(1+x)(1-x)(1+y)^2(1-y)^{\dagger}$\\
+0101&$(1+x)(1-x)(1+y)(1-y)^2$  &$(1-x)^2(1+y)^{3\ddagger}$\\
+1001&$(1+x)(1-x)(1+y)(1-y)^2$  &$(1+x)(1-x)(1+y)^2(1-y)^{\dagger}$\\
+    \hline
+\end{tabular}    
+\caption{Likelihood calculations for all site patterns and internal states of Felsenstein topology.
+Maxima determined row-wise (i.e., by site pattern).
+Key: $^*$ unique maximum value corresponding to unique internal state; $^\dagger$ unique maximum value corresponding to multiple internal states; $^\ddagger$ multiple maximum values corresponding to multiple internal states.}
+\label{tab:likelihoods-fels}
+\end{table}
+
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l|}
+    \hline
+s   &$P(s)$\\
+    \hline
+0000&$1+x^2+z^2+2xyz+x^2y+z^2y+x^2z^2$\\
+0001&$1+x^2-z^2+x^2y-z^2y-x^2z^2$\\
+0010&$1-x^2+z^2-x^2y+z^2y-x^2z^2$\\
+0100&$1+x^2-z^2+x^2y-z^2y-x^2z^2$\\
+1000&$1-x^2+z^2-x^2y+z^2y-x^2z^2$\\
+0011&$1-x^2-z^2-2xyz-x^2y-z^2y+x^2z^2$\\
+0101&$1+x^2+z^2-2xyz+x^2y+z^2y+x^2z^2$\\
+1001&$1-x^2-z^2-2xyz-x^2y-z^2y+x^2z^2$\\
+    \hline
+\end{tabular}    
+\caption{Site pattern probabilities for Felsenstein zone topology.
+All values are multiplied by $1/8$.}
+\label{tab:sitepatprob-fels}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|ll|}
+    \hline
+    &00                              &01\\
+    \hline
+0000&$(1+x)^2(1+y)(1+z)^{2*}$          &$(1+x)(1-x)(1-y)(1+z)(1-z)$\\
+0001&$(1+x)^2(1+y)(1+z)(1-z)^{\ddagger}$       &$(1+x)(1-x)(1-y)(1+z)^{2\ddagger}$\\
+0010&$(1+x)(1-x)(1+y)(1+z)^{2\ddagger}$       &$(1+x)^2(1-y)(1+z)(1-z)^{\ddagger}$\\
+0100&$(1+x)^2(1+y)(1+z)(1-z)^{\ddagger}$       &$(1+x)(1-x)(1-y)(1-z)^2$\\
+1000&$(1+x)(1-x)(1+y)(1+z)^{2\ddagger}$       &$(1-x)^2(1-y)(1+z)(1-z)$\\
+0011&$(1+x)(1-x)(1+y)(1+z)(1-z)^{\ddagger}$          &$(1+x)^2(1-y)(1+z)^{2\ddagger}$\\
+0101&$(1+x)^2(1+y)(1-z)^{2\ddagger}$    &$(1+x)(1-x)(1-y)(1+z)(1-z)^{\ddagger}$\\
+1001&$(1+x)(1-x)(1+y)(1+z)(1-z)^{\dagger}$    &$(1+x)(1-x)(1-y)(1+z)(1-z)$\\
+    \hline
+    \hline
+&10                           &11\\
+    \hline
+0000&$(1+x)(1-x)(1-y)(1+z)(1-z)$        &$(1-x)^2(1+y)(1-z)^2$\\
+0001&$(1+x)(1-x)(1-y)(1-z)^2$     &$(1-x)^2(1+y)(1+z)(1-z)$\\
+0010&$(1-x)^2(1-y)(1+z)(1-z)$     &$(1+x)(1-x)(1+y)(1-z)^2$\\
+0100&$(1+x)(1-x)(1-y)(1+z)^{2\ddagger}$     &$(1-x)^2(1+y)(1+z)(1-z)$\\
+1000&$(1+x)^2(1-y)(1+z)(1-z)^{\ddagger}$     &$(1+x)(1-x)(1+y)(1-z)^2$\\
+0011&$(1-x)^2(1-y)(1-z)^2$       &$(1+x)(1-x)(1+y)(1+z)(1-z)^{\ddagger}$\\
+0101&$(1+x)(1-x)(1-y)(1+z)(1-z)^{\ddagger}$  &$(1-x)^2(1+y)(1+z)^{2\ddagger}$\\
+1001&$(1+x)(1-x)(1-y)(1+z)(1-z)$  &$(1+x)(1-x)(1+y)(1+z)(1-z)^{\dagger}$\\
+    \hline
+\end{tabular}    
+\caption{Likelihood calculations for all site patterns and internal states of Felsenstein topology.
+Maxima determined row-wise (i.e., by site pattern).
+Key: $^*$ unique maximum value corresponding to unique internal state; $^\dagger$ unique maximum value corresponding to multiple internal states; $^\ddagger$ multiple maximum values corresponding to multiple internal states.}
+\label{tab:likelihoods-fels}
+\end{table}
+
+In the first case we are in a similar situation to the case of $x=z=0$ where $\tilde{y}>y$ implies $L(\tilde{y})>L(y)$.
+The second case is more interesting.
+We still require $\tilde{y}>y$, but we now have a further restriction.
+We are interested in the simultaneous inequalities
+$$
+\frac{2x}{1+x^2} > \tilde{y} > y,
+$$
+$$
+[7-2x^2+4x^2y-x^4]\log\frac{1+\tilde{y}}{1+y}+[1+2x^2-4x^2y+x^4]\log\frac{1-\tilde{y}}{1-y} > 0
+$$
+which can be written
+$$
+8\log\frac{1+\tilde{y}}{1+y}+[1+2x^2-4x^2y+x^4]\log\frac{(1-\tilde{y})(1+y)}{(1+\tilde{y})(1-y)} > 0.
+$$
+What can we say about this?
+
+Now terms involving only $P(s|\tau,t)$ differ between $t^*$ and $t$ for the site patterns 0000 and 0101 but no others, allowing us to ignore them.
+Additionally, all terms involving $P(\xi_s|s,\tau,t)$ will differ between $t^*$ and $t$ yielding a search for parameters such that
+$$
+\sum_{s\in\{0000,0101\}} P(s|\tau^*, t^*)\log P(s|\tau^*, t) + \sum_{s} P(s | \tau^*, t^*) \log P(\xi_s | s, \tau^*, t)
+$$
+is maximized at $t\neq t^*$.
+Since $\log P(\xi_s|s,\tau,t)$ breaks up into a sum of terms involving $x$ and $y$ we have
+$$
+(6-4x^2-2x^4)\log(1+y)+\sum_{s\in\{0000,0101\}} P(s|\tau^*, t^*)[\log P(s|\tau^*, t)+\log P(\xi_s|s, \tau^*, t)].
+$$
+For a bit of clarity, let
+$$
+a(x,y) = (1+2x^2+4x^2y+x^4),
+$$
+$$
+b(x,y) = (1+2x^2-4x^2y+x^4)
+$$
+so that we have
+$$
+(6-4x^2-2x^4)\log(1+y)+a(x,y)\log a(x,y)+b(x,y)\log b(x,y) + \sum_{s\in\{0000,0101\}} P(s|\tau^*, t^*)\log P(\xi_s|s, \tau^*, t).
+$$
+Canceling more terms shows the right-hand sum is
+$$
+(1+2x^2+4x^2y+x^4)\log(1+y) + 16x^2y\log(1+x) + P(0101|\tau^*, t^*)\log P(\xi_s|0101, \tau^*, t).
+$$
+That final right-hand term above is actually a component function since we are maximizing a likelihood, and the 0101 row in Table~\ref{tab:likelihoods} does not have a unique maximum value.
+This value is either
+$$
+c_1(x,y) = (1+x)^4(1-y),
+$$
+$$
+c_2(x,y) = (1+x)^2(1-x)^2(1+y).
+$$
+We are interested in two inequalities; if
+$$
+c_2(x,y) > c_1(x,y)
+$$
+then our whole objective function simplifies since many terms with $\log(1+y)$ cancel.
+We can then focus on a second inequality, namely whether
+$$
+8\log(1+y) + x^2y(4\log(1+y)+16\log(1+x)) + a(x,y)\log a(x,y) + b(x,y)\log b(x,y) + c_2(x,y)...blah
+$$
+is greater than
+$$
+8\log(1+\tilde{y}) + x^2y(4\log(1+\tilde{y})+16\log(1+x)) + a(x,y) + b(x,y) + c_2(x,y)...
+$$
+
+\subsection{Dashed intuition}
+
+I am having a tough time seeing the intuition behind this result.
+If $x=z=0$ then we are flipping a coin for what happens at the internal node proceeding from the leaf.
+Why would effectively constraining the interior nodes to be equal result in a larger value for the likelihood?
+It doesn't have anything to do with efficiency, does it (i.e., by constraining the parameters to be equal we are using the same amount of data to estimate fewer parameters)?
+Can we show that constraining any $\xi_i,\xi_j$ to be equal in $L_n$ will also result in problems?
+
+I think what may help my sanity is proceeding with the above for the usual maximum likelihood story, that is, for
+$$
+\log L''' = \sum_{s} P(s | \tau^*, t^*) \cdot [\log P(s | \tau^*, t) + \log\sum_{\xi} P(\xi_s | s, \tau^*, t)]
+$$
+show
+$$
+L'''(\tau^*, t^*) > L'''(\tau^*, t)
+$$
+for $t\neq t^*$.
+At least for $x=z=0$ we can see that these two quantities will be equal for all $y$ due to the symmetry of choosing the internal nodes.
+Is this satisfying?
+
+UPDATE: thinking about this more, it actually makes sense.
+If we are maximizing over internal states, we will always prefer a branch length probability that will indicate no change occurs between them, effectively constraining all internal states to be the same given a particular site pattern.
+As we can see in the table, the maximum value almost always occurs for internal states that are equivalent.
+Seeking harmony between internal states will always increase the likelihood except in cases where branches to terminating leaves are sufficiently small.
+So the question might be, now, whether or not we can prove a general result: since internal states seem to always maximize the likelihood by being constrained to be equal, what conditions are needed on the terminal branches (here $x$ and $z$) that will yield (in)consistent estimates?
+
+
+\subsection{Plan of attack}
+
+We recall \eqref{eq:inconsistency_inequality} and set $\tau^*=\tau_1$ and $\tau'=\tau_2$.
+In other words, data are generated from the ``Farris zone'' topology, and we seek all values for $t^*$ where we can obtain a higher likelihood by proceeding with joint maximization assuming the ``Felsenstein zone'' topology.
+
+\subsection{The cheater's approach}
+
+Using \texttt{python}, we can numerically maximize \eqref{eq:site_pattern_profile_likelihood_mean} over $t$ separately for fixed topologies $\tau^*$ and $\tau'$.
+For $t^*$, we can calculate these values over a grid of values for $(x^*, y^*)\in[0,1]^2$.
+At worst, this will show us if we're on a fool's errand, but if not then we could benefit by gaining insight into what form a refinement of branch lengths yielding inconsistency would take.
+
