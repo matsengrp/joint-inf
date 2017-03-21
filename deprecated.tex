@@ -20,6 +20,45 @@ $$
 \hat{L}_{fa} \propto \log(2) + (4-2a)\log(2-a)+2a\log(a).
 $$
 
+\subsubsection{Refinements}
+
+It will be an undertaking, but if we want to approach this using the refinements we might get something pretty nifty.
+Everything will be quite messy, but really the entire approach boils down to a series of nested inequalities in two variables.
+We may need a program that can reduce symbolic equations, but this will at least get us somewhere that isn't a lot of loose approximations---initial results using numerical optimization show the region in~\ref{fig:inconsistency-farris} is conservative, and very much so.
+See Fig.~\ref{fig:numerical-inconsistency-farris}.
+
+Perhaps something along the lines of a more general results would be interesting?
+Like, could we calculate the measure/area of inconsistency using cooler techniques?
+Could we do this for a general topology?
+Would that even be interesting since we've already found a counterexample?
+
+It also seems that, in the $\{x, y\}=\{.25, .25\}$ example, the lower bound is tight while the upper bound is looser.
+This surprises me since we replaced a lot in the likelihood, but this might indicate that the $H$ term is actually the one that varies more than the $L$ term.
+I guess this is intuitive: the difference between the lower and upper bound on $L$ is $\log2\approx0.69$.
+Maybe getting a tighter upper bound will be useful here?
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{ineqs-num-far-gen}
+\caption{Regions of inconsistency---numerically obtained}
+\label{fig:numerical-inconsistency-farris}
+\end{figure}
+
+\subsubsection{Tighter upper bound}
+
+Call
+$$
+e = p(0001) + p(0100) = \frac{1+x^2-y^2-x^2y^2}{4},
+$$
+$$
+f = p(0010) + p(1000) = \frac{1-x^2+y^2-x^2y^2}{4}.
+$$
+Then some algebra and standard $\log$ bounds can be used to get an upper bound for the full Farris likelihood $L^{(i)}$ as
+$$
+(2-a+e)\log(2-\frac{2a}{2+e}) + a\log\frac{2a}{2+e} + (2-b+f)\log(2-\frac{2b}{2+f}) + a\log\frac{2b}{2+f}.
+$$
+In our example of $\{x,y\}=\{.25,.25\}$ this bound is $a$ compared to $-4.25313560433$ before.
+
 
 \subsubsection{A counterexample in branch lengths}
 

@@ -324,7 +324,7 @@ $$
 $$
 We have upper and lower bounds for \eqref{eq:partial-likelihood} in the form
 $$
-H_{\tau'}(x,y; \hat{x}, \hat{y}, \hat{w}) + L^{p,(\hat{i})}(\hat{x}, \hat{y}, \hat{w}) \le \max_{x,y,w} \ L^{(i)}(x,y,w) \le H(x,y;x,y,y) + L^{p,(\hat{i})}(\hat{x}, \hat{y}, \hat{w}).
+H_{\tau'}(x,y; \hat{x}, \hat{y}, \hat{w}) + L^{p,(\hat{i})}(\hat{x}, \hat{y}, \hat{w}) \le \max_{x,y,w} \ L^{(i)}(x,y,w) \le H_{\tau'}(x,y;x,y,y) + L^{p,(\hat{i})}(\hat{x}, \hat{y}, \hat{w}).
 $$
 
 \textbf{Argument for lower bound}: This makes intuitive sense, though may be difficult to show in general.
@@ -450,14 +450,57 @@ Woohoo!
 
 We want to find values for $\{x,y\}$ where
 $$
-H_{fe}(x,y; 1, 0, 1-c-2d) + \hat{L}_{fe}(c,d) \ge H_{fa}(x,y; x, y, y) + \hat{L}_{fa}(a,b).
+H_{fe}(x,y; 1, 1-c-2d, 0) + \hat{L}_{fe}(c,d) \ge H_{fa}(x,y; x, y, y) + \hat{L}_{fa}(a,b).
 $$
-We can cheat a bit and plot the values at which this is true.
-This may give us some insight into what form these regions of inconsistency take---see Fig.~\ref{fig:inconsistency-farris}.
+Since this is a single inequality in two variables, we can plot it analytically; we need the region where
+\begin{align*}
+    0 &\ge H_{fa}(x,y; x, y, y) + \hat{L}_{fa}(a,b) - H_{fe}(x,y; 1, 1-c-2d, 0) - \hat{L}_{fe}(c,d) \\
+      & = 2(12+2x^2+2y^2)\log((12+2x^2+2y^2)/8) \\
+      &\qquad + 2(4-2x^2-2y^2)\log((4-2x^2-2y^2)/8)  + 8\log2 \\
+      &\qquad + 2(1+x^2-y^2-x^2y^2)\log(1+x^2-y^2-x^2y^2) \\
+      &\qquad + 2(1-x^2+y^2-x^2y^2)\log(1-x^2+y^2-x^2y^2) \\
+      &\qquad + 2(1-x^2-y^2+x^2y^2)\log(1-x^2-y^2+x^2y^2) \\
+      &\qquad + (1+x^2+y^2+4xy^2+x^2y^2)\log(1+x^2+y^2+4xy^2+x^2y^2) \\
+      &\qquad + (1+x^2+y^2-4xy^2+x^2y^2)\log(1+x^2+y^2-4xy^2+x^2y^2) \\
+      &\qquad - 16\log2 - 8(1+xy^2)\log(1+xy^2) - 8(1-xy^2)\log(1-xy^2) \\
+      &\qquad - (2-4xy^2+2x^2y^2)\log(1-2xy^2+x^2y^4) \\
+      &\qquad - (2+4xy^2+2x^2y^2)\log(1+2xy^2+x^2y^4) \\
+      &\qquad - (4-4x^2y^2)\log(1-x^2y^4).
+\end{align*}
+The \texttt{sage} function in listing~\ref{list:sage} will generate Fig.~\ref{fig:inconsistency-farris}.
+
+\begin{table}
+    \begin{center}
+\begin{verbatim}
+var('x,y')
+inconsistency = 2*(12+2*x^2+2*y^2)*log((12+2*x^2+2*y^2)/8) \
+    + 2*(4-2*x^2-2*y^2)*log((4-2*x^2-2*y^2)/8) + 8*log(2.) \
+    + 2*(1+x^2-y^2-x^2*y^2)*log(1+x^2-y^2-x^2*y^2) \
+    + 2*(1-x^2+y^2-x^2*y^2)*log(1-x^2+y^2-x^2*y^2) \
+    + 2*(1-x^2-y^2+x^2*y^2)*log(1-x^2-y^2+x^2*y^2) \
+    + (1+x^2+y^2+4*x*y^2+x^2*y^2)*log(1+x^2+y^2+4*x*y^2+x^2*y^2) \
+    + (1+x^2+y^2-4*x*y^2+x^2*y^2)*log(1+x^2+y^2-4*x*y^2+x^2*y^2) \
+    - 16*log(2.) - 8*(1+x*y^2)*log(1+x*y^2) - 8*(1-x*y^2)*log(1-x*y^2) \
+    - (2-4*x*y^2+2*x^2*y^2)*log(1-2*x*y^2+x^2*y^4) \
+    - (2+4*x*y^2+2*x^2*y^2)*log(1+2*x*y^2+x^2*y^4) - (4-4*x^2*y^2)*log(1-x^2*y^4)
+
+inconsistency_plot = implicit_plot(
+    inconsistency(x,y)==0,
+    (x,0,1),
+    (y,0,1),
+    axes_labels=['$x$', '$y$'],
+    title='Region of inconsistency for Farris-generating topology',
+    color='black'
+)
+\end{verbatim}
+    \end{center}
+\caption{Sage code to generate Fig.~\ref{fig:inconsistency-farris}}
+\label{list:sage}
+\end{table}
 
 \begin{figure}
 \centering
-\includegraphics[width=.9\textwidth]{ineqs-max-far-gen}
+\includegraphics[width=.9\textwidth]{analytic-inconsistency}
 \caption{Regions of inconsistency}
 \label{fig:inconsistency-farris}
 \end{figure}
