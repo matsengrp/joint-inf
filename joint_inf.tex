@@ -26,7 +26,7 @@
 
 %comments from Erick:
 % >  This is great!
-% > - would be great to have all the calculations showing the "refinement" structure written out for the various tree structures (just done by hand and scanned is just fine) 
+% > - would be great to have all the calculations showing the "refinement" structure written out for the various tree structures (just done by hand and scanned is just fine)
 % > - I think of the "refinement" as a partition, so perhaps rather than "empty refinement" we have a "single-element partition"
 % > - in order to interpret the site patterns I need to figure out in what order the leaves are labeled
 % > - how is ell calculated?
@@ -34,6 +34,7 @@
 % > - re "general case", agreed though I don't think that we need numerical optimization of branch lengths in a set of a branch length partition-- we can just get the optimal branch length directly. Namely, for each branch, we know all hidden states (given that we are in a set of a partition) and so can count the number of mutations across that branch. From there we have a simple likelihood function, which either has an optimal in the interior or on the boundary of the partition.
 
 \renewcommand{\arraystretch}{1.2} % because otherwise exponents get eaten by \hline
+
 
 \section{Ancestral state reconstruction using maximum likelihood}
 
@@ -168,7 +169,7 @@ Here, $\{p_x,p_y,p_z\}\in[0,1/2]^3$ and $\{x,y,z\}\in[0,1]^3$.
 I think the idea is that for either of these topologies, any maximum obtained will occur where the top two and bottom two branches are equal, though not necessarily the middle branch.
 This would be good to show explicitly.
 
-Table~\ref{tab:sitepatprob} contains calculations of site pattern frequencies under these two topologies, calculated using the Hadamard transform approach outlined in 8.6 of Semple and Steel \cite{semplesteel}.
+Table~\ref{tab:sitepatprob} contains calculations of site pattern frequencies under these two topologies, calculated using the Hadamard transform approach outlined in 8.6 of Semple and Steel \cite{Semple2003-em}.
 Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed site patterns and topologies, with the maximum values over ancestral state patterns noted.
 
 \begin{table}
@@ -200,7 +201,7 @@ $s_j$   &$P(s_j|\tau_1,t)$&$P(s_j|\tau_2,t)$\\
 0101&$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
 1001&$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
     \hline
-\end{tabular}    
+\end{tabular}
 \caption{Site pattern probabilities.
 All values are multiplied by $1/8$.}
 \label{tab:sitepatprob}
@@ -263,7 +264,7 @@ $s_j$    &00                              &01\\
 0101&$(1+x)(1-x)(1-w)(1+y)(1-y)^{\ddagger}$  &$(1-x)^2   (1+w)(1+y)^{2\ddagger}$\\
 1001&$(1+x)^2   (1-w)(1-y)^{2\ddagger}$      &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$\\
 \hline
-\end{tabular}    
+\end{tabular}
 \caption{Likelihood calculations for all site patterns and internal states of Farris topology.
 Maxima determined row-wise (i.e., by site pattern).
 All values multiplied by $1/32$.
@@ -282,7 +283,7 @@ L^{(i)}(x', y', w') = H(x,y,\tau_1;x',y',w', \tau') + L^{p,(i)}(x',y',w')
 where the first term is
 \begin{align}
 \label{eq:information}
-H(x,y,\tau_1;x',y',w',\tau') &= \sum_{j} P(s_j | \tau_1, \{x,y,y\}) \cdot \log P(s_j | \tau', \{x',y',w'\}) \nonumber \\ 
+H(x,y,\tau_1;x',y',w',\tau') &= \sum_{j} P(s_j | \tau_1, \{x,y,y\}) \cdot \log P(s_j | \tau', \{x',y',w'\}) \nonumber \\
 &:= \sum_{j} p(s_j) \cdot \log P(s_j | \tau', \{x',y',w'\}).
 \end{align}
 and the second term will be a weighted sum of the $\log$s of values from Table~\ref{tab:likelihoods}, the superscript indicating which choices for ancestral state likelihood values we choose.
@@ -466,7 +467,7 @@ Computing the upper bound yields
 $$
 \max_{x,y,w} \ L(x,y,w,\tau_1) \le -4.25313560433
 $$
-and it remains to show that 
+and it remains to show that
 $$
 \max_{x,y,w} \ L(x,y,w,\tau_2) \ge -4.25313560433
 $$
@@ -505,6 +506,6 @@ $$
 Woohoo!
 
 \bibliographystyle{plain}
-\bibliography{sample}
+\bibliography{joint_inf}
 
 \end{document}
