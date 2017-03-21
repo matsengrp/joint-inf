@@ -36,9 +36,25 @@
 \renewcommand{\arraystretch}{1.2} % because otherwise exponents get eaten by \hline
 
 
+\section*{Introduction}
+
+Classical maximum-likelihood estimation in phylogenetics operates by integrating out possible ancestral states at the internal nodes of the tree.
+Recently Neher et al have suggested using an approximation to ML inference in which likelihood is maximized jointly across model parameters and ancestral sequences.
+This is attractive from a computational perspective, because joint ML inference can proceed according to an EM-like algorithm in which ML ancestral sequences are first inferred and then model parameters are optimized conditioned on the ancestral sequences.
+This latter step is much simpler and more computationally efficient when conditioning on ancestral sequences compared to the case in which ancestral sequences are marginalized out.
+
+However, existing consistency proofs for phylogenetics [cite] do not apply to the setting of joint inference of trees and ancestral sequences, raising the question of if this procedure enjoys good statistical properties.
+There are examples in statistics, such as the Neyman-Scott paradox \cite{Neyman1948-tt}, in which additional parameters destroy consistency.
+
+In this paper we show that the joint inference of trees and ancestral sequences is not consistent.
+To do so, we follow a similar strategy of using simple models and four taxon trees.
+Here we use a binary symmetric model and simulate on the ``Farris zone'' \cite{Siddall1998-hq} tree.
+We use bounds on likelihood to demarcate a sizeable area of long branch lengths in which joint inference gives the wrong tree.
+
+
 \section{Ancestral state reconstruction using maximum likelihood}
 
-\subsection{The usual story}
+\subsection{Classical maximum-likelihood inference in phylogenetics}
 
 We have observed character data $\mathbf{y}=[y_1,\ldots,y_n]\in\mathcal{Y}^n$ and corresponding unknown ancestral states $\boldsymbol\xi=[\xi_1,\ldots,\xi_n]\in\Xi^n$.
 Both $\mathcal{Y}$ and $\Xi$ are discrete sets.
@@ -504,6 +520,18 @@ $$
 \max_{x,y,w} \ L(x,y,w,\tau_2) \approx -4.1544859851260281.
 $$
 Woohoo!
+
+
+
+\section{Discussion}
+
+Neyman-Scott paradox.
+
+Interesting that here we are simulating on the Farris tree and end up with the Felsenstein tree.
+For maximum parsimony it's the opposite \cite{Felsenstein1978-rr}.
+Discussion of number of parameters of each.
+
+However, note that \cite{Siddall1998-hq} get things going the same way, although \cite{Swofford2001-hr} show that the problem is that they didn't simulate long enough sequences.
 
 \bibliographystyle{plain}
 \bibliography{joint_inf}
