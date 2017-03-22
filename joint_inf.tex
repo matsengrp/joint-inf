@@ -44,8 +44,9 @@ This is attractive from a computational perspective: joint ML inference can proc
 % I would say classical maximum likelihood is closer to EM, no? At some point in EM we'd have to marginalize/take the expectation, which joint ML doesn't do. Curious to talk more about it though...
 This latter step is much simpler and more computationally efficient when conditioning on ancestral sequences compared to the case in which ancestral sequences are marginalized out.
 
-However, existing consistency proofs for phylogenetics \cite{ArindamRoyChoudhury?} do not apply to the setting of joint inference of trees and ancestral sequences, raising the question of whether this procedure enjoys good statistical properties.
-There are examples in statistics, such as the Neyman-Scott paradox \cite{Neyman1948-tt}, in which additional parameters destroy consistency.
+However, existing consistency proofs for phylogenetics \cite{RoyChoudhury2015-ta} do not apply to the setting of joint inference of trees and ancestral sequences.
+There are examples in statistics, such as the Neyman-Scott paradox \cite{Neyman1948-tt}, in which estimation of additional parameters destroys consistency.
+This raises the question of whether joint inference of trees and ancestral sequences enjoys good statistical properties.
 
 In this paper we show that the joint inference of trees and ancestral sequences is not consistent in general.
 To do so, we follow a strategy of using simple models and four taxa trees.
@@ -56,21 +57,23 @@ We use bounds on the joint likelihood to demarcate a sizeable area of long branc
 
 \subsection{Classical maximum-likelihood inference in phylogenetics}
 
-We observe character data $\mathbf{y}=[y_1,\ldots,y_n]\in\mathcal{Y}^n$ and corresponding unknown ancestral states $\boldsymbol\xi=[\xi_1,\ldots,\xi_n]\in\Xi^n$.
-Both $\mathcal{Y}$ and $\Xi$ are discrete sets.
+Let $\mathcal{Y}$ be the set of assignments of characters to tips of our tree, and $\Xi$ the set of assignments of characters to the internal nodes of the tree.
+Both $\mathcal{Y}$ and $\Xi$ are finite sets.
+Assume we observe $n$ samples of character data (i.e.\ an alignment with $n$ columns) $\mathbf{y}=[y_1,\ldots,y_n]\in\mathcal{Y}^n$ and corresponding unknown ancestral states $\boldsymbol\xi=[\xi_1,\ldots,\xi_n]\in\Xi^n$.
+%EM Hm, this doesn't make sense compared to the above.
 Without loss of generality, assume $\mathcal{Y}=\Xi=\{0,1\}$.
-For a topology $\tau$ and branch lengths $t$ we form the likelihood
+For a topology $\tau$ and branch lengths $t$ we form the fully-observed likelihood (making the usual independence assumption between sites):
 \begin{equation}
 \label{eq:full_likelihood}
 L_n(\mathbf{y};\boldsymbol\xi, \tau, t) = \prod_{i=1}^{n} \ P(y_i, \xi_i | \tau, t).
 \end{equation}
-In particular, we are interested in
-$$
-(\hat{\boldsymbol\xi}, \hat{\tau}, \hat{t}) = \arg\max_{\boldsymbol\xi, \tau, t} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t),
-$$
-which we call the maximum likelihood values of the parameters $(\boldsymbol\xi, \tau, t)$.
-
-Since the number of elements in $\boldsymbol\xi$ grows with that of the observed data $\mathbf{y}$, the typical approach to estimate these parameters involves computing the marginal likelihood
+% In particular, we are interested in
+% $$
+% (\hat{\boldsymbol\xi}, \hat{\tau}, \hat{t}) = \arg\max_{\boldsymbol\xi, \tau, t} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t),
+% $$
+% which we call the maximum likelihood values of the parameters $(\boldsymbol\xi, \tau, t)$.
+% Since the number of elements in $\boldsymbol\xi$ grows with that of the observed data $\mathbf{y}$,
+The typical approach to estimate the tree $\tau$ and branch lengths $t$ involves computing the marginal likelihood
 \begin{equation}
 \label{eq:marginal_likelihood}
 \tilde{L}_n(\mathbf{y}; \tau, t) = \sum_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t).
@@ -79,12 +82,12 @@ and maximizing over the topology and branch lengths to obtain
 $$
 (\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \  \tilde{L}_n(\mathbf{y}; \tau, t).
 $$
-The values $\hat{\boldsymbol\xi}$ are then calculated conditional on these estimates.
-More likely in practice we fix a topology $\tau$ and use this marginalization approach to compute $(\hat{\boldsymbol\xi}, \hat{t})$.
+% The values $\hat{\boldsymbol\xi}$ are then calculated conditional on these estimates.
+% More likely in practice we fix a topology $\tau$ and use this marginalization approach to compute $(\hat{\boldsymbol\xi}, \hat{t})$.
 
 \subsection{Joint maximization}
 
-One tantalizing approach is to do away with the marginalization and the two-step maximization, directly estimating the maximum likelihood parameters from the full likelihood in \eqref{eq:full_likelihood}.
+One tantalizing approach is to do away with the marginalization and directly estimate the maximum likelihood parameters from the full likelihood in \eqref{eq:full_likelihood}.
 We can perform this by computing the profile likelihood
 \begin{equation}
 \label{eq:profile_likelihood}
@@ -95,45 +98,52 @@ then estimating the topology and branch lengths via
 \label{eq:profile_likelihood_topology_bl}
 (\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ L_n'(\mathbf{y};\tau, t)
 \end{equation}
-while using $\hat{\boldsymbol\xi}$ from \eqref{eq:profile_likelihood} as an estimate for $\boldsymbol\xi$.
+while using $\hat{\boldsymbol\xi}$ maximizing \eqref{eq:profile_likelihood} as an estimate for $\boldsymbol\xi$.
 Since $\Xi$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and so \eqref{eq:profile_likelihood_topology_bl} will recover the joint ML values of the unknown parameters.
 In the general case, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities that depend on the unknown $(\tau,t)$.
-For this reason, in practice joint ML estimates $\hat{\boldsymbol\xi}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\boldsymbol\xi}$, maximizing each of these conditional objectives until convergence \cite{Neher2017}.
+For this reason, in practice the joint ML strategy estimates $\hat{\boldsymbol\xi}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\boldsymbol\xi}$, maximizing each of these conditional objectives until convergence \cite{Neher2017}.
 
 \subsection{Site pattern formulation}
 
-Since $\mathcal{Y}$ and $\Xi$ are discrete sets, we define unique site patterns $\mathbf{s}=[s_1,\ldots,s_q]\in\mathcal{S}$ and ancestral state patterns $\mathbf{z}=[z_1,\ldots,z_q]\in\mathcal{Z}$ such that
+Since we have a finite character alphabet, there are a finite number of possibilities of assignments of characters to tips $y_i$ or internal nodes $\xi_i$.
+These are commonly called ``site patterns'' in the literature.
+%EM in general aren't a different number of internal site patterns than tip site patterns?
+We enumerate the unique site patterns $\mathbf{s}=[s_1,\ldots,s_q]\in\mathcal{S}$ and ancestral state patterns $\mathbf{z}=[z_1,\ldots,z_q]\in\mathcal{Z}$; these are defined by the number of leaves and the character alphabet.
+This enables us to group identical terms, reformulating the likelihood equation
 \begin{align}
 L_n'(\mathbf{y};\tau, t) &= \max_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t) \\
     &= \max_{\boldsymbol\xi} \ \prod_{i=1}^{n} \ P(y_i, \xi_i | \tau, t) \\
-    &= \max_{\mathbf{z}} \ \prod_{j=1}^{q} \ P(s_j, z_j | \tau, t)^{n_j} \label{eq:site_pattern_likelihood}
+%EM Can you think a little about z_j? The indexing seems a little problematic now that we are thinking of everything as a function of y.
+    &= \max_{\mathbf{z}} \ \prod_{j=1}^{q} \ P(s_j, z_j | \tau, t)^{n_j(\mathbf{y})} \label{eq:site_pattern_likelihood}
 \end{align}
-where $n_j$ is the number of observations in the sample where site pattern $s_j$ was seen.
-Since $\mathcal{S}$ and $\mathcal{Z}$ are also discrete sets, the value of each factor $P(y_i, \xi_i | \tau, t)$ will be maximized at one or more values of $\xi_i$, though independent of $i$ given $j$.
+where $n_j(\mathbf{y})$ is the number of observations in the sample where site pattern $s_j$ was seen in $\mathbf{y}$.
+%EM It's a small point, but note that the argument below justified the equation above, which is a little upside down.
+Note that since $\mathcal{S}$ and $\mathcal{Z}$ are also finite sets, the value of each factor $P(y_i, \xi_i | \tau, t)$ will be maximized at one or more values of $\xi_i$, though independent of $i$ given $j$.
 This independence allows us to group factors by those where $\xi_i$ equals $z_j$ so that $P(s_j, z_j | \tau, t)$ is maximized.
 
 \textbf{Example:} This might be a good time for a toy example showing this for a very simple topology.
 
+
 \subsection{The case of infinite data}
 
-We are now interested in the properties of the objective function being maximized in \eqref{eq:site_pattern_likelihood}.
+We are now interested in the properties of the objective function being maximized in \eqref{eq:site_pattern_likelihood} as data becomes plentiful.
 Let
 $$
-L_n''(\mathbf{s};\mathbf{z},\tau,t) = \prod_{j=1}^q \ P(s_j, z_j | \tau, t)^{n_j}
+L_n''(\mathbf{y};\mathbf{z},\tau,t) = \prod_{j=1}^q \ P(s_j, z_j | \tau, t)^{n_j(\mathbf{y})}
 $$
 so that
 $$
-\max_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t) = \max_{\mathbf{z}} \ L_n''(\mathbf{s};\mathbf{z},\tau,t).
+\max_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t) = \max_{\mathbf{z}} \ L_n''(\mathbf{y};\mathbf{z},\tau,t).
 $$
-Assume $n$ observations were generated from a model with parameters $(\tau^*, t^*)$.
+Assume our $n$ observations were generated from a model with parameters $(\tau^*, t^*)$.
 We have
 \begin{align}
-\frac{1}{n} \log L_n''(\mathbf{s};\mathbf{z},\tau,t) &= \sum_{j} \frac{n_j}{n}\cdot \log P(s_j, z_j | \tau, t) \\
-  &= \sum_{j} \frac{n_j}{n}\cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)].
+\frac{1}{n} \log L_n''(\mathbf{y};\mathbf{z},\tau,t) &= \sum_{j} \frac{n_j(\mathbf{y})}{n}\cdot \log P(s_j, z_j | \tau, t) \\
+  &= \sum_{j} \frac{n_j(\mathbf{y})}{n}\cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)].
 \end{align}
-In the limit of infinite data we see
+In the limit of infinite data we have
 $$
-\frac{1}{n} \log L_n''(\mathbf{s};\mathbf{z},\tau,t) \rightarrow \sum_{j} P(s_j | \tau^*, t^*) \cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)]
+\frac{1}{n} \log L_n''(\mathbf{y};\mathbf{z},\tau,t) \rightarrow \sum_{j} P(s_j | \tau^*, t^*) \cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)]
 $$
 and that, since $z_j$ appears only in the last term, the log of \eqref{eq:site_pattern_likelihood} in the same limit is proportional to
 \begin{align}
