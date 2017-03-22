@@ -38,25 +38,25 @@
 
 \section*{Introduction}
 
-Classical maximum-likelihood estimation in phylogenetics operates by integrating out possible ancestral states at the internal nodes of the tree.
-Recently Neher et al have suggested using an approximation to ML inference in which likelihood is maximized jointly across model parameters and ancestral sequences.
-This is attractive from a computational perspective, because joint ML inference can proceed according to an EM-like algorithm in which ML ancestral sequences are first inferred and then model parameters are optimized conditioned on the ancestral sequences.
+Classical maximum-likelihood (ML) estimation in phylogenetics operates by integrating out possible ancestral states at the internal nodes of the tree.
+Recently \cite{Neher2017} have suggested using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences.
+This is attractive from a computational perspective: joint ML inference can proceed according to an iterative procedure in which ML ancestral sequences are first inferred and then model parameters are optimized conditional on the ancestral sequences.
+% I would say classical maximum likelihood is closer to EM, no? At some point in EM we'd have to marginalize/take the expectation, which joint ML doesn't do. Curious to talk more about it though...
 This latter step is much simpler and more computationally efficient when conditioning on ancestral sequences compared to the case in which ancestral sequences are marginalized out.
 
-However, existing consistency proofs for phylogenetics [cite] do not apply to the setting of joint inference of trees and ancestral sequences, raising the question of if this procedure enjoys good statistical properties.
+However, existing consistency proofs for phylogenetics \cite{ArindamRoyChoudhury?} do not apply to the setting of joint inference of trees and ancestral sequences, raising the question of whether this procedure enjoys good statistical properties.
 There are examples in statistics, such as the Neyman-Scott paradox \cite{Neyman1948-tt}, in which additional parameters destroy consistency.
 
-In this paper we show that the joint inference of trees and ancestral sequences is not consistent.
-To do so, we follow a similar strategy of using simple models and four taxon trees.
+In this paper we show that the joint inference of trees and ancestral sequences is not consistent in general.
+To do so, we follow a strategy of using simple models and four taxa trees.
 Here we use a binary symmetric model and simulate on the ``Farris zone'' \cite{Siddall1998-hq} tree.
-We use bounds on likelihood to demarcate a sizeable area of long branch lengths in which joint inference gives the wrong tree.
-
+We use bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference converges on the wrong tree.
 
 \section{Ancestral state reconstruction using maximum likelihood}
 
 \subsection{Classical maximum-likelihood inference in phylogenetics}
 
-We have observed character data $\mathbf{y}=[y_1,\ldots,y_n]\in\mathcal{Y}^n$ and corresponding unknown ancestral states $\boldsymbol\xi=[\xi_1,\ldots,\xi_n]\in\Xi^n$.
+We observe character data $\mathbf{y}=[y_1,\ldots,y_n]\in\mathcal{Y}^n$ and corresponding unknown ancestral states $\boldsymbol\xi=[\xi_1,\ldots,\xi_n]\in\Xi^n$.
 Both $\mathcal{Y}$ and $\Xi$ are discrete sets.
 Without loss of generality, assume $\mathcal{Y}=\Xi=\{0,1\}$.
 For a topology $\tau$ and branch lengths $t$ we form the likelihood
@@ -85,24 +85,24 @@ More likely in practice we fix a topology $\tau$ and use this marginalization ap
 \subsection{Joint maximization}
 
 One tantalizing approach is to do away with the marginalization and the two-step maximization, directly estimating the maximum likelihood parameters from the full likelihood in \eqref{eq:full_likelihood}.
-We can perform this iteratively, now computing a profile likelihood
+We can perform this by computing the profile likelihood
 \begin{equation}
 \label{eq:profile_likelihood}
-L_n'(\mathbf{y};\tau, t) = \max_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t)
+L_n'(\mathbf{y};\tau, t) = \max_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t),
 \end{equation}
-and estimating the topology and branch lengths via
-$$
+then estimating the topology and branch lengths via
+\begin{equation}
+\label{eq:profile_likelihood_topology_bl}
 (\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ L_n'(\mathbf{y};\tau, t)
-$$
+\end{equation}
 while using $\hat{\boldsymbol\xi}$ from \eqref{eq:profile_likelihood} as an estimate for $\boldsymbol\xi$.
-
-\textbf{Claim to prove}: Is it obvious that this particular iterative approach can be done?
-In other words, do $(\hat{\boldsymbol\xi}, \hat{\tau}, \hat{t})$ from \eqref{eq:profile_likelihood} correspond to those of \eqref{eq:full_likelihood}?
-I believe since $\Xi$ is a discrete set that this is true, but it may be worth a more rigorous argument.
+Since $\Xi$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and so \eqref{eq:profile_likelihood_topology_bl} will recover the joint ML values of the unknown parameters.
+In the general case, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities that depend on the unknown $(\tau,t)$.
+For this reason, in practice joint ML estimates $\hat{\boldsymbol\xi}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\boldsymbol\xi}$, maximizing each of these conditional objectives until convergence \cite{Neher2017}.
 
 \subsection{Site pattern formulation}
 
-Now, since $\mathcal{Y}$ and $\Xi$ are discrete sets, we define unique site patterns $\mathbf{s}=[s_1,\ldots,s_q]\in\mathcal{S}$ and ancestral state categories $\mathbf{z}=[z_1,\ldots,z_q]\in\mathcal{Z}$ such that
+Since $\mathcal{Y}$ and $\Xi$ are discrete sets, we define unique site patterns $\mathbf{s}=[s_1,\ldots,s_q]\in\mathcal{S}$ and ancestral state patterns $\mathbf{z}=[z_1,\ldots,z_q]\in\mathcal{Z}$ such that
 \begin{align}
 L_n'(\mathbf{y};\tau, t) &= \max_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t) \\
     &= \max_{\boldsymbol\xi} \ \prod_{i=1}^{n} \ P(y_i, \xi_i | \tau, t) \\
@@ -125,7 +125,7 @@ so that
 $$
 \max_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t) = \max_{\mathbf{z}} \ L_n''(\mathbf{s};\mathbf{z},\tau,t).
 $$
-Now assume $n$ observations were generated from a model with parameters $(\tau^*, t^*)$.
+Assume $n$ observations were generated from a model with parameters $(\tau^*, t^*)$.
 We have
 \begin{align}
 \frac{1}{n} \log L_n''(\mathbf{s};\mathbf{z},\tau,t) &= \sum_{j} \frac{n_j}{n}\cdot \log P(s_j, z_j | \tau, t) \\
@@ -137,9 +137,11 @@ $$
 $$
 and that, since $z_j$ appears only in the last term, the log of \eqref{eq:site_pattern_likelihood} in the same limit is proportional to
 \begin{align}
-\frac{1}{n} \log L_n'(\mathbf{y};\tau, t) &= \max_{\mathbf{z}} \ \frac{1}{n} \log L_n''(\mathbf{s};\mathbf{z},\tau,t) \\
-    &\rightarrow \max_{z_1, \ldots, z_q} \ \sum_{j} P(s_j | \tau^*, t^*) \cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)] \\
-    &= \sum_{j} P(s_j | \tau^*, t^*) \cdot [\log P(s_j | \tau, t) + \max_{z_j} \ \log P(z_j | s_j, \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
+\frac{1}{n} \log L_n'(\mathbf{y};\tau, t) &= \max_{\mathbf{z}} \ \frac{1}{n} \log L_n''(\mathbf{s};\mathbf{z},\tau,t) \nonumber \\
+    &\rightarrow \max_{z_1, \ldots, z_q} \ \sum_{j} P(s_j | \tau^*, t^*) \cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)] \nonumber \\
+    &= \max_{\mathbf{z}} \ \sum_{j} P(s_j | \tau^*, t^*) \cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)] \nonumber \\
+    &= \max_{\mathbf{z}} \ \left\{\sum_{j} P(s_j | \tau^*, t^*) \log P(s_j | \tau, t)\right\} \nonumber \\
+    &\qquad + \left\{\sum_{j} P(s_j | \tau^*, t^*) \log P(z_j | s_j, \tau, t)\right\}. \label{eq:site_pattern_profile_likelihood_mean}
 \end{align}
 
 \subsection{Showing inconsistency}
@@ -291,34 +293,30 @@ Key: $^*$ unique maximum value corresponding to unique internal state; $^\dagger
 \subsection{Bounding the likelihoods}
 
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
-Our approach will be to decompose the likelihood in \eqref{eq:site_pattern_profile_likelihood_mean} as
+Our approach will be to decompose the likelihood inside the maximization in \eqref{eq:site_pattern_profile_likelihood_mean} as
 \begin{equation}
 \label{eq:partial-likelihood}
-L^{(i)}(x', y', w') = H(x,y,\tau_1;x',y',w', \tau') + L^{p,(i)}(x',y',w')
+L(x', y', w'; \mathbf{z},\tau') = H(x,y,\tau_1;x',y',w', \tau') + L_{p}(x',y',w';\mathbf{z},\tau')
 \end{equation}
-where the first term is
-\begin{align}
-\label{eq:information}
-H(x,y,\tau_1;x',y',w',\tau') &= \sum_{j} P(s_j | \tau_1, \{x,y,y\}) \cdot \log P(s_j | \tau', \{x',y',w'\}) \nonumber \\
-&:= \sum_{j} p(s_j) \cdot \log P(s_j | \tau', \{x',y',w'\}).
-\end{align}
-and the second term will be a weighted sum of the $\log$s of values from Table~\ref{tab:likelihoods}, the superscript indicating which choices for ancestral state likelihood values we choose.
-
-To bound the first term, we can make use of Gibbs inequality
+where different values for $\mathbf{z}$ will alter the form of $L_{p}(x',y',w';\mathbf{z},\tau')$.
+We obtain an upper bound for the joint maximum of \eqref{eq:partial-likelihood}
 $$
-H(x, y, \tau_1;x', y', w', \tau') \le H(x, y, \tau_1;x, y, y, \tau_1),
+\max_{\{x',y',w',\mathbf{z}\}} \ L(x',y',w';\mathbf{z},\tau') \le H(x,y,\tau_1;x,y,y,\tau_1) + L_{p}(\hat{x}, \hat{y}, \hat{w};\hat{\mathbf{z}},\tau')
 $$
-though this bound can be made tighter.
-For the second term, we seek an upper bound for the $\tau_1$ case and a lower bound for the $\tau_2$ case.
-Define
+using Gibbs inequality
 $$
-\{\hat{x}, \hat{y}, \hat{w}, \hat{i}\} = \arg\max_{\{x,y,w,i\}} \ L^{p,(i)}(x,y,w,\tau').
+H(x, y, \tau_1;x', y', w', \tau') \le H(x, y, \tau_1;x, y, y, \tau_1)
 $$
-We have upper and lower bounds for \eqref{eq:partial-likelihood} in the form
+and
 $$
-H(x,y,\tau_1; \hat{x}, \hat{y}, \hat{w}, \tau') + L^{p,(\hat{i})}(\hat{x}, \hat{y}, \hat{w},\tau_1) \le \max_{x,y,w} \ L^{(i)}(x,y,w) \le H(x,y,\tau_1;x,y,y,\tau_1) + L^{p,(\hat{i})}(\hat{x}, \hat{y}, \hat{w},\tau_1).
+\{\hat{x}, \hat{y}, \hat{w}, \hat{\mathbf{z}}\} = \arg\max_{\{x,y,w,\mathbf{z}\}} \ L_{p}(x,y,w;\mathbf{z},\tau').
+$$
+Similarly, we have a lower bound as
+$$
+\max_{\{x',y',w',\mathbf{z}\}} \ L(x',y',w';\mathbf{z},\tau') \ge H(x,y,\tau_1; \hat{x}, \hat{y}, \hat{w}, \tau') + L_{p}(\hat{x}, \hat{y}, \hat{w},\hat{\mathbf{z}},\tau').
 $$
 
+% vvvv Remove these? I think they're obvious now, but maybe they can be made more explicit above?
 \textbf{Argument for lower bound}: This makes intuitive sense, though may be difficult to show in general.
 Can we not just say $\max_u f(u) + g(u)$ is greater than $f(u') + g(u')$ for any $u'$ that doesn't maximize $f(u) + g(u)$ just by definition?
 There could be multiple maxima, but that's why we have greater than or equal to.
@@ -329,26 +327,25 @@ I must be missing something.
 If we were to actually maximize the full likelihood, we should get something smaller than maximizing some form of it that we consider by looking at the parts separately.
 For a fixed $\{x^*, y^*\}$ we can calculate this upper bound directly---can we obtain it as a useful-looking function of these parameters in the general case?
 
-
 \subsubsection{Upper bound for Farris likelihood}
 
 To obtain an upper bound for the Farris likelihood---the terms in the top half of Table~\ref{tab:likelihoods}---we use the term $(1+x)^2(1+w)(1+y)^2$ for the $0101$ site pattern.
 Since all cases have a $(1+x)^2$ term except $\{0100, 1000, 0011, 1001\}$, and all cases except $\{0001, 0010, 0011, 1001\}$ have a $(1+y)^2$, we can add and subtract the $\log$ of these terms weighted by each of their generating probabilities.
 In other words, define
 $$
-a = p(0100) + p(1000) + p(0011) + p(1001)
+a = P(0100|\tau_1,\{x,y,y\}) + P(1000|\tau_1,\{x,y,y\}) + P(0011|\tau_1,\{x,y,y\}) + P(1001|\tau_1,\{x,y,y\})
 $$
 and
 $$
-b = p(1000) + p(0010) + p(0011) + p(1001).
+b = P(1000|\tau_1,\{x,y,y\}) + P(0010|\tau_1,\{x,y,y\}) + P(0011|\tau_1,\{x,y,y\}) + P(1001|\tau_1,\{x,y,y\}).
 $$
-Then $L^{p,(i)}(x',y',w',\tau_1)$ takes the form
+Then the ancestral state maximizing the likelihood is $00$ and $L_{p}(x',y',w';\mathbf{z},\tau_1)$ is bounded above by
 $$
-L^{p}(x',y',w') = (2-a)\log(1+x')+a\log(1-x')+(2-b)\log(1+y')+b\log(1-y')+\log(1+w')
+L_{p}(x',y',w';00,\tau_1) \le (2-a)\log(1+x')+a\log(1-x')+(2-b)\log(1+y')+b\log(1-y')+\log(1+w')
 $$
 with a maximum
 $$
-\hat{L}^{p}(a,b,\tau_1) = (2-a)\log(2-a)+a\log(a)+(2-b)\log(2-b)+b\log(b)+\log(2)
+\hat{L}_{p}(1-a,1-b,1;00,\tau_1) \le (2-a)\log(2-a)+a\log(a)+(2-b)\log(2-b)+b\log(b)+\log(2)
 $$
 where $a$ and $b$ are functions of the true generating branch parameters $\{x,y\}$.
 
@@ -357,42 +354,43 @@ where $a$ and $b$ are functions of the true generating branch parameters $\{x,y\
 We construct a similar lower bound on the Felsenstein likelihood, though here we replace all $(1+w)$ terms with $(1-w)$.
 Let
 $$
-c = p(0001) + p(0010) + p(0100) + p(1000)
+c = P(0001|\tau_1,\{x,y,y\}) + P(0010|\tau_1,\{x,y,y\}) + P(0100|\tau_1,\{x,y,y\}) + P(1000|\tau_1,\{x,y,y\})
 $$
 and
 $$
-d = p(0101) + p(1001).
+d = P(0101|\tau_1,\{x,y,y\}) + P(1001|\tau_1,\{x,y,y\}).
 $$
-The likelihood in this case takes one of six forms:
+The lower bounds on the likelihoods in this case take one of six forms:
+\textbf{TODO}: ancestral states where these likelihoods occur
 $$
-L^{(1)}(x',y',w') = 2\log(1+x')+(2-c-2d)\log(1+y')+(c+2d)\log(1-y')+\log(1-w'),
-$$
-$$
-L^{(2)}(x',y',w') = (2-c-2d)\log(1+x')+(c+2d)\log(1-x')+2\log(1+y')+\log(1-w'),
+L_{p}(x',y',w';z,\tau_2) \ge 2\log(1+x')+(2-c-2d)\log(1+y')+(c+2d)\log(1-y')+\log(1-w'),
 $$
 $$
-L^{(3)}(x',y',w') = (2-2d)\log(1+x')+2d\log(1-x')+(2-c)\log(1+y')+c\log(1-y')+\log(1-w'),
+L_{p}(x',y',w';z,\tau_2) \ge (2-c-2d)\log(1+x')+(c+2d)\log(1-x')+2\log(1+y')+\log(1-w'),
 $$
 $$
-L^{(4)}(x',y',w') = (2-c)\log(1+x')+c\log(1-x')+(2-2d)\log(1+y')+2d\log(1-y')+\log(1-w'),
+L_{p}(x',y',w';z,\tau_2) \ge (2-2d)\log(1+x')+2d\log(1-x')+(2-c)\log(1+y')+c\log(1-y')+\log(1-w'),
 $$
 $$
-L^{(5)}(x',y',w') = (2-d)\log(1+x')+d\log(1-x')+(2-c-d)\log(1+y')+(c+d)\log(1-y')+\log(1-w')
+L_{p}(x',y',w';z,\tau_2) \ge (2-c)\log(1+x')+c\log(1-x')+(2-2d)\log(1+y')+2d\log(1-y')+\log(1-w'),
+$$
+$$
+L_{p}(x',y',w';z,\tau_2) \ge (2-d)\log(1+x')+d\log(1-x')+(2-c-d)\log(1+y')+(c+d)\log(1-y')+\log(1-w')
 $$
 or
 $$
-L^{(6)}(x',y',w') = (2-c-d)\log(1+x')+(c+d)\log(1-x')+(2-d)\log(1+y')+d\log(1-y')+\log(1-w').
+L_{p}(x',y',w';z,\tau_2) \ge (2-c-d)\log(1+x')+(c+d)\log(1-x')+(2-d)\log(1+y')+d\log(1-y')+\log(1-w').
 $$
-These have maxima
+Since the maxima for pairs of lower bounds above each have a symmetry in $x$ and $y$, they are bounded below by one of
 $$
-\hat{L}^{(1)}(c,d) = \hat{L}^{(2)}(c,d) = 2\log(2)+(2-c-2d)\log(2-c-2d)+(c+2d)\log(c+2d),
+\hat{L}_{p}(1,1-c-2d,0;z,\tau_2) \ge 2\log(2)+(2-c-2d)\log(2-c-2d)+(c+2d)\log(c+2d),
 $$
 $$
-\hat{L}^{(3)}(c,d) = \hat{L}^{(4)}(c,d) = (2-2d)\log(2-2d)+2d\log(2d)+(2-c)\log(2-c)+c\log(c)
+\hat{L}_{p}(1-2d,1-c,0;z,\tau_2) \ge (2-2d)\log(2-2d)+2d\log(2d)+(2-c)\log(2-c)+c\log(c)
 $$
 and
 $$
-\hat{L}^{(5)}(c,d) = \hat{L}^{(6)}(c,d) = (2-d)\log(2-d)+d\log(d)+(2-c-d)\log(2-c-d)+(c+d)\log(c+d)
+\hat{L}_{p}(1-d,1-c-d,0;z,\tau_2) \ge (2-d)\log(2-d)+d\log(d)+(2-c-d)\log(2-c-d)+(c+d)\log(c+d)
 $$
 where $c$ and $d$ are also functions of the true generating branch parameters $\{x,y\}$.
 
@@ -402,18 +400,19 @@ It may take a little information theory--fu, or just standard application of the
 
 Thus, let
 $$
-\hat{L}^{p}(c,d,\tau_2) = 2\log(2)+(2-c-2d)\log(2-c-2d)+(c+2d)\log(c+2d).
+\hat{L}_{p}(1,1-c-2d,0;z,\tau_2) = 2\log(2)+(2-c-2d)\log(2-c-2d)+(c+2d)\log(c+2d).
 $$
 
 \subsubsection{Region of inconsistency}
 
 We want to find values for $\{x,y\}$ where
 $$
-H_{fe}(x,y; 1, 1-c-2d, 0) + \hat{L}_{fe}(c,d) \ge H_{fa}(x,y; x, y, y) + \hat{L}_{fa}(a,b).
+H(x,y,\tau_1; 1, 1-c-2d, 0, \tau_2) + \hat{L}_{p}(1,1-c-2d,0;z,\tau_2) \ge H(x,y,\tau_1; x, y, y,\tau_1) + \hat{L}_{p}(1-a,1-b,1;00,\tau_1).
 $$
 Since this is a single inequality in two variables, we can plot it analytically; we need the region where
 \begin{align*}
-    0 &\ge H_{fa}(x,y; x, y, y) + \hat{L}_{fa}(a,b) - H_{fe}(x,y; 1, 1-c-2d, 0) - \hat{L}_{fe}(c,d) \\
+    0 &\ge H(x,y,\tau_1; x, y, y,\tau_1) + \hat{L}_{p}(1-a,1-b,1;00,\tau_1) \\
+      &\qquad - H(x,y,\tau_1; 1, 1-c-2d, 0, \tau_2) - \hat{L}_{p}(1,1-c-2d,0;\tau_2) \\
       & = 2(12+2x^2+2y^2)\log((12+2x^2+2y^2)/8) \\
       &\qquad + 2(4-2x^2-2y^2)\log((4-2x^2-2y^2)/8)  + 8\log2 \\
       &\qquad + 2(1+x^2-y^2-x^2y^2)\log(1+x^2-y^2-x^2y^2) \\
@@ -426,6 +425,11 @@ Since this is a single inequality in two variables, we can plot it analytically;
       &\qquad - (2+4xy^2+2x^2y^2)\log(1+2xy^2+x^2y^4) \\
       &\qquad - (4-4x^2y^2)\log(1-x^2y^4).
 \end{align*}
+
+\textbf{TODO}: can we use sage to simplify the above so it looks nicer?
+Write it as functions of $a,b,c,d$ so it's less messy?
+What would be best?
+
 The \texttt{sage} function in listing~\ref{list:sage} will generate Fig.~\ref{fig:inconsistency-farris}.
 
 \begin{table}
