@@ -11,12 +11,15 @@
 %% Useful packages
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
 \graphicspath{ {figures/} }
+
+\input{commands}
 
 \title{Possible Inconsistency in Maximum Likelihood Calculation of Ancestral States}
 \author{Shaw, Matsen, Minin}
@@ -57,15 +60,13 @@ We use bounds on the joint likelihood to demarcate a sizeable area of long branc
 
 \subsection{Classical maximum-likelihood inference in phylogenetics}
 
-Let $\mathcal{Y}$ be the set of assignments of characters to tips of our tree, and $\Xi$ the set of assignments of characters to the internal nodes of the tree.
-Both $\mathcal{Y}$ and $\Xi$ are finite sets.
-Assume we observe $n$ samples of character data (i.e.\ an alignment with $n$ columns) $\mathbf{y}=[y_1,\ldots,y_n]\in\mathcal{Y}^n$ and corresponding unknown ancestral states $\boldsymbol\xi=[\xi_1,\ldots,\xi_n]\in\Xi^n$.
-%EM Hm, this doesn't make sense compared to the above.
-Without loss of generality, assume $\mathcal{Y}=\Xi=\{0,1\}$.
+Let $\fullAlignment$ be the set of assignments of characters to tips of our tree, and $\fullAncestralStates$ the set of assignments of characters to the internal nodes of the tree.
+Assume we observe $n$ samples of character data (i.e.\ an alignment with $n$ columns) $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_n]\in\alignmentSpace^{\nSiteRows\times n}$ and corresponding unknown ancestral states $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_n]\in\ancestralStateSpace^{\nAncestralStateRows\times n}$.
+Without loss of generality, assume $\alignmentSpace=\ancestralStateSpace=\{0,1\}$.
 For a topology $\tau$ and branch lengths $t$ we form the fully-observed likelihood (making the usual independence assumption between sites):
 \begin{equation}
 \label{eq:full_likelihood}
-L_n(\mathbf{y};\boldsymbol\xi, \tau, t) = \prod_{i=1}^{n} \ P(y_i, \xi_i | \tau, t).
+L_n(\fullAlignment;\fullAncestralStates, \tau, t) = \prod_{i=1}^{n} \ P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t).
 \end{equation}
 % In particular, we are interested in
 % $$
@@ -76,11 +77,11 @@ L_n(\mathbf{y};\boldsymbol\xi, \tau, t) = \prod_{i=1}^{n} \ P(y_i, \xi_i | \tau,
 The typical approach to estimate the tree $\tau$ and branch lengths $t$ involves computing the marginal likelihood
 \begin{equation}
 \label{eq:marginal_likelihood}
-\tilde{L}_n(\mathbf{y}; \tau, t) = \sum_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t).
+\tilde{L}_n(\fullAlignment; \tau, t) = \sum_{\fullAncestralStates} \ L_n(\fullAlignment;\fullAncestralStates, \tau, t)
 \end{equation}
 and maximizing over the topology and branch lengths to obtain
 $$
-(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \  \tilde{L}_n(\mathbf{y}; \tau, t).
+(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \  \tilde{L}_n(\fullAlignment; \tau, t).
 $$
 % The values $\hat{\boldsymbol\xi}$ are then calculated conditional on these estimates.
 % More likely in practice we fix a topology $\tau$ and use this marginalization approach to compute $(\hat{\boldsymbol\xi}, \hat{t})$.
@@ -91,84 +92,133 @@ One tantalizing approach is to do away with the marginalization and directly est
 We can perform this by computing the profile likelihood
 \begin{equation}
 \label{eq:profile_likelihood}
-L_n'(\mathbf{y};\tau, t) = \max_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t),
+L_n'(\fullAlignment;\tau, t) = \max_{\fullAncestralStates} \ L_n(\fullAlignment;\fullAncestralStates, \tau, t),
 \end{equation}
 then estimating the topology and branch lengths via
 \begin{equation}
 \label{eq:profile_likelihood_topology_bl}
-(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ L_n'(\mathbf{y};\tau, t)
+(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ L_n'(\fullAlignment;\tau, t)
 \end{equation}
-while using $\hat{\boldsymbol\xi}$ maximizing \eqref{eq:profile_likelihood} as an estimate for $\boldsymbol\xi$.
-Since $\Xi$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and so \eqref{eq:profile_likelihood_topology_bl} will recover the joint ML values of the unknown parameters.
+while using $\hat{\fullAncestralStates}$ maximizing \eqref{eq:profile_likelihood} as an estimate for $\fullAncestralStates$.
+Since $\ancestralStateSpace$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and so \eqref{eq:profile_likelihood_topology_bl} will recover the joint ML values of the unknown parameters.
 In the general case, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities that depend on the unknown $(\tau,t)$.
-For this reason, in practice the joint ML strategy estimates $\hat{\boldsymbol\xi}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\boldsymbol\xi}$, maximizing each of these conditional objectives until convergence \cite{Neher2017}.
+For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence \cite{Neher2017}.
 
 \subsection{Site pattern formulation}
 
-Since we have a finite character alphabet, there are a finite number of possibilities of assignments of characters to tips $y_i$ or internal nodes $\xi_i$.
+Since we have a finite character alphabet, for a given column $i$ there are a finite number of possibilities of assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$.
 These are commonly called ``site patterns'' in the literature.
 %EM in general aren't a different number of internal site patterns than tip site patterns?
-We enumerate the unique site patterns $\mathbf{s}=[s_1,\ldots,s_q]\in\mathcal{S}$ and ancestral state patterns $\mathbf{z}=[z_1,\ldots,z_q]\in\mathcal{Z}$; these are defined by the number of leaves and the character alphabet.
-This enables us to group identical terms, reformulating the likelihood equation
+%das: Yes, I moved the paragraph at the end to here so it's hopefully less confusing. Maybe writing out the example would help? I also changed from "pattern" to "category" which might make it a little more clear.
+We enumerate the unique site patterns $\mathbf{s}=[s_1,\ldots,s_q]\in\mathcal{S}$; these are defined by the number of leaves and the character alphabet.
+Corresponding to each of these site patterns will be an ancestral state category that is most likely given a particular likelihood.
+Since $\alignmentSpace$ and $\ancestralStateSpace$ are finite sets, the value of each factor $P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t)$ in \eqref{eq:full_likelihood} is maximized at one or more values of $\ancestralStateColumn_i$, though independent of $i$ given $j$.
+This independence allows us to group factors by those where $\ancestralStateColumn_i$ belongs to an ancestral state category $\ancestralStateCategory_j$ so that, if $\alignmentColumn_i=\sitePattern_j$ and $\ancestralStateColumn_i\in \ancestralStateCategory_j$, $P(\sitePattern_j, \ancestralStateCategory_j | \tau, t)$ is maximized.
+
+For ancestral state categories $\fullAncestralStateCategories=[\ancestralStateCategory_1,\ldots,\ancestralStateCategory_q]\in\ancestralStateCategorySpace$ we reformulate the likelihood equation
 \begin{align}
-L_n'(\mathbf{y};\tau, t) &= \max_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t) \\
-    &= \max_{\boldsymbol\xi} \ \prod_{i=1}^{n} \ P(y_i, \xi_i | \tau, t) \\
+L_n'(\fullAlignment;\tau, t) &= \max_{\fullAncestralStates} \ L_n(\fullAlignment;\fullAncestralStates, \tau, t) \\
+                             &= \max_{\fullAncestralStates} \ \prod_{i=1}^{n} \ P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t) \\
 %EM Can you think a little about z_j? The indexing seems a little problematic now that we are thinking of everything as a function of y.
-    &= \max_{\mathbf{z}} \ \prod_{j=1}^{q} \ P(s_j, z_j | \tau, t)^{n_j(\mathbf{y})} \label{eq:site_pattern_likelihood}
+                             &= \max_{\fullAncestralStateCategories} \ \prod_{j=1}^{q} \ P(\sitePattern_j, \ancestralStateCategory_j | \tau, t)^{n_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
-where $n_j(\mathbf{y})$ is the number of observations in the sample where site pattern $s_j$ was seen in $\mathbf{y}$.
-%EM It's a small point, but note that the argument below justified the equation above, which is a little upside down.
-Note that since $\mathcal{S}$ and $\mathcal{Z}$ are also finite sets, the value of each factor $P(y_i, \xi_i | \tau, t)$ will be maximized at one or more values of $\xi_i$, though independent of $i$ given $j$.
-This independence allows us to group factors by those where $\xi_i$ equals $z_j$ so that $P(s_j, z_j | \tau, t)$ is maximized.
+where $n_j(\fullAlignment)$ is the number of observations in the sample where site pattern $\sitePattern_j$ was seen in $\fullAlignment$.
 
 \textbf{Example:} This might be a good time for a toy example showing this for a very simple topology.
 
 
-\subsection{The case of infinite data}
+\subsection{Showing inconsistency}
 
 We are now interested in the properties of the objective function being maximized in \eqref{eq:site_pattern_likelihood} as data becomes plentiful.
 Let
 $$
-L_n''(\mathbf{y};\mathbf{z},\tau,t) = \prod_{j=1}^q \ P(s_j, z_j | \tau, t)^{n_j(\mathbf{y})}
+L_n''(\fullAlignment;\fullAncestralStateCategories,\tau,t) = \prod_{j=1}^q \ P(\sitePattern_j, \ancestralStateCategory_j | \tau, t)^{n_j(\fullAlignment)}
 $$
 so that
 $$
-\max_{\boldsymbol\xi} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t) = \max_{\mathbf{z}} \ L_n''(\mathbf{y};\mathbf{z},\tau,t).
+\max_{\fullAncestralStates} \ L_n(\fullAlignment;\fullAncestralStates, \tau, t) =
+    \max_{\fullAncestralStateCategories} \ L_n''(\fullAlignment;\fullAncestralStateCategories,\tau,t).
 $$
 Assume our $n$ observations were generated from a model with parameters $(\tau^*, t^*)$.
 We have
 \begin{align}
-\frac{1}{n} \log L_n''(\mathbf{y};\mathbf{z},\tau,t) &= \sum_{j} \frac{n_j(\mathbf{y})}{n}\cdot \log P(s_j, z_j | \tau, t) \\
-  &= \sum_{j} \frac{n_j(\mathbf{y})}{n}\cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)].
+    \frac{1}{n} \log L_n''(\fullAlignment;\fullAncestralStateCategories,\tau,t)
+        &= \sum_{j} \frac{n_j(\fullAlignment)}{n}\cdot  \log P(\sitePattern_j, \ancestralStateCategory_j | \tau, t) \\
+        &= \sum_{j} \frac{n_j(\fullAlignment)}{n}\cdot [\log P(\sitePattern_j | \tau, t) + \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)].
 \end{align}
 In the limit of infinite data we have
 $$
-\frac{1}{n} \log L_n''(\mathbf{y};\mathbf{z},\tau,t) \rightarrow \sum_{j} P(s_j | \tau^*, t^*) \cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)]
+\frac{1}{n} \log L_n''(\fullAlignment;,\tau,t) \rightarrow \sum_{j} P(\sitePattern_j | \tau^*, t^*) \cdot [\log P(\sitePattern_j | \tau, t) + \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)]
 $$
-and that, since $z_j$ appears only in the last term, the log of \eqref{eq:site_pattern_likelihood} in the same limit is proportional to
+and that, since $\ancestralStateCategory_j$ appears only in the last term, the log of \eqref{eq:site_pattern_likelihood} in the same limit is proportional to
 \begin{align}
-\frac{1}{n} \log L_n'(\mathbf{y};\tau, t) &= \max_{\mathbf{z}} \ \frac{1}{n} \log L_n''(\mathbf{s};\mathbf{z},\tau,t) \nonumber \\
-    &\rightarrow \max_{z_1, \ldots, z_q} \ \sum_{j} P(s_j | \tau^*, t^*) \cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)] \nonumber \\
-    &= \max_{\mathbf{z}} \ \sum_{j} P(s_j | \tau^*, t^*) \cdot [\log P(s_j | \tau, t) + \log P(z_j | s_j, \tau, t)] \nonumber \\
-    &= \max_{\mathbf{z}} \ \left\{\sum_{j} P(s_j | \tau^*, t^*) \log P(s_j | \tau, t)\right\} \nonumber \\
-    &\qquad + \left\{\sum_{j} P(s_j | \tau^*, t^*) \log P(z_j | s_j, \tau, t)\right\}. \label{eq:site_pattern_profile_likelihood_mean}
+\frac{1}{n} \log L_n'(\fullAlignment;\fullAncestralStateCategories,\tau, t)
+    &= \max_{\fullAncestralStateCategories} \ \frac{1}{n} \log L_n''(\fullAlignment;\fullAncestralStateCategories,\tau,t) \nonumber \\
+    &\rightarrow \max_{\fullAncestralStateCategories} \ \sum_{j} P(\sitePattern_j | \tau^*, t^*) \cdot [\log P(\sitePattern_j | \tau, t) + \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)] \nonumber \\
+    &= \max_{\fullAncestralStateCategories} \ \sum_{j} P(\sitePattern_j | \tau^*, t^*) \cdot [\log P(\sitePattern_j | \tau, t) + \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)] \nonumber \\
+    &= \max_{\fullAncestralStateCategories} \ \left\{\sum_{j} P(\sitePattern_j | \tau^*, t^*) \cdot \left[\log P(\sitePattern_j | \tau, t) + \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)\right]\right\}. \label{eq:site_pattern_profile_likelihood_mean}
 \end{align}
-
-\subsection{Showing inconsistency}
-
-For clarity, define \eqref{eq:site_pattern_profile_likelihood_mean} as
+Define the the information quantity
 $$
-J(\tau, t; \tau^*, t^*) = \sum_{j} P(s_j | \tau^*, t^*) \cdot [\log P(s_j | \tau, t) + \max_{z_j} \ \log P(z_j | s_j, \tau, t)]
+H_{\tau^*,t^*}(\tau,t) = \sum_{j} P(\sitePattern_j | \tau^*, t^*) \log P(\sitePattern_j | \tau, t),
 $$
-where $(\tau, t)$ are estimands and $(\tau^*, t^*)$ are fixed, generating parameters.
+and the partial log likelihood
+$$
+\ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) = \sum_{j} P(\sitePattern_j | \tau^*, t^*) \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)
+$$
+so that \eqref{eq:site_pattern_profile_likelihood_mean} is written as
+\begin{equation}
+    \label{eq:log_likelihood_simplified}
+\ell_{\tau^*,t^*}(\tau,t) = \max_{\fullAncestralStateCategories} \ \left\{H_{\tau^*,t^*}(\tau,t) + \ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t)\right\}.
+\end{equation}
+Recall $(\tau, t)$ are estimands and $(\tau^*, t^*)$ are fixed, generating parameters.
 For data generated from $(\tau^*, t^*)$, if
 \begin{equation}
 \label{eq:inconsistency_inequality}
-J(\tau', \hat{t}_1; \tau^*, t^*) > J(\tau^*, \hat{t}_2; \tau^*, t^*)
+\ell_{\tau^*,t^*}(\tau',\hat{t}_1) > \ell_{\tau^*,t^*}(\tau^*,\hat{t}_2)
 \end{equation}
 for $\tau'\neq\tau^*$ with $\hat{t}_1$ and $\hat{t}_2$ estimated by maximizing \eqref{eq:profile_likelihood}, we have an inconsistency.
 
 \section{Inconsistency of joint maximum likelihood}
+
+\subsection{Bounding the likelihoods}
+
+Our approach will be to seek bounds for the terms inside the maximization in \eqref{eq:log_likelihood_simplified} as
+\begin{equation}
+\label{eq:partial-likelihood}
+\ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) = H_{\tau^*,t^*}(\tau,t) + \ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t).
+\end{equation}
+We obtain an upper bound for the joint maximum of \eqref{eq:partial-likelihood}
+$$
+\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) \le
+    H_{\tau^*,t^*}(\tau^*,t^*)
+    + \ell^p_{\tau^*,t^*}(\hat{\fullAncestralStateCategories},\tau,\hat{t})
+$$
+using Gibbs's inequality
+$$
+H_{\tau^*,t^*}(\tau,t) \le H_{\tau^*,t^*}(\tau^*,t^*)
+$$
+and
+$$
+\{\hat{\fullAncestralStateCategories},\hat{t}\} = \arg\max_{\{\fullAncestralStateCategories,t\}} \ \ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t).
+$$
+Similarly, we have a lower bound as
+$$
+\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) \ge
+    H_{\tau^*,t^*}(\tau,\hat{t})
+    + \ell^p_{\tau^*,t^*}(\hat{\fullAncestralStateCategories},\tau,\hat{t}).
+$$
+
+% vvvv Remove these? I think they're obvious now, but maybe they can be made more explicit above?
+\textbf{Argument for lower bound}: This makes intuitive sense, though may be difficult to show in general.
+Can we not just say $\max_u f(u) + g(u)$ is greater than $f(u') + g(u')$ for any $u'$ that doesn't maximize $f(u) + g(u)$ just by definition?
+There could be multiple maxima, but that's why we have greater than or equal to.
+I think the only thing we'd need to show is that a maximum exists, but since $\{x,y,w\}$ are supported on a closed set this is certainly true.
+I must be missing something.
+
+\textbf{Argument for upper bound}: I think this is true mostly because $\max_u f(u) + g(u)$ should be less than $\max_u f(u) + \max_u g(u)$ by some triangle inequality argument.
+If we were to actually maximize the full likelihood, we should get something smaller than maximizing some form of it that we consider by looking at the parts separately.
+For a fixed $\{x^*, y^*\}$ we can calculate this upper bound directly---can we obtain it as a useful-looking function of these parameters in the general case?
 
 \subsection{Parameter setting}
 
@@ -191,7 +241,7 @@ for $\tau'\neq\tau^*$ with $\hat{t}_1$ and $\hat{t}_2$ estimated by maximizing \
 Define the Farris topology $\tau_1$ and the Felsenstein topology $\tau_2$ as in Figure~\ref{fig:farris-fels-top}.
 Call $t=\{x,y,w\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ is the case where the bottom three branches all share the same parameter, the classical construction of this topology.
 The branch length parameters are such that the probability of a change in character along the top two branches is $p_x=1-2x$, with corresponding equalities for the other two branches.
-Here, $\{p_x,p_y,p_z\}\in[0,1/2]^3$ and $\{x,y,z\}\in[0,1]^3$.
+Here, $\{p_x,p_y,p_w\}\in[0,1/2]^3$ and $\{x,y,w\}\in[0,1]^3$.
 
 \textbf{Justification for estimand:} It might be worth arguing why this form of the estimand $t$ is necessary.
 I think the idea is that for either of these topologies, any maximum obtained will occur where the top two and bottom two branches are equal, though not necessarily the middle branch.
@@ -205,7 +255,7 @@ Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed
 \begin{tabular}{|l|l|l|}
 \multicolumn{3}{c}{Classical}\\
     \hline
-$s_j$   &$P(s_j|\tau_1,t^*)$&$P(s_j|\tau_2,t^*)$\\
+$\sitePattern_j$   &$P(\sitePattern_j|\tau_1,t^*)$&$P(\sitePattern_j|\tau_2,t^*)$\\
     \hline
 0000&$1+x^2+y^2+4xy^2+x^2y^2$&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
 0001&$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
@@ -218,7 +268,7 @@ $s_j$   &$P(s_j|\tau_1,t^*)$&$P(s_j|\tau_2,t^*)$\\
     \hline
 \multicolumn{3}{c}{Modified}\\
     \hline
-$s_j$   &$P(s_j|\tau_1,t)$&$P(s_j|\tau_2,t)$\\
+$\sitePattern_j$   &$P(\sitePattern_j|\tau_1,t)$&$P(\sitePattern_j|\tau_2,t)$\\
     \hline
 0000&$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
 0001&$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
@@ -238,11 +288,11 @@ All values are multiplied by $1/8$.}
 \begin{table}
 \centering
 \begin{tabular}{|l|ll|}
-\multicolumn{3}{c}{$P(z_j|s_j,\tau_1,t)$}\\
+\multicolumn{3}{c}{$P(\ancestralStateCategory_j|\sitePattern_j,\tau_1,t)$}\\
 \hline
-& \multicolumn{2}{|c|}{$z_j$}\\
+& \multicolumn{2}{|c|}{$\ancestralStateCategory_j$}\\
     \hline
-$s_j$    &00                              &01\\
+$\sitePattern_j$    &00                              &01\\
     \hline
 0000&$(1+x)^2   (1+w)(1+y)^{2*}$          &$(1+x)^2   (1-w)(1-y)^2$\\
 0001&$(1+x)^2   (1+w)(1+y)(1-y)^*$        &$(1+x)^2   (1-w)(1+y)(1-y)$\\
@@ -265,11 +315,11 @@ $s_j$    &00                              &01\\
 0101&$(1-x)^2   (1-w)(1-y)^2$     &$(1-x)^2   (1+w)(1+y)^{2\ddagger}$\\
 1001&$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$\\
     \hline
-    \multicolumn{3}{c}{$P(z_j|s_j,\tau_2,t)$}\\
+    \multicolumn{3}{c}{$P(\ancestralStateCategory_j|\sitePattern_j,\tau_2,t)$}\\
 \hline
-& \multicolumn{2}{|c|}{$z_j$}\\
+& \multicolumn{2}{|c|}{$\ancestralStateCategory_j$}\\
     \hline
-$s_j$    &00                              &01\\
+$\sitePattern_j$    &00                              &01\\
     \hline
 0000&$(1+x)^2   (1+w)(1+y)^{2*}$           &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
 0001&$(1+x)^2   (1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)(1-x)(1-w)(1+y)^{2\ddagger}$\\
@@ -300,145 +350,122 @@ Key: $^*$ unique maximum value corresponding to unique internal state; $^\dagger
 \label{tab:likelihoods}
 \end{table}
 
-\subsection{Bounding the likelihoods}
+\subsubsection{Upper bound for Farris partial likelihood}
 
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
-Our approach will be to decompose the likelihood inside the maximization in \eqref{eq:site_pattern_profile_likelihood_mean} as
-\begin{equation}
-\label{eq:partial-likelihood}
-L(x', y', w'; \mathbf{z},\tau') = H(x,y,\tau_1;x',y',w', \tau') + L_{p}(x',y',w';\mathbf{z},\tau')
-\end{equation}
-where different values for $\mathbf{z}$ will alter the form of $L_{p}(x',y',w';\mathbf{z},\tau')$.
-We obtain an upper bound for the joint maximum of \eqref{eq:partial-likelihood}
-$$
-\max_{\{x',y',w',\mathbf{z}\}} \ L(x',y',w';\mathbf{z},\tau') \le H(x,y,\tau_1;x,y,y,\tau_1) + L_{p}(\hat{x}, \hat{y}, \hat{w};\hat{\mathbf{z}},\tau')
-$$
-using Gibbs inequality
-$$
-H(x, y, \tau_1;x', y', w', \tau') \le H(x, y, \tau_1;x, y, y, \tau_1)
-$$
-and
-$$
-\{\hat{x}, \hat{y}, \hat{w}, \hat{\mathbf{z}}\} = \arg\max_{\{x,y,w,\mathbf{z}\}} \ L_{p}(x,y,w;\mathbf{z},\tau').
-$$
-Similarly, we have a lower bound as
-$$
-\max_{\{x',y',w',\mathbf{z}\}} \ L(x',y',w';\mathbf{z},\tau') \ge H(x,y,\tau_1; \hat{x}, \hat{y}, \hat{w}, \tau') + L_{p}(\hat{x}, \hat{y}, \hat{w},\hat{\mathbf{z}},\tau').
-$$
-
-% vvvv Remove these? I think they're obvious now, but maybe they can be made more explicit above?
-\textbf{Argument for lower bound}: This makes intuitive sense, though may be difficult to show in general.
-Can we not just say $\max_u f(u) + g(u)$ is greater than $f(u') + g(u')$ for any $u'$ that doesn't maximize $f(u) + g(u)$ just by definition?
-There could be multiple maxima, but that's why we have greater than or equal to.
-I think the only thing we'd need to show is that a maximum exists, but since $\{x,y,w\}$ are supported on a closed set this is certainly true.
-I must be missing something.
-
-\textbf{Argument for upper bound}: I think this is true mostly because $\max_u f(u) + g(u)$ should be less than $\max_u f(u) + \max_u g(u)$ by some triangle inequality argument.
-If we were to actually maximize the full likelihood, we should get something smaller than maximizing some form of it that we consider by looking at the parts separately.
-For a fixed $\{x^*, y^*\}$ we can calculate this upper bound directly---can we obtain it as a useful-looking function of these parameters in the general case?
-
-\subsubsection{Upper bound for Farris likelihood}
-
-To obtain an upper bound for the Farris likelihood---the terms in the top half of Table~\ref{tab:likelihoods}---we use the term $(1+x)^2(1+w)(1+y)^2$ for the $0101$ site pattern.
+To obtain an upper bound for the Farris partial likelihood---the terms in the top half of Table~\ref{tab:likelihoods}---we use the term $(1+x)^2(1+w)(1+y)^2$ for the $0101$ site pattern.
 Since all cases have a $(1+x)^2$ term except $\{0100, 1000, 0011, 1001\}$, and all cases except $\{0001, 0010, 0011, 1001\}$ have a $(1+y)^2$, we can add and subtract the $\log$ of these terms weighted by each of their generating probabilities.
 In other words, define
-$$
-a = P(0100|\tau_1,\{x,y,y\}) + P(1000|\tau_1,\{x,y,y\}) + P(0011|\tau_1,\{x,y,y\}) + P(1001|\tau_1,\{x,y,y\})
-$$
+\begin{align*}
+    a_{xy} &= P(0100|\tau=\tau_1,t=\{x,y,y\}) + P(1000|\tau=\tau_1,t=\{x,y,y\}) \\
+           &\qquad + P(0011|\tau=\tau_1,t=\{x,y,y\}) + P(1001|\tau=\tau_1,t=\{x,y,y\})
+\end{align*}
 and
-$$
-b = P(1000|\tau_1,\{x,y,y\}) + P(0010|\tau_1,\{x,y,y\}) + P(0011|\tau_1,\{x,y,y\}) + P(1001|\tau_1,\{x,y,y\}).
-$$
-Then the ancestral state maximizing the likelihood is $00$ and $L_{p}(x',y',w';\mathbf{z},\tau_1)$ is bounded above by
-$$
-L_{p}(x',y',w';00,\tau_1) \le (2-a)\log(1+x')+a\log(1-x')+(2-b)\log(1+y')+b\log(1-y')+\log(1+w')
-$$
-with a maximum
-$$
-\hat{L}_{p}(1-a,1-b,1;00,\tau_1) \le (2-a)\log(2-a)+a\log(a)+(2-b)\log(2-b)+b\log(b)+\log(2)
-$$
-where $a$ and $b$ are functions of the true generating branch parameters $\{x,y\}$.
+\begin{align*}
+    b_{xy} &= P(1000|\tau=\tau_1,t=\{x,y,y\}) + P(0010|\tau=\tau_1,t=\{x,y,y\}) \\
+           &\qquad + P(0011|\tau=\tau_1,t=\{x,y,y\}) + P(1001|\tau=\tau_1,t=\{x,y,y\}).
+\end{align*}
+Then the ancestral state maximizing the likelihood is $00$ for each site pattern and the partial likelihood is bounded above
+\begin{align*}
+    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,\{x',y',w'\}) \\
+    &\qquad \le (2-a_{xy})\log(1+x')+a_{xy}\log(1-x')+(2-b_{xy})\log(1+y')+b_{xy}\log(1-y')+\log(1+w') \\
+    &\qquad \le (2-a_{xy})\log(2-a_{xy})+a_{xy}\log(a_{xy})+(2-b_{xy})\log(2-b_{xy})+b_{xy}\log(b_{xy})+\log(2) \\
+    &\qquad \triangleq L^p_{\tau_1,\tau_1}(a_{xy}, b_{xy})
+\end{align*}
+where $a_{xy}$ and $b_{xy}$ are functions of the true generating branch parameters $\{x,y\}$.
 
-\subsubsection{Lower bound for Felsenstein likelihood}
+\subsubsection{Lower bound for Felsenstein partial likelihood}
 
-We construct a similar lower bound on the Felsenstein likelihood, though here we replace all $(1+w)$ terms with $(1-w)$.
+We construct a similar lower bound on the Felsenstein partial likelihood, though here we replace all $(1+w)$ terms with $(1-w)$.
 Let
-$$
-c = P(0001|\tau_1,\{x,y,y\}) + P(0010|\tau_1,\{x,y,y\}) + P(0100|\tau_1,\{x,y,y\}) + P(1000|\tau_1,\{x,y,y\})
-$$
+\begin{align*}
+    c_{xy} &= P(0001|\tau=\tau_1,t=\{x,y,y\}) + P(0010|\tau=\tau_1,t=\{x,y,y\}) \\
+           &\qquad + P(0100|\tau=\tau_1,t=\{x,y,y\}) + P(1000|\tau=\tau_1,t=\{x,y,y\})
+\end{align*}
 and
 $$
-d = P(0101|\tau_1,\{x,y,y\}) + P(1001|\tau_1,\{x,y,y\}).
+    d_{xy} = P(0101|\tau=\tau_1,t=\{x,y,y\}) + P(1001|\tau=\tau_1,t=\{x,y,y\}).
 $$
 The lower bounds on the likelihoods in this case take one of six forms:
-\textbf{TODO}: ancestral states where these likelihoods occur
-$$
-L_{p}(x',y',w';z,\tau_2) \ge 2\log(1+x')+(2-c-2d)\log(1+y')+(c+2d)\log(1-y')+\log(1-w'),
-$$
-$$
-L_{p}(x',y',w';z,\tau_2) \ge (2-c-2d)\log(1+x')+(c+2d)\log(1-x')+2\log(1+y')+\log(1-w'),
-$$
-$$
-L_{p}(x',y',w';z,\tau_2) \ge (2-2d)\log(1+x')+2d\log(1-x')+(2-c)\log(1+y')+c\log(1-y')+\log(1-w'),
-$$
-$$
-L_{p}(x',y',w';z,\tau_2) \ge (2-c)\log(1+x')+c\log(1-x')+(2-2d)\log(1+y')+2d\log(1-y')+\log(1-w'),
-$$
-$$
-L_{p}(x',y',w';z,\tau_2) \ge (2-d)\log(1+x')+d\log(1-x')+(2-c-d)\log(1+y')+(c+d)\log(1-y')+\log(1-w')
-$$
-or
-$$
-L_{p}(x',y',w';z,\tau_2) \ge (2-c-d)\log(1+x')+(c+d)\log(1-x')+(2-d)\log(1+y')+d\log(1-y')+\log(1-w').
-$$
 Since the maxima for pairs of lower bounds above each have a symmetry in $x$ and $y$, they are bounded below by one of
+\textbf{TODO}: ancestral states where these likelihoods occur
+
+\begin{align*}
+    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,\{x',y',w'\}) \\
+    &\qquad \ge 2\log(1+x')+(2-c_{xy}-2d_{xy})\log(1+y')+(c_{xy}+2d_{xy})\log(1-y')+\log(1-w') \\
+    &\qquad \ge 2\log(2)+(2-c_{xy}-2d_{xy})\log(2-c_{xy}-2d_{xy})+(c_{xy}+2d_{xy})\log(c_{xy}+2d_{xy}) \\
+    &\qquad \triangleq L^{p,1}_{\tau_1,\tau_2}(c_{xy}, d_{xy}),
+\end{align*}
+\begin{align*}
+    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,\{x',y',w'\}) \\
+    &\qquad \ge (2-2d_{xy})\log(1+x')+2d_{xy}\log(1-x') + (2-c_{xy})\log(1+y')+c_{xy}\log(1-y')+\log(1-w') \\
+    &\qquad \ge (2-2d_{xy})\log(2-2d_{xy})+2d_{xy}\log(2d_{xy}) + (2-c_{xy})\log(2-c_{xy})+c_{xy}\log(c_{xy}) \\
+    &\qquad \triangleq L^{p,2}_{\tau_1,\tau_2}(c_{xy}, d_{xy})
+\end{align*}
+or
+\begin{align*}
+    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,\{x',y',w'\}) \\
+    &\qquad \ge (2-d_{xy})\log(1+x')+d_{xy}\log(1-x') + (2-c_{xy}-d_{xy})\log(1+y')+(c_{xy}+d_{xy})\log(1-y')+\log(1-w') \\
+    &\qquad \ge (2-d_{xy})\log(2-d_{xy})+d_{xy}\log(d_{xy}) + (2-c_{xy}-d_{xy})\log(2-c_{xy}-d_{xy})+(c_{xy}+d_{xy})\log(c_{xy}+d_{xy}) \\
+    &\qquad \triangleq L^{p,3}_{\tau_1,\tau_2}(c_{xy}, d_{xy})
+\end{align*}
+where $c_{xy}$ and $d_{xy}$ are also functions of the true generating branch parameters $\{x,y\}$.
+
+\textbf{Claim to prove}:
 $$
-\hat{L}_{p}(1,1-c-2d,0;z,\tau_2) \ge 2\log(2)+(2-c-2d)\log(2-c-2d)+(c+2d)\log(c+2d),
-$$
-$$
-\hat{L}_{p}(1-2d,1-c,0;z,\tau_2) \ge (2-2d)\log(2-2d)+2d\log(2d)+(2-c)\log(2-c)+c\log(c)
+L^{p,1}_{\tau_1,\tau_2}(c_{xy}, d_{xy}) \ge L^{p,2}_{\tau_1,\tau_2}(c_{xy}, d_{xy})
 $$
 and
 $$
-\hat{L}_{p}(1-d,1-c-d,0;z,\tau_2) \ge (2-d)\log(2-d)+d\log(d)+(2-c-d)\log(2-c-d)+(c+d)\log(c+d)
+L^{p,1}_{\tau_1,\tau_2}(c_{xy}, d_{xy}) \ge L^{p,3}_{\tau_1,\tau_2}(c_{xy}, d_{xy}).
 $$
-where $c$ and $d$ are also functions of the true generating branch parameters $\{x,y\}$.
+I think we can use information theory results to show this.
+It is definitely true---will work on it.
 
-\textbf{TODO}: cases for $\{x, y\}$ where each of the above is the corresponding maximum.
-I think the first is always greater than or equal to the other two, but I haven't been able to show it yet.
-It may take a little information theory--fu, or just standard application of the bounds in the introduction to this section.
-
-Thus, let
-$$
-\hat{L}_{p}(1,1-c-2d,0;z,\tau_2) = 2\log(2)+(2-c-2d)\log(2-c-2d)+(c+2d)\log(c+2d).
-$$
+The values of $(x', y', w')$ maximizing $L^{p,1}_{\tau_1,\tau_2}(c_{xy}, d_{xy})$ are $(1, 1-c_{xy}-2d_{xy},0)$.
 
 \subsubsection{Region of inconsistency}
 
 We want to find values for $\{x,y\}$ where
 $$
-H(x,y,\tau_1; 1, 1-c-2d, 0, \tau_2) + \hat{L}_{p}(1,1-c-2d,0;z,\tau_2) \ge H(x,y,\tau_1; x, y, y,\tau_1) + \hat{L}_{p}(1-a,1-b,1;00,\tau_1).
+H_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) + L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \ge H_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}).
 $$
 Since this is a single inequality in two variables, we can plot it analytically; we need the region where
 \begin{align*}
-    0 &\ge H(x,y,\tau_1; x, y, y,\tau_1) + \hat{L}_{p}(1-a,1-b,1;00,\tau_1) \\
-      &\qquad - H(x,y,\tau_1; 1, 1-c-2d, 0, \tau_2) - \hat{L}_{p}(1,1-c-2d,0;\tau_2) \\
-      & = 2(12+2x^2+2y^2)\log((12+2x^2+2y^2)/8) \\
-      &\qquad + 2(4-2x^2-2y^2)\log((4-2x^2-2y^2)/8)  + 8\log2 \\
-      &\qquad + 2(1+x^2-y^2-x^2y^2)\log(1+x^2-y^2-x^2y^2) \\
+    0 &\ge H_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}) \\
+      &\qquad - H_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) - L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \\
+%
+      &\qquad = 2(1+x^2-y^2-x^2y^2)\log(1+x^2-y^2-x^2y^2) \\
       &\qquad + 2(1-x^2+y^2-x^2y^2)\log(1-x^2+y^2-x^2y^2) \\
       &\qquad + 2(1-x^2-y^2+x^2y^2)\log(1-x^2-y^2+x^2y^2) \\
       &\qquad + (1+x^2+y^2+4xy^2+x^2y^2)\log(1+x^2+y^2+4xy^2+x^2y^2) \\
       &\qquad + (1+x^2+y^2-4xy^2+x^2y^2)\log(1+x^2+y^2-4xy^2+x^2y^2) \\
-      &\qquad - 16\log2 - 8(1+xy^2)\log(1+xy^2) - 8(1-xy^2)\log(1-xy^2) \\
-      &\qquad - (2-4xy^2+2x^2y^2)\log(1-2xy^2+x^2y^4) \\
-      &\qquad - (2+4xy^2+2x^2y^2)\log(1+2xy^2+x^2y^4) \\
-      &\qquad - (4-4x^2y^2)\log(1-x^2y^4).
+%
+      &\qquad + (2-a_{xy})\log(2-a_{xy})+a_{xy}\log(a_{xy})+(2-b_{xy})\log(2-b_{xy})+b_{xy}\log(b_{xy})+\log(2) \\
+%
+      &\qquad - 2(1+x^2-y^2-x^2y^2)\log(1+x'^2w'-y'^2w'-x'^2y'^2) \\
+      &\qquad - 2(1-x^2+y^2-x^2y^2)\log(1-x'^2w'+y'^2w'-x'^2y'^2) \\
+      &\qquad - (1-x^2-y^2+x^2y^2)\log(1+2x'y'-2x'y'w'-x'^2w'-y'^2w'+x'^2y'^2) \\
+      &\qquad - (1-x^2-y^2+x^2y^2)\log(1-2x'y'+2x'y'w'-x'^2w'-y'^2w'+x'^2y'^2) \\
+      &\qquad - (1+x^2+y^2+4xy^2+x^2y^2)\log(1+2x'y'+2x'y'w'+x'^2w'+y'^2w'+x'^2y'^2) \\
+      &\qquad - (1+x^2+y^2-4xy^2+x^2y^2)\log(1-2x'y'-2x'y'w'+x'^2w'+y'^2w'+x'^2y'^2) \\
+%
+      &\qquad - 2\log(2)-(2-c_{xy}-2d_{xy})\log(2-c_{xy}-2d_{xy})-(c_{xy}+2d_{xy})\log(c_{xy}+2d_{xy})
 \end{align*}
-
-\textbf{TODO}: can we use sage to simplify the above so it looks nicer?
-Write it as functions of $a,b,c,d$ so it's less messy?
-What would be best?
+where
+$$
+a_{xy} = b_{xy} = \frac{4-2x^2-2y^2}{8},
+$$
+$$
+c_{xy} = \frac{4-4x^2y^2}{8},
+$$
+$$
+d_{xy} = \frac{2-4xy^2+2x^2y^2}{8}
+$$
+and
+$$
+x' = 1, \ y' = 1-c_{xy}-2d_{xy}, \ w' = 0.
+$$
 
 The \texttt{sage} function in listing~\ref{list:sage} will generate Fig.~\ref{fig:inconsistency-farris}.
 
@@ -446,18 +473,29 @@ The \texttt{sage} function in listing~\ref{list:sage} will generate Fig.~\ref{fi
     \begin{center}
 \begin{verbatim}
 var('x,y')
-inconsistency = 2*(12+2*x^2+2*y^2)*log((12+2*x^2+2*y^2)/8) \
-    + 2*(4-2*x^2-2*y^2)*log((4-2*x^2-2*y^2)/8) + 8*log(2.) \
-    + 2*(1+x^2-y^2-x^2*y^2)*log(1+x^2-y^2-x^2*y^2) \
+a = (4-2*x^2-2*y^2)/8
+b = (4-2*x^2-2*y^2)/8
+c = (4-4*x^2*y^2)/8
+d = (2-4*x*y^2+2*x^2*y^2)/8
+xp = 1.
+yp = 1-c-2*d
+wp = 0.
+
+inconsistency = 2*(1+x^2-y^2-x^2*y^2)*log(1+x^2-y^2-x^2*y^2) \
     + 2*(1-x^2+y^2-x^2*y^2)*log(1-x^2+y^2-x^2*y^2) \
     + 2*(1-x^2-y^2+x^2*y^2)*log(1-x^2-y^2+x^2*y^2) \
     + (1+x^2+y^2+4*x*y^2+x^2*y^2)*log(1+x^2+y^2+4*x*y^2+x^2*y^2) \
     + (1+x^2+y^2-4*x*y^2+x^2*y^2)*log(1+x^2+y^2-4*x*y^2+x^2*y^2) \
-    - 16*log(2.) - 8*(1+x*y^2)*log(1+x*y^2) - 8*(1-x*y^2)*log(1-x*y^2) \
-    - (2-4*x*y^2+2*x^2*y^2)*log(1-2*x*y^2+x^2*y^4) \
-    - (2+4*x*y^2+2*x^2*y^2)*log(1+2*x*y^2+x^2*y^4) - (4-4*x^2*y^2)*log(1-x^2*y^4)
+    + (2-a)*log(2-a)+a*log(a)+(2-b)*log(2-b)+b*log(b)+log(2.) \
+    - 2*(1+x^2-y^2-x^2*y^2)*log(1+xp^2*wp-yp^2*wp-xp^2*yp^2) \
+    - 2*(1-x^2+y^2-x^2*y^2)*log(1-xp^2*wp+yp^2*wp-xp^2*yp^2) \
+    - (1-x^2-y^2+x^2*y^2)*log(1+2*xp*yp-2*xp*yp*wp-xp^2*wp-yp^2*wp+xp^2*yp^2) \
+    - (1-x^2-y^2+x^2*y^2)*log(1-2*xp*yp+2*xp*yp*wp-xp^2*wp-yp^2*wp+xp^2*yp^2) \
+    - (1+x^2+y^2+4*x*y^2+x^2*y^2)*log(1+2*xp*yp+2*xp*yp*wp+xp^2*wp+yp^2*wp+xp^2*yp^2) \
+    - (1+x^2+y^2-4*x*y^2+x^2*y^2)*log(1-2*xp*yp-2*xp*yp*wp+xp^2*wp+yp^2*wp+xp^2*yp^2) \
+    - 2*log(2.)-(2-c-2*d)*log(2-c-2*d)-(c+2*d)*log(c+2*d)
 
-inconsistency_plot = implicit_plot(
+incons_plot = implicit_plot(
     inconsistency(x,y)==0,
     (x,0,1),
     (y,0,1),
@@ -486,59 +524,52 @@ inconsistency_plot = implicit_plot(
 Set $\{x, y\} = \{0.25, 0.25\}$.
 For a Farris zone generating topology, we have
 $$
-a = b = 0.46875
+a_{xy} = b_{xy} = 0.46875
 $$
 resulting in
 $$
-\hat{L}^{p}(\hat{x}, \hat{y}, \hat{w},\tau_1) \approx -2.17803560694
+L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}) \approx -2.17803560694157
 $$
 and
 $$
-H(x,y,\tau_1;x,y,y,\tau_1) \approx -2.07509999739.
+H_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\})  \approx -2.04470918734314.
 $$
 Computing the upper bound yields
 $$
-\max_{x,y,w} \ L(x,y,w,\tau_1) \le -4.25313560433
+\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,t) \le -4.22274479428471
 $$
 and it remains to show that
 $$
-\max_{x,y,w} \ L(x,y,w,\tau_2) \ge -4.25313560433
+\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,t) \ge -4.22274479428471.
 $$
 
 For the same generating parameters,
 $$
-c = 0.498046875, \ d = 0.2431640625,
+c_{xy} = 0.498046875, \ d_{xy} = 0.2431640625,
 $$
 resulting in
 $$
-\hat{L}(\hat{x}, \hat{y}, \hat{w},\tau_2) \approx -2.07919739112
-$$
-Calculating shows%
-    %
-    \footnote{It's not a typo that $\hat{L}_{fe}$ and $H_{fe}$ are the same---at least not in the code.
-        I should try to show why this is the case.
-        }
-    %
-$$
-H(x,y,\tau_1; \hat{x}, \hat{y}, \hat{w},\tau_2) \approx -2.07919739112
+L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \approx -2.07968569223991
 $$
 and
 $$
-\max_{x,y,w} \ L(x,y,w,\tau_2) \ge -4.15839478224 > -4.25313560433 \ge \max_{x,y,w} \ L(x,y,w,\tau_1)
+H_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) \approx -2.07748833719921.
+$$
+The lower bound in this case becomes
+$$
+\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,t) \ge -4.22274479428471 \ge -4.22274479428471 \ge \max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,t)
 $$
 where site patterns are generated from the Farris zone topology.
 Confirming, run \texttt{python}'s numerical optimization solver for $\{.25, .25\}$.
 Since we are computing a constrained maximization, we can find a global maximum using basin hopping, and doing so yields
 $$
-\max_{x,y,w} \ L(x,y,w,\tau_1) \approx -4.5101771294218045
+\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,t) \approx -4.5101771294218045
 $$
 and
 $$
-\max_{x,y,w} \ L(x,y,w,\tau_2) \approx -4.1544859851260281.
+\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,t) \approx -4.1544859851260281.
 $$
 Woohoo!
-
-
 
 \section{Discussion}
 
