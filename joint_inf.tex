@@ -58,11 +58,16 @@ We use bounds on the joint likelihood to demarcate a sizeable area of long branc
 
 \section{Ancestral state reconstruction using maximum likelihood}
 
+We will be considering phylogenetic likelihood on unrooted phylogenetic trees.
+We assume the character alphabet $\alphabet=\{0,1\}$ and a uniform stationary distribution.
+Let $m$ be the number of tips of the tree, and $p = m-2$ the number of internal nodes.
+%EM Commented out below because it's not right-- fullAlignment is not the set of assignments of characters to tips of the tree, it's a single such.
+%Let $\fullAlignment$ be the set of assignments of characters to tips of our tree, and $\fullAncestralStates$ the set of assignments of characters to the internal nodes of the tree.
+Assume we observe $n$ samples of character data (i.e.\ an alignment with $n$ columns) $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_n]\in\alphabet^{\nSiteRows\times n}$.
+There are also corresponding unknown ancestral states $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_n]\in\alphabet^{\nAncestralStateRows\times n}$.
+
 \subsection{Classical maximum-likelihood inference in phylogenetics}
 
-Let $\fullAlignment$ be the set of assignments of characters to tips of our tree, and $\fullAncestralStates$ the set of assignments of characters to the internal nodes of the tree.
-Assume we observe $n$ samples of character data (i.e.\ an alignment with $n$ columns) $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_n]\in\alignmentSpace^{\nSiteRows\times n}$ and corresponding unknown ancestral states $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_n]\in\ancestralStateSpace^{\nAncestralStateRows\times n}$.
-Without loss of generality, assume $\alignmentSpace=\ancestralStateSpace=\{0,1\}$.
 For a topology $\tau$ and branch lengths $t$ we form the fully-observed likelihood (making the usual independence assumption between sites):
 \begin{equation}
 \label{eq:full_likelihood}
@@ -100,9 +105,9 @@ then estimating the topology and branch lengths via
 (\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ L_n'(\fullAlignment;\tau, t)
 \end{equation}
 while using $\hat{\fullAncestralStates}$ maximizing \eqref{eq:profile_likelihood} as an estimate for $\fullAncestralStates$.
-Since $\ancestralStateSpace$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and so \eqref{eq:profile_likelihood_topology_bl} will recover the joint ML values of the unknown parameters.
+Since $\alphabet$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and so \eqref{eq:profile_likelihood_topology_bl} will recover the joint ML values of the unknown parameters.
 In the general case, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities that depend on the unknown $(\tau,t)$.
-For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence \cite{Neher2017}.
+For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence cite{Neher2017}.
 
 \subsection{Site pattern formulation}
 
@@ -110,16 +115,18 @@ Since we have a finite character alphabet, for a given column $i$ there are a fi
 These are commonly called ``site patterns'' in the literature.
 %EM in general aren't a different number of internal site patterns than tip site patterns?
 %das: Yes, I moved the paragraph at the end to here so it's hopefully less confusing. Maybe writing out the example would help? I also changed from "pattern" to "category" which might make it a little more clear.
+%EM Seems good this is an important concept so it's worth defining it more properly.
 We enumerate the unique site patterns $\mathbf{s}=[s_1,\ldots,s_q]\in\mathcal{S}$; these are defined by the number of leaves and the character alphabet.
 Corresponding to each of these site patterns will be an ancestral state category that is most likely given a particular likelihood.
-Since $\alignmentSpace$ and $\ancestralStateSpace$ are finite sets, the value of each factor $P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t)$ in \eqref{eq:full_likelihood} is maximized at one or more values of $\ancestralStateColumn_i$, though independent of $i$ given $j$.
+Since $\alphabet$ is a finite set, the value of each factor $P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t)$ in \eqref{eq:full_likelihood} is maximized at one or more values of $\ancestralStateColumn_i$, though independent of $i$ given $j$.
 This independence allows us to group factors by those where $\ancestralStateColumn_i$ belongs to an ancestral state category $\ancestralStateCategory_j$ so that, if $\alignmentColumn_i=\sitePattern_j$ and $\ancestralStateColumn_i\in \ancestralStateCategory_j$, $P(\sitePattern_j, \ancestralStateCategory_j | \tau, t)$ is maximized.
 
 For ancestral state categories $\fullAncestralStateCategories=[\ancestralStateCategory_1,\ldots,\ancestralStateCategory_q]\in\ancestralStateCategorySpace$ we reformulate the likelihood equation
 \begin{align}
 L_n'(\fullAlignment;\tau, t) &= \max_{\fullAncestralStates} \ L_n(\fullAlignment;\fullAncestralStates, \tau, t) \\
                              &= \max_{\fullAncestralStates} \ \prod_{i=1}^{n} \ P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t) \\
-%EM Can you think a little about z_j? The indexing seems a little problematic now that we are thinking of everything as a function of y.
+%EM Can you think a little about z_j?
+%EM Even though it's a category now, it's still a function of tau and t, right?
                              &= \max_{\fullAncestralStateCategories} \ \prod_{j=1}^{q} \ P(\sitePattern_j, \ancestralStateCategory_j | \tau, t)^{n_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
 where $n_j(\fullAlignment)$ is the number of observations in the sample where site pattern $\sitePattern_j$ was seen in $\fullAlignment$.
