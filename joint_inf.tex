@@ -24,18 +24,25 @@
 \newcommand{\fullAlignment}{\mathbf{Y}}
 \newcommand{\alignmentColumn}{\mathbf{y}}
 \newcommand{\sitePattern}{s}
+\newcommand{\siteSplit}{S'}
+\newcommand{\sitePatternSet}{S}
 \newcommand{\fullSitePatterns}{\mathbf{s}}
 \newcommand{\sitePatternSpace}{\mathcal{S}}
 \newcommand{\fullAncestralStates}{\mathbf{H}}
 \newcommand{\ancestralStateSpace}{\mathcal{H}}
 \newcommand{\ancestralStateColumn}{\boldsymbol\eta}
-\newcommand{\ancestralStateCategory}{z}
-\newcommand{\fullAncestralStateCategories}{\mathbf{z}}
+\newcommand{\ancestralStateCategory}{Z}
+\newcommand{\ancestralSplit}{H'}
+\newcommand{\ancestralStateSet}{H}
+\newcommand{\fullAncestralStateCategories}{\mathbb{Z}}
 \newcommand{\ancestralStateCategorySpace}{\mathcal{Z}}
 
 \newcommand{\nCols}{n}
 \newcommand{\nSiteRows}{m}
 \newcommand{\nAncestralStateRows}{p}
+\newcommand{\nSiteSplits}{q}
+\newcommand{\nAncestralSplits}{r}
+\newcommand{\nMostLikelyAncestralSplits}{\tilde{r}}
 
 
 \title{Possible Inconsistency in Maximum Likelihood Calculation of Ancestral States}
@@ -77,18 +84,18 @@ We use bounds on the joint likelihood to demarcate a sizeable area of long branc
 
 We will be considering phylogenetic likelihood on unrooted phylogenetic trees.
 We assume the character alphabet $\alphabet=\{0,1\}$ and a uniform stationary distribution.
-Let $m$ be the number of tips of the tree, and $p = m-2$ the number of internal nodes.
+Let $\nSiteRows$ be the number of tips of the tree, and $\nAncestralStateRows = \nSiteRows-2$ the number of internal nodes.
 %EM Commented out below because it's not right-- fullAlignment is not the set of assignments of characters to tips of the tree, it's a single such.
 %Let $\fullAlignment$ be the set of assignments of characters to tips of our tree, and $\fullAncestralStates$ the set of assignments of characters to the internal nodes of the tree.
-Assume we observe $n$ samples of character data (i.e.\ an alignment with $n$ columns) $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_n]\in\alphabet^{\nSiteRows\times n}$.
-There are also corresponding unknown ancestral states $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_n]\in\alphabet^{\nAncestralStateRows\times n}$.
+Assume we observe $\nCols$ samples of character data (i.e.\ an alignment with $\nCols$ columns) $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$.
+There are also corresponding unknown ancestral states $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$.
 
 \subsection{Classical maximum-likelihood inference in phylogenetics}
 
 For a topology $\tau$ and branch lengths $t$ we form the fully-observed likelihood (making the usual independence assumption between sites):
 \begin{equation}
 \label{eq:full_likelihood}
-L_n(\fullAlignment;\fullAncestralStates, \tau, t) = \prod_{i=1}^{n} \ P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t).
+L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t) = \prod_{i=1}^{\nCols} \ P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t).
 \end{equation}
 % In particular, we are interested in
 % $$
@@ -99,11 +106,11 @@ L_n(\fullAlignment;\fullAncestralStates, \tau, t) = \prod_{i=1}^{n} \ P(\alignme
 The typical approach to estimate the tree $\tau$ and branch lengths $t$ involves computing the marginal likelihood
 \begin{equation}
 \label{eq:marginal_likelihood}
-\tilde{L}_n(\fullAlignment; \tau, t) = \sum_{\fullAncestralStates} \ L_n(\fullAlignment;\fullAncestralStates, \tau, t)
+\tilde{L}_\nCols(\fullAlignment; \tau, t) = \sum_{\fullAncestralStates} \ L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t)
 \end{equation}
 and maximizing over the topology and branch lengths to obtain
 $$
-(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \  \tilde{L}_n(\fullAlignment; \tau, t).
+(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \  \tilde{L}_\nCols(\fullAlignment; \tau, t).
 $$
 % The values $\hat{\boldsymbol\xi}$ are then calculated conditional on these estimates.
 % More likely in practice we fix a topology $\tau$ and use this marginalization approach to compute $(\hat{\boldsymbol\xi}, \hat{t})$.
@@ -114,94 +121,87 @@ One tantalizing approach is to do away with the marginalization and directly est
 We can perform this by computing the profile likelihood
 \begin{equation}
 \label{eq:profile_likelihood}
-L_n'(\fullAlignment;\tau, t) = \max_{\fullAncestralStates} \ L_n(\fullAlignment;\fullAncestralStates, \tau, t),
+L_\nCols'(\fullAlignment;\tau, t) = \max_{\fullAncestralStates} \ L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t),
 \end{equation}
 then estimating the topology and branch lengths via
 \begin{equation}
 \label{eq:profile_likelihood_topology_bl}
-(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ L_n'(\fullAlignment;\tau, t)
+(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ L_\nCols'(\fullAlignment;\tau, t)
 \end{equation}
 while using $\hat{\fullAncestralStates}$ maximizing \eqref{eq:profile_likelihood} as an estimate for $\fullAncestralStates$.
 Since $\alphabet$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and so \eqref{eq:profile_likelihood_topology_bl} will recover the joint ML values of the unknown parameters.
 In the general case, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities that depend on the unknown $(\tau,t)$.
-For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence cite{Neher2017}.
+For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence \cite{Neher2017}.
 
-\subsection{Site pattern formulation}
+\subsection{Site split formulation}
 
 Since we have a finite character alphabet, for a given column $i$ there are a finite number of possibilities of assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$.
-These are commonly called ``site patterns'' in the literature.
+Following Section 8.6 of \cite{Semple2003}, $\tau$ induces an ordered set of tip labels $\{1,\ldots,\nSiteRows\}$ across sites.
+For a binary character model, a realization of $\alignmentColumn_i$ can be described as a subset of complementary characters $\siteSplit\subseteq\sitePatternSet\triangleq\{1,\ldots,\nSiteRows-1\}$.
+The topology $\tau$ induces an ordered set $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ with a similar subset of complementary characters $\ancestralSplit\subseteq\ancestralStateSet\triangleq\{1,\ldots,\nAncestralStateRows\}$ describing a realization of $\ancestralStateColumn_i$.
+Define the total number of unique site splits as $\nSiteSplits=|\mathcal{P}(\sitePatternSet)|$ and unique ancestral state splits as $\nAncestralSplits=|\mathcal{P}(\ancestralStateSet)|$ where $\mathcal{P}$ denotes the powerset.
+
 %EM in general aren't a different number of internal site patterns than tip site patterns?
 %das: Yes, I moved the paragraph at the end to here so it's hopefully less confusing. Maybe writing out the example would help? I also changed from "pattern" to "category" which might make it a little more clear.
 %EM Seems good this is an important concept so it's worth defining it more properly.
-We enumerate the unique site patterns $\mathbf{s}=[s_1,\ldots,s_q]\in\mathcal{S}$; these are defined by the number of leaves and the character alphabet.
-Corresponding to each of these site patterns will be an ancestral state category that is most likely given a particular likelihood.
-Since $\alphabet$ is a finite set, the value of each factor $P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t)$ in \eqref{eq:full_likelihood} is maximized at one or more values of $\ancestralStateColumn_i$, though independent of $i$ given $j$.
-This independence allows us to group factors by those where $\ancestralStateColumn_i$ belongs to an ancestral state category $\ancestralStateCategory_j$ so that, if $\alignmentColumn_i=\sitePattern_j$ and $\ancestralStateColumn_i\in \ancestralStateCategory_j$, $P(\sitePattern_j, \ancestralStateCategory_j | \tau, t)$ is maximized.
 
-For ancestral state categories $\fullAncestralStateCategories=[\ancestralStateCategory_1,\ldots,\ancestralStateCategory_q]\in\ancestralStateCategorySpace$ we reformulate the likelihood equation
+Consider the probability $P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t)$ from \eqref{eq:full_likelihood} of observing a particular column $i$.
+Given $(\tau, t)$ and maximizing over $\ancestralStateColumn_i$, if $\alignmentColumn_i=\siteSplit_j$ then there exists a partition $\ancestralStateCategory_j$ of $\mathcal{P}(\ancestralStateSet)$ of most likely ancestral states where
+\begin{align*}
+\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralStateSet)} \ P(\alignmentColumn_i=\siteSplit_j, \ancestralStateColumn_i=\ancestralSplit_k | \tau, t) &= P(\alignmentColumn_i=\siteSplit_j, \ancestralStateColumn_i\in\ancestralStateCategory_j | \tau, t) \\
+     &= P(\alignmentColumn=\siteSplit_j, \ancestralStateColumn\in\ancestralStateCategory_j | \tau, t).
+\end{align*}
+This equivalence is helpful in writing the full likelihood of the joint inference problem in terms of site splits; for most likely ancestral state partitions $\fullAncestralStateCategories=\{\ancestralStateCategory_1,\ldots,\ancestralStateCategory_\nSiteSplits\}$ we reformulate the likelihood equation
 \begin{align}
-L_n'(\fullAlignment;\tau, t) &= \max_{\fullAncestralStates} \ L_n(\fullAlignment;\fullAncestralStates, \tau, t) \\
-                             &= \max_{\fullAncestralStates} \ \prod_{i=1}^{n} \ P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t) \\
+L_\nCols'(\fullAlignment;\tau, t) &= \max_{\fullAncestralStates} \ L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t) \\
+                             &= \max_{\fullAncestralStates} \ \prod_{i=1}^{\nCols} \ P(\alignmentColumn_i, \ancestralStateColumn_i | \tau, t) \\
+                             &= \prod_{i=1}^{\nCols} \ \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralStateSet)} \ P(\alignmentColumn_i=\siteSplit_j, \ancestralStateColumn_i=\ancestralSplit_k | \tau, t) \\
 %EM Can you think a little about z_j?
 %EM Even though it's a category now, it's still a function of tau and t, right?
-                             &= \max_{\fullAncestralStateCategories} \ \prod_{j=1}^{q} \ P(\sitePattern_j, \ancestralStateCategory_j | \tau, t)^{n_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
+                             &= \prod_{i=1}^{\nCols} \ P(\alignmentColumn=\siteSplit_j, \ancestralStateColumn\in\ancestralStateCategory_j | \tau, t) \\
+                             &= \prod_{j=1}^{\nSiteSplits} \ P(\alignmentColumn=\siteSplit_j, \ancestralStateColumn\in\ancestralStateCategory_j | \tau, t)^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
-where $n_j(\fullAlignment)$ is the number of observations in the sample where site pattern $\sitePattern_j$ was seen in $\fullAlignment$.
-
-\textbf{Example:} This might be a good time for a toy example showing this for a very simple topology.
-
+where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ where the site split $\siteSplit_j$ appears.
 
 \subsection{Showing inconsistency}
 
-We are now interested in the properties of the objective function being maximized in \eqref{eq:site_pattern_likelihood} as data becomes plentiful.
-Let
+We are interested in the properties of the objective function being maximized in \eqref{eq:site_pattern_likelihood} as data becomes plentiful.
+Define \eqref{eq:site_pattern_likelihood} as
 $$
-L_n''(\fullAlignment;\fullAncestralStateCategories,\tau,t) = \prod_{j=1}^q \ P(\sitePattern_j, \ancestralStateCategory_j | \tau, t)^{n_j(\fullAlignment)}
+L_\nCols''(\fullAlignment;\fullAncestralStateCategories,\tau,t) = \prod_{j=1}^{\nSiteSplits} \ P(\alignmentColumn=\siteSplit_j, \ancestralStateColumn\in\ancestralStateCategory_j | \tau, t)^{\nCols_j(\fullAlignment)} .
 $$
-so that
-$$
-\max_{\fullAncestralStates} \ L_n(\fullAlignment;\fullAncestralStates, \tau, t) =
-    \max_{\fullAncestralStateCategories} \ L_n''(\fullAlignment;\fullAncestralStateCategories,\tau,t).
-$$
-Assume our $n$ observations were generated from a model with parameters $(\tau^*, t^*)$.
+Assume our $\nCols$ observations were generated from a model with parameters $(\tau^*, t^*)$.
 We have
 \begin{align}
-    \frac{1}{n} \log L_n''(\fullAlignment;\fullAncestralStateCategories,\tau,t)
-        &= \sum_{j} \frac{n_j(\fullAlignment)}{n}\cdot  \log P(\sitePattern_j, \ancestralStateCategory_j | \tau, t) \\
-        &= \sum_{j} \frac{n_j(\fullAlignment)}{n}\cdot [\log P(\sitePattern_j | \tau, t) + \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)].
+    \frac{1}{\nCols} \log L_\nCols''(\fullAlignment;\fullAncestralStateCategories,\tau,t)
+        &= \sum_{j}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log P(\alignmentColumn=\siteSplit_j, \ancestralStateColumn\in\ancestralStateCategory_j | \tau, t) \\
+        &= \sum_{j}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot [\log P(\alignmentColumn=\siteSplit_j | \tau, t) + 
+            \log P(\ancestralStateColumn\in\ancestralStateCategory_j | \alignmentColumn=\siteSplit_j , \tau, t)]
 \end{align}
-In the limit of infinite data we have
-$$
-\frac{1}{n} \log L_n''(\fullAlignment;,\tau,t) \rightarrow \sum_{j} P(\sitePattern_j | \tau^*, t^*) \cdot [\log P(\sitePattern_j | \tau, t) + \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)]
-$$
-and that, since $\ancestralStateCategory_j$ appears only in the last term, the log of \eqref{eq:site_pattern_likelihood} in the same limit is proportional to
-\begin{align}
-\frac{1}{n} \log L_n'(\fullAlignment;\fullAncestralStateCategories,\tau, t)
-    &= \max_{\fullAncestralStateCategories} \ \frac{1}{n} \log L_n''(\fullAlignment;\fullAncestralStateCategories,\tau,t) \nonumber \\
-    &\rightarrow \max_{\fullAncestralStateCategories} \ \sum_{j} P(\sitePattern_j | \tau^*, t^*) \cdot [\log P(\sitePattern_j | \tau, t) + \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)] \nonumber \\
-    &= \max_{\fullAncestralStateCategories} \ \sum_{j} P(\sitePattern_j | \tau^*, t^*) \cdot [\log P(\sitePattern_j | \tau, t) + \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)] \nonumber \\
-    &= \max_{\fullAncestralStateCategories} \ \left\{\sum_{j} P(\sitePattern_j | \tau^*, t^*) \cdot \left[\log P(\sitePattern_j | \tau, t) + \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)\right]\right\}. \label{eq:site_pattern_profile_likelihood_mean}
-\end{align}
+so that, in the limit of infinite data,
+\begin{equation}
+\frac{1}{\nCols} \log L_\nCols''(\fullAlignment;,\tau,t) \rightarrow \sum_{j}^\nSiteSplits P(\alignmentColumn=\siteSplit_j | \tau^*, t^*) \cdot [\log P(\alignmentColumn=\siteSplit_j | \tau, t) + \log P(\ancestralStateColumn\in\ancestralStateCategory_j | \alignmentColumn=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
+\end{equation}
 Define the the information quantity
 $$
-H_{\tau^*,t^*}(\tau,t) = \sum_{j} P(\sitePattern_j | \tau^*, t^*) \log P(\sitePattern_j | \tau, t),
+h_{\tau^*,t^*}(\tau,t) = \sum_{j}^\nSiteSplits P(\alignmentColumn=\siteSplit_j | \tau^*, t^*) \log P(\siteSplit_j | \tau, t),
 $$
 and the partial log likelihood
 $$
-\ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) = \sum_{j} P(\sitePattern_j | \tau^*, t^*) \log P(\ancestralStateCategory_j | \sitePattern_j, \tau, t)
+\ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) = \sum_{j}^\nSiteSplits P(\alignmentColumn=\siteSplit_j | \tau^*, t^*) \log P(\ancestralStateColumn\in\ancestralStateCategory_j | \siteSplit_j, \tau, t)
 $$
 so that \eqref{eq:site_pattern_profile_likelihood_mean} is written as
 \begin{equation}
     \label{eq:log_likelihood_simplified}
-\ell_{\tau^*,t^*}(\tau,t) = \max_{\fullAncestralStateCategories} \ \left\{H_{\tau^*,t^*}(\tau,t) + \ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t)\right\}.
+\ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) = h_{\tau^*,t^*}(\tau,t) + \ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t).
 \end{equation}
 Recall $(\tau, t)$ are estimands and $(\tau^*, t^*)$ are fixed, generating parameters.
 For data generated from $(\tau^*, t^*)$, if
 \begin{equation}
 \label{eq:inconsistency_inequality}
-\ell_{\tau^*,t^*}(\tau',\hat{t}_1) > \ell_{\tau^*,t^*}(\tau^*,\hat{t}_2)
+\ell_{\tau^*,t^*}(\hat{\fullAncestralStateCategories}_1,\tau',\hat{t}_1) > \ell_{\tau^*,t^*}(\hat{\fullAncestralStateCategories}_2,\tau^*,\hat{t}_2)
 \end{equation}
-for $\tau'\neq\tau^*$ with $\hat{t}_1$ and $\hat{t}_2$ estimated by maximizing \eqref{eq:profile_likelihood}, we have an inconsistency.
+for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\hat{\fullAncestralStateCategories}_1\}$ and $\{\hat{t}_2,\hat{\fullAncestralStateCategories}_2\}$ estimated by maximizing \eqref{eq:profile_likelihood}, we have an inconsistency.
 
 \section{Inconsistency of joint maximum likelihood}
 
@@ -210,17 +210,17 @@ for $\tau'\neq\tau^*$ with $\hat{t}_1$ and $\hat{t}_2$ estimated by maximizing \
 Our approach will be to seek bounds for the terms inside the maximization in \eqref{eq:log_likelihood_simplified} as
 \begin{equation}
 \label{eq:partial-likelihood}
-\ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) = H_{\tau^*,t^*}(\tau,t) + \ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t).
+\ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) = h_{\tau^*,t^*}(\tau,t) + \ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t).
 \end{equation}
 We obtain an upper bound for the joint maximum of \eqref{eq:partial-likelihood}
 $$
 \max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) \le
-    H_{\tau^*,t^*}(\tau^*,t^*)
+    h_{\tau^*,t^*}(\tau^*,t^*)
     + \ell^p_{\tau^*,t^*}(\hat{\fullAncestralStateCategories},\tau,\hat{t})
 $$
 using Gibbs's inequality
 $$
-H_{\tau^*,t^*}(\tau,t) \le H_{\tau^*,t^*}(\tau^*,t^*)
+h_{\tau^*,t^*}(\tau,t) \le h_{\tau^*,t^*}(\tau^*,t^*)
 $$
 and
 $$
@@ -229,7 +229,7 @@ $$
 Similarly, we have a lower bound as
 $$
 \max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) \ge
-    H_{\tau^*,t^*}(\tau,\hat{t})
+    h_{\tau^*,t^*}(\tau,\hat{t})
     + \ell^p_{\tau^*,t^*}(\hat{\fullAncestralStateCategories},\tau,\hat{t}).
 $$
 
@@ -279,29 +279,29 @@ Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed
 \begin{tabular}{|l|l|l|}
 \multicolumn{3}{c}{Classical}\\
     \hline
-$\sitePattern_j$   &$P(\sitePattern_j|\tau_1,t^*)$&$P(\sitePattern_j|\tau_2,t^*)$\\
+$\siteSplit_j$   &$P(\alignmentColumn=\siteSplit_j|\tau_1,t^*)$&$P(\alignmentColumn=\siteSplit_j|\tau_2,t^*)$\\
     \hline
-0000&$1+x^2+y^2+4xy^2+x^2y^2$&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
-0001&$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
-0010&$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
-0100&$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
-1000&$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
-0011&$1-x^2-y^2+x^2y^2$&$1+2xy-2xy^2-x^2y-y^3+x^2y^2$\\
-0101&$1+x^2+y^2-4xy^2+x^2y^2$&$1-2xy-2xy^2+x^2y+y^3+x^2y^2$\\
-1001&$1-x^2-y^2+x^2y^2$&$1-2xy+2xy^2-x^2y-y^3+x^2y^2$\\
+    $\emptyset$&$1+x^2+y^2+4xy^2+x^2y^2$&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
+    $\{1\}$    &$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
+    $\{2\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
+    $\{3\}$    &$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
+    $\{1,2\}$  &$1-x^2-y^2+x^2y^2$&$1+2xy-2xy^2-x^2y-y^3+x^2y^2$\\
+    $\{1,3\}$  &$1+x^2+y^2-4xy^2+x^2y^2$&$1-2xy-2xy^2+x^2y+y^3+x^2y^2$\\
+    $\{2,3\}$  &$1-x^2-y^2+x^2y^2$&$1-2xy+2xy^2-x^2y-y^3+x^2y^2$\\
+    $\{1,2,3\}$&$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
     \hline
 \multicolumn{3}{c}{Modified}\\
     \hline
-$\sitePattern_j$   &$P(\sitePattern_j|\tau_1,t)$&$P(\sitePattern_j|\tau_2,t)$\\
+$\siteSplit_j$   &$P(\alignmentColumn=\siteSplit_j|\tau_1,t)$&$P(\alignmentColumn=\siteSplit_j|\tau_2,t)$\\
     \hline
-0000&$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
-0001&$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
-0010&$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
-0100&$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
-1000&$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
-0011&$1-x^2-y^2+x^2y^2$&$1+2xy-2xyw-x^2w-y^2w+x^2y^2$\\
-0101&$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
-1001&$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
+    $\emptyset$&$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
+    $\{1\}$    &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
+    $\{2\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
+    $\{3\}$    &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
+    $\{1,2\}$  &$1-x^2-y^2+x^2y^2$&$1+2xy-2xyw-x^2w-y^2w+x^2y^2$\\
+    $\{1,3\}$  &$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
+    $\{2,3\}$  &$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
+    $\{1,2,3\}$&$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
     \hline
 \end{tabular}
 \caption{Site pattern probabilities.
@@ -312,82 +312,93 @@ All values are multiplied by $1/8$.}
 \begin{table}
 \centering
 \begin{tabular}{|l|ll|}
-\multicolumn{3}{c}{$P(\ancestralStateCategory_j|\sitePattern_j,\tau_1,t)$}\\
-\hline
-& \multicolumn{2}{|c|}{$\ancestralStateCategory_j$}\\
+    \multicolumn{3}{c}{$\tau=\tau_1$}\\
     \hline
-$\sitePattern_j$    &00                              &01\\
+    $\siteSplit_j$    & $\ancestralStateCategory_j$ & $P(\ancestralStateColumn\in\ancestralStateCategory_j|\alignmentColumn=\siteSplit_j,\tau,t)$\\
     \hline
-0000&$(1+x)^2   (1+w)(1+y)^{2*}$          &$(1+x)^2   (1-w)(1-y)^2$\\
-0001&$(1+x)^2   (1+w)(1+y)(1-y)^*$        &$(1+x)^2   (1-w)(1+y)(1-y)$\\
-0010&$(1+x)^2   (1+w)(1+y)(1-y)^*$        &$(1+x)^2   (1-w)(1+y)(1-y)$\\
-0100&$(1+x)(1-x)(1+w)(1+y)^{2*}$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
-1000&$(1+x)(1-x)(1+w)(1+y)^{2*}$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
-0011&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$&$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-0101&$(1+x)^2   (1+w)(1-y)^{2\ddagger}$   &$(1+x)^2   (1-w)(1+y)^{2\ddagger}$\\
-1001&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$&$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
+    $\emptyset$&$\{\emptyset\}$&$(1+x)^2   (1+w)(1+y)^2$\\
+     $\{1\}$    &$\{\emptyset\}$&$(1+x)(1-x)(1+w)(1+y)^2$\\
+     $\{2\}$    &$\{\emptyset\}$&$(1+x)(1-x)(1+w)(1+y)^2$\\
+     $\{3\}$    &$\{\emptyset\}$&$(1+x)^2   (1+w)(1+y)(1-y)$\\
+    $\{1,2\}$  &$\{\emptyset,\{1,2,3\}\}$&$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+    $\{1,3\}$  &$\{\emptyset,\{2\}, \{1,2\}\}$&
+    $\left\{\begin{array}{l}
+                    (1+x)^2   (1+w)(1-y)^2\\
+                    (1+x)^2   (1-w)(1+y)^2\\
+                    (1-x)^2   (1+w)(1+y)^2
+                \end{array}\right.$\\
+     $\{2,3\}$  &$\{\emptyset,\{1,2,3\}\}$&$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+    $\{1,2,3\}$&$\{\emptyset\}$&$(1+x)^2   (1+w)(1+y)(1-y)$\\
     \hline
+    \multicolumn{3}{c}{$\tau=\tau_2$}\\
     \hline
-&10                           &11\\
+    $\siteSplit_j$    & $\ancestralStateCategory_j$ & $P(\ancestralStateColumn\in\ancestralStateCategory_j|\alignmentColumn=\siteSplit_j,\tau,t)$\\
     \hline
-0000&$(1-x)^2   (1-w)(1+y)^2$     &$(1-x)^2   (1+w)(1-y)^2$\\
-0001&$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-0010&$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-0100&$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
-1000&$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
-0011&$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$\\
-0101&$(1-x)^2   (1-w)(1-y)^2$     &$(1-x)^2   (1+w)(1+y)^{2\ddagger}$\\
-1001&$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$\\
+ $\emptyset$       &$\{\emptyset\}$&$(1+x)^2   (1+w)(1+y)^2$\\
+    $\{1\}$          &$\{\emptyset,\{1\}\}$&
+    $\left\{\begin{array}{l}
+                        (1+x)(1-x)(1+w)(1+y)^2\\
+                        (1+x)^2   (1-w)(1+y)(1-y)
+                    \end{array}\right.$\\
+      $\{2\}$          &$\{\emptyset,\{1\}\}$&
+    $\left\{\begin{array}{l}
+                    (1+x)^2   (1+w)(1+y)(1-y)\\
+                    (1+x)(1-x)(1-w)(1+y)^2
+                    \end{array}\right.$\\
+      $\{3\}$          &$\{\emptyset,\{2\}\}$&
+    $\left\{\begin{array}{l}
+                    (1+x)(1-x)(1+w)(1+y)^2\\
+                    (1+x)^2   (1-w)(1+y)(1-y)
+                    \end{array}\right.$\\
+     $\{1,2\}$         &$\{\emptyset,\{2\},\{1,2\}\}$&
+    $\left\{\begin{array}{l}
+                    (1+x)(1-x)(1+w)(1+y)(1-y)\\
+                    (1+x)^2   (1-w)(1+y)^2\\
+                    (1+x)(1-x)(1+w)(1+y)(1-y)
+                    \end{array}\right.$\\
+     $\{1,3\}$         &$\{\emptyset,\{1\},\{2\},\{1,2\}\}$&
+    $\left\{\begin{array}{l}
+                    (1+x)^2   (1+w)(1-y)^2\\
+                    (1+x)(1-x)(1-w)(1+y)(1-y)\\
+                    (1+x)(1-x)(1-w)(1+y)(1-y)\\
+                    (1-x)^2   (1+w)(1+y)^2
+                    \end{array}\right.$\\
+      $\{2,3\}$        &$\{\emptyset,\{1\},\{2\},\{1,2\}\}$&
+    $\left\{\begin{array}{l}
+                    (1+x)(1-x)(1+w)(1+y)(1-y)\\
+                    (1-x)^2   (1-w)(1+y)^2\\
+                    (1+x)^2   (1-w)(1-y)^2\\
+                    (1+x)(1-x)(1+w)(1+y)(1-y)
+                    \end{array}\right.$\\
+     $\{1,2,3\}$       &$\{\emptyset,\{2\}\}$&
+    $\left\{\begin{array}{l}
+                    (1+x)^2   (1+w)(1+y)(1-y)\\
+                    (1+x)(1-x)(1-w)(1+y)^2
+                    \end{array}\right.$\\
     \hline
-    \multicolumn{3}{c}{$P(\ancestralStateCategory_j|\sitePattern_j,\tau_2,t)$}\\
-\hline
-& \multicolumn{2}{|c|}{$\ancestralStateCategory_j$}\\
-    \hline
-$\sitePattern_j$    &00                              &01\\
-    \hline
-0000&$(1+x)^2   (1+w)(1+y)^{2*}$           &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-0001&$(1+x)^2   (1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)(1-x)(1-w)(1+y)^{2\ddagger}$\\
-0010&$(1+x)(1-x)(1+w)(1+y)^{2\ddagger}$    &$(1+x)^2   (1-w)(1+y)(1-y)^{\ddagger}$\\
-0100&$(1+x)^2   (1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)(1-x)(1-w)(1-y)^2$\\
-1000&$(1+x)(1-x)(1+w)(1+y)^{2\ddagger}$    &$(1-x)^2   (1-w)(1+y)(1-y)$\\
-0011&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)^2   (1-w)(1+y)^{2\ddagger}$\\
-0101&$(1+x)^2   (1+w)(1-y)^{2\ddagger}$    &$(1+x)(1-x)(1-w)(1+y)(1-y)^{\ddagger}$\\
-1001&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$&$(1-x)^2   (1-w)(1+y)^{2\ddagger}$\\
-    \hline
-    \hline
-&10                           &11\\
-    \hline
-0000&$(1+x)(1-x)(1-w)(1+y)(1-y)$             &$(1-x)^2   (1+w)(1-y)^2$\\
-0001&$(1+x)(1-x)(1-w)(1-y)^2$                &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-0010&$(1-x)^2   (1-w)(1+y)(1-y)$             &$(1+x)(1-x)(1+w)(1-y)^2$\\
-0100&$(1+x)(1-x)(1-w)(1+y)^{2\ddagger}$      &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-1000&$(1+x)^2   (1-w)(1+y)(1-y)^{\ddagger}$  &$(1+x)(1-x)(1+w)(1-y)^2$\\
-0011&$(1-x)^2   (1-w)(1-y)^2$                &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$\\
-0101&$(1+x)(1-x)(1-w)(1+y)(1-y)^{\ddagger}$  &$(1-x)^2   (1+w)(1+y)^{2\ddagger}$\\
-1001&$(1+x)^2   (1-w)(1-y)^{2\ddagger}$      &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$\\
-\hline
 \end{tabular}
-\caption{Likelihood calculations for all site patterns and internal states of Farris topology.
-Maxima determined row-wise (i.e., by site pattern).
+\caption{Likelihood calculations for all site patterns and ancestral state categories.
 All values multiplied by $1/32$.
-Key: $^*$ unique maximum value corresponding to unique internal state; $^\dagger$ unique maximum value corresponding to multiple internal states; $^\ddagger$ multiple maximum values corresponding to multiple internal states.}
+Likelihoods with multiple entries will have maxima determined by unknown branch length parameters.}
 \label{tab:likelihoods}
 \end{table}
 
 \subsubsection{Upper bound for Farris partial likelihood}
 
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
-To obtain an upper bound for the Farris partial likelihood---the terms in the top half of Table~\ref{tab:likelihoods}---we use the term $(1+x)^2(1+w)(1+y)^2$ for the $0101$ site pattern.
-Since all cases have a $(1+x)^2$ term except $\{0100, 1000, 0011, 1001\}$, and all cases except $\{0001, 0010, 0011, 1001\}$ have a $(1+y)^2$, we can add and subtract the $\log$ of these terms weighted by each of their generating probabilities.
+To obtain an upper bound for the Farris partial likelihood---the terms in the top half of Table~\ref{tab:likelihoods}---we use the term $(1+x)^2(1+w)(1+y)^2$ for the $\{1,3\}$ split.
+Since all cases have a $(1+x)^2$ term except $\{\{1\}, \{2\}, \{1,2\}, \{2,3\}\}$, and all cases except $\{\{3\}, \{1,2\}, \{2,3\}, \{1,2,3\}\}$ have a $(1+y)^2$, we can add and subtract the $\log$ of these terms weighted by each of their generating probabilities.
 In other words, define
 \begin{align*}
-    a_{xy} &= P(0100|\tau=\tau_1,t=\{x,y,y\}) + P(1000|\tau=\tau_1,t=\{x,y,y\}) \\
-           &\qquad + P(0011|\tau=\tau_1,t=\{x,y,y\}) + P(1001|\tau=\tau_1,t=\{x,y,y\})
+    a_{xy} &= P(\alignmentColumn=\{1\}|\tau=\tau_1,t=\{x,y,y\})
+    +        P(\alignmentColumn=\{2\}|\tau=\tau_1,t=\{x,y,y\}) \\
+    &\qquad + P(\alignmentColumn=\{1,2\}|\tau=\tau_1,t=\{x,y,y\})
+    + P(\alignmentColumn=\{2,3\}|\tau=\tau_1,t=\{x,y,y\})
 \end{align*}
 and
 \begin{align*}
-    b_{xy} &= P(1000|\tau=\tau_1,t=\{x,y,y\}) + P(0010|\tau=\tau_1,t=\{x,y,y\}) \\
-           &\qquad + P(0011|\tau=\tau_1,t=\{x,y,y\}) + P(1001|\tau=\tau_1,t=\{x,y,y\}).
+    b_{xy} &= P(\alignmentColumn=\{3\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{1,2\}|\tau=\tau_1,t=\{x,y,y\}) \\
+           &\qquad + P(\alignmentColumn=\{2,3\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{1,2,3\}|\tau=\tau_1,t=\{x,y,y\}).
 \end{align*}
 Then the ancestral state maximizing the likelihood is $00$ for each site pattern and the partial likelihood is bounded above
 \begin{align*}
@@ -403,12 +414,12 @@ where $a_{xy}$ and $b_{xy}$ are functions of the true generating branch paramete
 We construct a similar lower bound on the Felsenstein partial likelihood, though here we replace all $(1+w)$ terms with $(1-w)$.
 Let
 \begin{align*}
-    c_{xy} &= P(0001|\tau=\tau_1,t=\{x,y,y\}) + P(0010|\tau=\tau_1,t=\{x,y,y\}) \\
-           &\qquad + P(0100|\tau=\tau_1,t=\{x,y,y\}) + P(1000|\tau=\tau_1,t=\{x,y,y\})
+    c_{xy} &= P(\alignmentColumn=\{1\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{2\}|\tau=\tau_1,t=\{x,y,y\}) \\
+           &\qquad + P(\alignmentColumn=\{3\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{1,2,3\}|\tau=\tau_1,t=\{x,y,y\})
 \end{align*}
 and
 $$
-    d_{xy} = P(0101|\tau=\tau_1,t=\{x,y,y\}) + P(1001|\tau=\tau_1,t=\{x,y,y\}).
+d_{xy} = P(\alignmentColumn=\{1,3\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{2,3\}|\tau=\tau_1,t=\{x,y,y\}).
 $$
 The lower bounds on the likelihoods in this case take one of six forms:
 Since the maxima for pairs of lower bounds above each have a symmetry in $x$ and $y$, they are bounded below by one of
@@ -452,12 +463,12 @@ The values of $(x', y', w')$ maximizing $L^{p,1}_{\tau_1,\tau_2}(c_{xy}, d_{xy})
 
 We want to find values for $\{x,y\}$ where
 $$
-H_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) + L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \ge H_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}).
+h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) + L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \ge h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}).
 $$
 Since this is a single inequality in two variables, we can plot it analytically; we need the region where
 \begin{align*}
-    0 &\ge H_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}) \\
-      &\qquad - H_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) - L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \\
+    0 &\ge h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}) \\
+      &\qquad - h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) - L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \\
 %
       &\qquad = 2(1+x^2-y^2-x^2y^2)\log(1+x^2-y^2-x^2y^2) \\
       &\qquad + 2(1-x^2+y^2-x^2y^2)\log(1-x^2+y^2-x^2y^2) \\
@@ -556,7 +567,7 @@ L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}) \approx -2.17803560694157
 $$
 and
 $$
-H_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\})  \approx -2.04470918734314.
+h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\})  \approx -2.04470918734314.
 $$
 Computing the upper bound yields
 $$
@@ -577,7 +588,7 @@ L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \approx -2.07968569223991
 $$
 and
 $$
-H_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) \approx -2.07748833719921.
+h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) \approx -2.07748833719921.
 $$
 The lower bound in this case becomes
 $$
