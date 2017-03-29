@@ -214,7 +214,7 @@ Our approach will be to seek bounds for the terms inside the maximization in \eq
 \end{equation}
 We obtain an upper bound for the joint maximum of \eqref{eq:partial-likelihood}
 $$
-\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) \le
+\max_{t,\fullAncestralStateCategories} \ \ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) \le
     h_{\tau^*,t^*}(\tau^*,t^*)
     + \ell^p_{\tau^*,t^*}(\hat{\fullAncestralStateCategories},\tau,\hat{t})
 $$
@@ -224,11 +224,11 @@ h_{\tau^*,t^*}(\tau,t) \le h_{\tau^*,t^*}(\tau^*,t^*)
 $$
 and
 $$
-\{\hat{\fullAncestralStateCategories},\hat{t}\} = \arg\max_{\{\fullAncestralStateCategories,t\}} \ \ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t).
+\{\hat{t},\hat{\fullAncestralStateCategories}\} = \arg\max_{t,\fullAncestralStateCategories} \ \ell^p_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t).
 $$
 Similarly, we have a lower bound as
 $$
-\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) \ge
+\max_{t,\fullAncestralStateCategories} \ \ell_{\tau^*,t^*}(\fullAncestralStateCategories,\tau,t) \ge
     h_{\tau^*,t^*}(\tau,\hat{t})
     + \ell^p_{\tau^*,t^*}(\hat{\fullAncestralStateCategories},\tau,\hat{t}).
 $$
@@ -281,27 +281,27 @@ Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed
     \hline
 $\siteSplit_j$   &$P(\alignmentColumn=\siteSplit_j|\tau_1,t^*)$&$P(\alignmentColumn=\siteSplit_j|\tau_2,t^*)$\\
     \hline
-    $\emptyset$&$1+x^2+y^2+4xy^2+x^2y^2$&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
-    $\{1\}$    &$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
-    $\{2\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
-    $\{3\}$    &$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
-    $\{1,2\}$  &$1-x^2-y^2+x^2y^2$&$1+2xy-2xy^2-x^2y-y^3+x^2y^2$\\
-    $\{1,3\}$  &$1+x^2+y^2-4xy^2+x^2y^2$&$1-2xy-2xy^2+x^2y+y^3+x^2y^2$\\
-    $\{2,3\}$  &$1-x^2-y^2+x^2y^2$&$1-2xy+2xy^2-x^2y-y^3+x^2y^2$\\
-    $\{1,2,3\}$&$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
+    $\{\emptyset\}$&$1+x^2+y^2+4xy^2+x^2y^2$&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
+    $\{1\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
+    $\{2\}$        &$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
+    $\{3\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
+    $\{1,2\}$      &$1-x^2-y^2+x^2y^2$&$1+2xy-2xy^2-x^2y-y^3+x^2y^2$\\
+    $\{1,3\}$      &$1+x^2+y^2-4xy^2+x^2y^2$&$1-2xy-2xy^2+x^2y+y^3+x^2y^2$\\
+    $\{2,3\}$      &$1-x^2-y^2+x^2y^2$&$1-2xy+2xy^2-x^2y-y^3+x^2y^2$\\
+    $\{1,2,3\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
     \hline
 \multicolumn{3}{c}{Modified}\\
     \hline
 $\siteSplit_j$   &$P(\alignmentColumn=\siteSplit_j|\tau_1,t)$&$P(\alignmentColumn=\siteSplit_j|\tau_2,t)$\\
     \hline
-    $\emptyset$&$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
-    $\{1\}$    &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
-    $\{2\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
-    $\{3\}$    &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
-    $\{1,2\}$  &$1-x^2-y^2+x^2y^2$&$1+2xy-2xyw-x^2w-y^2w+x^2y^2$\\
-    $\{1,3\}$  &$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
-    $\{2,3\}$  &$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
-    $\{1,2,3\}$&$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
+    $\{\emptyset\}$&$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
+    $\{1\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
+    $\{2\}$        &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
+    $\{3\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
+    $\{1,2\}$      &$1-x^2-y^2+x^2y^2$&$1+2xy-2xyw-x^2w-y^2w+x^2y^2$\\
+    $\{1,3\}$      &$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
+    $\{2,3\}$      &$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
+    $\{1,2,3\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
     \hline
 \end{tabular}
 \caption{Site pattern probabilities.
@@ -316,65 +316,111 @@ All values are multiplied by $1/8$.}
     \hline
     $\siteSplit_j$    & $\ancestralStateCategory_j$ & $P(\ancestralStateColumn\in\ancestralStateCategory_j|\alignmentColumn=\siteSplit_j,\tau,t)$\\
     \hline
-    $\emptyset$&$\{\emptyset\}$&$(1+x)^2   (1+w)(1+y)^2$\\
-     $\{1\}$    &$\{\emptyset\}$&$(1+x)(1-x)(1+w)(1+y)^2$\\
-     $\{2\}$    &$\{\emptyset\}$&$(1+x)(1-x)(1+w)(1+y)^2$\\
-     $\{3\}$    &$\{\emptyset\}$&$(1+x)^2   (1+w)(1+y)(1-y)$\\
-    $\{1,2\}$  &$\{\emptyset,\{1,2,3\}\}$&$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
-    $\{1,3\}$  &$\{\emptyset,\{2\}, \{1,2\}\}$&
+    $\{\emptyset\}$&
+    $\{\emptyset\}$&
+    $(1+x)^2   (1+w)(1+y)^2$\\
+     $\{1\}$    &
+    $\{\emptyset\}$&
+    $(1+x)(1-x)(1+w)(1+y)^2$\\
+     $\{2\}$    &
+    $\{\emptyset\}$&
+    $(1+x)(1-x)(1+w)(1+y)^2$\\
+     $\{3\}$    &
+    $\{\emptyset\}$&
+    $(1+x)^2   (1+w)(1+y)(1-y)$\\
+    $\{1,2\}$  &
+    $\{\{\emptyset\},\{1,2,3\}\}$&
+    $(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+    $\{1,3\}$  &
     $\left\{\begin{array}{l}
+                    \{\emptyset\}\\
+                    \{2\}\\
+                    \{1,2\}
+                \end{array}\right.$&
+    $\begin{array}{l}
                     (1+x)^2   (1+w)(1-y)^2\\
                     (1+x)^2   (1-w)(1+y)^2\\
                     (1-x)^2   (1+w)(1+y)^2
-                \end{array}\right.$\\
-     $\{2,3\}$  &$\{\emptyset,\{1,2,3\}\}$&$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
-    $\{1,2,3\}$&$\{\emptyset\}$&$(1+x)^2   (1+w)(1+y)(1-y)$\\
+                \end{array}$\\
+    $\{2,3\}$  &
+                $\{\{\emptyset\},\{1,2,3\}\}$&
+                $(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+    $\{1,2,3\}$&
+                $\{\emptyset\}$&
+                $(1+x)^2   (1+w)(1+y)(1-y)$\\
     \hline
     \multicolumn{3}{c}{$\tau=\tau_2$}\\
     \hline
     $\siteSplit_j$    & $\ancestralStateCategory_j$ & $P(\ancestralStateColumn\in\ancestralStateCategory_j|\alignmentColumn=\siteSplit_j,\tau,t)$\\
     \hline
- $\emptyset$       &$\{\emptyset\}$&$(1+x)^2   (1+w)(1+y)^2$\\
-    $\{1\}$          &$\{\emptyset,\{1\}\}$&
+    $\{\emptyset\}$       &$\{\emptyset\}$&$(1+x)^2   (1+w)(1+y)^2$\\
+    $\{1\}$          &
     $\left\{\begin{array}{l}
+                    \{\emptyset\}\\
+                    \{1\}
+                \end{array}\right.$&
+    $\begin{array}{l}
                         (1+x)(1-x)(1+w)(1+y)^2\\
                         (1+x)^2   (1-w)(1+y)(1-y)
-                    \end{array}\right.$\\
-      $\{2\}$          &$\{\emptyset,\{1\}\}$&
+                    \end{array}$\\
+      $\{2\}$          &
     $\left\{\begin{array}{l}
+                    \{\emptyset\}\\
+                    \{1\}
+                \end{array}\right.$&
+    $\begin{array}{l}
                     (1+x)^2   (1+w)(1+y)(1-y)\\
                     (1+x)(1-x)(1-w)(1+y)^2
-                    \end{array}\right.$\\
-      $\{3\}$          &$\{\emptyset,\{2\}\}$&
+                    \end{array}$\\
+      $\{3\}$          &
     $\left\{\begin{array}{l}
+                    \{\emptyset\}\\
+                    \{2\}
+                \end{array}\right.$&
+    $\begin{array}{l}
                     (1+x)(1-x)(1+w)(1+y)^2\\
                     (1+x)^2   (1-w)(1+y)(1-y)
-                    \end{array}\right.$\\
-     $\{1,2\}$         &$\{\emptyset,\{2\},\{1,2\}\}$&
+                    \end{array}$\\
+     $\{1,2\}$         &
     $\left\{\begin{array}{l}
+                    \{\{\emptyset\},\{1,2\}\}\\
+                    \{2\}
+                \end{array}\right.$&
+    $\begin{array}{l}
                     (1+x)(1-x)(1+w)(1+y)(1-y)\\
-                    (1+x)^2   (1-w)(1+y)^2\\
-                    (1+x)(1-x)(1+w)(1+y)(1-y)
-                    \end{array}\right.$\\
-     $\{1,3\}$         &$\{\emptyset,\{1\},\{2\},\{1,2\}\}$&
+                    (1+x)^2   (1-w)(1+y)^2
+                    \end{array}$\\
+     $\{1,3\}$         &
     $\left\{\begin{array}{l}
+                    \{\emptyset\}\\
+                    \{\{1\},\{2\}\}\\
+                    \{1,2\}
+                \end{array}\right.$&
+    $\begin{array}{l}
                     (1+x)^2   (1+w)(1-y)^2\\
                     (1+x)(1-x)(1-w)(1+y)(1-y)\\
-                    (1+x)(1-x)(1-w)(1+y)(1-y)\\
                     (1-x)^2   (1+w)(1+y)^2
-                    \end{array}\right.$\\
-      $\{2,3\}$        &$\{\emptyset,\{1\},\{2\},\{1,2\}\}$&
+                    \end{array}$\\
+      $\{2,3\}$        &
     $\left\{\begin{array}{l}
+                    \{\{\emptyset\},\{1,2\}\}\\
+                    \{1\}\\
+                    \{2\}
+                \end{array}\right.$&
+    $\begin{array}{l}
                     (1+x)(1-x)(1+w)(1+y)(1-y)\\
                     (1-x)^2   (1-w)(1+y)^2\\
-                    (1+x)^2   (1-w)(1-y)^2\\
-                    (1+x)(1-x)(1+w)(1+y)(1-y)
-                    \end{array}\right.$\\
-     $\{1,2,3\}$       &$\{\emptyset,\{2\}\}$&
+                    (1+x)^2   (1-w)(1-y)^2
+                    \end{array}$\\
+     $\{1,2,3\}$       &
     $\left\{\begin{array}{l}
+                    \{\emptyset\}\\
+                    \{2\}
+                \end{array}\right.$&
+    $\begin{array}{l}
                     (1+x)^2   (1+w)(1+y)(1-y)\\
                     (1+x)(1-x)(1-w)(1+y)^2
-                    \end{array}\right.$\\
+                    \end{array}$\\
     \hline
 \end{tabular}
 \caption{Likelihood calculations for all site patterns and ancestral state categories.
@@ -386,225 +432,186 @@ Likelihoods with multiple entries will have maxima determined by unknown branch 
 \subsubsection{Upper bound for Farris partial likelihood}
 
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
-To obtain an upper bound for the Farris partial likelihood---the terms in the top half of Table~\ref{tab:likelihoods}---we use the term $(1+x)^2(1+w)(1+y)^2$ for the $\{1,3\}$ split.
-Since all cases have a $(1+x)^2$ term except $\{\{1\}, \{2\}, \{1,2\}, \{2,3\}\}$, and all cases except $\{\{3\}, \{1,2\}, \{2,3\}, \{1,2,3\}\}$ have a $(1+y)^2$, we can add and subtract the $\log$ of these terms weighted by each of their generating probabilities.
-In other words, define
-\begin{align*}
-    a_{xy} &= P(\alignmentColumn=\{1\}|\tau=\tau_1,t=\{x,y,y\})
-    +        P(\alignmentColumn=\{2\}|\tau=\tau_1,t=\{x,y,y\}) \\
-    &\qquad + P(\alignmentColumn=\{1,2\}|\tau=\tau_1,t=\{x,y,y\})
-    + P(\alignmentColumn=\{2,3\}|\tau=\tau_1,t=\{x,y,y\})
-\end{align*}
-and
-\begin{align*}
-    b_{xy} &= P(\alignmentColumn=\{3\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{1,2\}|\tau=\tau_1,t=\{x,y,y\}) \\
-           &\qquad + P(\alignmentColumn=\{2,3\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{1,2,3\}|\tau=\tau_1,t=\{x,y,y\}).
-\end{align*}
-Then the ancestral state maximizing the likelihood is $00$ for each site pattern and the partial likelihood is bounded above
+Define, e.g., $p_0 = P(\alignmentColumn=\{\emptyset\}|\tau=\tau_1,t=\{x,y,y\})$.
+Let
+$$
+    a_{0} = p_{13},
+$$
+$$
+    a_{1} = p_1+p_2+p_{12}+p_{23},
+$$
+$$
+    a_{2} = p_3+p_{12}+p_{23}+p_{123},
+$$
+$$
+    a_{3} = p_1+p_3+p_{12}+p_{23},
+$$
+$$
+    a_{4} = p_2+p_{12}+p_{23}+p_{123}.
+$$
+Then the full likelihood is bounded above by one of three functions:
 \begin{align*}
     & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,\{x',y',w'\}) \\
-    &\qquad \le (2-a_{xy})\log(1+x')+a_{xy}\log(1-x')+(2-b_{xy})\log(1+y')+b_{xy}\log(1-y')+\log(1+w') \\
-    &\qquad \le (2-a_{xy})\log(2-a_{xy})+a_{xy}\log(a_{xy})+(2-b_{xy})\log(2-b_{xy})+b_{xy}\log(b_{xy})+\log(2) \\
-    &\qquad \triangleq L^p_{\tau_1,\tau_1}(a_{xy}, b_{xy})
+    &\qquad \le (3-a_{1})\log(1+x')+(a_{1}+a_{3})\log(1-x')\\
+    &\qquad \qquad +(3-a_{2})\log(1+y')+(a_{2}+a_{4})\log(1-y')\\
+    &\qquad \qquad +(1-a_{0})\log(1+w')+a_{0}\log(1-w')+p_{0}\log(4)\\
+    &\qquad \le (3-a_{1})\log\frac{2(3-a_{1})}{3+a_{3}}+(a_{1}+a_{3})\log\frac{2(a_{1}+a_{3})}{3+a_{3}}\\
+    &\qquad \qquad +(3-a_{2})\log\frac{2(3-a_{2})}{3+a_{4}}+(a_{2}+a_{4})\log\frac{2(a_{2}+a_{4})}{3+a_{4}}\\
+    &\qquad \qquad +(1-a_{0})\log(1+w')+a_{0}\log(1-w')+p_{0}\log(4)\\
+    &\qquad \triangleq L^{p,1}_{\tau_1,\tau_1}(\mathbf{a}_{xy});
 \end{align*}
-where $a_{xy}$ and $b_{xy}$ are functions of the true generating branch parameters $\{x,y\}$.
+\begin{align*}
+    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,\{x',y',w'\}) \\
+    &\qquad \le (3-a_{1}-2a_{0})\log(1+x')+(a_{1}+a_{3}+2a_{0})\log(1-x')\\
+    &\qquad \qquad +(3-a_{2})\log(1+y')+(a_{2}+a_{4})\log(1-y')+\log(1+w')+p_{0}\log(4)\\
+    &\qquad \le (3-a_{1}-2a_{0})\log\frac{2(3-a_{1}-2a_{0})}{3+a_{3}}+(a_{1}+a_{3}+2a_{0})\log\frac{2(a_{1}+a_{3}+2a_{0})}{3+a_{3}}\\
+    &\qquad \qquad +(3-a_{2})\log\frac{2(3-a_{2})}{3+a_{4}}+(a_{2}+a_{4})\log\frac{2(a_{2}+a_{4})}{3+a_{4}}\\
+    &\qquad \qquad +\log(2)+p_{0}\log(4)\\
+    &\qquad \triangleq L^{p,2}_{\tau_1,\tau_1}(\mathbf{a}_{xy});
+\end{align*}
+\begin{align*}
+    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,\{x',y',w'\}) \\
+    &\qquad \le (3-a_{1})\log(1+x')+(a_{1}+a_{3})\log(1-x')\\
+    &\qquad \qquad +(3-a_{2}-2a_{0})\log(1+y')+(a_{2}+a_{4})+2a_{0}\log(1-y')+\log(1+w')+p_{0}\log(4)\\
+    &\qquad \le (3-a_{1})\log\frac{2(3-a_{1})}{3+a_{3}}+(a_{1}+a_{3})\log\frac{2(a_{1}+a_{3})}{3+a_{3}}\\
+    &\qquad \qquad +(3-a_{2}-2a_{0})\log\frac{2(3-a_{2}-2a_{0})}{3+a_{4}}+(a_{2}+a_{4}+2a_{0})\log\frac{2(a_{2}+a_{4}+2a_{0})}{3+a_{4}}\\
+    &\qquad \qquad +\log(2)+p_{0}\log(4)\\
+    &\qquad \triangleq L^{p,3}_{\tau_1,\tau_1}(\mathbf{a}_{xy}).
+\end{align*}
+
 
 \subsubsection{Lower bound for Felsenstein partial likelihood}
 
 We construct a similar lower bound on the Felsenstein partial likelihood, though here we replace all $(1+w)$ terms with $(1-w)$.
 Let
-\begin{align*}
-    c_{xy} &= P(\alignmentColumn=\{1\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{2\}|\tau=\tau_1,t=\{x,y,y\}) \\
-           &\qquad + P(\alignmentColumn=\{3\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{1,2,3\}|\tau=\tau_1,t=\{x,y,y\})
-\end{align*}
+$$
+b_1 = p_1+p_2+p_3+p_{123}
+$$
 and
 $$
-d_{xy} = P(\alignmentColumn=\{1,3\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{2,3\}|\tau=\tau_1,t=\{x,y,y\}).
+b_2 = p_{13}+p_{23}.
 $$
-The lower bounds on the likelihoods in this case take one of six forms:
-Since the maxima for pairs of lower bounds above each have a symmetry in $x$ and $y$, they are bounded below by one of
-\textbf{TODO}: ancestral states where these likelihoods occur
 
+\textbf{TODO}: ancestral states where these likelihoods occur
+Since the maxima for pairs of lower bounds above each have a symmetry in $x$ and $y$, they are bounded below by one of
 \begin{align*}
     & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,\{x',y',w'\}) \\
-    &\qquad \ge 2\log(1+x')+(2-c_{xy}-2d_{xy})\log(1+y')+(c_{xy}+2d_{xy})\log(1-y')+\log(1-w') \\
-    &\qquad \ge 2\log(2)+(2-c_{xy}-2d_{xy})\log(2-c_{xy}-2d_{xy})+(c_{xy}+2d_{xy})\log(c_{xy}+2d_{xy}) \\
-    &\qquad \triangleq L^{p,1}_{\tau_1,\tau_2}(c_{xy}, d_{xy}),
+    &\qquad \ge 2\log(1+x')+(2-b_1-2b_2)\log(1+y')+(b_1+2b_2)\log(1-y')+\log(1-w'),
 \end{align*}
 \begin{align*}
     & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,\{x',y',w'\}) \\
-    &\qquad \ge (2-2d_{xy})\log(1+x')+2d_{xy}\log(1-x') + (2-c_{xy})\log(1+y')+c_{xy}\log(1-y')+\log(1-w') \\
-    &\qquad \ge (2-2d_{xy})\log(2-2d_{xy})+2d_{xy}\log(2d_{xy}) + (2-c_{xy})\log(2-c_{xy})+c_{xy}\log(c_{xy}) \\
-    &\qquad \triangleq L^{p,2}_{\tau_1,\tau_2}(c_{xy}, d_{xy})
+    &\qquad \ge (2-2b_2)\log(1+x')+2b_2\log(1-x') + (2-b_1)\log(1+y')+b_1\log(1-y')+\log(1-w')
 \end{align*}
 or
 \begin{align*}
     & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,\{x',y',w'\}) \\
-    &\qquad \ge (2-d_{xy})\log(1+x')+d_{xy}\log(1-x') + (2-c_{xy}-d_{xy})\log(1+y')+(c_{xy}+d_{xy})\log(1-y')+\log(1-w') \\
-    &\qquad \ge (2-d_{xy})\log(2-d_{xy})+d_{xy}\log(d_{xy}) + (2-c_{xy}-d_{xy})\log(2-c_{xy}-d_{xy})+(c_{xy}+d_{xy})\log(c_{xy}+d_{xy}) \\
-    &\qquad \triangleq L^{p,3}_{\tau_1,\tau_2}(c_{xy}, d_{xy})
+    &\qquad \ge (2-b_2)\log(1+x')+b_2\log(1-x') + (2-b_1-b_2)\log(1+y')+(b_1+b_2)\log(1-y')+\log(1-w')
 \end{align*}
-where $c_{xy}$ and $d_{xy}$ are also functions of the true generating branch parameters $\{x,y\}$.
-
-\textbf{Claim to prove}:
+where $b_1$ and $b_2$ are also functions of the true generating branch parameters $\{x,y\}$.
+Taking the maximum of each yields
 $$
-L^{p,1}_{\tau_1,\tau_2}(c_{xy}, d_{xy}) \ge L^{p,2}_{\tau_1,\tau_2}(c_{xy}, d_{xy})
+    L^{p,1}_{\tau_1,\tau_2}(b_1, b_2) \triangleq 2\log(2)+(2-b_1-2b_2)\log(2-b_1-2b_2)+(b_1+2b_2)\log(b_1+2b_2),
+$$
+$$
+    L^{p,2}_{\tau_1,\tau_2}(b_1, b_2) \triangleq (2-2b_2)\log(2-2b_2)+2b_2\log(2b_2) + (2-b_1)\log(2-b_1)+b_1\log(b_1)
 $$
 and
 $$
-L^{p,1}_{\tau_1,\tau_2}(c_{xy}, d_{xy}) \ge L^{p,3}_{\tau_1,\tau_2}(c_{xy}, d_{xy}).
+    L^{p,3}_{\tau_1,\tau_2}(b_1, b_2) \triangleq (2-b_2)\log(2-b_2)+b_2\log(b_2) + (2-b_1-b_2)\log(2-b_1-b_2)+(b_1+b_2)\log(b_1+b_2).
+$$
+
+\textbf{Claim to prove}:
+$$
+L^{p,1}_{\tau_1,\tau_2}(b_1, b_2) \ge L^{p,2}_{\tau_1,\tau_2}(b_1, b_2)
+$$
+and
+$$
+L^{p,1}_{\tau_1,\tau_2}(b_1, b_2) \ge L^{p,3}_{\tau_1,\tau_2}(b_1, b_2).
 $$
 I think we can use information theory results to show this.
 It is definitely true---will work on it.
 
-The values of $(x', y', w')$ maximizing $L^{p,1}_{\tau_1,\tau_2}(c_{xy}, d_{xy})$ are $(1, 1-c_{xy}-2d_{xy},0)$.
+The values of $(x', y', w')$ maximizing $L^{p,1}_{\tau_1,\tau_2}(b_1, b_2)$ are $(1, 1-b_1-2b_2,0)$.
 
 \subsubsection{Region of inconsistency}
 
-We want to find values for $\{x,y\}$ where
+We want to find values for $\{x,y\}$ where all of
 $$
-h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) + L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \ge h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}).
-$$
-Since this is a single inequality in two variables, we can plot it analytically; we need the region where
-\begin{align*}
-    0 &\ge h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}) \\
-      &\qquad - h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) - L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \\
-%
-      &\qquad = 2(1+x^2-y^2-x^2y^2)\log(1+x^2-y^2-x^2y^2) \\
-      &\qquad + 2(1-x^2+y^2-x^2y^2)\log(1-x^2+y^2-x^2y^2) \\
-      &\qquad + 2(1-x^2-y^2+x^2y^2)\log(1-x^2-y^2+x^2y^2) \\
-      &\qquad + (1+x^2+y^2+4xy^2+x^2y^2)\log(1+x^2+y^2+4xy^2+x^2y^2) \\
-      &\qquad + (1+x^2+y^2-4xy^2+x^2y^2)\log(1+x^2+y^2-4xy^2+x^2y^2) \\
-%
-      &\qquad + (2-a_{xy})\log(2-a_{xy})+a_{xy}\log(a_{xy})+(2-b_{xy})\log(2-b_{xy})+b_{xy}\log(b_{xy})+\log(2) \\
-%
-      &\qquad - 2(1+x^2-y^2-x^2y^2)\log(1+x'^2w'-y'^2w'-x'^2y'^2) \\
-      &\qquad - 2(1-x^2+y^2-x^2y^2)\log(1-x'^2w'+y'^2w'-x'^2y'^2) \\
-      &\qquad - (1-x^2-y^2+x^2y^2)\log(1+2x'y'-2x'y'w'-x'^2w'-y'^2w'+x'^2y'^2) \\
-      &\qquad - (1-x^2-y^2+x^2y^2)\log(1-2x'y'+2x'y'w'-x'^2w'-y'^2w'+x'^2y'^2) \\
-      &\qquad - (1+x^2+y^2+4xy^2+x^2y^2)\log(1+2x'y'+2x'y'w'+x'^2w'+y'^2w'+x'^2y'^2) \\
-      &\qquad - (1+x^2+y^2-4xy^2+x^2y^2)\log(1-2x'y'-2x'y'w'+x'^2w'+y'^2w'+x'^2y'^2) \\
-%
-      &\qquad - 2\log(2)-(2-c_{xy}-2d_{xy})\log(2-c_{xy}-2d_{xy})-(c_{xy}+2d_{xy})\log(c_{xy}+2d_{xy})
-\end{align*}
-where
-$$
-a_{xy} = b_{xy} = \frac{4-2x^2-2y^2}{8},
+h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-b_{1}-2b_{2}, 0\}) + L^{p,1}_{\tau_1,\tau_2}(b_{1},b_{2}) \ge h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p,1}_{\tau_1,\tau_1}(\mathbf{a}_{xy}),
 $$
 $$
-c_{xy} = \frac{4-4x^2y^2}{8},
-$$
-$$
-d_{xy} = \frac{2-4xy^2+2x^2y^2}{8}
+h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-b_{1}-2b_{2}, 0\}) + L^{p,1}_{\tau_1,\tau_2}(b_{1},b_{2}) \ge h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p,2}_{\tau_1,\tau_1}(\mathbf{a}_{xy})
 $$
 and
 $$
-x' = 1, \ y' = 1-c_{xy}-2d_{xy}, \ w' = 0.
+h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-b_{1}-2b_{2}, 0\}) + L^{p,1}_{\tau_1,\tau_2}(b_{1},b_{2}) \ge h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p,3}_{\tau_1,\tau_1}(\mathbf{a}_{xy})
 $$
-
-The \texttt{sage} function in listing~\ref{list:sage} will generate Fig.~\ref{fig:inconsistency-farris}.
-
-\begin{table}
-    \begin{center}
-\begin{verbatim}
-var('x,y')
-a = (4-2*x^2-2*y^2)/8
-b = (4-2*x^2-2*y^2)/8
-c = (4-4*x^2*y^2)/8
-d = (2-4*x*y^2+2*x^2*y^2)/8
-xp = 1.
-yp = 1-c-2*d
-wp = 0.
-
-inconsistency = 2*(1+x^2-y^2-x^2*y^2)*log(1+x^2-y^2-x^2*y^2) \
-    + 2*(1-x^2+y^2-x^2*y^2)*log(1-x^2+y^2-x^2*y^2) \
-    + 2*(1-x^2-y^2+x^2*y^2)*log(1-x^2-y^2+x^2*y^2) \
-    + (1+x^2+y^2+4*x*y^2+x^2*y^2)*log(1+x^2+y^2+4*x*y^2+x^2*y^2) \
-    + (1+x^2+y^2-4*x*y^2+x^2*y^2)*log(1+x^2+y^2-4*x*y^2+x^2*y^2) \
-    + (2-a)*log(2-a)+a*log(a)+(2-b)*log(2-b)+b*log(b)+log(2.) \
-    - 2*(1+x^2-y^2-x^2*y^2)*log(1+xp^2*wp-yp^2*wp-xp^2*yp^2) \
-    - 2*(1-x^2+y^2-x^2*y^2)*log(1-xp^2*wp+yp^2*wp-xp^2*yp^2) \
-    - (1-x^2-y^2+x^2*y^2)*log(1+2*xp*yp-2*xp*yp*wp-xp^2*wp-yp^2*wp+xp^2*yp^2) \
-    - (1-x^2-y^2+x^2*y^2)*log(1-2*xp*yp+2*xp*yp*wp-xp^2*wp-yp^2*wp+xp^2*yp^2) \
-    - (1+x^2+y^2+4*x*y^2+x^2*y^2)*log(1+2*xp*yp+2*xp*yp*wp+xp^2*wp+yp^2*wp+xp^2*yp^2) \
-    - (1+x^2+y^2-4*x*y^2+x^2*y^2)*log(1-2*xp*yp-2*xp*yp*wp+xp^2*wp+yp^2*wp+xp^2*yp^2) \
-    - 2*log(2.)-(2-c-2*d)*log(2-c-2*d)-(c+2*d)*log(c+2*d)
-
-incons_plot = implicit_plot(
-    inconsistency(x,y)==0,
-    (x,0,1),
-    (y,0,1),
-    axes_labels=['$x$', '$y$'],
-    title='Region of inconsistency for Farris-generating topology',
-    color='black'
-)
-\end{verbatim}
-    \end{center}
-\caption{Sage code to generate Fig.~\ref{fig:inconsistency-farris}}
-\label{list:sage}
-\end{table}
+hold.
+Since these are three inequalities in two variables, we can plot them analytically---see Fig.~\ref{fig:inconsistency-farris}.
 
 \begin{figure}
 \centering
 \includegraphics[width=.9\textwidth]{analytic-inconsistency}
 \caption{
-    Region of inconsistency.
+    Regions of inconsistency.
     Due to the looseness of the upper and lower bounds, the parameters in the top right do not necessarily indicate consistency, though all parameters in the labeled region will result in an inconsistency.
 }
 \label{fig:inconsistency-farris}
 \end{figure}
 
-\paragraph{Example}
+\paragraph{Examples}
+
+See Table~\ref{tab:examples} for parameters, bounds and true likelihood values obtained via basin hopping.
 
 Set $\{x, y\} = \{0.25, 0.25\}$.
 For a Farris zone generating topology, we have
 $$
-a_{xy} = b_{xy} = 0.46875
+L^{p,1}_{\tau_1,\tau_1}(\mathbf{a}_{xy}) \approx -2.17803560694157,
 $$
-resulting in
 $$
-L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}) \approx -2.17803560694157
+L^{p,2}_{\tau_1,\tau_1}(\mathbf{a}_{xy}) \approx -2.17803560694157
 $$
 and
 $$
-h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\})  \approx -2.04470918734314.
+L^{p,3}_{\tau_1,\tau_1}(\mathbf{a}_{xy}) \approx -2.17803560694157.
 $$
 Computing the upper bound yields
 $$
-\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,t) \le -4.22274479428471
+\max_{t,\fullAncestralStateCategories} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,t) \le -4.22274479428471
 $$
 and it remains to show that
 $$
-\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,t) \ge -4.22274479428471.
+\max_{t,\fullAncestralStateCategories} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,t) \ge -4.22274479428471.
 $$
 
 For the same generating parameters,
 $$
-c_{xy} = 0.498046875, \ d_{xy} = 0.2431640625,
+d_{xy} = 0.498046875, \ e_{xy} = 0.2431640625,
 $$
 resulting in
 $$
-L^{p,1}_{\tau_1,\tau_2}(c_{xy},d_{xy}) \approx -2.07968569223991
+L^{p,1}_{\tau_1,\tau_2}(d_{xy},e_{xy}) \approx -2.07968569223991
 $$
 and
 $$
-h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-c_{xy}-2d_{xy}, 0\}) \approx -2.07748833719921.
+h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-d_{xy}-2e_{xy}, 0\}) \approx -2.07748833719921.
 $$
 The lower bound in this case becomes
 $$
-\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,t) \ge -4.22274479428471 \ge -4.22274479428471 \ge \max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,t)
+\max_{t,\fullAncestralStateCategories} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,t) \ge -4.15717402943912
+\ge -4.22274479428471 \ge \max_{t,\fullAncestralStateCategories} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,t)
 $$
 where site patterns are generated from the Farris zone topology.
 Confirming, run \texttt{python}'s numerical optimization solver for $\{.25, .25\}$.
 Since we are computing a constrained maximization, we can find a global maximum using basin hopping, and doing so yields
 $$
-\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,t) \approx -4.5101771294218045
+\max_{t,\fullAncestralStateCategories} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,t) \approx -4.5101771294218045
 $$
 and
 $$
-\max_{\{t,\fullAncestralStateCategories\}} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,t) \approx -4.1544859851260281.
+\max_{t,\fullAncestralStateCategories} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_2,t) \approx -4.1544859851260281.
 $$
-Woohoo!
+It looks like the lower bound is tighter than the upper bound, so we may try focusing there.
 
 \section{Discussion}
 

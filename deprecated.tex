@@ -1,5 +1,125 @@
 \section{Temporarily unused text I may want later to show more general results on the likelihood estimates}
 
+\begin{align*}
+    0 &\ge h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}) \\
+      &\qquad - h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-d_{xy}-2e_{xy}, 0\}) - L^{p,1}_{\tau_1,\tau_2}(d_{xy},e_{xy}) \\
+%
+      &\qquad = 2(1+x^2-y^2-x^2y^2)\log(1+x^2-y^2-x^2y^2) \\
+      &\qquad + 2(1-x^2+y^2-x^2y^2)\log(1-x^2+y^2-x^2y^2) \\
+      &\qquad + 2(1-x^2-y^2+x^2y^2)\log(1-x^2-y^2+x^2y^2) \\
+      &\qquad + (1+x^2+y^2+4xy^2+x^2y^2)\log(1+x^2+y^2+4xy^2+x^2y^2) \\
+      &\qquad + (1+x^2+y^2-4xy^2+x^2y^2)\log(1+x^2+y^2-4xy^2+x^2y^2) \\
+%
+      &\qquad + (2-a_{xy})\log(2-a_{xy})+a_{xy}\log(a_{xy})+(2-b_{xy})\log(2-b_{xy})+b_{xy}\log(b_{xy})+\log(2) \\
+%
+      &\qquad - 2(1+x^2-y^2-x^2y^2)\log(1+x'^2w'-y'^2w'-x'^2y'^2) \\
+      &\qquad - 2(1-x^2+y^2-x^2y^2)\log(1-x'^2w'+y'^2w'-x'^2y'^2) \\
+      &\qquad - (1-x^2-y^2+x^2y^2)\log(1+2x'y'-2x'y'w'-x'^2w'-y'^2w'+x'^2y'^2) \\
+      &\qquad - (1-x^2-y^2+x^2y^2)\log(1-2x'y'+2x'y'w'-x'^2w'-y'^2w'+x'^2y'^2) \\
+      &\qquad - (1+x^2+y^2+4xy^2+x^2y^2)\log(1+2x'y'+2x'y'w'+x'^2w'+y'^2w'+x'^2y'^2) \\
+      &\qquad - (1+x^2+y^2-4xy^2+x^2y^2)\log(1-2x'y'-2x'y'w'+x'^2w'+y'^2w'+x'^2y'^2) \\
+%
+      &\qquad - 2\log(2)-(2-d_{xy}-2e_{xy})\log(2-d_{xy}-2e_{xy})-(d_{xy}+2e_{xy})\log(d_{xy}+2e_{xy})
+\end{align*}
+where
+$$
+a_{xy} = b_{xy} = \frac{4-2x^2-2y^2}{8},
+$$
+$$
+d_{xy} = \frac{4-4x^2y^2}{8},
+$$
+$$
+e_{xy} = \frac{2-4xy^2+2x^2y^2}{8}
+$$
+and
+$$
+x' = 1, \ y' = 1-d_{xy}-2e_{xy}, \ w' = 0.
+$$
+
+The \texttt{sage} function in listing~\ref{list:sage} will generate Fig.~\ref{fig:inconsistency-farris}.
+
+\begin{table}
+    \begin{center}
+\begin{verbatim}
+var('x,y')
+a = (4-2*x^2-2*y^2)/8
+b = (4-2*x^2-2*y^2)/8
+c = (4-4*x^2*y^2)/8
+d = (2-4*x*y^2+2*x^2*y^2)/8
+xp = 1.
+yp = 1-c-2*d
+wp = 0.
+
+inconsistency = 2*(1+x^2-y^2-x^2*y^2)*log(1+x^2-y^2-x^2*y^2) \
+    + 2*(1-x^2+y^2-x^2*y^2)*log(1-x^2+y^2-x^2*y^2) \
+    + 2*(1-x^2-y^2+x^2*y^2)*log(1-x^2-y^2+x^2*y^2) \
+    + (1+x^2+y^2+4*x*y^2+x^2*y^2)*log(1+x^2+y^2+4*x*y^2+x^2*y^2) \
+    + (1+x^2+y^2-4*x*y^2+x^2*y^2)*log(1+x^2+y^2-4*x*y^2+x^2*y^2) \
+    + (2-a)*log(2-a)+a*log(a)+(2-b)*log(2-b)+b*log(b)+log(2.) \
+    - 2*(1+x^2-y^2-x^2*y^2)*log(1+xp^2*wp-yp^2*wp-xp^2*yp^2) \
+    - 2*(1-x^2+y^2-x^2*y^2)*log(1-xp^2*wp+yp^2*wp-xp^2*yp^2) \
+    - (1-x^2-y^2+x^2*y^2)*log(1+2*xp*yp-2*xp*yp*wp-xp^2*wp-yp^2*wp+xp^2*yp^2) \
+    - (1-x^2-y^2+x^2*y^2)*log(1-2*xp*yp+2*xp*yp*wp-xp^2*wp-yp^2*wp+xp^2*yp^2) \
+    - (1+x^2+y^2+4*x*y^2+x^2*y^2)*log(1+2*xp*yp+2*xp*yp*wp+xp^2*wp+yp^2*wp+xp^2*yp^2) \
+    - (1+x^2+y^2-4*x*y^2+x^2*y^2)*log(1-2*xp*yp-2*xp*yp*wp+xp^2*wp+yp^2*wp+xp^2*yp^2) \
+    - 2*log(2.)-(2-c-2*d)*log(2-c-2*d)-(c+2*d)*log(c+2*d)
+
+incons_plot = implicit_plot(
+    inconsistency(x,y)==0,
+    (x,0,1),
+    (y,0,1),
+    axes_labels=['$x$', '$y$'],
+    title='Region of inconsistency for Farris-generating topology',
+    color='black'
+)
+\end{verbatim}
+    \end{center}
+\caption{Sage code to generate Fig.~\ref{fig:inconsistency-farris}}
+\label{list:sage}
+\end{table}
+
+
+
+
+
+To obtain an upper bound for the Farris partial likelihood---the terms in the top half of Table~\ref{tab:likelihoods}---we use the term $(1+x)^2(1+w)(1+y)^2$ for the $\{1,3\}$ split.
+Since all cases have a $(1+x)^2$ term except $\{\{1\}, \{2\}, \{1,2\}, \{2,3\}\}$, and all cases except $\{\{3\}, \{1,2\}, \{2,3\}, \{1,2,3\}\}$ have a $(1+y)^2$, we can add and subtract the $\log$ of these terms weighted by each of their generating probabilities.
+In other words, define
+\begin{align*}
+    a_{xy} &= P(\alignmentColumn=\{1\}|\tau=\tau_1,t=\{x,y,y\})
+    +        P(\alignmentColumn=\{2\}|\tau=\tau_1,t=\{x,y,y\}) \\
+    &\qquad + P(\alignmentColumn=\{1,2\}|\tau=\tau_1,t=\{x,y,y\})
+    + P(\alignmentColumn=\{2,3\}|\tau=\tau_1,t=\{x,y,y\}),
+\end{align*}
+\begin{align*}
+    b_{xy} &= P(\alignmentColumn=\{3\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{1,2\}|\tau=\tau_1,t=\{x,y,y\}) \\
+           &\qquad + P(\alignmentColumn=\{2,3\}|\tau=\tau_1,t=\{x,y,y\}) + P(\alignmentColumn=\{1,2,3\}|\tau=\tau_1,t=\{x,y,y\})
+\end{align*}
+and
+\begin{equation*}
+    c_{xy} = P(\alignmentColumn=\{1,3\}|\tau=\tau_1,t=\{x,y,y\}).
+\end{equation*}
+Then the partial likelihood is bounded above by
+\begin{align*}
+    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,\{x',y',w'\}) \\
+    &\qquad \le (2-a_{xy})\log(1+x')+a_{xy}\log(1-x')\\
+    &\qquad \qquad +(2-b_{xy})\log(1+y')+b_{xy}\log(1-y')\\
+    &\qquad \qquad +(1-c_{xy})\log(1+w')+c_{xy}\log(1-w') \\
+    &\qquad \le (2-a_{xy})\log(2-a_{xy})+a_{xy}\log(a_{xy})\\
+    &\qquad \qquad +(2-b_{xy})\log(2-b_{xy})+b_{xy}\log(b_{xy})\\
+    &\qquad \qquad +(1-c_{xy})\log(1-c_{xy})+c_{xy}\log(c_{xy})+\log(2) \\
+    &\qquad \triangleq L^{p,1}_{\tau_1,\tau_1}(a_{xy}, b_{xy})
+\end{align*}
+or
+\begin{align*}
+    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralStateCategories,\tau_1,\{x',y',w'\}) \\
+    &\qquad \le (2-a_{xy}-2c_{xy})\log(1+x')+(a_{xy}+2c_{xy})\log(1-x')\\
+    &\qquad \qquad +(2-b_{xy})\log(1+y')+b_{xy}\log(1-y')+\log(1+w')\\
+    &\qquad \le (2-a_{xy}-2c_{xy})\log(2-a_{xy}-2c_{xy})+(a_{xy}+2c_{xy})\log(a_{xy}+2c_{xy})\\
+    &\qquad \qquad +(2-b_{xy})\log(2-b_{xy})+b_{xy}\log(b_{xy})+\log(2) \\
+    &\qquad \triangleq L^{p,2}_{\tau_1,\tau_1}(a_{xy}, b_{xy})
+\end{align*}
+where $a_{xy},b_{xy}$ and $c_{xy}$ are functions of the true generating branch parameters $\{x,y\}$.
 
 \begin{table}
 \centering
