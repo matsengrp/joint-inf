@@ -100,7 +100,7 @@ There are also corresponding unknown ancestral states $\fullAncestralStates=[\an
 For a topology $\tau$ and branch lengths $t$ we start with the fully-observed likelihood (making the usual independence assumption between sites):
 \begin{equation}
 \label{eq:full_likelihood}
-L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t) = \prod_{i=1}^{\nCols} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i | \tau, t).
+L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t) = \prod_{i=1}^{\nCols} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t).
 \end{equation}
 % In particular, we are interested in
 % $$
@@ -171,9 +171,9 @@ $$
 for some $j$ and $k$.
 Taking the maximum of the probability of observing a particular column $i$ yields
 \begin{align*}
-\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k | \tau, t) &=
-\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j| \tau, t)\cdot P(\ancestralSplitRV=\ancestralSplit_k |\siteSplitRV=\siteSplit_j, \tau, t) \\
-&= P(\siteSplitRV=\siteSplit_j| \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k |\siteSplitRV=\siteSplit_j, \tau, t).
+\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &=
+\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t) \\
+&= P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
 %EM Just noticed that eta doesn't have to be a real partition, because they don't have to be disjoint, right?
 Given $(\tau, t)$ there exists an ordered list of sets $\fullAncestralSplitPartitions(\tau, t)=(\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t))$ such that any element $\xi$ of the $j$th component $\ancestralSplitPartition_j(\tau, t)$ satisfies
@@ -199,15 +199,15 @@ where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ wh
 Consider a fixed, binary four-tip tree $\tau$.
 The set of all possible character assignments can be described as
 \begin{align*}
-\mathcal{P}(\{1,2,3,4\}) &= \{\{\emptyset\}, \{1,2,3,4\}, \{1\}, \{2,3,4\}, \{2\}, \{1,3,4\}, \{3\}, \{1,2,4\}, \\
+\mathcal{P}(\{1,2,3,4\}) &= \{\emptyset, \{1,2,3,4\}, \{1\}, \{2,3,4\}, \{2\}, \{1,3,4\}, \{3\}, \{1,2,4\}, \\
                          &\qquad \{1,2\}, \{3,4\}, \{1,3\}, \{2,4\}, \{2,3\}, \{1,4\}, \{1,2,3\}, \{1,4\}\}.
 \end{align*}
 where each set indicates the tips at which a character is assigned the character $1$.
-For example, $\{\emptyset\}$ is the labeling $0000$ and $\{1,3,4\}$ is the labeling $1011$.
+For example, $\emptyset$ is the labeling $0000$ and $\{1,3,4\}$ is the labeling $1011$.
 Symmetry allows us to group adjacent pairs in $\mathcal{P}(\{1,2,3,4\})$ into equiprobable splits, letting $\siteSplitSet=\{1,2,3\}$.
 The unique site splits, collapsing complements, are
 $$
-\mathcal{P}(\siteSplitSet) = \{\{\emptyset\}, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\}.
+\mathcal{P}(\siteSplitSet) = \{\emptyset, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\}.
 $$
 Had we not identified character complements, we would need to consider the additional splits
 $$
@@ -216,11 +216,11 @@ $$
 but the symmetry of the binary character model allows us to focus just on the elements of $\mathcal{P}(\siteSplitSet)$.
 This tree has two internal nodes with $\ancestralSplitSet=\{1,2\}$ and unique ancestral state splits
 $$
-\mathcal{P}(\ancestralSplitSet) = \{\{\emptyset\}, \{1\}, \{2\}, \{1,2\}\}.
+\mathcal{P}(\ancestralSplitSet) = \{\emptyset, \{1\}, \{2\}, \{1,2\}\}.
 $$
 We cannot similarly identify complements in this case since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
 $$
-P(\ancestralSplitRV=\{\emptyset\}|\siteSplitRV=\siteSplit, \tau, t)\neq P(\ancestralSplitRV=\{1,2\}|\siteSplitRV=\siteSplit, \tau, t)
+P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit, \tau, t)\neq P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\siteSplit, \tau, t)
 $$
 in general.
 
@@ -230,7 +230,7 @@ A maximum will occur at one of possibly several ancestral splits in $\mathcal{P}
 As a simple example, say all branch lengths correspond to a probability $p$ ($< 1/2$) of changing character along that branch.
 The probabilities of observing ancestral splits for site split $\emptyset$ are
 $$
-P(\ancestralSplitRV=\{\emptyset\}|\siteSplitRV=\{\emptyset\}, \tau, t) = 
+P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\emptyset, \tau, t) =
 (1-p)^5,
 $$
 $$
@@ -247,27 +247,27 @@ p^4(1-p).
 $$
 Here, the partition into most likely ancestral states will proceed as
 $$
-P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, p)|\siteSplitRV=\{\emptyset\}, \tau, t) = 
+P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, p) \mid \siteSplitRV=\emptyset, \tau, t) =
 (1-p)^5
 $$
-where the partition is the single element $\ancestralSplitPartition_j(\tau, p)=\{\emptyset\}$.
+where the partition is the single element $\ancestralSplitPartition_j(\tau, p)=\emptyset$.
 For the site split $\{1,3\}$ we have
 $$
-P(\ancestralSplitRV=\{\emptyset\}|\siteSplitRV=\{1,3\}, \tau, t) = 
-P(\ancestralSplitRV=\{1,2\}|\siteSplitRV=\{1,3\}, \tau, t) =
+P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1,3\}, \tau, t) =
+P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
 p^2(1-p)^3,
 $$
 $$
-P(\ancestralSplitRV=\{1\}|\siteSplitRV=\{1,3\}, \tau, t) = 
-P(\ancestralSplitRV=\{2\}|\siteSplitRV=\{1,3\}, \tau, t) =
+P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
+P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
 p^3(1-p)^2,
 $$
 where
 $$
-P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, p)|\siteSplitRV=\{1,3\}, \tau, t) = 
+P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, p) \mid \siteSplitRV=\{1,3\}, \tau, t) =
 p^2(1-p)^3
 $$
-with the most likely partition $\ancestralSplitPartition_j(\tau, p)=\{\{\emptyset\},\{1,2\}\}.$
+with the most likely partition $\ancestralSplitPartition_j(\tau, p)=\{\emptyset,\{1,2\}\}.$
 
 
 \subsection{Showing inconsistency}
@@ -275,27 +275,27 @@ with the most likely partition $\ancestralSplitPartition_j(\tau, p)=\{\{\emptyse
 We are interested in the properties of the objective function being maximized in \eqref{eq:site_pattern_likelihood} as data becomes plentiful.
 Define \eqref{eq:site_pattern_likelihood} as
 $$
-L_\nCols''(\fullAlignment;\fullAncestralSplitPartitions(\tau, t),\tau,t) = \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j | \tau, t) \cdot P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) | \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
+L_\nCols''(\fullAlignment;\fullAncestralSplitPartitions(\tau, t),\tau,t) = \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t) \cdot P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 $$
 Assume our $\nCols$ observations were generated from a model with parameters $(\tau^*, t^*)$.
 We have
 \begin{align}
     \frac{1}{\nCols} \log L_\nCols''(\fullAlignment;\fullAncestralSplitPartitions(\tau,t),\tau,t)
-        &= \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) | \tau, t) \\
-        &= \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot [\log P(\siteSplitRV=\siteSplit_j | \tau, t) +
-            \log P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) | \siteSplitRV=\siteSplit_j , \tau, t)]
+        &= \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \tau, t) \\
+        &= \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) +
+            \log P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j , \tau, t)]
 \end{align}
 so that, in the limit of infinite data,
 \begin{equation}
-\frac{1}{\nCols} \log L_\nCols''(\fullAlignment;,\tau,t) \rightarrow \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j | \tau^*, t^*) \cdot [\log P(\siteSplitRV=\siteSplit_j | \tau, t) + \log P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) | \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
+\frac{1}{\nCols} \log L_\nCols''(\fullAlignment;,\tau,t) \rightarrow \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
 \end{equation}
 Define the the divergence quantity
 $$
-\shannonDivergence_{\tau^*,t^*}(\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j | \tau^*, t^*)\cdot\log P(\siteSplitRV=\siteSplit_j | \tau, t),
+\shannonDivergence_{\tau^*,t^*}(\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\siteSplitRV=\siteSplit_j \mid \tau, t),
 $$
 and the partial log likelihood
 $$
-\ell^p_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j | \tau^*, t^*)\cdot\log P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) | \siteSplit_j, \tau, t)
+\ell^p_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplit_j, \tau, t)
 $$
 so that \eqref{eq:site_pattern_profile_likelihood_mean} is written as
 \begin{equation}
@@ -386,9 +386,9 @@ Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed
 \begin{tabular}{|l|l|l|}
 \multicolumn{3}{c}{Classical}\\
     \hline
-$\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j|\tau_1,t^*)$&$P(\siteSplitRV=\siteSplit_j|\tau_2,t^*)$\\
+$\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j \mid \tau_1,t^*)$&$P(\siteSplitRV=\siteSplit_j \mid \tau_2,t^*)$\\
     \hline
-    $\{\emptyset\}$&$1+x^2+y^2+4xy^2+x^2y^2$&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
+    $\emptyset$    &$1+x^2+y^2+4xy^2+x^2y^2$&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
     $\{1\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
     $\{2\}$        &$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
     $\{3\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
@@ -399,9 +399,9 @@ $\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j|\tau_1,t^*)$&$P(\siteSplitRV=\sit
     \hline
 \multicolumn{3}{c}{Modified}\\
     \hline
-$\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j|\tau_1,t)$&$P(\siteSplitRV=\siteSplit_j|\tau_2,t)$\\
+$\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j \mid \tau_1,t)$&$P(\siteSplitRV=\siteSplit_j \mid \tau_2,t)$\\
     \hline
-    $\{\emptyset\}$&$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
+    $\emptyset$     &$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
     $\{1\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
     $\{2\}$        &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
     $\{3\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
@@ -421,26 +421,26 @@ All values are multiplied by $1/8$.}
 \begin{tabular}{|l|ll|}
     \multicolumn{3}{c}{$\tau=\tau_1$}\\
     \hline
-    $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau, t)$ & $P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t)|\siteSplitRV=\siteSplit_j,\tau,t)$\\
+    $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau, t)$ & $P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
     \hline
-    $\{\emptyset\}$&
-    $\{\emptyset\}$&
+    $\emptyset$&
+    $\emptyset$&
     $(1+x)^2   (1+w)(1+y)^2$\\
      $\{1\}$    &
-    $\{\emptyset\}$&
+    $\emptyset$&
     $(1+x)(1-x)(1+w)(1+y)^2$\\
      $\{2\}$    &
-    $\{\emptyset\}$&
+    $\emptyset$&
     $(1+x)(1-x)(1+w)(1+y)^2$\\
      $\{3\}$    &
-    $\{\emptyset\}$&
+    $\emptyset$&
     $(1+x)^2   (1+w)(1+y)(1-y)$\\
     $\{1,2\}$  &
-    $\{\{\emptyset\},\{1,2,3\}\}$&
+    $\{\emptyset,\{1,2,3\}\}$&
     $(1+x)(1-x)(1+w)(1+y)(1-y)$\\
     $\{1,3\}$  &
     $\left\{\begin{array}{l}
-                    \{\emptyset\}\\
+                    \emptyset\\
                     \{2\}\\
                     \{1,2\}
                 \end{array}\right.$&
@@ -450,20 +450,20 @@ All values are multiplied by $1/8$.}
                     (1-x)^2   (1+w)(1+y)^2
                 \end{array}$\\
     $\{2,3\}$  &
-                $\{\{\emptyset\},\{1,2,3\}\}$&
+                $\{\emptyset,\{1,2,3\}\}$&
                 $(1+x)(1-x)(1+w)(1+y)(1-y)$\\
     $\{1,2,3\}$&
-                $\{\emptyset\}$&
+                $\emptyset$&
                 $(1+x)^2   (1+w)(1+y)(1-y)$\\
     \hline
     \multicolumn{3}{c}{$\tau=\tau_2$}\\
     \hline
-    $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau, t)$ & $P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t)|\siteSplitRV=\siteSplit_j,\tau,t)$\\
+    $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau, t)$ & $P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
     \hline
-    $\{\emptyset\}$       &$\{\emptyset\}$&$(1+x)^2   (1+w)(1+y)^2$\\
+    $\emptyset$       &$\emptyset$&$(1+x)^2   (1+w)(1+y)^2$\\
     $\{1\}$          &
     $\left\{\begin{array}{l}
-                    \{\emptyset\}\\
+                    \emptyset\\
                     \{1\}
                 \end{array}\right.$&
     $\begin{array}{l}
@@ -472,7 +472,7 @@ All values are multiplied by $1/8$.}
                     \end{array}$\\
       $\{2\}$          &
     $\left\{\begin{array}{l}
-                    \{\emptyset\}\\
+                    \emptyset\\
                     \{1\}
                 \end{array}\right.$&
     $\begin{array}{l}
@@ -481,7 +481,7 @@ All values are multiplied by $1/8$.}
                     \end{array}$\\
       $\{3\}$          &
     $\left\{\begin{array}{l}
-                    \{\emptyset\}\\
+                    \emptyset\\
                     \{2\}
                 \end{array}\right.$&
     $\begin{array}{l}
@@ -490,7 +490,7 @@ All values are multiplied by $1/8$.}
                     \end{array}$\\
      $\{1,2\}$         &
     $\left\{\begin{array}{l}
-                    \{\{\emptyset\},\{1,2\}\}\\
+                    \{\emptyset,\{1,2\}\}\\
                     \{2\}
                 \end{array}\right.$&
     $\begin{array}{l}
@@ -499,7 +499,7 @@ All values are multiplied by $1/8$.}
                     \end{array}$\\
      $\{1,3\}$         &
     $\left\{\begin{array}{l}
-                    \{\emptyset\}\\
+                    \emptyset\\
                     \{\{1\},\{2\}\}\\
                     \{1,2\}
                 \end{array}\right.$&
@@ -510,7 +510,7 @@ All values are multiplied by $1/8$.}
                     \end{array}$\\
       $\{2,3\}$        &
     $\left\{\begin{array}{l}
-                    \{\{\emptyset\},\{1,2\}\}\\
+                    \{\emptyset,\{1,2\}\}\\
                     \{1\}\\
                     \{2\}
                 \end{array}\right.$&
@@ -521,7 +521,7 @@ All values are multiplied by $1/8$.}
                     \end{array}$\\
      $\{1,2,3\}$       &
     $\left\{\begin{array}{l}
-                    \{\emptyset\}\\
+                    \emptyset\\
                     \{2\}
                 \end{array}\right.$&
     $\begin{array}{l}
@@ -539,7 +539,7 @@ Likelihoods with multiple entries will have maxima determined by unknown branch 
 \subsubsection{Upper bound for Farris partial likelihood}
 
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
-Define, e.g., $p_0 = P(\siteSplitRV=\{\emptyset\}|\tau=\tau_1,t=\{x,y,y\})$.
+Define, e.g., $p_0 = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})$.
 Let
 $$
     a_{0} = p_{13},
