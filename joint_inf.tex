@@ -141,64 +141,63 @@ For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestra
 \subsection{Site split formulation}
 
 Since we have a finite character alphabet, for a given column $i$ there are a finite number of possibilities of assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$.
+%EM Not sure how tau induces an ordered set of tip labels-- are you saying that the tree defines the labels or something about its structure?
 Following Section 8.6 of \cite{Semple2003-em}, $\tau$ induces an ordered set of tip labels $\{1,\ldots,\nSiteRows\}$ across sites.
-For a binary character model, a realization of $\alignmentColumn_i$ can be described as a subset of indices $\siteSplit\subseteq\siteSplitSet\triangleq\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
-In the binary character setting, the probability of observing a particular site split is equivalent to the probability of its complement, resulting in one fewer index in $\siteSplitSet$ than the number of tips.
+For the binary symmetric model, a realization of $\alignmentColumn_i$ can be described as a subset of indices $\siteSplit\subseteq\siteSplitSet\triangleq\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
+Indeed, we can start by including those tips in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$. Then, because the probability of observing a particular site split is equivalent to the probability of its complement under the binary symmetric model, we can take the complement if needed to exclude tip $\nSiteRows$ from $\siteSplit$.
 Define the total number of unique site splits as $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ where $\mathcal{P}$ denotes the powerset.
+%EM inducing again.
 The topology $\tau$ also induces an ordered set of internal nodes $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ with a similar subset of characters $\ancestralSplit\subseteq\ancestralSplitSet\triangleq\{1,\ldots,\nAncestralStateRows\}$ describing a realization of $\ancestralStateColumn_i$.
 The probability of observing an ancestral state split, conditional on a site split, will not be invariant to taking its complement, and thus the need for enumerating the entire set of internal nodes.
 The number of unique ancestral state splits is $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$.
 
-%EM Why nSiteRows-1 in the def of siteSplit above, but nAncestralStateRows below in the def of ancestralSplit?
-%EM There are two ways to do this, if you are collapsing such that 001 and 110 are the same or not, and we should be clear which one you are doing.
-
-With this split formulation, define the mappings from patterns to splits as
+With this split formulation, define the mappings from patterns to splits as described above
 $$
 \patternToSplit:\alphabet^\nSiteRows\rightarrow\mathcal{P}(\siteSplitSet), \ \ancestralToSplit:\alphabet^\nAncestralStateRows\rightarrow\mathcal{P}(\ancestralSplitSet)
 $$
-so that, for
+% the following seemed not necessary and a little confusing (what are j and k?)
+% so that, for
+% $$
+% \patternToSplit(\alignmentColumn_i)=\siteSplit_j, \ \ancestralToSplit(\ancestralStateColumn_i)=\ancestralSplit_k.
+% $$
+Given a site-pattern-valued random variable $H$ and an ancestral-state-valued random variable $H$, define random variables
 $$
-\patternToSplit(\alignmentColumn_i)=\siteSplit_j, \ \ancestralToSplit(\ancestralStateColumn_i)=\ancestralSplit_k
+\siteSplitRV := \patternToSplit(\alignmentColumnRV), \ \ancestralSplitRV := \ancestralToSplit(\ancestralStateColumnRV).
 $$
-and
+We can now write the $i$th factor of \eqref{eq:full_likelihood} as
 $$
-\patternToSplit(\alignmentColumnRV)=\siteSplitRV, \ \ancestralToSplit(\ancestralStateColumnRV)=\ancestralSplitRV,
+P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t)=P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t)
 $$
-we write the $i$th factor of \eqref{eq:full_likelihood} as
-$$
-P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i | \tau, t)=P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k | \tau, t).
-$$
+for some $j$ and $k$.
 Taking the maximum of the probability of observing a particular column $i$ yields
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k | \tau, t) &=
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j| \tau, t)\cdot P(\ancestralSplitRV=\ancestralSplit_k |\siteSplitRV=\siteSplit_j, \tau, t) \\
 &= P(\siteSplitRV=\siteSplit_j| \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k |\siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
-%EM Indexing \siteSplit_j$ not defined.
-%EM But, more importantly, as we discussed Z_j is defined only with respect to a single tree and branch lengths. This need to be made abundantly clear. Personally, I think that using the same index j for them is confusing.
-Given $(\tau, t)$ and $\siteSplitRV=\siteSplit_j$, there exists a partition $\ancestralSplitPartition(\siteSplit_j, \tau, t)=\ancestralSplitPartition_j(\tau, t)$ of $\mathcal{P}(\ancestralSplitSet)$ of most likely ancestral states where
+%EM Just noticed that eta doesn't have to be a real partition, because they don't have to be disjoint, right?
+Given $(\tau, t)$ there exists an ordered list of sets $\fullAncestralSplitPartitions(\tau, t)=(\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t))$ such that any element $\xi$ of the $j$th component $\ancestralSplitPartition_j(\tau, t)$ satisfies
 \begin{align*}
-\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k | \siteSplitRV=\siteSplit_j, \tau, t) &= P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) | \siteSplitRV=\siteSplit_j, \tau, t) \\
-     &= P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) | \siteSplitRV=\siteSplit_j, \tau, t).
+\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t) &= P(\ancestralSplitRV = \xi \mid \siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
 
-For most likely ancestral state partitions $\fullAncestralSplitPartitions(\tau, t)=\{\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t)\}$ we reformulate the likelihood equation
 \begin{align}
 L_\nCols'(\fullAlignment;\tau, t) &= \max_{\fullAncestralStates} \ L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t) \\
-                             &= \max_{\fullAncestralStates} \ \prod_{i=1}^{\nCols} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i | \tau, t) \\
-                             &= \prod_{i=1}^{\nCols} \ \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k | \tau, t) \\
-%EM Can you think a little about z_j?
-%EM Even though it's a category now, it's still a function of tau and t, right?
-                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\siteSplit_j| \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k |\siteSplitRV=\siteSplit_j, \tau, t) \\
-                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\siteSplit_j | \tau, t)\cdot P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) | \siteSplitRV=\siteSplit_j, \tau, t) \\
-                             &= \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j | \tau, t)\cdot P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) | \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
+%EM I guess the ith component of H is h_i?
+                             &= \max_{\fullAncestralStates} \ \prod_{i=1}^{\nCols} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \\
+%EM Indexing broken here: we are taking a product over i, but i doesn't appear in the expression.
+                             &= \prod_{i=1}^{\nCols} \ \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) \\
+                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t) \\
+%EM As I fixed above and described in person, \ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) is not what you want here, because it will inflate the value by |\ancestralSplitPartition_j(\tau, t)| . This also appears below.
+                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j, \tau, t) \\
+                             &= \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
 where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ where the site split $\siteSplit_j$ appears.
 
 \paragraph{Example}
-
+%EM My long term suggestion is for you to put this in example in the main text and the above in the appendix.
 Consider a fixed, binary four-tip tree $\tau$.
-The space of all possible character assignments, in terms of site splits, is
+The set of all possible character assignments can be described as
 \begin{align*}
 \mathcal{P}(\{1,2,3,4\}) &= \{\{\emptyset\}, \{1,2,3,4\}, \{1\}, \{2,3,4\}, \{2\}, \{1,3,4\}, \{3\}, \{1,2,4\}, \\
                          &\qquad \{1,2\}, \{3,4\}, \{1,3\}, \{2,4\}, \{2,3\}, \{1,4\}, \{1,2,3\}, \{1,4\}\}.
@@ -226,20 +225,24 @@ $$
 in general.
 
 For each site split $\siteSplit\in\mathcal{P}(\siteSplitSet)$, we maximize the likelihood over all $\ancestralSplit\in\mathcal{P}(\ancestralSplitSet)$.
+%EM I dropped the \ancestralSplitPartition(\siteSplit, \tau, t) notation above. You can revert it if you like, but I prefer the bold eta notation as an ordered list of sets.
 A maximum will occur at one of possibly several ancestral splits in $\mathcal{P}(\ancestralSplitSet)$; define $\ancestralSplitPartition(\siteSplit, \tau, t)$ as the partition of $\mathcal{P}(\ancestralSplitSet)$ into those most likely ancestral splits for that particular site split, topology and set of branch lengths.
-Assume all branch lengths correspond to a probability $p$ ($< 1/2$) of changing character along that branch.
-The probabilities of observing ancestral splits for site split $\{\emptyset\}$ are 
+As a simple example, say all branch lengths correspond to a probability $p$ ($< 1/2$) of changing character along that branch.
+The probabilities of observing ancestral splits for site split $\emptyset$ are
 $$
 P(\ancestralSplitRV=\{\emptyset\}|\siteSplitRV=\{\emptyset\}, \tau, t) = 
 (1-p)^5,
 $$
 $$
-P(\ancestralSplitRV=\{1\}|\siteSplitRV=\{\emptyset\}, \tau, t) =
-P(\ancestralSplitRV=\{2\}|\siteSplitRV=\{\emptyset\}, \tau, t) = 
+%EM Seems to me that this just requires one character change so would be p(1-p)^4.
+P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\emptyset, \tau, t) =
+P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\emptyset, \tau, t) =
 p^2(1-p)^3,
 $$
 $$
-P(\ancestralSplitRV=\{1,2\}|\siteSplitRV=\{\emptyset\}, \tau, t) = 
+%EM Have you told us in this example what the labeled topology is?
+%Erick stopped here.
+P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\emptyset, \tau, t) =
 p^4(1-p).
 $$
 Here, the partition into most likely ancestral states will proceed as
