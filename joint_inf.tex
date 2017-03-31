@@ -142,12 +142,12 @@ For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestra
 
 Since we have a finite character alphabet, for a given column $i$ there are a finite number of possibilities of assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$.
 %EM Not sure how tau induces an ordered set of tip labels-- are you saying that the tree defines the labels or something about its structure?
-Following Section 8.6 of \cite{Semple2003-em}, $\tau$ induces an ordered set of tip labels $\{1,\ldots,\nSiteRows\}$ across sites.
-For the binary symmetric model, a realization of $\alignmentColumn_i$ can be described as a subset of indices $\siteSplit\subseteq\siteSplitSet\triangleq\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
+Following Section 8.6 of \cite{Semple2003-em}, we define an ordered set of tip labels $\{1,\ldots,\nSiteRows\}$ on $\tau$ across sites.
+For the binary symmetric model, a realization of $\alignmentColumn_i$ can be described as a subset of indices $\siteSplit\subseteq\siteSplitSet:=\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
 Indeed, we can start by including those tips in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$. Then, because the probability of observing a particular site split is equivalent to the probability of its complement under the binary symmetric model, we can take the complement if needed to exclude tip $\nSiteRows$ from $\siteSplit$.
 Define the total number of unique site splits as $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ where $\mathcal{P}$ denotes the powerset.
 %EM inducing again.
-The topology $\tau$ also induces an ordered set of internal nodes $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ with a similar subset of characters $\ancestralSplit\subseteq\ancestralSplitSet\triangleq\{1,\ldots,\nAncestralStateRows\}$ describing a realization of $\ancestralStateColumn_i$.
+For topology $\tau$, we also define an ordered set of internal nodes $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ with a similar subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ describing a realization of $\ancestralStateColumn_i$.
 The probability of observing an ancestral state split, conditional on a site split, will not be invariant to taking its complement, and thus the need for enumerating the entire set of internal nodes.
 The number of unique ancestral state splits is $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$.
 
@@ -160,7 +160,7 @@ $$
 % $$
 % \patternToSplit(\alignmentColumn_i)=\siteSplit_j, \ \ancestralToSplit(\ancestralStateColumn_i)=\ancestralSplit_k.
 % $$
-Given a site-pattern-valued random variable $H$ and an ancestral-state-valued random variable $H$, define random variables
+Given a site-pattern-valued random variable $\alignmentColumnRV$ and an ancestral-state-valued random variable $\ancestralStateColumnRV$, define random variables
 $$
 \siteSplitRV := \patternToSplit(\alignmentColumnRV), \ \ancestralSplitRV := \ancestralToSplit(\ancestralStateColumnRV).
 $$
@@ -176,6 +176,7 @@ Taking the maximum of the probability of observing a particular column $i$ yield
 &= P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
 %EM Just noticed that eta doesn't have to be a real partition, because they don't have to be disjoint, right?
+%das: I think they do have to be disjoint. The partition is into "most likely" and "not most likely," which is disjoint and exhausts the set. Am I missing something?
 Given $(\tau, t)$ there exists an ordered list of sets $\fullAncestralSplitPartitions(\tau, t)=(\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t))$ such that any element $\xi$ of the $j$th component $\ancestralSplitPartition_j(\tau, t)$ satisfies
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t) &= P(\ancestralSplitRV = \xi \mid \siteSplitRV=\siteSplit_j, \tau, t).
@@ -184,8 +185,10 @@ Given $(\tau, t)$ there exists an ordered list of sets $\fullAncestralSplitParti
 \begin{align}
 L_\nCols'(\fullAlignment;\tau, t) &= \max_{\fullAncestralStates} \ L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t) \\
 %EM I guess the ith component of H is h_i?
+    %das: Not sure what the question/comment is here.
                              &= \max_{\fullAncestralStates} \ \prod_{i=1}^{\nCols} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \\
 %EM Indexing broken here: we are taking a product over i, but i doesn't appear in the expression.
+    %das: This is intentional, though: it allows us to proceed to the following line, grouping factors by site pattern since their probabilities don't depend on $i$. I can try to think of how to make this more clear, but I thought it was a pretty key step to be able to pass to site patterns, and the reason for the machinery involved in defining ancestral state partitions.
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) \\
                              &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t) \\
 %EM As I fixed above and described in person, \ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) is not what you want here, because it will inflate the value by |\ancestralSplitPartition_j(\tau, t)| . This also appears below.
@@ -235,12 +238,14 @@ P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\emptyset, \tau, t) =
 $$
 $$
 %EM Seems to me that this just requires one character change so would be p(1-p)^4.
+%das: I think it's wrong, but in the other direction: two character changes to get to the differing internal state, then one between the two internal states.
 P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\emptyset, \tau, t) =
 P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\emptyset, \tau, t) =
-p^2(1-p)^3,
+p^3(1-p)^2,
 $$
 $$
 %EM Have you told us in this example what the labeled topology is?
+%das: Nope! I wanted to be simple, but it seems maybe too simple. Maybe I should move the Felsenstein/Farris bit to this example?
 %Erick stopped here.
 P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\emptyset, \tau, t) =
 p^4(1-p).
@@ -539,106 +544,211 @@ Likelihoods with multiple entries will have maxima determined by unknown branch 
 \subsubsection{Upper bound for Farris partial likelihood}
 
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
-Define, e.g., $p_0 = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})$.
-Let
-$$
-    a_{0} = p_{13},
-$$
-$$
-    a_{1} = p_1+p_2+p_{12}+p_{23},
-$$
-$$
-    a_{2} = p_3+p_{12}+p_{23}+p_{123},
-$$
-$$
-    a_{3} = p_1+p_3+p_{12}+p_{23},
-$$
-$$
-    a_{4} = p_2+p_{12}+p_{23}+p_{123}.
-$$
-Then the full likelihood is bounded above by one of three functions:
+For compactness, define, e.g., $p_0 = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})$, keeping in mind it is a function of parameters $x,y$.
+The full Farris log likelihood can take one of three values---assume for now the we are only interested in the ancestral state split $\{2\}$ for the site split $\{1,3\}$.
+We then write the log likelihood as
 \begin{align*}
-    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\}) \\
-    &\qquad \le (3-a_{1})\log(1+x')+(a_{1}+a_{3})\log(1-x')\\
-    &\qquad \qquad +(3-a_{2})\log(1+y')+(a_{2}+a_{4})\log(1-y')\\
-    &\qquad \qquad +(1-a_{0})\log(1+w')+a_{0}\log(1-w')+p_{0}\log(4)\\
-    &\qquad \le (3-a_{1})\log\frac{2(3-a_{1})}{3+a_{3}}+(a_{1}+a_{3})\log\frac{2(a_{1}+a_{3})}{3+a_{3}}\\
-    &\qquad \qquad +(3-a_{2})\log\frac{2(3-a_{2})}{3+a_{4}}+(a_{2}+a_{4})\log\frac{2(a_{2}+a_{4})}{3+a_{4}}\\
-    &\qquad \qquad +(1-a_{0})\log(1+w')+a_{0}\log(1-w')+p_{0}\log(4)\\
-    &\qquad \triangleq L^{p,1}_{\tau_1,\tau_1}(\mathbf{a}_{xy});
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    &=        p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{1}  \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + p_{2}  \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad + p_{3}  \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + p_{12} \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{23} \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + p_{123}\cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad + p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{2}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{3}  \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{12} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{13} \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
+    &\qquad + p_{23} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{123}\cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
 \end{align*}
+Seeking an upper bound, we make use of the fact that, for $x',y'\in[0,1]$,
+$$
+(1-x'^2+y'^2-x'^2y'^2) = (1-x'^2)(1+y'^2) = (1+x')(1-x')(1+y'^2) \le (1+x')(1-x')(1+y),
+$$
+with similar substitutions for $(1+x'^2-y'^2-x'^2y'^2)$ and $(1-x'^2-y'^2+x'^2y'^2)$.
+Doing so results in
 \begin{align*}
-    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\}) \\
-    &\qquad \le (3-a_{1}-2a_{0})\log(1+x')+(a_{1}+a_{3}+2a_{0})\log(1-x')\\
-    &\qquad \qquad +(3-a_{2})\log(1+y')+(a_{2}+a_{4})\log(1-y')+\log(1+w')+p_{0}\log(4)\\
-    &\qquad \le (3-a_{1}-2a_{0})\log\frac{2(3-a_{1}-2a_{0})}{3+a_{3}}+(a_{1}+a_{3}+2a_{0})\log\frac{2(a_{1}+a_{3}+2a_{0})}{3+a_{3}}\\
-    &\qquad \qquad +(3-a_{2})\log\frac{2(3-a_{2})}{3+a_{4}}+(a_{2}+a_{4})\log\frac{2(a_{2}+a_{4})}{3+a_{4}}\\
-    &\qquad \qquad +\log(2)+p_{0}\log(4)\\
-    &\qquad \triangleq L^{p,2}_{\tau_1,\tau_1}(\mathbf{a}_{xy});
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    &\le      p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1+y')) \\
+    &\qquad + p_{2}  \cdot\log((1+x')(1+y')(1-y')) \\
+    &\qquad + p_{3}  \cdot\log((1+x')(1-x')(1+y')) \\
+    &\qquad + p_{12} \cdot\log((1+x')(1-x')(1+y')(1-y')) \\
+    &\qquad + p_{23} \cdot\log((1+x')(1-x')(1+y')(1-y')) \\
+    &\qquad + p_{123}\cdot\log((1+x')(1+y')(1-y')) \\
+    &\qquad + p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{2}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{3}  \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{12} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{13} \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
+    &\qquad + p_{23} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{123}\cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
 \end{align*}
+Grouping together like terms,
 \begin{align*}
-    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\}) \\
-    &\qquad \le (3-a_{1})\log(1+x')+(a_{1}+a_{3})\log(1-x')\\
-    &\qquad \qquad +(3-a_{2}-2a_{0})\log(1+y')+(a_{2}+a_{4})+2a_{0}\log(1-y')+\log(1+w')+p_{0}\log(4)\\
-    &\qquad \le (3-a_{1})\log\frac{2(3-a_{1})}{3+a_{3}}+(a_{1}+a_{3})\log\frac{2(a_{1}+a_{3})}{3+a_{3}}\\
-    &\qquad \qquad +(3-a_{2}-2a_{0})\log\frac{2(3-a_{2}-2a_{0})}{3+a_{4}}+(a_{2}+a_{4}+2a_{0})\log\frac{2(a_{2}+a_{4}+2a_{0})}{3+a_{4}}\\
-    &\qquad \qquad +\log(2)+p_{0}\log(4)\\
-    &\qquad \triangleq L^{p,3}_{\tau_1,\tau_1}(\mathbf{a}_{xy}).
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    &\le      p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + (1-p_{0}-p_{13})\cdot\log(1+x') \\
+    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
+    &\qquad + (1-p_{0}-p_{13})\cdot\log(1+y') \\
+    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
+    &\qquad + (2-p_{1}-p_{2}-p_{12}-p_{23})\cdot\log(1+x') \\
+    &\qquad + (p_{1}+p_{2}+p_{12}+p_{23})\cdot\log(1-x') \\
+    &\qquad + (2-p_{3}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
+    &\qquad + (p_{3}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
+    &\qquad + (1-p_{13})\cdot\log(1+w') \\
+    &\qquad + p_{13}\cdot\log(1-w'),
+\end{align*}
+which equals
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    &\le      p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + (3-p_{0}-p_{13}-p_{1}-p_{2}-p_{12}-p_{23})\cdot\log(1+x') \\
+    &\qquad + (p_{2}+p_{3}+2(p_{1}+p_{3}+p_{12}+p_{23}))\cdot\log(1-x') \\
+    &\qquad + (3-p_{0}-p_{13}-p_{3}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
+    &\qquad + (p_{2}+p_{3}+2(p_{12}+p_{23}+p_{123}))\cdot\log(1-y') \\
+    &\qquad + (1-p_{13})\cdot\log(1+w') \\
+    &\qquad + p_{13}\cdot\log(1-w').
+\end{align*}
+To make matters further compact, let
+$$
+a_{1} = 3-p_{0}-p_{13}-p_{1}-p_{2}-p_{12}-p_{23},
+$$
+$$
+a_{2} = p_{2}+p_{3}+2(p_{1}+p_{3}+p_{12}+p_{23}),
+$$
+$$
+a_{3} = 3-p_{0}-p_{13}-p_{3}-p_{12}-p_{23}-p_{123},
+$$
+$$
+a_{4} = p_{2}+p_{3}+2(p_{12}+p_{23}+p_{123}),
+$$
+where
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    &\le      p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + a_{1}\cdot\log(1+x') \\
+    &\qquad + a_{2}\cdot\log(1-x') \\
+    &\qquad + a_{3}\cdot\log(1+y') \\
+    &\qquad + a_{4}\cdot\log(1-y') \\
+    &\qquad + (1-p_{13})\cdot\log(1+w') \\
+    &\qquad + p_{13}\cdot\log(1-w').
+\end{align*}
+Applying Gibbs' inequality to the first two summands, and maximizing over the remaining terms yields
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    &\le      p_{0}  \cdot\log(p_{0}) \\ 
+    &\qquad + p_{13} \cdot\log(p_{13}) \\
+    &\qquad + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}} \\
+    &\qquad + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
+    &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
+    &\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}} \\
+    &\qquad + (1-p_{13})\cdot\log(2(1-p_{13})) \\
+    &\qquad + p_{13}\cdot\log(2p_{13}).
+    &\qquad := L^{p,1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
 
+The other two possibilties for the likelihood of the ancestral state split $\{2\}$ for the site split $\{1,3\}$ admit similar simplifications.
+Call
+$$
+a_{1}' = a_{1}-2p_{13},
+$$
+$$
+a_{2}' = a_{2}+2p_{13},
+$$
+$$
+a_{3}' = a_{3}-2p_{13},
+$$
+$$
+a_{4}' = a_{4}+2p_{13}.
+$$
+Then, for these cases,
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    &\le      p_{0}  \cdot\log(p_{0}) \\ 
+    &\qquad + p_{13} \cdot\log(p_{13}) \\
+    &\qquad + a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'} \\
+    &\qquad + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
+    &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
+    &\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}} \\
+    &\qquad + \log(2),
+    &\qquad := L^{p,2}_{\tau_1,\tau_1}(\mathbf{p}_{xy});
+\end{align*}
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    &\le      p_{0}  \cdot\log(p_{0}) \\ 
+    &\qquad + p_{13} \cdot\log(p_{13}) \\
+    &\qquad + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}} \\
+    &\qquad + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
+    &\qquad + a_{3}'\cdot\log\frac{2a_{3}'}{a_{3}'+a_{4}'} \\
+    &\qquad + a_{4}'\cdot\log\frac{2a_{4}'}{a_{3}'+a_{4}'} \\
+    &\qquad + \log(2).
+    &\qquad := L^{p,3}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
+\end{align*}
+All bounds are functions only of $x,y$ through the true generating probabilities $\mathbf{p}_{xy}$.
 
 \subsubsection{Lower bound for Felsenstein partial likelihood}
 
-We construct a similar lower bound on the Felsenstein partial likelihood, though here we replace all $(1+w)$ terms with $(1-w)$.
-Let
-$$
-b_1 = p_1+p_2+p_3+p_{123}
-$$
-and
-$$
-b_2 = p_{13}+p_{23}.
-$$
-
-\textbf{TODO}: ancestral states where these likelihoods occur
-Since the maxima for pairs of lower bounds above each have a symmetry in $x$ and $y$, they are bounded below by one of
+We construct a similar lower bound on the Felsenstein partial likelihood.
+Replace all $(1+w)$ terms with $(1-w)$ and focus just on the partial likelihood.
+Then if $(1+x)(1-y) > (1-x)(1+y)$,
 \begin{align*}
-    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\}) \\
-    &\qquad \ge 2\log(1+x')+(2-b_1-2b_2)\log(1+y')+(b_1+2b_2)\log(1-y')+\log(1-w'),
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    &=      + p_{0}  \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
+    &\qquad + p_{1}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
+    &\qquad + p_{2}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
+    &\qquad + p_{3}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
+    &\qquad + p_{12} \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
+    &\qquad + p_{123}\cdot\log((1+x')^2   (1-w')(1+y')(1-y'))\\
+    &\qquad + p_{13} \cdot\log((1+x')^2   (1-w')(1-y')^2) \\
+    &\qquad + p_{23} \cdot\log((1+x')^2   (1-w')(1-y')^2),
 \end{align*}
+otherwise
 \begin{align*}
-    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\}) \\
-    &\qquad \ge (2-2b_2)\log(1+x')+2b_2\log(1-x') + (2-b_1)\log(1+y')+b_1\log(1-y')+\log(1-w')
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    &=      + p_{0}  \cdot\log((1+x')^2    (1-w')(1+y')^2) \\
+    &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
+    &\qquad + p_{2}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
+    &\qquad + p_{3}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
+    &\qquad + p_{12} \cdot\log((1+x')^2    (1-w')(1+y')^2) \\
+    &\qquad + p_{123}\cdot\log((1+x')(1-x')(1-w')(1+y')^2)\\
+    &\qquad + p_{13} \cdot\log((1-x')^2    (1-w')(1+y')^2) \\
+    &\qquad + p_{23} \cdot\log((1-x')^2    (1-w')(1+y')^2).
 \end{align*}
-or
+Letting
+$$
+b_{1} = p_{1}+p_{2}+p_{3}+p_{123}
+$$
+yields
 \begin{align*}
-    & \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\}) \\
-    &\qquad \ge (2-b_2)\log(1+x')+b_2\log(1-x') + (2-b_1-b_2)\log(1+y')+(b_1+b_2)\log(1-y')+\log(1-w')
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    &=      + 2\cdot\log(1+x') \\
+    &\qquad + (2-b_{1})  \cdot\log(1+y') \\
+    &\qquad + b_{1}      \cdot\log(1-y') \\
+    &\qquad + \log(1-w')
 \end{align*}
-where $b_1$ and $b_2$ are also functions of the true generating branch parameters $\{x,y\}$.
-Taking the maximum of each yields
-$$
-    L^{p,1}_{\tau_1,\tau_2}(b_1, b_2) \triangleq 2\log(2)+(2-b_1-2b_2)\log(2-b_1-2b_2)+(b_1+2b_2)\log(b_1+2b_2),
-$$
-$$
-    L^{p,2}_{\tau_1,\tau_2}(b_1, b_2) \triangleq (2-2b_2)\log(2-2b_2)+2b_2\log(2b_2) + (2-b_1)\log(2-b_1)+b_1\log(b_1)
-$$
-and
-$$
-    L^{p,3}_{\tau_1,\tau_2}(b_1, b_2) \triangleq (2-b_2)\log(2-b_2)+b_2\log(b_2) + (2-b_1-b_2)\log(2-b_1-b_2)+(b_1+b_2)\log(b_1+b_2).
-$$
-
-\textbf{Claim to prove}:
-$$
-L^{p,1}_{\tau_1,\tau_2}(b_1, b_2) \ge L^{p,2}_{\tau_1,\tau_2}(b_1, b_2)
-$$
-and
-$$
-L^{p,1}_{\tau_1,\tau_2}(b_1, b_2) \ge L^{p,3}_{\tau_1,\tau_2}(b_1, b_2).
-$$
-I think we can use information theory results to show this.
-It is definitely true---will work on it.
-
-The values of $(x', y', w')$ maximizing $L^{p,1}_{\tau_1,\tau_2}(b_1, b_2)$ are $(1, 1-b_1-2b_2,0)$.
+for the first lower bound, but you'll notice that, upon maximizing, we obtain the same value for both cases, namely
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    &=      + 2\cdot\log(2) \\
+    &\qquad + (2-b_{1})  \cdot\log(2-b_{1}) \\
+    &\qquad + b_{1}      \cdot\log(b_{1})
+\end{align*}
+maximized at $\{1,1-b_{1},0\}$, meaning
+\begin{align*}
+    L^{p,1}_{\tau_1,\tau_2}(\mathbf{p}_{xy}) &:= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b_{1},0\}) + 2\cdot\log(2) + (2-b_{1})\cdot\log(2-b_{1})+b_{1}\cdot\log(b_{1}) \\
+                                             &= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1-b_{1},1,0\}) + 2\cdot\log(2) + (2-b_{1})\cdot\log(2-b_{1})+b_{1}\cdot\log(b_{1}).
+\end{align*}
 
 \subsubsection{Region of inconsistency}
 
