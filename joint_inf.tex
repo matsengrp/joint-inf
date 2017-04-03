@@ -72,9 +72,8 @@
 
 Classical maximum-likelihood (ML) estimation in phylogenetics operates by integrating out possible ancestral states at the internal nodes of the tree.
 Recently \cite{Neher2017} have suggested using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences.
-This is attractive from a computational perspective: joint ML inference can proceed according to an iterative procedure in which ML ancestral sequences are first inferred and then model parameters are optimized conditional on the ancestral sequences.
-% I would say classical maximum likelihood is closer to EM, no? At some point in EM we'd have to marginalize/take the expectation, which joint ML doesn't do. Curious to talk more about it though...
-This latter step is much simpler and more computationally efficient when conditioning on ancestral sequences compared to the case in which ancestral sequences are marginalized out.
+This is attractive from a computational perspective: such joint ML inference can proceed according to an iterative procedure in which ML ancestral sequences are first inferred and then model parameters are optimized conditional on the ancestral sequences.
+This latter step is simpler and more computationally efficient when conditioning on ancestral sequences compared to the case in which ancestral sequences are marginalized out.
 
 However, existing consistency proofs for phylogenetics \cite{RoyChoudhury2015-ta} do not apply to the setting of joint inference of trees and ancestral sequences.
 There are examples in statistics, such as the Neyman-Scott paradox \cite{Neyman1948-tt}, in which estimation of additional parameters destroys consistency.
@@ -90,8 +89,6 @@ We use bounds on the joint likelihood to demarcate a sizeable area of long branc
 We will be considering phylogenetic likelihood on unrooted phylogenetic trees.
 We assume the character alphabet $\alphabet=\{0,1\}$ and a uniform stationary distribution.
 Let $\nSiteRows$ be the number of tips of the tree, and $\nAncestralStateRows = \nSiteRows-2$ the number of internal nodes.
-%EM Commented out below because it's not right-- fullAlignment is not the set of assignments of characters to tips of the tree, it's a single such.
-%Let $\fullAlignment$ be the set of assignments of characters to tips of our tree, and $\fullAncestralStates$ the set of assignments of characters to the internal nodes of the tree.
 Assume we observe $\nCols$ samples of character data (i.e.\ an alignment with $\nCols$ columns) $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$ distributed as the random variable $\alignmentColumnRV$.
 There are also corresponding unknown ancestral states $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$ distributed as $\ancestralStateColumnRV$.
 
@@ -122,7 +119,7 @@ $$
 
 \subsection{Joint maximization}
 
-One tantalizing approach is to do away with the marginalization and directly estimate the maximum likelihood parameters from the full likelihood in \eqref{eq:full_likelihood}.
+One tantalizing approach is to do away with the marginalization and directly estimate the maximum likelihood parameters from the fully-observed likelihood in \eqref{eq:full_likelihood}.
 We can perform this by computing the profile likelihood
 \begin{equation}
 \label{eq:profile_likelihood}
@@ -141,25 +138,19 @@ For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestra
 \subsection{Site split formulation}
 
 Since we have a finite character alphabet, for a given column $i$ there are a finite number of possibilities of assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$.
-%EM Not sure how tau induces an ordered set of tip labels-- are you saying that the tree defines the labels or something about its structure?
-Following Section 8.6 of \cite{Semple2003-em}, we define an ordered set of tip labels $\{1,\ldots,\nSiteRows\}$ on $\tau$ across sites.
+Following Section 8.6 of \cite{Semple2003-em}, we take the tip labels of $\tau$ to be $\{1,\ldots,\nSiteRows\}$.
 For the binary symmetric model, a realization of $\alignmentColumn_i$ can be described as a subset of indices $\siteSplit\subseteq\siteSplitSet:=\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
-Indeed, we can start by including those tips in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$. Then, because the probability of observing a particular site split is equivalent to the probability of its complement under the binary symmetric model, we can take the complement if needed to exclude tip $\nSiteRows$ from $\siteSplit$.
-Define the total number of unique site splits as $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ where $\mathcal{P}$ denotes the powerset.
-%EM inducing again.
-For topology $\tau$, we also define an ordered set of internal nodes $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ with a similar subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ describing a realization of $\ancestralStateColumn_i$.
+Indeed, we can start by including those tip labels in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$.
+Then, because the probability of observing a particular site split is equivalent to the probability of its complement under the binary symmetric model, we can take the complement if needed to exclude label $\nSiteRows$ from $\siteSplit$.
+Define the total number of unique site splits as $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ where $\mathcal{P}$ denotes the power set.
+For topology $\tau$, we also define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization of $\ancestralStateColumn_i$.
 The probability of observing an ancestral state split, conditional on a site split, will not be invariant to taking its complement, and thus the need for enumerating the entire set of internal nodes.
 The number of unique ancestral state splits is $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$.
 
-With this split formulation, define the mappings from patterns to splits as described above
+With this split formulation, define mappings from patterns to splits as described above
 $$
-\patternToSplit:\alphabet^\nSiteRows\rightarrow\mathcal{P}(\siteSplitSet), \ \ancestralToSplit:\alphabet^\nAncestralStateRows\rightarrow\mathcal{P}(\ancestralSplitSet)
+\patternToSplit:\alphabet^\nSiteRows\rightarrow\mathcal{P}(\siteSplitSet), \ \ancestralToSplit:\alphabet^\nAncestralStateRows\rightarrow\mathcal{P}(\ancestralSplitSet).
 $$
-% the following seemed not necessary and a little confusing (what are j and k?)
-% so that, for
-% $$
-% \patternToSplit(\alignmentColumn_i)=\siteSplit_j, \ \ancestralToSplit(\ancestralStateColumn_i)=\ancestralSplit_k.
-% $$
 Given a site-pattern-valued random variable $\alignmentColumnRV$ and an ancestral-state-valued random variable $\ancestralStateColumnRV$, define random variables
 $$
 \siteSplitRV := \patternToSplit(\alignmentColumnRV), \ \ancestralSplitRV := \ancestralToSplit(\ancestralStateColumnRV).
@@ -169,7 +160,7 @@ $$
 P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t)=P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t)
 $$
 for some $j$ and $k$.
-Taking the maximum of the probability of observing a particular column $i$ yields
+Taking the maximum across internal states yields
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &=
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t) \\
@@ -177,6 +168,7 @@ Taking the maximum of the probability of observing a particular column $i$ yield
 \end{align*}
 %EM Just noticed that eta doesn't have to be a real partition, because they don't have to be disjoint, right?
 %das: I think they do have to be disjoint. The partition is into "most likely" and "not most likely," which is disjoint and exhausts the set. Am I missing something?
+%EM Perhaps we're talking about partition in different senses. I was saying that eta_i can intersect with another eta_j. Let's chat IRL on Monday.
 Given $(\tau, t)$ there exists an ordered list of sets $\fullAncestralSplitPartitions(\tau, t)=(\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t))$ such that any element $\xi$ of the $j$th component $\ancestralSplitPartition_j(\tau, t)$ satisfies
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t) &= P(\ancestralSplitRV = \xi \mid \siteSplitRV=\siteSplit_j, \tau, t).
@@ -184,11 +176,10 @@ Given $(\tau, t)$ there exists an ordered list of sets $\fullAncestralSplitParti
 
 \begin{align}
 L_\nCols'(\fullAlignment;\tau, t) &= \max_{\fullAncestralStates} \ L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t) \\
-%EM I guess the ith component of H is h_i?
-    %das: Not sure what the question/comment is here.
-                             &= \max_{\fullAncestralStates} \ \prod_{i=1}^{\nCols} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \\
+                             &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \\
 %EM Indexing broken here: we are taking a product over i, but i doesn't appear in the expression.
     %das: This is intentional, though: it allows us to proceed to the following line, grouping factors by site pattern since their probabilities don't depend on $i$. I can try to think of how to make this more clear, but I thought it was a pretty key step to be able to pass to site patterns, and the reason for the machinery involved in defining ancestral state partitions.
+%EM My suggestion is to use \psi(y_i) until you switch to a product indexed by the j's.
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) \\
                              &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t) \\
 %EM As I fixed above and described in person, \ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) is not what you want here, because it will inflate the value by |\ancestralSplitPartition_j(\tau, t)| . This also appears below.
@@ -647,7 +638,7 @@ where
 Applying Gibbs' inequality to the first two summands, and maximizing over the remaining terms yields
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
-    &\le      p_{0}  \cdot\log(p_{0}) \\ 
+    &\le      p_{0}  \cdot\log(p_{0}) \\
     &\qquad + p_{13} \cdot\log(p_{13}) \\
     &\qquad + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}} \\
     &\qquad + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
@@ -675,7 +666,7 @@ $$
 Then, for these cases,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
-    &\le      p_{0}  \cdot\log(p_{0}) \\ 
+    &\le      p_{0}  \cdot\log(p_{0}) \\
     &\qquad + p_{13} \cdot\log(p_{13}) \\
     &\qquad + a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
@@ -686,7 +677,7 @@ Then, for these cases,
 \end{align*}
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
-    &\le      p_{0}  \cdot\log(p_{0}) \\ 
+    &\le      p_{0}  \cdot\log(p_{0}) \\
     &\qquad + p_{13} \cdot\log(p_{13}) \\
     &\qquad + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}} \\
     &\qquad + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
