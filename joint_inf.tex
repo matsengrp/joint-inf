@@ -436,10 +436,10 @@ All values are multiplied by $1/8$.}
     $(1+x)(1-x)(1+w)(1+y)^2$\\
      $\{2\}$    &
     $\emptyset$&
-    $(1+x)(1-x)(1+w)(1+y)^2$\\
+    $(1+x)^2   (1+w)(1+y)(1-y)$\\
      $\{3\}$    &
     $\emptyset$&
-    $(1+x)^2   (1+w)(1+y)(1-y)$\\
+    $(1+x)(1-x)(1+w)(1+y)^2$\\
     $\{1,2\}$  &
     $\{\emptyset,\{1,2,3\}\}$&
     $(1+x)(1-x)(1+w)(1+y)(1-y)$\\
@@ -559,8 +559,8 @@ We then write the log likelihood as
     &\qquad + p_{123}\cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
     &\qquad + p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{2}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{3}  \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{2}  \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{3}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
     &\qquad + p_{12} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
     &\qquad + p_{13} \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
     &\qquad + p_{23} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
@@ -584,8 +584,8 @@ Doing so results in
     &\qquad + p_{123}\cdot\log((1+x')(1+y')(1-y')) \\
     &\qquad + p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{2}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{3}  \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{2}  \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{3}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
     &\qquad + p_{12} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
     &\qquad + p_{13} \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
     &\qquad + p_{23} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
@@ -600,10 +600,10 @@ Grouping together like terms,
     &\qquad + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
     &\qquad + (1-p_{0}-p_{13})\cdot\log(1+y') \\
     &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
-    &\qquad + (2-p_{1}-p_{2}-p_{12}-p_{23})\cdot\log(1+x') \\
-    &\qquad + (p_{1}+p_{2}+p_{12}+p_{23})\cdot\log(1-x') \\
-    &\qquad + (2-p_{3}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
-    &\qquad + (p_{3}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
+    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x') \\
+    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
+    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
+    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
     &\qquad + (1-p_{13})\cdot\log(1+w') \\
     &\qquad + p_{13}\cdot\log(1-w'),
 \end{align*}
@@ -612,25 +612,25 @@ which equals
     \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
     &\le      p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
     &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
-    &\qquad + (3-p_{0}-p_{13}-p_{1}-p_{2}-p_{12}-p_{23})\cdot\log(1+x') \\
-    &\qquad + (p_{2}+p_{3}+2(p_{1}+p_{3}+p_{12}+p_{23}))\cdot\log(1-x') \\
-    &\qquad + (3-p_{0}-p_{13}-p_{3}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
-    &\qquad + (p_{2}+p_{3}+2(p_{12}+p_{23}+p_{123}))\cdot\log(1-y') \\
+    &\qquad + (3-p_{0}-p_{13}-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x') \\
+    &\qquad + 2(p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
+    &\qquad + (3-p_{0}-p_{13}-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
+    &\qquad + 2(p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
     &\qquad + (1-p_{13})\cdot\log(1+w') \\
     &\qquad + p_{13}\cdot\log(1-w').
 \end{align*}
 To make matters further compact, let
 $$
-a_{1} = 3-p_{0}-p_{13}-p_{1}-p_{2}-p_{12}-p_{23},
+a_{1} = 3-p_{0}-p_{13}-p_{1}-p_{3}-p_{12}-p_{23},
 $$
 $$
-a_{2} = p_{2}+p_{3}+2(p_{1}+p_{3}+p_{12}+p_{23}),
+a_{2} = 2(p_{1}+p_{3}+p_{12}+p_{23}),
 $$
 $$
-a_{3} = 3-p_{0}-p_{13}-p_{3}-p_{12}-p_{23}-p_{123},
+a_{3} = 3-p_{0}-p_{13}-p_{2}-p_{12}-p_{23}-p_{123},
 $$
 $$
-a_{4} = p_{2}+p_{3}+2(p_{12}+p_{23}+p_{123}),
+a_{4} = 2(p_{2}+p_{12}+p_{23}+p_{123}),
 $$
 where
 \begin{align*}
@@ -654,7 +654,7 @@ Applying Gibbs' inequality to the first two summands, and maximizing over the re
     &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
     &\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}} \\
     &\qquad + (1-p_{13})\cdot\log(2(1-p_{13})) \\
-    &\qquad + p_{13}\cdot\log(2p_{13}).
+    &\qquad + p_{13}\cdot\log(2p_{13}) \\
     &\qquad := L^{p,1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
 
@@ -681,7 +681,7 @@ Then, for these cases,
     &\qquad + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
     &\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}} \\
-    &\qquad + \log(2),
+    &\qquad + \log(2) \\
     &\qquad := L^{p,2}_{\tau_1,\tau_1}(\mathbf{p}_{xy});
 \end{align*}
 \begin{align*}
@@ -692,7 +692,7 @@ Then, for these cases,
     &\qquad + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
     &\qquad + a_{3}'\cdot\log\frac{2a_{3}'}{a_{3}'+a_{4}'} \\
     &\qquad + a_{4}'\cdot\log\frac{2a_{4}'}{a_{3}'+a_{4}'} \\
-    &\qquad + \log(2).
+    &\qquad + \log(2) \\
     &\qquad := L^{p,3}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
 All bounds are functions only of $x,y$ through the true generating probabilities $\mathbf{p}_{xy}$.
@@ -704,7 +704,7 @@ Replace all $(1+w)$ terms with $(1-w)$ and focus just on the partial likelihood.
 Then if $(1+x)(1-y) > (1-x)(1+y)$,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
-    &=      + p_{0}  \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
+    &=      + p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{2}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{3}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
@@ -716,7 +716,7 @@ Then if $(1+x)(1-y) > (1-x)(1+y)$,
 otherwise
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
-    &=      + p_{0}  \cdot\log((1+x')^2    (1-w')(1+y')^2) \\
+    &=      + p_{0}  \cdot\log((1+x')^2    (1+w')(1+y')^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{2}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{3}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
@@ -735,20 +735,25 @@ yields
     &=      + 2\cdot\log(1+x') \\
     &\qquad + (2-b_{1})  \cdot\log(1+y') \\
     &\qquad + b_{1}      \cdot\log(1-y') \\
-    &\qquad + \log(1-w')
+    &\qquad + p_{0}\cdot\log(1+w') \\
+    &\qquad + (1-p_{0})\cdot\log(1-w')
 \end{align*}
-for the first lower bound, but you'll notice that, upon maximizing, we obtain the same value for both cases, namely
+for the first lower bound, but, upon maximizing, we obtain the same value for both cases, namely
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
     &=      + 2\cdot\log(2) \\
     &\qquad + (2-b_{1})  \cdot\log(2-b_{1}) \\
-    &\qquad + b_{1}      \cdot\log(b_{1})
+    &\qquad + b_{1}      \cdot\log(b_{1}) \\
+    &\qquad + p_{0}\cdot\log(2p_{0}) \\
+    &\qquad + (1-p_{0})\cdot\log(2(1-p_{0}))
 \end{align*}
-maximized at $\{1,1-b_{1},0\}$, meaning
-\begin{align*}
-    L^{p,1}_{\tau_1,\tau_2}(\mathbf{p}_{xy}) &:= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b_{1},0\}) + 2\cdot\log(2) + (2-b_{1})\cdot\log(2-b_{1})+b_{1}\cdot\log(b_{1}) \\
-                                             &= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1-b_{1},1,0\}) + 2\cdot\log(2) + (2-b_{1})\cdot\log(2-b_{1})+b_{1}\cdot\log(b_{1}).
-\end{align*}
+maximized at $\{1,1-b_{1},1-2p_{0}\}$.
+
+...
+
+$$
+    L^{p,1}_{\tau_1,\tau_2}(\mathbf{p}_{xy}) := \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b_{1},1-2p_{0}\}) + 
+$$
 
 \subsubsection{Region of inconsistency}
 
