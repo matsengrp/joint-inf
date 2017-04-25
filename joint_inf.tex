@@ -16,6 +16,7 @@
 \usepackage{subcaption}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{showlabels}
 
 \graphicspath{ {figures/} }
 
@@ -47,6 +48,8 @@
 \newcommand{\nAncestralSplits}{r}
 
 \newcommand{\shannonDivergence}{D}
+
+\DeclareMathOperator*{\argmax}{argmax}
 
 \allowdisplaybreaks
 
@@ -102,7 +105,7 @@ L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t) = \prod_{i=1}^{\nCols} \ 
 \end{equation}
 % In particular, we are interested in
 % $$
-% (\hat{\boldsymbol\xi}, \hat{\tau}, \hat{t}) = \arg\max_{\boldsymbol\xi, \tau, t} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t),
+% (\hat{\boldsymbol\xi}, \hat{\tau}, \hat{t}) = \argmax_{\boldsymbol\xi, \tau, t} \ L_n(\mathbf{y};\boldsymbol\xi, \tau, t),
 % $$
 % which we call the maximum likelihood values of the parameters $(\boldsymbol\xi, \tau, t)$.
 % Since the number of elements in $\boldsymbol\xi$ grows with that of the observed data $\mathbf{y}$,
@@ -113,7 +116,7 @@ The typical approach to estimate the tree $\tau$ and branch lengths $t$ involves
 \end{equation}
 and maximizing over the topology and branch lengths to obtain
 $$
-(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \  \tilde{L}_\nCols(\fullAlignment; \tau, t).
+(\hat{\tau}, \hat{t}) = \argmax_{\tau, t} \  \tilde{L}_\nCols(\fullAlignment; \tau, t).
 $$
 % The values $\hat{\boldsymbol\xi}$ are then calculated conditional on these estimates.
 % More likely in practice we fix a topology $\tau$ and use this marginalization approach to compute $(\hat{\boldsymbol\xi}, \hat{t})$.
@@ -129,7 +132,7 @@ L_\nCols'(\fullAlignment;\tau, t) = \max_{\fullAncestralStates} \ L_\nCols(\full
 then estimating the topology and branch lengths via
 \begin{equation}
 \label{eq:profile_likelihood_topology_bl}
-(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ L_\nCols'(\fullAlignment;\tau, t)
+(\hat{\tau}, \hat{t}) = \argmax_{\tau, t} \ L_\nCols'(\fullAlignment;\tau, t)
 \end{equation}
 while using $\hat{\fullAncestralStates}$ maximizing \eqref{eq:profile_likelihood} as an estimate for $\fullAncestralStates$.
 Since $\alphabet$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and so \eqref{eq:profile_likelihood_topology_bl} will recover the joint ML values of the unknown parameters.
@@ -306,9 +309,12 @@ Recall $(\tau, t)$ are estimands and $(\tau^*, t^*)$ are fixed, generating param
 For data generated from $(\tau^*, t^*)$, if
 \begin{equation}
 \label{eq:inconsistency_inequality}
+%EM Suggest \hat{\fullAncestralSplitPartitions}_1, etc.
 \ell_{\tau^*,t^*}(\hat{\fullAncestralSplitPartitions}(\tau',t_1),\tau',\hat{t}_1) > \ell_{\tau^*,t^*}(\hat{\fullAncestralSplitPartitions}(\tau^*,t_2),\tau^*,\hat{t}_2)
 \end{equation}
 for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\hat{\fullAncestralSplitPartitions}(\tau',t_1)\}$ and $\{\hat{t}_2,\hat{\fullAncestralSplitPartitions}(\tau^*,t_2)\}$ estimated by maximizing \eqref{eq:profile_likelihood}, we have an inconsistency.
+By Gibbs' inequality, $\shannonDivergence_{\tau^*,t^*}(\tau,t)$ is maximized when $(\tau,t) = (\tau^*,t^*)$, so any potential example of inconsistency must overcome that difference with substantially greater partial likelihoods on the non-generating topology.
+In the next section, we show that such examples exist.
 
 \section{Inconsistency of joint maximum likelihood}
 
@@ -316,6 +322,7 @@ for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\hat{\fullAncestralSplitPartitions}(\tau
 
 Our approach will be to seek bounds for the terms inside the maximization in \eqref{eq:log_likelihood_simplified} as
 \begin{equation}
+%EM Seems a little strange to give a new equation number to an equation that already exists with an assigned number.
 \label{eq:partial-likelihood}
 \ell_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \ell^p_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t).
 \end{equation}
@@ -331,7 +338,7 @@ $$
 $$
 and
 $$
-\{\hat{t},\hat{\fullAncestralSplitPartitions}(\tau,t)\} = \arg\max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell^p_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t).
+\{\hat{t},\hat{\fullAncestralSplitPartitions}(\tau,t)\} = \argmax_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell^p_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t).
 $$
 Similarly, we have a lower bound as
 $$
