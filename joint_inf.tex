@@ -156,9 +156,10 @@ $$
 \siteSplitRV := \patternToSplit(\alignmentColumnRV), \ \ancestralSplitRV := \ancestralToSplit(\ancestralStateColumnRV).
 $$
 We can now write the $i$th factor of \eqref{eq:full_likelihood} as
-$$
-P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t)=P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t)
-$$
+\begin{align*}
+    P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= P(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \tau, t) \\
+    &= P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) \\
+\end{align*}
 for some $j$ and $k$.
 Taking the maximum across internal states yields
 \begin{align*}
@@ -169,28 +170,32 @@ Taking the maximum across internal states yields
 %EM Just noticed that eta doesn't have to be a real partition, because they don't have to be disjoint, right?
 %das: I think they do have to be disjoint. The partition is into "most likely" and "not most likely," which is disjoint and exhausts the set. Am I missing something?
 %EM Perhaps we're talking about partition in different senses. I was saying that eta_i can intersect with another eta_j. Let's chat IRL on Monday.
-Given $(\tau, t)$ there exists an ordered list of sets $\fullAncestralSplitPartitions(\tau, t)=(\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t))$ such that any element $\xi$ of the $j$th component $\ancestralSplitPartition_j(\tau, t)$ satisfies
+Given $(\tau, t)$ there exists an ordered list of sets $\fullAncestralSplitPartitions(\tau, t)=(\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t))$ such that any element $\xi_j$ of the $j$th component $\ancestralSplitPartition_j(\tau, t)$ satisfies
 \begin{align*}
-\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t) &= P(\ancestralSplitRV = \xi \mid \siteSplitRV=\siteSplit_j, \tau, t).
+\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t) &= P(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
-
+This allows us to write the likelihood in \eqref{eq:profile_likelihood} as a product over site patterns as opposed to sites, i.e.,
 \begin{align}
 L_\nCols'(\fullAlignment;\tau, t) &= \max_{\fullAncestralStates} \ L_\nCols(\fullAlignment;\fullAncestralStates, \tau, t) \\
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \\
 %EM Indexing broken here: we are taking a product over i, but i doesn't appear in the expression.
     %das: This is intentional, though: it allows us to proceed to the following line, grouping factors by site pattern since their probabilities don't depend on $i$. I can try to think of how to make this more clear, but I thought it was a pretty key step to be able to pass to site patterns, and the reason for the machinery involved in defining ancestral state partitions.
 %EM My suggestion is to use \psi(y_i) until you switch to a product indexed by the j's.
-                             &= \prod_{i=1}^{\nCols} \ \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) \\
-                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t) \\
-%EM As I fixed above and described in person, \ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) is not what you want here, because it will inflate the value by |\ancestralSplitPartition_j(\tau, t)| . This also appears below.
-                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j, \tau, t) \\
-                             &= \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
+                             &= \prod_{i=1}^{\nCols} \ \max_{\ancestralToSplit(\ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \tau, t) \\
+                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \max_{\ancestralToSplit(\ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} P(\ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
+                             &= \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
 where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ where the site split $\siteSplit_j$ appears.
 
 \paragraph{Example}
 %EM My long term suggestion is for you to put this in example in the main text and the above in the appendix.
-Consider a fixed, binary four-tip tree $\tau$.
+\begin{figure}
+    \centering
+    \includegraphics[width=.45\textwidth]{unrooted_four_taxa}
+    \caption{Four taxa tree}
+\end{figure}
+
+Consider the fixed, binary four-tip tree $\tau$ in Fig.~\ref{fig:four-taxa-tree}.
 The set of all possible character assignments can be described as
 \begin{align*}
 \mathcal{P}(\{1,2,3,4\}) &= \{\emptyset, \{1,2,3,4\}, \{1\}, \{2,3,4\}, \{2\}, \{1,3,4\}, \{3\}, \{1,2,4\}, \\
@@ -220,34 +225,33 @@ in general.
 
 For each site split $\siteSplit\in\mathcal{P}(\siteSplitSet)$, we maximize the likelihood over all $\ancestralSplit\in\mathcal{P}(\ancestralSplitSet)$.
 %EM I dropped the \ancestralSplitPartition(\siteSplit, \tau, t) notation above. You can revert it if you like, but I prefer the bold eta notation as an ordered list of sets.
-A maximum will occur at one of possibly several ancestral splits in $\mathcal{P}(\ancestralSplitSet)$; define $\ancestralSplitPartition(\siteSplit, \tau, t)$ as the partition of $\mathcal{P}(\ancestralSplitSet)$ into those most likely ancestral splits for that particular site split, topology and set of branch lengths.
+A maximum will occur at one of possibly several ancestral splits in $\mathcal{P}(\ancestralSplitSet)$; for the $j$th site split, define $\ancestralSplitPartition_j(\tau, t)\subset\mathcal{P}(\ancestralSplitSet)$ as the set of most likely ancestral splits for that particular site split, topology and set of branch lengths.
 As a simple example, say all branch lengths correspond to a probability $p$ ($< 1/2$) of changing character along that branch.
-The probabilities of observing ancestral splits for site split $\emptyset$ are
+The probabilities of observing ancestral splits for $\siteSplit_j=\emptyset$ are
 $$
 P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\emptyset, \tau, t) =
 (1-p)^5,
 $$
 $$
 %EM Seems to me that this just requires one character change so would be p(1-p)^4.
-%das: I think it's wrong, but in the other direction: two character changes to get to the differing internal state, then one between the two internal states.
+%das: I think it's wrong, but in the other direction: two character changes to get to the differing internal state, then one between the two internal states. Another set of eyes might make a liar out of me, though.
 P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\emptyset, \tau, t) =
 P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\emptyset, \tau, t) =
 p^3(1-p)^2,
 $$
 $$
 %EM Have you told us in this example what the labeled topology is?
-%das: Nope! I wanted to be simple, but it seems maybe too simple. Maybe I should move the Felsenstein/Farris bit to this example?
 %Erick stopped here.
 P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\emptyset, \tau, t) =
 p^4(1-p).
 $$
-Here, the partition into most likely ancestral states will proceed as
+The set of most likely ancestral states contains a single element, here $\ancestralSplitPartition_j(\tau, p)=\{\emptyset\}$.
+Then, taking $\xi_j\in\ancestralSplitPartition_j(\tau, p)$ we have
 $$
-P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, p) \mid \siteSplitRV=\emptyset, \tau, t) =
-(1-p)^5
+P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\emptyset, \tau, t) =
+(1-p)^5.
 $$
-where the partition is the single element $\ancestralSplitPartition_j(\tau, p)=\emptyset$.
-For the site split $\{1,3\}$ we have
+For $\siteSplit_j=\{1,3\}$ we have
 $$
 P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1,3\}, \tau, t) =
 P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
@@ -256,34 +260,32 @@ $$
 $$
 P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
 P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
-p^3(1-p)^2,
+p^3(1-p)^2.
 $$
-where
+In this case, the set of most likely ancestral states is $\ancestralSplitPartition_j(\tau, p)=\{\emptyset,\{1,2\}\}$, and, for $\xi_j\in\ancestralSplitPartition_j(\tau, p)$,
 $$
-P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, p) \mid \siteSplitRV=\{1,3\}, \tau, t) =
-p^2(1-p)^3
+P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\{1,3\}, \tau, t) =
+p^2(1-p)^3.
 $$
-with the most likely partition $\ancestralSplitPartition_j(\tau, p)=\{\emptyset,\{1,2\}\}.$
-
 
 \subsection{Showing inconsistency}
 
 We are interested in the properties of the objective function being maximized in \eqref{eq:site_pattern_likelihood} as data becomes plentiful.
 Define \eqref{eq:site_pattern_likelihood} as
 $$
-L_\nCols''(\fullAlignment;\fullAncestralSplitPartitions(\tau, t),\tau,t) = \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t) \cdot P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
+L_\nCols''(\fullAlignment;\fullAncestralSplitPartitions(\tau, t),\tau,t) = \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t) \cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)}.
 $$
 Assume our $\nCols$ observations were generated from a model with parameters $(\tau^*, t^*)$.
 We have
 \begin{align}
     \frac{1}{\nCols} \log L_\nCols''(\fullAlignment;\fullAncestralSplitPartitions(\tau,t),\tau,t)
-        &= \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \tau, t) \\
+        &= \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t) \\
         &= \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) +
-            \log P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j , \tau, t)]
+            \log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
 \end{align}
 so that, in the limit of infinite data,
 \begin{equation}
-\frac{1}{\nCols} \log L_\nCols''(\fullAlignment;,\tau,t) \rightarrow \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
+\frac{1}{\nCols} \log L_\nCols''(\fullAlignment;,\tau,t) \rightarrow \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
 \end{equation}
 Define the the divergence quantity
 $$
@@ -291,9 +293,9 @@ $$
 $$
 and the partial log likelihood
 $$
-\ell^p_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplit_j, \tau, t)
+\ell^p_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV=\xi_j \mid \siteSplit_j, \tau, t)
 $$
-so that \eqref{eq:site_pattern_profile_likelihood_mean} is written as
+so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
 \begin{equation}
     \label{eq:log_likelihood_simplified}
     \ell_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \ell^p_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t).
@@ -302,9 +304,9 @@ Recall $(\tau, t)$ are estimands and $(\tau^*, t^*)$ are fixed, generating param
 For data generated from $(\tau^*, t^*)$, if
 \begin{equation}
 \label{eq:inconsistency_inequality}
-\ell_{\tau^*,t^*}(\widehat{\fullAncestralSplitPartitions(\tau',t_1)},\tau',\hat{t}_1) > \ell_{\tau^*,t^*}(\widehat{\fullAncestralSplitPartitions(\tau^*,t_2)},\tau^*,\hat{t}_2)
+\ell_{\tau^*,t^*}(\hat{\fullAncestralSplitPartitions}(\tau',t_1),\tau',\hat{t}_1) > \ell_{\tau^*,t^*}(\hat{\fullAncestralSplitPartitions}(\tau^*,t_2),\tau^*,\hat{t}_2)
 \end{equation}
-for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\widehat{\fullAncestralSplitPartitions(\tau',t_1)}\}$ and $\{\hat{t}_2,\widehat{\fullAncestralSplitPartitions(\tau^*,t_2)}\}$ estimated by maximizing \eqref{eq:profile_likelihood}, we have an inconsistency.
+for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\hat{\fullAncestralSplitPartitions}(\tau',t_1)\}$ and $\{\hat{t}_2,\hat{\fullAncestralSplitPartitions}(\tau^*,t_2)\}$ estimated by maximizing \eqref{eq:profile_likelihood}, we have an inconsistency.
 
 \section{Inconsistency of joint maximum likelihood}
 
@@ -319,7 +321,7 @@ We obtain an upper bound for the joint maximum of \eqref{eq:partial-likelihood}
 $$
 \max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-    + \ell^p_{\tau^*,t^*}(\widehat{\fullAncestralSplitPartitions(\tau,t)},\tau,\hat{t})
++ \ell^p_{\tau^*,t^*}(\hat{\fullAncestralSplitPartitions}(\tau,t),\tau,\hat{t})
 $$
 using Gibbs's inequality
 $$
@@ -327,13 +329,13 @@ $$
 $$
 and
 $$
-\{\hat{t},\widehat{\fullAncestralSplitPartitions(\tau,t)}\} = \arg\max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell^p_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t).
+\{\hat{t},\hat{\fullAncestralSplitPartitions}(\tau,t)\} = \arg\max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell^p_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t).
 $$
 Similarly, we have a lower bound as
 $$
 \max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) \ge
     \shannonDivergence_{\tau^*,t^*}(\tau,\hat{t})
-    + \ell^p_{\tau^*,t^*}(\widehat{\fullAncestralSplitPartitions(\tau,t)},\tau,\hat{t}).
++ \ell^p_{\tau^*,t^*}(\hat{\fullAncestralSplitPartitions}(\tau,t),\tau,\hat{t}).
 $$
 
 % vvvv Remove these? I think they're obvious now, but maybe they can be made more explicit above?
@@ -417,7 +419,7 @@ All values are multiplied by $1/8$.}
 \begin{tabular}{|l|ll|}
     \multicolumn{3}{c}{$\tau=\tau_1$}\\
     \hline
-    $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau, t)$ & $P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
+    $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau, t)$ & $P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
     \hline
     $\emptyset$&
     $\emptyset$&
@@ -454,7 +456,7 @@ All values are multiplied by $1/8$.}
     \hline
     \multicolumn{3}{c}{$\tau=\tau_2$}\\
     \hline
-    $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau, t)$ & $P(\ancestralSplitRV\in\ancestralSplitPartition_j(\tau, t) \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
+    $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau, t)$ & $P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
     \hline
     $\emptyset$       &$\emptyset$&$(1+x)^2   (1+w)(1+y)^2$\\
     $\{1\}$          &
@@ -635,7 +637,7 @@ where
     &\qquad + (1-p_{13})\cdot\log(1+w') \\
     &\qquad + p_{13}\cdot\log(1-w').
 \end{align*}
-Applying Gibbs' inequality to the first two summands, and maximizing over the remaining terms yields
+Applying Gibbs' inequality to the first two summands and maximizing over the remaining terms yields
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
     &\le      p_{0}  \cdot\log(p_{0}) \\
@@ -694,7 +696,7 @@ We construct a similar lower bound on the Felsenstein partial likelihood.
 Replace all $(1+w)$ terms with $(1-w)$ and focus just on the partial likelihood.
 Then if $(1+x)(1-y) > (1-x)(1+y)$,
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
     &=      + p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{2}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
@@ -706,7 +708,7 @@ Then if $(1+x)(1-y) > (1-x)(1+y)$,
 \end{align*}
 otherwise
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
     &=      + p_{0}  \cdot\log((1+x')^2    (1+w')(1+y')^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{2}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
@@ -722,7 +724,7 @@ b_{1} = p_{1}+p_{2}+p_{3}+p_{123}
 $$
 yields
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
     &=      + 2\cdot\log(1+x') \\
     &\qquad + (2-b_{1})  \cdot\log(1+y') \\
     &\qquad + b_{1}      \cdot\log(1-y') \\
@@ -731,7 +733,7 @@ yields
 \end{align*}
 for the first lower bound, but, upon maximizing, we obtain the same value for both cases, namely
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    \ell^p_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
     &=      + 2\cdot\log(2) \\
     &\qquad + (2-b_{1})  \cdot\log(2-b_{1}) \\
     &\qquad + b_{1}      \cdot\log(b_{1}) \\
