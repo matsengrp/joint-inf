@@ -348,6 +348,7 @@ $$
 $$
 
 % vvvv Remove these? I think they're obvious now, but maybe they can be made more explicit above?
+%EM I agree-- quite clear now!
 \textbf{Argument for lower bound}: This makes intuitive sense, though may be difficult to show in general.
 Can we not just say $\max_u f(u) + g(u)$ is greater than $f(u') + g(u')$ for any $u'$ that doesn't maximize $f(u) + g(u)$ just by definition?
 There could be multiple maxima, but that's why we have greater than or equal to.
@@ -377,11 +378,17 @@ For a fixed $\{x^*, y^*\}$ we can calculate this upper bound directly---can we o
 \end{figure}
 
 Define the Farris topology $\tau_1$ and the Felsenstein topology $\tau_2$ as in Figure~\ref{fig:farris-fels-top}.
+%EM clarify that we aren't assuming that the x and y in t are the same as those appearing in t^*?
 Call $t=\{x,y,w\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ is the case where the bottom three branches all share the same parameter, the classical construction of this topology.
-The branch length parameters are such that the probability of a change in character along the top two branches is $p_x=1-2x$, with corresponding equalities for the other two branches.
+
+We will parameterize these trees \textbf{not with branch lengths}, but rather such that the probability of a substitution on a branch with parameter $x$ is $p_x=1-2x$.
+%EM (Scratching head) isn't p_x=1-2x backwards? Then p_x will take values in the range -1 to 1.
 Here, $\{p_x,p_y,p_w\}\in[0,1/2]^3$ and $\{x,y,w\}\in[0,1]^3$.
+This parametrization has been called edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge \cite{Matsen2007-jq}.
+Fidelities have nice algebraic properties, as can be seen via the Hadamard transform.
 
 \textbf{Justification for estimand:} It might be worth arguing why this form of the estimand $t$ is necessary.
+%EM definitely. This is a big TODO.
 I think the idea is that for either of these topologies, any maximum obtained will occur where the top two and bottom two branches are equal, though not necessarily the middle branch.
 This would be good to show explicitly.
 
