@@ -1,5 +1,59 @@
 \section{Temporarily unused text I may want later to show more general results on the likelihood estimates}
 
+\paragraph{Examples}
+
+See Table~\ref{tab:examples} for parameters, bounds and true likelihood values obtained via basin hopping.
+
+Set $\{x, y\} = \{0.25, 0.25\}$.
+For a Farris zone generating topology, we have
+$$
+L^{p,1}_{\tau_1,\tau_1}(\mathbf{a}_{xy}) \approx -2.17803560694157,
+$$
+$$
+L^{p,2}_{\tau_1,\tau_1}(\mathbf{a}_{xy}) \approx -2.17803560694157
+$$
+and
+$$
+L^{p,3}_{\tau_1,\tau_1}(\mathbf{a}_{xy}) \approx -2.17803560694157.
+$$
+Computing the upper bound yields
+$$
+\max_{t,\fullAncestralSplitPartitions(\tau_1,t)} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,t),\tau_1,t) \le -4.22274479428471
+$$
+and it remains to show that
+$$
+\max_{t,\fullAncestralSplitPartitions(\tau_2,t)} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,t),\tau_2,t) \ge -4.22274479428471.
+$$
+
+For the same generating parameters,
+$$
+d_{xy} = 0.498046875, \ e_{xy} = 0.2431640625,
+$$
+resulting in
+$$
+L^{p,1}_{\tau_1,\tau_2}(d_{xy},e_{xy}) \approx -2.07968569223991
+$$
+and
+$$
+\shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-d_{xy}-2e_{xy}, 0\}) \approx -2.07748833719921.
+$$
+The lower bound in this case becomes
+$$
+\max_{t,\fullAncestralSplitPartitions(\tau_2,t)} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,t),\tau_2,t) \ge -4.15717402943912
+\ge -4.22274479428471 \ge \max_{t,\fullAncestralSplitPartitions(\tau_1,t)} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,t),\tau_1,t)
+$$
+where site patterns are generated from the Farris zone topology.
+Confirming, run \texttt{python}'s numerical optimization solver for $\{.25, .25\}$.
+Since we are computing a constrained maximization, we can find a global maximum using basin hopping, and doing so yields
+$$
+\max_{t,\fullAncestralSplitPartitions(\tau_1,t)} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,t),\tau_1,t) \approx -4.5101771294218045
+$$
+and
+$$
+\max_{t,\fullAncestralSplitPartitions(\tau_2,t)} \ \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,t),\tau_2,t) \approx -4.1544859851260281.
+$$
+It looks like the lower bound is tighter than the upper bound, so we may try focusing there.
+
 \begin{align*}
     0 &\ge h_{\tau_1,\{x,y,y\}}(\tau_1,\{y, y, y\}) + L^{p}_{\tau_1,\tau_1}(a_{xy},b_{xy}) \\
       &\qquad - h_{\tau_1,\{x,y,y\}}(\tau_2,\{1, 1-d_{xy}-2e_{xy}, 0\}) - L^{p,1}_{\tau_1,\tau_2}(d_{xy},e_{xy}) \\
@@ -120,71 +174,6 @@ or
     &\qquad \triangleq L^{p,2}_{\tau_1,\tau_1}(a_{xy}, b_{xy})
 \end{align*}
 where $a_{xy},b_{xy}$ and $c_{xy}$ are functions of the true generating branch parameters $\{x,y\}$.
-
-\begin{table}
-\centering
-\begin{tabular}{|l|ll|}
-\multicolumn{3}{c}{$P(\ancestralStateColumn=\ancestralSplit_k|\alignmentColumn=\siteSplit_j,\tau_1,t)$}\\
-\hline
-& \multicolumn{2}{|c|}{$\ancestralSplit_k$}\\
-    \hline
-    $\siteSplit_j$    &$\emptyset$  00                              &$\{2\}$  01\\
-    \hline
-     $\emptyset$   0000&$(1+x)^2   (1+w)(1+y)^{2*}$          &$(1+x)^2   (1-w)(1-y)^2$\\
-     $\{1\}$       1000&$(1+x)(1-x)(1+w)(1+y)^{2*}$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
-     $\{2\}$       0100&$(1+x)(1-x)(1+w)(1+y)^{2*}$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
-     $\{3\}$       0010&$(1+x)^2   (1+w)(1+y)(1-y)^*$        &$(1+x)^2   (1-w)(1+y)(1-y)$\\
-     $\{1,2\}$     0011&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$&$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-     $\{1,3\}$     0101&$(1+x)^2   (1+w)(1-y)^{2\ddagger}$   &$(1+x)^2   (1-w)(1+y)^{2\ddagger}$\\
-     $\{2,3\}$     1001&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$&$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-     $\{1,2,3\}$   0001&$(1+x)^2   (1+w)(1+y)(1-y)^*$        &$(1+x)^2   (1-w)(1+y)(1-y)$\\
-    \hline
-    \hline
-    &$\{1\}$  10                           &$\{1,2\}$  11\\
-    \hline
-     $\emptyset$   0000&$(1-x)^2   (1-w)(1+y)^2$     &$(1-x)^2   (1+w)(1-y)^2$\\
-     $\{1\}$       1000&$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
-     $\{2\}$       0100&$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
-     $\{3\}$       0010&$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-     $\{1,2\}$     0011&$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$\\
-     $\{1,3\}$     0101&$(1-x)^2   (1-w)(1-y)^2$     &$(1-x)^2   (1+w)(1+y)^{2\ddagger}$\\
-     $\{2,3\}$     1001&$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$\\
-     $\{1,2,3\}$   0001&$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-    \hline
-\multicolumn{3}{c}{$P(\ancestralStateColumn=\ancestralSplit_k|\alignmentColumn=\siteSplit_j,\tau_2,t)$}\\
-\hline
-& \multicolumn{2}{|c|}{$\ancestralSplit_k$}\\
-    \hline
-    $\siteSplit_j$    &$\emptyset$  00                              &$\{2\}$  01\\
-    \hline
-     $\emptyset$   0000&$(1+x)^2   (1+w)(1+y)^{2*}$           &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-     $\{1\}$       1000&$(1+x)(1-x)(1+w)(1+y)^{2\ddagger}$    &$(1-x)^2   (1-w)(1+y)(1-y)$\\
-     $\{2\}$       0100&$(1+x)^2   (1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)(1-x)(1-w)(1-y)^2$\\
-     $\{3\}$       0010&$(1+x)(1-x)(1+w)(1+y)^{2\ddagger}$    &$(1+x)^2   (1-w)(1+y)(1-y)^{\ddagger}$\\
-     $\{1,2\}$     0011&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)^2   (1-w)(1+y)^{2\ddagger}$\\
-     $\{1,3\}$     0101&$(1+x)^2   (1+w)(1-y)^{2\ddagger}$    &$(1+x)(1-x)(1-w)(1+y)(1-y)^{\ddagger}$\\
-     $\{2,3\}$     1001&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$&$(1-x)^2   (1-w)(1+y)^{2\ddagger}$\\
-     $\{1,2,3\}$   0001&$(1+x)^2   (1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)(1-x)(1-w)(1+y)^{2\ddagger}$\\
-    \hline
-    \hline
-    &$\{1\}$  10                           &$\{1,2\}$  11\\
-    \hline
-     $\emptyset$   0000&$(1+x)(1-x)(1-w)(1+y)(1-y)$             &$(1-x)^2   (1+w)(1-y)^2$\\
-     $\{1\}$       1000&$(1+x)^2   (1-w)(1+y)(1-y)^{\ddagger}$  &$(1+x)(1-x)(1+w)(1-y)^2$\\
-     $\{2\}$       0100&$(1+x)(1-x)(1-w)(1+y)^{2\ddagger}$      &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-     $\{3\}$       0010&$(1-x)^2   (1-w)(1+y)(1-y)$             &$(1+x)(1-x)(1+w)(1-y)^2$\\
-     $\{1,2\}$     0011&$(1-x)^2   (1-w)(1-y)^2$                &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$\\
-     $\{1,3\}$     0101&$(1+x)(1-x)(1-w)(1+y)(1-y)^{\ddagger}$  &$(1-x)^2   (1+w)(1+y)^{2\ddagger}$\\
-     $\{2,3\}$     1001&$(1+x)^2   (1-w)(1-y)^{2\ddagger}$      &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$\\
-     $\{1,2,3\}$   0001&$(1+x)(1-x)(1-w)(1-y)^2$                &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-\hline
-\end{tabular}
-\caption{Likelihood calculations for all site patterns and internal states of Farris topology.
-Maxima determined row-wise (i.e., by site pattern).
-All values multiplied by $1/32$.
-Key: $^*$ unique maximum value corresponding to unique internal state; $^\dagger$ unique maximum value corresponding to multiple internal states; $^\ddagger$ multiple maximum values corresponding to multiple internal states.}
-\label{tab:likelihoods}
-\end{table}
 
 $$
 a = p(0100) + p(1000) + p(0011) + p(1001) = (4-2x^2-2y^2)/8,

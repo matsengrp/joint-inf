@@ -96,7 +96,7 @@
      id="base"
      showgrid="false"
      inkscape:zoom="0.62605296"
-     inkscape:cx="350.97743"
+     inkscape:cx="355.76936"
      inkscape:cy="339.79766"
      inkscape:window-x="7"
      inkscape:window-y="24"
@@ -227,10 +227,10 @@
        sodipodi:linespacing="125%"
        transform="scale(0.99689211,1.0031176)"><tspan
          sodipodi:role="line"
-         id="tspan3009"
          x="77.096855"
          y="37.772923"
-         style="font-size:3.20330477px">x</tspan></text>
+         style="font-size:3.20330477px"
+         id="tspan3017">x'</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.20330477px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -242,7 +242,7 @@
          sodipodi:role="line"
          id="tspan3013"
          x="85.73214"
-         y="52.323891">y</tspan></text>
+         y="52.323891">y'</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.73718882px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -255,7 +255,7 @@
          id="tspan3009-6"
          x="100.24623"
          y="37.796043"
-         style="font-size:3.20330477px">x</tspan></text>
+         style="font-size:3.20330477px">x'</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.20330477px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -267,7 +267,7 @@
          sodipodi:role="line"
          id="tspan3013-2"
          x="90.433022"
-         y="45.990665">w</tspan></text>
+         y="45.990665">w'</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.20330477px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -279,7 +279,7 @@
          sodipodi:role="line"
          id="tspan3013-0"
          x="92.56498"
-         y="52.386501">y</tspan></text>
+         y="52.386501">y'</tspan></text>
   </g>
 </svg>
 <!-- bounding box -->
