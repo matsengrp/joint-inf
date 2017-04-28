@@ -304,19 +304,19 @@ $$
 and the partial log likelihood
 $$
 %EM IMHO \ell^p is so standard that it's confusing to see it in another setting. Perhaps \tilde{\ell}?
-\tilde{\ell}_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV=\xi_j \mid \siteSplit_j, \tau, t)
+\tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV=\xi_j \mid \siteSplit_j, \tau, t)
 $$
 so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
 \begin{equation}
     \label{eq:log_likelihood_simplified}
-    \ell_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t).
+    \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
 \end{equation}
 Recall $(\tau, t)$ are estimands and $(\tau^*, t^*)$ are fixed, generating parameters.
 For data generated from $(\tau^*, t^*)$, if
 \begin{equation}
 \label{eq:inconsistency_inequality}
 %EM Suggest \hat{\fullAncestralSplitPartitions}_1, etc.
-\ell_{\tau^*,t^*}(\hat{\fullAncestralSplitPartitions}_1,\tau',\hat{t}_1) > \ell_{\tau^*,t^*}(\hat{\fullAncestralSplitPartitions}_2,\tau^*,\hat{t}_2)
+\ell_{\tau^*,t^*}(\tau', \hat{t}_1; \hat{\fullAncestralSplitPartitions}_1) > \ell_{\tau^*,t^*}(\tau^*, \hat{t}_2; \hat{\fullAncestralSplitPartitions}_2)
 \end{equation}
 for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\hat{\fullAncestralSplitPartitions}_1\}$ and $\{\hat{t}_2,\hat{\fullAncestralSplitPartitions}_2\}$ estimated by maximizing \eqref{eq:profile_likelihood}, we have an inconsistency.
 By Gibbs' inequality, $\shannonDivergence_{\tau^*,t^*}(\tau,t)$ is maximized when $(\tau,t) = (\tau^*,t^*)$, so any potential example of inconsistency must overcome that difference with substantially greater partial likelihoods on the non-generating topology.
@@ -329,9 +329,9 @@ In the next section, we show that such examples exist.
 Our approach will be to seek bounds for the terms inside the maximization in \eqref{eq:log_likelihood_simplified}.
 We obtain an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} as
 $$
-\max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) \le
+\max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-+ \tilde{\ell}_{\tau^*,t^*}(\hat{\fullAncestralSplitPartitions},\tau,\hat{t})
+    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \hat{\fullAncestralSplitPartitions})
 $$
 using Gibbs's inequality
 $$
@@ -339,13 +339,13 @@ $$
 $$
 and
 $$
-\{\hat{t},\hat{\fullAncestralSplitPartitions}\} = \argmax_{t,\fullAncestralSplitPartitions(\tau,t)} \ \tilde{\ell}_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t).
+\{\hat{t},\hat{\fullAncestralSplitPartitions}\} = \argmax_{t,\fullAncestralSplitPartitions(\tau,t)} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
 $$
 Similarly, we have a lower bound as
 $$
-\max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\fullAncestralSplitPartitions(\tau,t),\tau,t) \ge
+\max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \ge
     \shannonDivergence_{\tau^*,t^*}(\tau,\hat{t})
-+ \tilde{\ell}_{\tau^*,t^*}(\hat{\fullAncestralSplitPartitions},\tau,\hat{t}).
+    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \hat{\fullAncestralSplitPartitions}).
 $$
 
 \subsection{Parameter setting}
@@ -377,8 +377,8 @@ This parametrization has been called edge ``fidelity'' as it quantifies the fide
 Fidelities have nice algebraic properties, as can be seen via the Hadamard transform.
 
 %das: did this on paper, but can write it out.
-\textbf{Justification for estimand:} Consider the Farris topology with arbitrary branch lengths, i.e., $\{x_1,y_1,x_2,y_2,w\}$ counting from the top left.
-The likelihood $\ell(x_1,y_1,x_2,y_2,w)$ can be written as a function of $\{x_1x_2, x_1+x_2, y_1y_2, y_1+y_2, w\}$ only.
+\textbf{Justification for estimand:} Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ counting from the top left.
+The log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$ can be written as a function of $\{x_1x_2, x_1+x_2, y_1y_2, y_1+y_2, w\}$ only.
 In this case, $x_1$ and $x_2$ can be exchanged for one another without changing the value of $\ell$, and any maximum will require $x_1=x_2$.
 A similar argument can be made for $y_1$ and $y_2$.
 For the Felsenstein topolgy this is not the case, but, since we are interested in a lower bound for this topology, we will simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
@@ -548,7 +548,7 @@ For compactness, define, e.g., $p_0 = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,
 The full Farris log likelihood can take one of three values---assume for now the we are only interested in the ancestral state split $\{2\}$ for the site split $\{1,3\}$.
 We then write the log likelihood as
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &=        p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
     &\qquad + p_{1}  \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
     &\qquad + p_{2}  \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
@@ -573,7 +573,7 @@ $$
 with similar substitutions for $(1+x'^2-y'^2-x'^2y'^2)$ and $(1-x'^2-y'^2+x'^2y'^2)$.
 Doing so results in
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
     &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1+y')) \\
@@ -593,7 +593,7 @@ Doing so results in
 \end{align*}
 Grouping together like terms,
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
     &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
     &\qquad + (1-p_{0}-p_{13})\cdot\log(1+x') \\
@@ -609,7 +609,7 @@ Grouping together like terms,
 \end{align*}
 which equals
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
     &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
     &\qquad + (3-p_{0}-p_{13}-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x') \\
@@ -634,7 +634,7 @@ a_{4} = 2(p_{2}+p_{12}+p_{23}+p_{123}),
 $$
 where
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
     &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
     &\qquad + a_{1}\cdot\log(1+x') \\
@@ -646,7 +646,7 @@ where
 \end{align*}
 Applying Gibbs' inequality to the first two summands and maximizing over the remaining terms yields
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{0}  \cdot\log(p_{0}) \\
     &\qquad + p_{13} \cdot\log(p_{13}) \\
     &\qquad + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}} \\
@@ -674,7 +674,7 @@ a_{4}' = a_{4}+2p_{13}.
 $$
 Then, for these cases,
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{0}  \cdot\log(p_{0}) \\
     &\qquad + p_{13} \cdot\log(p_{13}) \\
     &\qquad + a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'} \\
@@ -685,7 +685,7 @@ Then, for these cases,
     &\qquad := L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy});
 \end{align*}
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}),\tau_1,\{x',y',w'\})
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{0}  \cdot\log(p_{0}) \\
     &\qquad + p_{13} \cdot\log(p_{13}) \\
     &\qquad + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}} \\
@@ -703,7 +703,7 @@ We construct a similar lower bound on the Felsenstein partial likelihood.
 Replace all $(1+w)$ terms with $(1-w)$ and focus just on the partial likelihood.
 Then if $(1+x)(1-y) > (1-x)(1+y)$,
 \begin{align*}
-    \tilde{\ell}_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &=      p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{2}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
@@ -715,7 +715,7 @@ Then if $(1+x)(1-y) > (1-x)(1+y)$,
 \end{align*}
 otherwise
 \begin{align*}
-    \tilde{\ell}_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &=      p_{0}  \cdot\log((1+x')^2    (1+w')(1+y')^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{2}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
@@ -731,7 +731,7 @@ b = p_{1}+p_{2}+p_{3}+p_{123}
 $$
 yields
 \begin{align*}
-    \tilde{\ell}_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &=      2\cdot\log(1+x') \\
     &\qquad + (2-b)  \cdot\log(1+y') \\
     &\qquad + b      \cdot\log(1-y') \\
@@ -740,7 +740,7 @@ yields
 \end{align*}
 for the first lower bound, but, upon maximizing, we obtain the same value for both cases, namely
 \begin{align*}
-    \tilde{\ell}_{\tau_1,\{x,y,y\}}(\fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}),\tau_2,\{x',y',w'\})
+    \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &=      2\cdot\log(2) \\
     &\qquad + (2-b)  \cdot\log(2-b) \\
     &\qquad + b      \cdot\log(b) \\
