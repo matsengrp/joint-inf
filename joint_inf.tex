@@ -389,24 +389,10 @@ Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed
 \begin{table}
 \centering
 \begin{tabular}{|l|l|l|}
-\multicolumn{3}{c}{Classical}\\
-    \hline
-$\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j \mid \tau_1,t^*)$&$P(\siteSplitRV=\siteSplit_j \mid \tau_2,t^*)$\\
-    \hline
-    $\emptyset$    &$1+x^2+y^2+4xy^2+x^2y^2$&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
-    $\{1\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
-    $\{2\}$        &$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
-    $\{3\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2y+y^3-x^2y^2$\\
-    $\{1,2\}$      &$1-x^2-y^2+x^2y^2$&$1+2xy-2xy^2-x^2y-y^3+x^2y^2$\\
-    $\{1,3\}$      &$1+x^2+y^2-4xy^2+x^2y^2$&$1-2xy-2xy^2+x^2y+y^3+x^2y^2$\\
-    $\{2,3\}$      &$1-x^2-y^2+x^2y^2$&$1-2xy+2xy^2-x^2y-y^3+x^2y^2$\\
-    $\{1,2,3\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2y-y^3-x^2y^2$\\
-    \hline
-\multicolumn{3}{c}{Modified}\\
     \hline
 $\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j \mid \tau_1,t)$&$P(\siteSplitRV=\siteSplit_j \mid \tau_2,t)$\\
     \hline
-    $\emptyset$     &$1+x'^2+y'^2+4x'y'w'+x'^2y'^2$&$1+2x'y'+2x'y'w'+x'^2w'+y'^2w'+x'^2y'^2$\\
+    $\emptyset$    &$1+x'^2+y'^2+4x'y'w'+x'^2y'^2$&$1+2x'y'+2x'y'w'+x'^2w'+y'^2w'+x'^2y'^2$\\
     $\{1\}$        &$1-x'^2+y'^2-x'^2y'^2$&$1-x'^2w'+y'^2w'-x'^2y'^2$\\
     $\{2\}$        &$1+x'^2-y'^2-x'^2y'^2$&$1+x'^2w'-y'^2w'-x'^2y'^2$\\
     $\{3\}$        &$1-x'^2+y'^2-x'^2y'^2$&$1-x'^2w'+y'^2w'-x'^2y'^2$\\
@@ -537,14 +523,19 @@ All values are multiplied by $1/8$.}
 \end{tabular}
 \caption{Likelihood calculations for all site patterns and ancestral state partitions.
 All values multiplied by $1/32$.
-Likelihoods with multiple entries will have maxima determined by unknown branch length parameters.}
+Likelihoods with multiple entries will have maxima determined by unknown branch length parameters.
+See Appendix for full calculations.}
 \label{tab:likelihoods}
 \end{table}
 
 \subsubsection{Upper bound for Farris likelihood}
 
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
-For compactness, define, e.g., $p_0 = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})$, keeping in mind it is a function of parameters $x,y$.
+For compactness, define
+$$
+p_0 = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})
+$$
+with similar definitions for the remaining generating probabilities.
 The full Farris log likelihood can take one of three values---assume for now the we are only interested in the ancestral state split $\{2\}$ for the site split $\{1,3\}$.
 We then write the log likelihood as
 \begin{align*}
@@ -704,7 +695,7 @@ Replace all $(1+w)$ terms with $(1-w)$ and focus just on the partial likelihood.
 Then if $(1+x)(1-y) > (1-x)(1+y)$,
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
-    &=      p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
+    &\ge      p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{2}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{3}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
@@ -716,7 +707,7 @@ Then if $(1+x)(1-y) > (1-x)(1+y)$,
 otherwise
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
-    &=      p_{0}  \cdot\log((1+x')^2    (1+w')(1+y')^2) \\
+    &\ge      p_{0}  \cdot\log((1+x')^2    (1+w')(1+y')^2) \\
     &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{2}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{3}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
@@ -732,7 +723,7 @@ $$
 yields
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
-    &=      2\cdot\log(1+x') \\
+    &\ge      2\cdot\log(1+x') \\
     &\qquad + (2-b)  \cdot\log(1+y') \\
     &\qquad + b      \cdot\log(1-y') \\
     &\qquad + p_{0}\cdot\log(1+w') \\
@@ -741,7 +732,7 @@ yields
 for the first lower bound, but, upon maximizing, we obtain the same value for both cases, namely
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
-    &=      2\cdot\log(2) \\
+    &\ge      2\cdot\log(2) \\
     &\qquad + (2-b)  \cdot\log(2-b) \\
     &\qquad + b      \cdot\log(b) \\
     &\qquad + p_{0}\cdot\log(2p_{0}) \\
@@ -756,23 +747,11 @@ Our lower bound is
 
 \subsubsection{Region of inconsistency}
 
-Ideally, we want the region where
+We want the region where
 $$
 L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) \ge \max(L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}), L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy}),L^{3}_{\tau_1,\tau_1}(\mathbf{p}_{xy})).
 $$
-Currently being slightly lazy, I'm considering values for $\{x,y\}$ where all of
-$$
-L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) \ge L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}),
-$$
-$$
-L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) \ge L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy})
-$$
-and
-$$
-L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) \ge L^{3}_{\tau_1,\tau_1}(\mathbf{p}_{xy})
-$$
-hold.
-Since these are three inequalities in two variables, we can plot them analytically---see Fig.~\ref{fig:inconsistency-farris}.
+Since this is an inequality in two variables, we can plot them analytically---see Fig.~\ref{fig:inconsistency-farris}.
 
 \begin{figure}
 \centering
@@ -793,6 +772,8 @@ For maximum parsimony it's the opposite \cite{Felsenstein1978-rr}.
 Discussion of number of parameters of each.
 
 However, note that \cite{Siddall1998-hq} get things going the same way, although \cite{Swofford2001-hr} show that the problem is that they didn't simulate long enough sequences.
+
+\input{appendix}
 
 \bibliographystyle{plain}
 \bibliography{joint_inf}

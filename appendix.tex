@@ -1,108 +1,109 @@
 \section{Appendix}
 
-\begin{table}
+\subsection{Likelihood compuations}
+
+To compute the likelihood of observing a set of data, we need $P(\ancestralStateColumn=\ancestralSplit_k\mid \alignmentColumn=\siteSplit_j,\tau,t)$ for each $\ancestralSplit_k$ and $\siteSplit_j$.
+The probability of a character change along a branch with fidelity parameter $x$ is $(1-x)/2$, while the probability of a character remaining the same is $(1+x)/2$.
+See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern.
+Likelihood computations for all site patterns and ancestral states are in Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods}.
+Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}
+
+\begin{figure}
 \centering
-\begin{tabular}{|l|l|}
-    \hline
-s   &$P(s)$\\
-    \hline
-0000&$1+x^2+y^2+4xy^2+x^2y^2$\\
-0001&$1+x^2-y^2-x^2y^2$\\
-0010&$1+x^2-y^2-x^2y^2$\\
-0100&$1-x^2+y^2-x^2y^2$\\
-1000&$1-x^2+y^2-x^2y^2$\\
-0011&$1+x^2+y^2-4xy^2+x^2y^2$\\
-0101&$1-x^2-y^2+x^2y^2$\\
-1001&$1-x^2-y^2+x^2y^2$\\
-    \hline
-\end{tabular}    
-\caption{Site pattern probabilities for Farris zone topology.
-All values are multiplied by $1/8$.}
-\end{table}
+\begin{subfigure}{.45\linewidth}
+\centering
+\includegraphics[width=.95\textwidth]{farris_like00}
+\caption[short]{$P(\ancestralStateColumn=\emptyset\mid \alignmentColumn=\{2,3\},\tau_1,\{x,y,w\})$}
+\end{subfigure}
+\begin{subfigure}{.45\linewidth}
+\centering
+\includegraphics[width=.95\textwidth]{farris_like01}
+\caption[short]{$P(\ancestralStateColumn=\{2\}\mid \alignmentColumn=\{2,3\},\tau_1,\{x,y,w\})$}
+\end{subfigure}
+\vskip\baselineskip
+\begin{subfigure}{.45\linewidth}
+\centering
+\includegraphics[width=.95\textwidth]{farris_like10}
+\caption[short]{$P(\ancestralStateColumn=\{1\}\mid \alignmentColumn=\{2,3\},\tau_1,\{x,y,w\})$}
+\end{subfigure}
+\begin{subfigure}{.45\linewidth}
+\centering
+\includegraphics[width=.95\textwidth]{farris_like11}
+\caption[short]{$P(\ancestralStateColumn=\{1,2\}\mid \alignmentColumn=\{2,3\},\tau_1,\{x,y,w\})$}
+\end{subfigure}
+\caption{Example likelihood computation}
+\label{fig:example_likelihoods}
+\end{figure}
 
 \begin{table}
 \centering
-\begin{tabular}{|l|l|}
+\begin{tabular}{|l|ll|}
+\multicolumn{3}{c}{$P(\ancestralStateColumn=\ancestralSplit_k\mid \alignmentColumn=\siteSplit_j,\tau_1,t)$}\\
+\hline
+& \multicolumn{2}{|c|}{$\ancestralSplit_k$}\\
     \hline
-s   &$P(s)$\\
+    $\siteSplit_j$    &$\emptyset$                                &$\{2\}$  \\
     \hline
-0000&$1+2xy+2xy^2+x^2y+y^3+x^2y^2$\\
-0001&$1+x^2y-y^3-x^2y^2$\\
-0010&$1-x^2y+y^3-x^2y^2$\\
-0100&$1+x^2y-y^3-x^2y^2$\\
-1000&$1-x^2y+y^3-x^2y^2$\\
-0011&$1+2xy-2xy^2-x^2y-y^3+x^2y^2$\\
-0101&$1-2xy-2xy^2+x^2y+y^3+x^2y^2$\\
-1001&$1-2xy+2xy^2-x^2y-y^3+x^2y^2$\\
+     $\emptyset$   &$(1+x)^2   (1+w)(1+y)^2$          &$(1+x)^2   (1-w)(1-y)^2$\\
+     $\{1\}$       &$(1+x)(1-x)(1+w)(1+y)^2$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
+     $\{2\}$       &$(1+x)^2   (1+w)(1+y)(1-y)$       &$(1+x)^2   (1-w)(1+y)(1-y)$\\
+     $\{3\}$       &$(1+x)(1-x)(1+w)(1+y)^2$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
+     $\{1,2\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$       &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
+     $\{1,3\}$     &$(1+x)^2   (1+w)(1-y)^2$          &$(1+x)^2   (1-w)(1+y)^2$\\
+     $\{2,3\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$       &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
+     $\{1,2,3\}$   &$(1+x)^2   (1+w)(1+y)(1-y)$       &$(1+x)^2   (1-w)(1+y)(1-y)$\\
     \hline
-\end{tabular}    
-\caption{Site pattern probabilities for Felsenstein zone topology.
-All values are multiplied by $1/8$.}
-\label{tab:sitepatprob-fels}
+    \hline
+    &$\{1\}$                             &$\{1,2\}$  \\
+    \hline
+     $\emptyset$   &$(1-x)^2   (1-w)(1+y)^2$     &$(1-x)^2   (1+w)(1-y)^2$\\
+     $\{1\}$       &$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
+     $\{2\}$       &$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
+     $\{3\}$       &$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
+     $\{1,2\}$     &$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+     $\{1,3\}$     &$(1-x)^2   (1-w)(1-y)^2$     &$(1-x)^2   (1+w)(1+y)^2$\\
+     $\{2,3\}$     &$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+     $\{1,2,3\}$   &$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
+    \hline
+\end{tabular}
+\caption{Likelihood calculations for all site patterns and internal states of Farris topology.
+All values multiplied by $1/32$.}
+\label{tab:farris_likelihoods}
 \end{table}
 
 \begin{table}
 \centering
 \begin{tabular}{|l|ll|}
-\multicolumn{3}{c}{$P(\ancestralStateColumn=\ancestralSplit_k|\alignmentColumn=\siteSplit_j,\tau_1,t)$}\\
+\multicolumn{3}{c}{$P(\ancestralStateColumn=\ancestralSplit_k\mid \alignmentColumn=\siteSplit_j,\tau_2,t)$}\\
 \hline
 & \multicolumn{2}{|c|}{$\ancestralSplit_k$}\\
     \hline
-    $\siteSplit_j$    &$\emptyset$  00                              &$\{2\}$  01\\
+    $\siteSplit_j$    &$\emptyset$                                &$\{2\}$  \\
     \hline
-     $\emptyset$   0000&$(1+x)^2   (1+w)(1+y)^{2*}$          &$(1+x)^2   (1-w)(1-y)^2$\\
-     $\{1\}$       1000&$(1+x)(1-x)(1+w)(1+y)^{2*}$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
-     $\{2\}$       0010&$(1+x)^2   (1+w)(1+y)(1-y)^*$        &$(1+x)^2   (1-w)(1+y)(1-y)$\\
-     $\{3\}$       0100&$(1+x)(1-x)(1+w)(1+y)^{2*}$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
-     $\{1,2\}$     0011&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$&$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-     $\{1,3\}$     0101&$(1+x)^2   (1+w)(1-y)^{2\ddagger}$   &$(1+x)^2   (1-w)(1+y)^{2\ddagger}$\\
-     $\{2,3\}$     1001&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$&$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-     $\{1,2,3\}$   0001&$(1+x)^2   (1+w)(1+y)(1-y)^*$        &$(1+x)^2   (1-w)(1+y)(1-y)$\\
-    \hline
-    \hline
-    &$\{1\}$  10                           &$\{1,2\}$  11\\
-    \hline
-     $\emptyset$   0000&$(1-x)^2   (1-w)(1+y)^2$     &$(1-x)^2   (1+w)(1-y)^2$\\
-     $\{1\}$       1000&$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
-     $\{2\}$       0010&$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-     $\{3\}$       0100&$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
-     $\{1,2\}$     0011&$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$\\
-     $\{1,3\}$     0101&$(1-x)^2   (1-w)(1-y)^2$     &$(1-x)^2   (1+w)(1+y)^{2\ddagger}$\\
-     $\{2,3\}$     1001&$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\dagger}$\\
-     $\{1,2,3\}$   0001&$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-    \hline
-\multicolumn{3}{c}{$P(\ancestralStateColumn=\ancestralSplit_k|\alignmentColumn=\siteSplit_j,\tau_2,t)$}\\
-\hline
-& \multicolumn{2}{|c|}{$\ancestralSplit_k$}\\
-    \hline
-    $\siteSplit_j$    &$\emptyset$  00                              &$\{2\}$  01\\
-    \hline
-     $\emptyset$   0000&$(1+x)^2   (1+w)(1+y)^{2*}$           &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-     $\{1\}$       1000&$(1+x)(1-x)(1+w)(1+y)^{2\ddagger}$    &$(1-x)^2   (1-w)(1+y)(1-y)$\\
-     $\{2\}$       0100&$(1+x)^2   (1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)(1-x)(1-w)(1-y)^2$\\
-     $\{3\}$       0010&$(1+x)(1-x)(1+w)(1+y)^{2\ddagger}$    &$(1+x)^2   (1-w)(1+y)(1-y)^{\ddagger}$\\
-     $\{1,2\}$     0011&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)^2   (1-w)(1+y)^{2\ddagger}$\\
-     $\{1,3\}$     0101&$(1+x)^2   (1+w)(1-y)^{2\ddagger}$    &$(1+x)(1-x)(1-w)(1+y)(1-y)^{\ddagger}$\\
-     $\{2,3\}$     1001&$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$&$(1-x)^2   (1-w)(1+y)^{2\ddagger}$\\
-     $\{1,2,3\}$   0001&$(1+x)^2   (1+w)(1+y)(1-y)^{\ddagger}$&$(1+x)(1-x)(1-w)(1+y)^{2\ddagger}$\\
+     $\emptyset$   &$(1+x)^2   (1+w)(1+y)^2$           &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
+     $\{1\}$       &$(1+x)(1-x)(1+w)(1+y)^2$           &$(1-x)^2   (1-w)(1+y)(1-y)$\\
+     $\{2\}$       &$(1+x)^2   (1+w)(1+y)(1-y)$        &$(1+x)(1-x)(1-w)(1-y)^2$\\
+     $\{3\}$       &$(1+x)(1-x)(1+w)(1+y)^2$           &$(1+x)^2   (1-w)(1+y)(1-y)$\\
+     $\{1,2\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$        &$(1+x)^2   (1-w)(1+y)^2$\\
+     $\{1,3\}$     &$(1+x)^2   (1+w)(1-y)^2$           &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
+     $\{2,3\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$        &$(1-x)^2   (1-w)(1+y)^2$\\
+     $\{1,2,3\}$   &$(1+x)^2   (1+w)(1+y)(1-y)$        &$(1+x)(1-x)(1-w)(1+y)^2$\\
     \hline
     \hline
-    &$\{1\}$  10                           &$\{1,2\}$  11\\
+    &$\{1\}$                             &$\{1,2\}$  \\
     \hline
-     $\emptyset$   0000&$(1+x)(1-x)(1-w)(1+y)(1-y)$             &$(1-x)^2   (1+w)(1-y)^2$\\
-     $\{1\}$       1000&$(1+x)^2   (1-w)(1+y)(1-y)^{\ddagger}$  &$(1+x)(1-x)(1+w)(1-y)^2$\\
-     $\{2\}$       0100&$(1+x)(1-x)(1-w)(1+y)^{2\ddagger}$      &$(1-x)^2   (1+w)(1+y)(1-y)$\\
-     $\{3\}$       0010&$(1-x)^2   (1-w)(1+y)(1-y)$             &$(1+x)(1-x)(1+w)(1-y)^2$\\
-     $\{1,2\}$     0011&$(1-x)^2   (1-w)(1-y)^2$                &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$\\
-     $\{1,3\}$     0101&$(1+x)(1-x)(1-w)(1+y)(1-y)^{\ddagger}$  &$(1-x)^2   (1+w)(1+y)^{2\ddagger}$\\
-     $\{2,3\}$     1001&$(1+x)^2   (1-w)(1-y)^{2\ddagger}$      &$(1+x)(1-x)(1+w)(1+y)(1-y)^{\ddagger}$\\
-     $\{1,2,3\}$   0001&$(1+x)(1-x)(1-w)(1-y)^2$                &$(1-x)^2   (1+w)(1+y)(1-y)$\\
+     $\emptyset$   &$(1+x)(1-x)(1-w)(1+y)(1-y)$        &$(1-x)^2   (1+w)(1-y)^2$\\
+     $\{1\}$       &$(1+x)^2   (1-w)(1+y)(1-y)$        &$(1+x)(1-x)(1+w)(1-y)^2$\\
+     $\{2\}$       &$(1+x)(1-x)(1-w)(1+y)^2$           &$(1-x)^2   (1+w)(1+y)(1-y)$\\
+     $\{3\}$       &$(1-x)^2   (1-w)(1+y)(1-y)$        &$(1+x)(1-x)(1+w)(1-y)^2$\\
+     $\{1,2\}$     &$(1-x)^2   (1-w)(1-y)^2$           &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+     $\{1,3\}$     &$(1+x)(1-x)(1-w)(1+y)(1-y)$        &$(1-x)^2   (1+w)(1+y)^2$\\
+     $\{2,3\}$     &$(1+x)^2   (1-w)(1-y)^2$           &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+     $\{1,2,3\}$   &$(1+x)(1-x)(1-w)(1-y)^2$           &$(1-x)^2   (1+w)(1+y)(1-y)$\\
 \hline
 \end{tabular}
-\caption{Likelihood calculations for all site patterns and internal states of Farris topology.
-Maxima determined row-wise (i.e., by site pattern).
-All values multiplied by $1/32$.
-Key: $^*$ unique maximum value corresponding to unique internal state; $^\dagger$ unique maximum value corresponding to multiple internal states; $^\ddagger$ multiple maximum values corresponding to multiple internal states.}
-\label{tab:likelihoods}
+\caption{Likelihood calculations for all site patterns and internal states of Felsenstein topology.
+All values multiplied by $1/32$.}
+\label{tab:fels_likelihoods}
 \end{table}
 
