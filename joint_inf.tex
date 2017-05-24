@@ -74,30 +74,29 @@
 \section*{Introduction}
 
 Classical maximum-likelihood (ML) estimation in phylogenetics operates by integrating out possible ancestral states at the internal nodes of the tree.
-Recently \cite{Neher2017} have suggested using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences.
-This is attractive from a computational perspective: such joint ML inference can proceed according to an iterative procedure in which ML ancestral sequences are first inferred and then model parameters are optimized conditional on the ancestral sequences.
-This latter step is simpler and more computationally efficient when conditioning on ancestral sequences compared to the case in which ancestral sequences are marginalized out.
+Recently, \cite{Neher2017} have suggested using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences.
+This is attractive from a computational perspective: such joint ML inference proceeds according to an iterative procedure in which ML ancestral sequences are first inferred and then model parameters are optimized conditional on the ancestral sequences.
+This latter conditional optimization is simpler and more computationally efficient than marginalizing out ancestral sequences and then performing optimization.
 
-However, existing consistency proofs for phylogenetics \cite{RoyChoudhury2015-ta} do not apply to the setting of joint inference of trees and ancestral sequences.
-There are examples in statistics, such as the Neyman-Scott paradox \cite{Neyman1948-tt}, in which estimation of additional parameters destroys consistency.
-This raises the question of whether joint inference of trees and ancestral sequences enjoys good statistical properties.
+Existing consistency proofs for phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
+These proofs do not readily extend to include estimating ancestral states.
+Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-ta} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
 
-In this paper we show that the joint inference of trees and ancestral sequences is not consistent in general.
+In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
 To do so, we follow a strategy of using simple models and four taxa trees.
-Here we use a binary symmetric model and simulate on the ``Farris zone'' \cite{Siddall1998-hq} tree.
-We use bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference converges on the wrong tree.
+We use a binary symmetric model and simulate on the ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference converges to the wrong tree.
 
 \section{Ancestral state reconstruction using maximum likelihood}
 
-We will be considering the standard phylogenetic likelihood on unrooted phylogenetic trees (cite Felsenstein book).
+We consider the standard phylogenetic likelihood on unrooted phylogenetic trees \cite{Felsenstein2004}.
 We assume the character alphabet $\alphabet=\{0,1\}$ and a uniform stationary distribution.
 Let $\nSiteRows$ be the number of tips of the tree, and $\nAncestralStateRows = \nSiteRows-2$ the number of internal nodes.
-Assume we observe $\nCols$ samples of character data (i.e.\ an alignment with $\nCols$ columns) $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$ distributed as the random variable $\alignmentColumnRV$.
-There are also corresponding unknown ancestral states $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$ distributed as $\ancestralStateColumnRV$.
+Assume we observe $\nCols$ samples of character data, i.e., an alignment with $\nCols$ columns, $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$ distributed as the random variable $\alignmentColumnRV$.
+The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$ and distributed as $\ancestralStateColumnRV$.
 
 \subsection{Classical maximum-likelihood inference in phylogenetics}
 
-For a topology $\tau$ and branch lengths $t$ we start with the fully-observed likelihood (making the usual independence assumption between sites):
+For a topology $\tau$ and branch lengths $t$, we make the usual assumption of independence between sites, obtaining the likelihood
 \begin{equation}
 \label{eq:full_likelihood}
 %EM given that the H is on the lhs of the conditioning, does it make sense to have it on the rhs of the semicolon? I don't know the convention.
@@ -128,72 +127,67 @@ $$
 \subsection{Joint maximization}
 
 One tantalizing approach is to do away with the marginalization and directly estimate the maximum likelihood parameters from the fully-observed likelihood in \eqref{eq:full_likelihood}.
-We can perform this by computing the profile likelihood
+We compute the profile likelihood
 \begin{equation}
 \label{eq:profile_likelihood}
 L_\nCols'(\tau, t; \fullAlignment) = \max_{\fullAncestralStates} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates),
 \end{equation}
-then estimating the topology and branch lengths via
+then estimate the topology and branch lengths via
 \begin{equation}
 \label{eq:profile_likelihood_topology_bl}
-(\hat{\tau}, \hat{t}) = \argmax_{\tau, t} \ L_\nCols'(\tau, t; \fullAlignment)
+(\hat{\tau}, \hat{t}) = \argmax_{\tau, t} \ L_\nCols'(\tau, t; \fullAlignment),
 \end{equation}
-while using $\hat{\fullAncestralStates}$ maximizing \eqref{eq:profile_likelihood} as an estimate for $\fullAncestralStates$.
-Since $\alphabet$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and so \eqref{eq:profile_likelihood_topology_bl} will recover the joint ML values of the unknown parameters.
-In the general case, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities that depend on the unknown $(\tau,t)$.
+using $\hat{\fullAncestralStates}$ maximizing \eqref{eq:profile_likelihood} as an estimate for $\fullAncestralStates$.
+Since $\alphabet$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and \eqref{eq:profile_likelihood_topology_bl} recovers the joint ML values of the unknown parameters.
+In general, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities that depend on the unknown $(\tau,t)$.
 For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence \cite{Neher2017}.
 
 \subsection{Site split formulation}
 
 Since we have a finite character alphabet, for a given column $i$ there are a finite number of possibilities of assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$; this results in a simplification of likelihood calculation (we follow Section 8.6 of \cite{Semple2003-em}).
 Take the tip labels of $\tau$ to be $\{1,\ldots,\nSiteRows\}$.
-For likelihood calculation under the binary symmetric model, a given $\alignmentColumn_i$ can be described as a subset of indices $\siteSplit\subseteq\siteSplitSet:=\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
-Indeed, we can start by including those tip labels in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$.
-Then, because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model, we can take the complement if needed to exclude label $\nSiteRows$ from $\siteSplit$.
+For likelihood calculation under the binary symmetric model, we describe a given $\alignmentColumn_i$ as a subset of indices $\siteSplit\subseteq\siteSplitSet:=\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
+Indeed, we start by including those tip labels in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$.
+Then, because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model, we take the complement if needed to exclude label $\nSiteRows$ from $\siteSplit$.
 
 Define the total number of unique site splits as $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ where $\mathcal{P}$ denotes the power set.
-For topology $\tau$, we also define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization of $\ancestralStateColumn_i$.
-The probability of observing an ancestral state split, conditional on a site split, will not be invariant to taking its complement, and thus the need for enumerating the entire set of internal nodes.
+For topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization of $\ancestralStateColumn_i$.
+The probability of observing an ancestral state split, conditional on a site split, is not invariant to taking its complement, and thus the need for enumerating the entire set of internal nodes.
 The number of unique ancestral state splits is $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$.
 
-With this split formulation, define mappings from patterns to splits as described above:
+With this split formulation, define mappings from patterns to splits as
 $$
 \patternToSplit:\alphabet^\nSiteRows\rightarrow\mathcal{P}(\siteSplitSet), \ \ancestralToSplit:\alphabet^\nAncestralStateRows\rightarrow\mathcal{P}(\ancestralSplitSet).
 $$
-Given a site-pattern-valued random variable $\alignmentColumnRV$ and an ancestral-state-valued random variable $\ancestralStateColumnRV$, define random variables
+Given a site pattern--valued random variable $\alignmentColumnRV$ and an ancestral state--valued random variable $\ancestralStateColumnRV$, define random variables
 $$
-\siteSplitRV := \patternToSplit(\alignmentColumnRV), \ \ancestralSplitRV := \ancestralToSplit(\ancestralStateColumnRV).
+\siteSplitRV := \patternToSplit(\alignmentColumnRV), \ \ancestralSplitRV := \ancestralToSplit(\ancestralStateColumnRV)
 $$
-% Need to introduce \siteSplit_j and \ancestralSplit_k , no?
-We can now write the $i$th factor of \eqref{eq:full_likelihood} as
+that take corresponding realizations $\siteSplit_j$ and $\ancestralSplit_k$ for some $j$ and $k$.
+We write the $i$th factor of \eqref{eq:full_likelihood} as
 \begin{align*}
     P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= P(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \tau, t) \\
-    &= P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t)
+    &= P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t).
 \end{align*}
-for some $j$ and $k$.
 Taking the maximum across internal states yields
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &=
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t) \\
 &= P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
-Given $(\tau, t)$ there exists an ordered list of sets $\fullAncestralSplitPartitions(\tau, t)=(\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t))$ such that any element $\xi_j$ of the $j$th component $\ancestralSplitPartition_j(\tau, t)$ satisfies
+Given $(\tau, t)$, there exists an ordered list of sets $\fullAncestralSplitPartitions(\tau, t)=(\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t))$ such that any element $\xi_j$ of the $j$th component $\ancestralSplitPartition_j(\tau, t)$ satisfies
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t) &= P(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
 Let $\xi_j$ be such a choice for each $1 \leq j \leq q$ in the following.
-This allows us to write the likelihood in \eqref{eq:profile_likelihood} as a product over site patterns as opposed to sites, i.e.,
+Then, the likelihood in \eqref{eq:profile_likelihood} written as a product over site patterns as opposed to sites is
 \begin{align}
 L_\nCols'(\tau, t; \fullAlignment) &= \max_{\fullAncestralStates} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates) \\
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \\
-%EM Indexing broken here: we are taking a product over i, but i doesn't appear in the expression.
-    %das: This is intentional, though: it allows us to proceed to the following line, grouping factors by site pattern since their probabilities don't depend on $i$. I can try to think of how to make this more clear, but I thought it was a pretty key step to be able to pass to site patterns, and the reason for the machinery involved in defining ancestral state partitions.
-%EM My suggestion is to use \psi(y_i) until you switch to a product indexed by the j's.
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralToSplit(\ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \tau, t) \\
                              &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \max_{\ancestralToSplit(\ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} P(\ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
                              &= \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
-%EM think we should say "where the site split or its complement appears."?
 where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ where the site split $\siteSplit_j$ or its complement appears.
 
 \paragraph{Example}
@@ -206,7 +200,7 @@ where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ wh
 \end{figure}
 
 Consider the fixed, binary four-tip tree $\tau$ in Fig.~\ref{fig:four-taxa-tree}.
-The set of all possible character assignments can be described as
+The set of all possible character assignments is
 \begin{align*}
 \mathcal{P}(\{1,2,3,4\}) &= \{\emptyset, \{1,2,3,4\}, \{1\}, \{2,3,4\}, \{2\}, \{1,3,4\}, \{3\}, \{1,2,4\}, \\
                          &\qquad \{1,2\}, \{3,4\}, \{1,3\}, \{2,4\}, \{2,3\}, \{1,4\}, \{1,2,3\}, \{1,4\}\}.
@@ -219,25 +213,24 @@ The unique site splits, collapsing complements, are
     \mathcal{P}(\siteSplitSet) &= \{\emptyset, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\} \\
 & := \{\siteSplit_1, \ldots, \siteSplit_8\}.
 \end{align*}
-Had we not identified character complements, we would need to consider the additional splits
+Since we identify character complements, we do not consider the additional splits
 $$
 \mathcal{P}(\{1,2,3,4\}) \setminus \mathcal{P}(\siteSplitSet) = \{\{1,2,3,4\}, \{2,3,4\}, \{1,3,4\}, \{1,2,4\}, \{3,4\}, \{2,4\}, \{1,4\}, \{4\}\},
 $$
-but the symmetry of the binary character model allows us to focus just on the elements of $\mathcal{P}(\siteSplitSet)$.
+the symmetry of the binary character model allowing us to focus only on the elements of $\mathcal{P}(\siteSplitSet)$.
 This tree has two internal nodes with $\ancestralSplitSet=\{1,2\}$ and unique ancestral state splits
 $$
 \mathcal{P}(\ancestralSplitSet) = \{\emptyset, \{1\}, \{2\}, \{1,2\}\}.
 $$
-We cannot similarly identify complements in this case since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
+We cannot similarly identify complements for ancestral states since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
 $$
 P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit, \tau, t)\neq P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\siteSplit, \tau, t)
 $$
 in general.
 
 For each site split $\siteSplit\in\mathcal{P}(\siteSplitSet)$, we maximize the likelihood over all $\ancestralSplit\in\mathcal{P}(\ancestralSplitSet)$.
-A maximum will occur at one of possibly several ancestral splits in $\mathcal{P}(\ancestralSplitSet)$; for the $j$th site split, define $\ancestralSplitPartition_j(\tau, t)\subset\mathcal{P}(\ancestralSplitSet)$ as the set of most likely ancestral splits for that particular site split, topology and set of branch lengths.
+A maximum occurs at one of possibly several ancestral splits in $\mathcal{P}(\ancestralSplitSet)$; for the $j$th site split, define $\ancestralSplitPartition_j(\tau, t)\subset\mathcal{P}(\ancestralSplitSet)$ as the set of most likely ancestral splits for that particular site split, topology and set of branch lengths.
 As a simple example, say all branch lengths correspond to a probability $p$ ($< 1/2$) of changing character along that branch.
-%EM Would it be worth enumerating the site splits ahead of time? It seems a little funky to be calling them j each time.
 The probabilities of observing ancestral splits for $\siteSplit_1=\emptyset$ are
 $$
 P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\emptyset, \tau, t) =
@@ -252,7 +245,7 @@ $$
 P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\emptyset, \tau, t) =
 p^4(1-p).
 $$
-Thus the set of most likely ancestral states contains a single element in this case, here $\ancestralSplitPartition_1(\tau, p)=\{\emptyset\}$.
+The set of most likely ancestral states contains a single element, here $\ancestralSplitPartition_1(\tau, p)=\{\emptyset\}$.
 Then, taking $\xi_1\in\ancestralSplitPartition_1(\tau, p)$ we have
 $$
 P(\ancestralSplitRV=\xi_1 \mid \siteSplitRV=\emptyset, \tau, t) =
@@ -269,7 +262,7 @@ P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
 P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
 p^3(1-p)^2.
 $$
-In this case, the set of most likely ancestral states is $\ancestralSplitPartition_6(\tau, p)=\{\emptyset,\{1,2\}\}$, and, for $\xi_6\in\ancestralSplitPartition_6(\tau, p)$,
+Here, the set of most likely ancestral states is $\ancestralSplitPartition_6(\tau, p)=\{\emptyset,\{1,2\}\}$, and, for $\xi_6\in\ancestralSplitPartition_6(\tau, p)$,
 $$
 P(\ancestralSplitRV=\xi_6 \mid \siteSplitRV=\{1,3\}, \tau, t) =
 p^2(1-p)^3.
@@ -278,7 +271,6 @@ $$
 \subsection{Showing inconsistency}
 
 We are interested in the properties of the objective function being maximized in \eqref{eq:site_pattern_likelihood} as data becomes plentiful.
-%EM As described IRL, a little strange to be redefining (9) with an extra variable. After reading the below, I think it makes most sense to just refer to (9) indirectly but make this a stand-alone definition.
 Let
 $$
 L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau, t)) = \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t) \cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)}
@@ -294,7 +286,6 @@ We have
 \end{align}
 so that, in the limit of infinite data,
 \begin{equation}
-%EM did you mean to drop the eta from the first term of this equation?
     \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau, t)) \rightarrow \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
 \end{equation}
 Define the the divergence quantity
@@ -303,7 +294,6 @@ $$
 $$
 and the partial log likelihood
 $$
-%EM IMHO \ell^p is so standard that it's confusing to see it in another setting. Perhaps \tilde{\ell}?
 \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV=\xi_j \mid \siteSplit_j, \tau, t)
 $$
 so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
@@ -311,29 +301,27 @@ so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
     \label{eq:log_likelihood_simplified}
     \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
 \end{equation}
-Recall $(\tau, t)$ are estimands and $(\tau^*, t^*)$ are fixed, generating parameters.
 For data generated from $(\tau^*, t^*)$, if
 \begin{equation}
 \label{eq:inconsistency_inequality}
-%EM Suggest \hat{\fullAncestralSplitPartitions}_1, etc.
 \ell_{\tau^*,t^*}(\tau', \hat{t}_1; \hat{\fullAncestralSplitPartitions}_1) > \ell_{\tau^*,t^*}(\tau^*, \hat{t}_2; \hat{\fullAncestralSplitPartitions}_2)
 \end{equation}
 for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\hat{\fullAncestralSplitPartitions}_1\}$ and $\{\hat{t}_2,\hat{\fullAncestralSplitPartitions}_2\}$ estimated by maximizing \eqref{eq:profile_likelihood}, we have an inconsistency.
-By Gibbs' inequality, $\shannonDivergence_{\tau^*,t^*}(\tau,t)$ is maximized when $(\tau,t) = (\tau^*,t^*)$, so any potential example of inconsistency must overcome that difference with substantially greater partial likelihoods on the non-generating topology.
+By Gibbs' inequality, $\shannonDivergence_{\tau^*,t^*}(\tau,t)$ is maximized when $(\tau,t) = (\tau^*,t^*)$, so any example of inconsistency must overcome that difference with substantially greater partial likelihoods on the non-generating topology.
 In the next section, we show that such examples exist.
 
 \section{Inconsistency of joint maximum likelihood}
 
 \subsection{Bounding the likelihoods}
 
-Our approach will be to seek bounds for the terms inside the maximization in \eqref{eq:log_likelihood_simplified}.
-We obtain an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} as
+Our approach seeks bounds for the terms inside the maximization in \eqref{eq:log_likelihood_simplified}.
+We obtain
 $$
 \max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
     + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \hat{\fullAncestralSplitPartitions})
 $$
-using Gibbs's inequality
+as an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} using Gibbs's inequality
 $$
 \shannonDivergence_{\tau^*,t^*}(\tau,t) \le \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
 $$
@@ -341,7 +329,7 @@ and
 $$
 \{\hat{t},\hat{\fullAncestralSplitPartitions}\} = \argmax_{t,\fullAncestralSplitPartitions(\tau,t)} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
 $$
-Similarly, we have a lower bound as
+Similarly, we have the lower bound
 $$
 \max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \ge
     \shannonDivergence_{\tau^*,t^*}(\tau,\hat{t})
@@ -367,24 +355,23 @@ $$
 \end{figure}
 
 Define the Farris topology $\tau_1$ and the Felsenstein topology $\tau_2$ as in Figure~\ref{fig:farris-fels-top}.
-%EM clarify that we aren't assuming that the x and y in t are the same as those appearing in t^*?
-Call $t=\{x',y',w'\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ is the case where the bottom three branches all share the same parameter, the classical construction of this topology.
+Call $t=\{x',y',w'\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ constrains the bottom three branches to share the same parameter, the classical construction of this topology.
 
-We will parameterize these trees \textbf{not with branch lengths}, but rather such that the probability of a substitution on a branch with parameter $x'$ is $p_x'=(1-x')/2$.
-%EM (Scratching head) isn't p_x=1-2x backwards? Then p_x will take values in the range -1 to 1.
+We parameterize these trees \textbf{not with branch lengths}, but, rather, such that the probability of a substitution on a branch with parameter $x'$ is $p_x'=(1-x')/2$.
 Here, $\{p_x',p_y',p_w'\}\in[0,1/2]^3$ and $\{x',y',w'\}\in[0,1]^3$.
 This parametrization has been called edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge \cite{Matsen2007-jq}.
-Fidelities have nice algebraic properties, as can be seen via the Hadamard transform.
+Fidelities have useful algebraic properties, such as the ability to write generating probabilities using the Hadamard transform.
 
 %das: did this on paper, but can write it out.
 \textbf{Justification for estimand:} Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ counting from the top left.
-The log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$ can be written as a function of $\{x_1x_2, x_1+x_2, y_1y_2, y_1+y_2, w\}$ only.
-In this case, $x_1$ and $x_2$ can be exchanged for one another without changing the value of $\ell$, and any maximum will require $x_1=x_2$.
-A similar argument can be made for $y_1$ and $y_2$.
-For the Felsenstein topolgy this is not the case, but, since we are interested in a lower bound for this topology, we will simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
+The log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$ is a function of $\{x_1x_2, x_1+x_2, y_1y_2, y_1+y_2, w\}$ only.
+By symmetry, exchanging $x_1$ and $x_2$ does not change the value of $\ell$, requiring $x_1=x_2$ at the maximum.
+A similar property holds for $y_1$ and $y_2$.
+The Felsenstein topology does not admit this property, but, since we are interested in a lower bound for this topology, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
 Table~\ref{tab:sitepatprob} contains calculations of site pattern frequencies under these two topologies, calculated using the Hadamard transform approach outlined in 8.6 of Semple and Steel \cite{Semple2003-em}.
-Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed site patterns and topologies, with the maximum values over ancestral state patterns noted.
+Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed site patterns and topologies that have been maximized over ancestral state patterns.
+Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} contain the values of the likelihood for all possible ancestral states.
 
 \begin{table}
 \centering
@@ -523,7 +510,7 @@ All values are multiplied by $1/8$.}
 \end{tabular}
 \caption{Likelihood calculations for all site patterns and ancestral state partitions.
 All values multiplied by $1/32$.
-Likelihoods with multiple entries will have maxima determined by unknown branch length parameters.
+Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
 See Appendix for full calculations.}
 \label{tab:likelihoods}
 \end{table}
@@ -536,8 +523,8 @@ $$
 p_0 = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})
 $$
 with similar definitions for the remaining generating probabilities.
-The full Farris log likelihood can take one of three values---assume for now the we are only interested in the ancestral state split $\{2\}$ for the site split $\{1,3\}$.
-We then write the log likelihood as
+The full Farris log likelihood takes one of three values---assume for now the we are only interested in the ancestral state split $\{2\}$ for the site split $\{1,3\}$.
+The log likelihood is
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &=        p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
@@ -557,7 +544,7 @@ We then write the log likelihood as
     &\qquad + p_{23} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
     &\qquad + p_{123}\cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
 \end{align*}
-Seeking an upper bound, we make use of the fact that, for $x',y'\in[0,1]$,
+Seeking an upper bound, we use the fact that, for $x',y'\in[0,1]$,
 $$
 (1-x'^2+y'^2-x'^2y'^2) = (1-x'^2)(1+y'^2) = (1+x')(1-x')(1+y'^2) \le (1+x')(1-x')(1+y),
 $$
@@ -649,7 +636,7 @@ Applying Gibbs' inequality to the first two summands and maximizing over the rem
     &\qquad := L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
 
-The other two possibilties of ancestral state split for the likelihood of the site split $\{1,3\}$ admit similar simplifications.
+The other two possibile ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications.
 Call
 $$
 a_{1}' = a_{1}-2p_{13},
@@ -663,7 +650,7 @@ $$
 $$
 a_{4}' = a_{4}+2p_{13}.
 $$
-Then, for these cases,
+Then,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{0}  \cdot\log(p_{0}) \\
@@ -692,7 +679,7 @@ All bounds are functions only of $x,y$ through the true generating probabilities
 
 We construct a similar lower bound on the Felsenstein partial likelihood.
 Replace all $(1+w)$ terms with $(1-w)$ and focus just on the partial likelihood.
-Then if $(1+x)(1-y) > (1-x)(1+y)$,
+Then, if $(1+x)(1-y) > (1-x)(1+y)$,
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &\ge      p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
@@ -729,7 +716,7 @@ yields
     &\qquad + p_{0}\cdot\log(1+w') \\
     &\qquad + (1-p_{0})\cdot\log(1-w')
 \end{align*}
-for the first lower bound, but, upon maximizing, we obtain the same value for both cases, namely
+for the first lower bound, but, upon maximizing, we obtain
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &\ge      2\cdot\log(2) \\
@@ -738,7 +725,7 @@ for the first lower bound, but, upon maximizing, we obtain the same value for bo
     &\qquad + p_{0}\cdot\log(2p_{0}) \\
     &\qquad + (1-p_{0})\cdot\log(2(1-p_{0}))
 \end{align*}
-maximized at $\{1,1-b,1-2p_{0}\}$.
+maximized at $\{1,1-b,1-2p_{0}\}$, which is the same if $(1+x)(1-y) > (1-x)(1+y)$ or $(1+x)(1-y) < (1-x)(1+y)$.
 Our lower bound is
 \begin{align*}
     L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) &:= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b,1-2p_{0}\}) \\
@@ -751,14 +738,14 @@ We want the region where
 $$
 L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) \ge \max(L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}), L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy}),L^{3}_{\tau_1,\tau_1}(\mathbf{p}_{xy})).
 $$
-Since this is an inequality in two variables, we can plot them analytically---see Fig.~\ref{fig:inconsistency-farris}.
+Since this is an inequality in two variables, we plot them analytically---see Fig.~\ref{fig:inconsistency-farris}.
 
 \begin{figure}
 \centering
 \includegraphics[width=.9\textwidth]{analytic-inconsistency}
 \caption{
     Regions of inconsistency.
-    Due to the looseness of the upper and lower bounds, the parameters in the top right do not necessarily indicate consistency, though all parameters in the labeled region will result in an inconsistency.
+    Due to the looseness of the upper and lower bounds, the parameters in the top right do not necessarily indicate consistency, though all parameters in the labeled region result in an inconsistency.
 }
 \label{fig:inconsistency-farris}
 \end{figure}
