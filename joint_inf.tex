@@ -75,16 +75,15 @@
 
 Classical maximum-likelihood (ML) estimation in phylogenetics operates by integrating out possible ancestral states at the internal nodes of the tree.
 Recently, \cite{Neher2017} have suggested using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences.
-This is attractive from a computational perspective: such joint ML inference proceeds according to an iterative procedure in which ML ancestral sequences are first inferred and then model parameters are optimized conditional on the ancestral sequences.
+This is attractive from a computational perspective: such joint ML inference can proceed according to an iterative procedure in which ML ancestral sequences are first inferred and then model parameters are optimized conditional on the ancestral sequences.
 This latter conditional optimization is simpler and more computationally efficient than marginalizing out ancestral sequences and then performing optimization.
 
 Existing consistency proofs for phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
 These proofs do not readily extend to include estimating ancestral states.
-Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-ta} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
+Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
-To do so, we follow a strategy of using simple models and four taxa trees.
-We use a binary symmetric model and simulate on the ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference converges to the wrong tree.
+To do so, we use a binary symmetric model and imagine data being generated on the four taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the large-data limit.
 
 \section{Ancestral state reconstruction using maximum likelihood}
 
@@ -126,8 +125,8 @@ $$
 
 \subsection{Joint maximization}
 
-One tantalizing approach is to do away with the marginalization and directly estimate the maximum likelihood parameters from the fully-observed likelihood in \eqref{eq:full_likelihood}.
-We compute the profile likelihood
+An alternative approach is to do away with the marginalization and directly estimate the maximum likelihood parameters from the fully-observed likelihood in \eqref{eq:full_likelihood}.
+One can compute the profile likelihood
 \begin{equation}
 \label{eq:profile_likelihood}
 L_\nCols'(\tau, t; \fullAlignment) = \max_{\fullAncestralStates} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates),
@@ -150,12 +149,13 @@ For likelihood calculation under the binary symmetric model, we describe a given
 Indeed, we start by including those tip labels in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$.
 Then, because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model, we take the complement if needed to exclude label $\nSiteRows$ from $\siteSplit$.
 
-Define the total number of unique site splits as $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ where $\mathcal{P}$ denotes the power set.
 For topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization of $\ancestralStateColumn_i$.
-The probability of observing an ancestral state split, conditional on a site split, is not invariant to taking its complement, and thus the need for enumerating the entire set of internal nodes.
-The number of unique ancestral state splits is $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$.
+In this case the entire set of internal nodes must be enumerated: the probability of observing an ancestral state split, conditional on a site split, is not invariant to taking its complement.
 
-With this split formulation, define mappings from patterns to splits as
+We enumerate the site splits $\siteSplit_j$ of which there are $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ in total where $\mathcal{P}$ denotes the power set.
+Similarly we enumerate ancestral splits $\ancestralSplit_k$ of which there are $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$ in total.
+
+This split formulation defines mappings from patterns to splits as
 $$
 \patternToSplit:\alphabet^\nSiteRows\rightarrow\mathcal{P}(\siteSplitSet), \ \ancestralToSplit:\alphabet^\nAncestralStateRows\rightarrow\mathcal{P}(\ancestralSplitSet).
 $$
@@ -166,9 +166,11 @@ $$
 that take corresponding realizations $\siteSplit_j$ and $\ancestralSplit_k$ for some $j$ and $k$.
 We write the $i$th factor of \eqref{eq:full_likelihood} as
 \begin{align*}
+%EM Wait, is this first statement actually true? It seems impossible because multiple y_i's collaps to a single psi(y_i). At least it needs a factor of 2, but it seems more complex than that.
     P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= P(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \tau, t) \\
-    &= P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t).
+    &= P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t)
 \end{align*}
+for some $j$ and $k$.
 Taking the maximum across internal states yields
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &=
@@ -184,6 +186,7 @@ Then, the likelihood in \eqref{eq:profile_likelihood} written as a product over 
 \begin{align}
 L_\nCols'(\tau, t; \fullAlignment) &= \max_{\fullAncestralStates} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates) \\
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \\
+%EM My suggestion is to use \psi(y_i) until you switch to a product indexed by the j's.
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralToSplit(\ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \tau, t) \\
                              &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \max_{\ancestralToSplit(\ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} P(\ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
                              &= \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
@@ -636,7 +639,7 @@ Applying Gibbs' inequality to the first two summands and maximizing over the rem
     &\qquad := L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
 
-The other two possibile ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications.
+The other two possible ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications.
 Call
 $$
 a_{1}' = a_{1}-2p_{13},
