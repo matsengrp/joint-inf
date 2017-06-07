@@ -176,16 +176,15 @@ As a consequence of assuming a binary symmetric model, taking complements yields
                                                                  &= P(\siteSplitRV=\siteSplit_j \mid \tau, t)
 \end{align*}
 for some $j$.
-For the other term, we need to define
+For the other term, we can define
 $$
 \ancestralToSplit:\alphabet^\nAncestralStateRows\times\alphabet^\nSiteRows\rightarrow\mathcal{P}(\ancestralSplitSet)
 $$
-that takes both the ancestral state column and site column as input.
-Given $\alignmentColumnRV$ as well as an ancestral state--valued random variable $\ancestralStateColumnRV$ define
+and
 $$
 \ancestralSplitRV := \ancestralToSplit(\alignmentColumnRV, \ancestralStateColumnRV).
 $$
-Then
+for an ancestral state--valued random variable $\ancestralStateColumnRV$ such that
 \begin{align*}
     P(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t) &= P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
                                                                                                            &= P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t)
