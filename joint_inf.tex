@@ -156,21 +156,42 @@ We enumerate the site splits $\siteSplit_j$ of which there are $\nSiteSplits=|\m
 Similarly we enumerate ancestral splits $\ancestralSplit_k$ of which there are $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$ in total.
 
 This split formulation defines mappings from patterns to splits as
+ $$
+ \patternToSplit:\alphabet^\nSiteRows\rightarrow\mathcal{P}(\siteSplitSet).
+ $$
+Given a site pattern--valued random variable $\alignmentColumnRV$, define the random variable
 $$
-\patternToSplit:\alphabet^\nSiteRows\rightarrow\mathcal{P}(\siteSplitSet), \ \ancestralToSplit:\alphabet^\nAncestralStateRows\rightarrow\mathcal{P}(\ancestralSplitSet).
+\siteSplitRV := \patternToSplit(\alignmentColumnRV)
 $$
-Given a site pattern--valued random variable $\alignmentColumnRV$ and an ancestral state--valued random variable $\ancestralStateColumnRV$, define random variables
-$$
-\siteSplitRV := \patternToSplit(\alignmentColumnRV), \ \ancestralSplitRV := \ancestralToSplit(\ancestralStateColumnRV)
-$$
-that take corresponding realizations $\siteSplit_j$ and $\ancestralSplit_k$ for some $j$ and $k$.
-We write the $i$th factor of \eqref{eq:full_likelihood} as
-\begin{align*}
+that takes corresponding realizations $\siteSplit_j$ for some $j$.
+
 %EM Wait, is this first statement actually true? It seems impossible because multiple y_i's collaps to a single psi(y_i). At least it needs a factor of 2, but it seems more complex than that.
-    P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= P(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \tau, t) \\
-    &= P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t)
+The $i$th factor of \eqref{eq:full_likelihood} has the property
+$$
+P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) = P(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t) \cdot P(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t).
+$$
+As a consequence of assuming a binary symmetric model, taking complements yields
+\begin{align*}
+    2\cdot P(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t) &= P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \\
+                                                                 &= P(\siteSplitRV=\siteSplit_j \mid \tau, t)
+\end{align*}
+for some $j$.
+For the other term, we need to define
+$$
+\ancestralToSplit:\alphabet^\nAncestralStateRows\times\alphabet^\nSiteRows\rightarrow\mathcal{P}(\ancestralSplitSet)
+$$
+that takes both the ancestral state column and site column as input.
+Given $\alignmentColumnRV$ as well as an ancestral state--valued random variable $\ancestralStateColumnRV$ define
+$$
+\ancestralSplitRV := \ancestralToSplit(\alignmentColumnRV, \ancestralStateColumnRV).
+$$
+Then
+\begin{align*}
+    P(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t) &= P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
+                                                                                                           &= P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t)
 \end{align*}
 for some $j$ and $k$.
+
 Taking the maximum across internal states yields
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &=
@@ -187,8 +208,8 @@ Then, the likelihood in \eqref{eq:profile_likelihood} written as a product over 
 L_\nCols'(\tau, t; \fullAlignment) &= \max_{\fullAncestralStates} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates) \\
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \\
 %EM My suggestion is to use \psi(y_i) until you switch to a product indexed by the j's.
-                             &= \prod_{i=1}^{\nCols} \ \max_{\ancestralToSplit(\ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \tau, t) \\
-                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \max_{\ancestralToSplit(\ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} P(\ancestralSplitRV=\ancestralToSplit(\ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
+                             &\propto \prod_{i=1}^{\nCols} \ \max_{\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
+                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \max_{\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
                              &= \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
 where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ where the site split $\siteSplit_j$ or its complement appears.
