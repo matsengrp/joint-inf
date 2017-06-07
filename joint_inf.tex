@@ -228,7 +228,7 @@ The set of all possible character assignments is
 \mathcal{P}(\{1,2,3,4\}) &= \{\emptyset, \{1,2,3,4\}, \{1\}, \{2,3,4\}, \{2\}, \{1,3,4\}, \{3\}, \{1,2,4\}, \\
                          &\qquad \{1,2\}, \{3,4\}, \{1,3\}, \{2,4\}, \{2,3\}, \{1,4\}, \{1,2,3\}, \{1,4\}\}.
 \end{align*}
-where each set indicates the tips at which a character is assigned the character $1$.
+where each set indicates the tips assigned the character $1$.
 For example, $\emptyset$ is the labeling $0000$ and $\{1,3,4\}$ is the labeling $1011$.
 Symmetry allows us to group adjacent pairs in $\mathcal{P}(\{1,2,3,4\})$ into equiprobable splits, letting $\siteSplitSet=\{1,2,3\}$.
 The unique site splits, collapsing complements, are
@@ -245,7 +245,10 @@ This tree has two internal nodes with $\ancestralSplitSet=\{1,2\}$ and unique an
 $$
 \mathcal{P}(\ancestralSplitSet) = \{\emptyset, \{1\}, \{2\}, \{1,2\}\}.
 $$
-We cannot similarly identify complements for ancestral states since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
+The mapping from characters to splits in this case will depend on the characters at the tips and the ancestral states.
+For example, we take both $\patternToSplit(0000)=\emptyset$ and $\patternToSplit(1111)=\emptyset$.
+Similarly, we have $\ancestralToSplit(0000, 00) = \emptyset$ and $\ancestralToSplit(1111, 11)=\emptyset$, needing to take the complement of all the characters present on the tree to identify splits.
+We cannot identify complements for ancestral states since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
 $$
 P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit, \tau, t)\neq P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\siteSplit, \tau, t)
 $$
