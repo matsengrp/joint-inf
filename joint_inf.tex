@@ -175,14 +175,16 @@ As a consequence of assuming a binary symmetric model, taking complements yields
                                                                  &= P(\siteSplitRV=\siteSplit_j \mid \tau, t)
 \end{align*}
 for some $j$.
-For the other term, we can define
+For the other term, we define
 %EM Need a definition for \ancestralToSplit here.
 $$
 \ancestralToSplit:\alphabet^\nAncestralStateRows\times\alphabet^\nSiteRows\rightarrow\mathcal{P}(\ancestralSplitSet)
 $$
-and
+as a mapping of ancestral states to ancestral state splits.
+In this case, the ancestral states we consider depend on whether their corresponding tip labels had their complements taken or not: if we exclude a set of tip labels $\alignmentColumn$ from the set of site patterns by taking its complement, we let $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ be the complement of $\ancestralStateColumn$; otherwise $\ancestralStateColumn$ is unchanged.
+We define
 $$
-\ancestralSplitRV := \ancestralToSplit(\alignmentColumnRV, \ancestralStateColumnRV).
+\ancestralSplitRV := \ancestralToSplit(\alignmentColumnRV, \ancestralStateColumnRV)
 $$
 for an ancestral state--valued random variable $\ancestralStateColumnRV$ such that
 \begin{align*}
@@ -333,9 +335,9 @@ so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
 For data generated from $(\tau^*, t^*)$, we have an inconsistency if
 \begin{equation}
 \label{eq:inconsistency_inequality}
-\ell_{\tau^*,t^*}(\tau', \hat{t}_1; \hat{\fullAncestralSplitPartitions}_1) > \ell_{\tau^*,t^*}(\tau^*, \hat{t}_2; \hat{\fullAncestralSplitPartitions}_2)
+\ell_{\tau^*,t^*}(\tau', \hat{t}_1; \fullAncestralSplitPartitions(\tau', \hat{t}_1)) > \ell_{\tau^*,t^*}(\tau^*, \hat{t}_2; \fullAncestralSplitPartitions(\tau^*, \hat{t}_2))
 \end{equation}
-for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\hat{\fullAncestralSplitPartitions}_1\}$ and $\{\hat{t}_2,\hat{\fullAncestralSplitPartitions}_2\}$ estimated by maximizing $\tilde{\ell}_{\tau^*,t^*}$ with respect to the branch lengths and the internal states for $\tau = \tau'$ and $\tau^*$, respectively.
+for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\fullAncestralSplitPartitions(\tau', \hat{t}_1)\}$ and $\{\hat{t}_2,\fullAncestralSplitPartitions(\tau^*, \hat{t}_2)\}$ estimated by maximizing $\tilde{\ell}_{\tau^*,t^*}$ with respect to the branch lengths and the internal states for $\tau = \tau'$ and $\tau^*$, respectively.
 By Gibbs' inequality, $\shannonDivergence_{\tau^*,t^*}(\tau,t)$ is maximized when $(\tau,t) = (\tau^*,t^*)$, so any example of inconsistency must overcome that difference with substantially greater partial likelihoods on the non-generating topology.
 In the next section, we show that such examples exist.
 
@@ -347,9 +349,9 @@ Our approach seeks bounds for the terms inside the maximization in \eqref{eq:log
 We obtain
 %EM Does it really make sense to talk about taking the max over \fullAncestralSplitPartitions(\tau,t)? This is already defined. I suggest just taking the max over \fullAncestralSplitPartitions as a variable.
 $$
-\max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \le
+\max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \hat{\fullAncestralSplitPartitions})
+    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \fullAncestralSplitPartitions(\tau, \hat{t}))
 $$
 as an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} using Gibbs's inequality
 $$
@@ -357,13 +359,13 @@ $$
 $$
 and
 $$
-\{\hat{t},\hat{\fullAncestralSplitPartitions}\} = \argmax_{t,\fullAncestralSplitPartitions(\tau,t)} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
+\hat{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
 $$
 Similarly, we have the lower bound
 $$
-\max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \ge
+\max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \ge
     \shannonDivergence_{\tau^*,t^*}(\tau,\hat{t})
-    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \hat{\fullAncestralSplitPartitions}).
+    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \fullAncestralSplitPartitions(\tau, \hat{t})).
 $$
 
 \subsection{Parameter setting}
