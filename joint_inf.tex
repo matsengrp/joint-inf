@@ -165,7 +165,6 @@ $$
 $$
 that takes corresponding realizations $\siteSplit_j$ for some $j$.
 
-%EM Wait, is this first statement actually true? It seems impossible because multiple y_i's collaps to a single psi(y_i). At least it needs a factor of 2, but it seems more complex than that.
 For the $i$th factor of \eqref{eq:full_likelihood},
 $$
 P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) = P(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t) \cdot P(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t).
@@ -177,6 +176,7 @@ As a consequence of assuming a binary symmetric model, taking complements yields
 \end{align*}
 for some $j$.
 For the other term, we can define
+%EM Need a definition for \ancestralToSplit here.
 $$
 \ancestralToSplit:\alphabet^\nAncestralStateRows\times\alphabet^\nSiteRows\rightarrow\mathcal{P}(\ancestralSplitSet)
 $$
@@ -317,7 +317,7 @@ so that, in the limit of infinite data,
 \begin{equation}
     \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau, t)) \rightarrow \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
 \end{equation}
-Define the the divergence quantity
+Define the divergence quantity
 $$
 \shannonDivergence_{\tau^*,t^*}(\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\siteSplitRV=\siteSplit_j \mid \tau, t),
 $$
@@ -330,12 +330,12 @@ so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
     \label{eq:log_likelihood_simplified}
     \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
 \end{equation}
-For data generated from $(\tau^*, t^*)$, if
+For data generated from $(\tau^*, t^*)$, we have an inconsistency if
 \begin{equation}
 \label{eq:inconsistency_inequality}
 \ell_{\tau^*,t^*}(\tau', \hat{t}_1; \hat{\fullAncestralSplitPartitions}_1) > \ell_{\tau^*,t^*}(\tau^*, \hat{t}_2; \hat{\fullAncestralSplitPartitions}_2)
 \end{equation}
-for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\hat{\fullAncestralSplitPartitions}_1\}$ and $\{\hat{t}_2,\hat{\fullAncestralSplitPartitions}_2\}$ estimated by maximizing \eqref{eq:profile_likelihood}, we have an inconsistency.
+for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\hat{\fullAncestralSplitPartitions}_1\}$ and $\{\hat{t}_2,\hat{\fullAncestralSplitPartitions}_2\}$ estimated by maximizing $\tilde{\ell}_{\tau^*,t^*}$ with respect to the branch lengths and the internal states for $\tau = \tau'$ and $\tau^*$, respectively.
 By Gibbs' inequality, $\shannonDivergence_{\tau^*,t^*}(\tau,t)$ is maximized when $(\tau,t) = (\tau^*,t^*)$, so any example of inconsistency must overcome that difference with substantially greater partial likelihoods on the non-generating topology.
 In the next section, we show that such examples exist.
 
@@ -345,6 +345,7 @@ In the next section, we show that such examples exist.
 
 Our approach seeks bounds for the terms inside the maximization in \eqref{eq:log_likelihood_simplified}.
 We obtain
+%EM Does it really make sense to talk about taking the max over \fullAncestralSplitPartitions(\tau,t)? This is already defined. I suggest just taking the max over \fullAncestralSplitPartitions as a variable.
 $$
 \max_{t,\fullAncestralSplitPartitions(\tau,t)} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
