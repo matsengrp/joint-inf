@@ -1,12 +1,9 @@
-\documentclass[a4paper]{article}
+\documentclass{article}
 
 %% Language and font encodings
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
-
-%% Sets page size and margins
-\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 
 %% Useful packages
 \usepackage{amsmath}
@@ -176,50 +173,42 @@ As a consequence of assuming a binary symmetric model, taking complements yields
 \end{align*}
 for some $j$.
 For the other term, we define
-%EM Need a definition for \ancestralToSplit here.
 $$
 \ancestralToSplit:\alphabet^\nAncestralStateRows\times\alphabet^\nSiteRows\rightarrow\mathcal{P}(\ancestralSplitSet)
 $$
-as a mapping of ancestral states to ancestral state splits.
-In this case, the ancestral states we consider depend on whether their corresponding tip labels had their complements taken or not: if we exclude a set of tip labels $\alignmentColumn$ from the set of site patterns by taking its complement, we let $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ be the complement of $\ancestralStateColumn$; otherwise $\ancestralStateColumn$ is unchanged.
+as a mapping of ancestral states and tip states to ancestral state splits.
+It is defined by if the tip states have their complements taken or not: if we exclude a set of tip labels $\alignmentColumn$ from the set of site patterns by taking its complement, we let $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ be the complement of $\ancestralStateColumn$; otherwise it is simply $\ancestralStateColumn$.
+Note $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective for each $\alignmentColumn_i$.
 We define
 $$
 \ancestralSplitRV := \ancestralToSplit(\alignmentColumnRV, \ancestralStateColumnRV)
 $$
-for an ancestral state--valued random variable $\ancestralStateColumnRV$ such that
+for a tip state--valued random variable $\alignmentColumnRV$ and an ancestral state--valued random variable $\ancestralStateColumnRV$.
+By considering the case requiring complementing and that not requiring complementing separately,
 \begin{align*}
-    P(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t) &= P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
-                                                                                                           &= P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t)
-\end{align*}
-for some $j$ and $k$.
-Then, the $i$th factor of \eqref{eq:full_likelihood} has the property
-$$
-P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \propto P(\siteSplitRV=\siteSplit_j, \tau, t) \cdot P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t).
-$$
-
-Taking the maximum across internal states yields
-\begin{align*}
-    \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t) &=
-P(\siteSplitRV=\siteSplit_j \mid  \tau, t)\cdot\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k  \mid \siteSplitRV=\siteSplit_j, \tau, t).
+    P(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t) &= P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t).
 \end{align*}
 Given $(\tau, t)$, there exists an ordered list of sets $\fullAncestralSplitPartitions(\tau, t)=(\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t))$ such that any element $\xi_j$ of the $j$th component $\ancestralSplitPartition_j(\tau, t)$ satisfies
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t) &= P(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
+By the surjectivity of $\ancestralToSplit(\alignmentColumn_i, \cdot)$, we also have
+\begin{align*}
+\max_{\ancestralStateColumn_i} P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) &= P(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t).
+\end{align*}
+
 Let $\xi_j$ be such a choice for each $1 \leq j \leq q$ in the following.
 Then, the likelihood in \eqref{eq:profile_likelihood} written as a product over site patterns as opposed to sites is
 \begin{align}
 L_\nCols'(\tau, t; \fullAlignment) &= \max_{\fullAncestralStates} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates) \\
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \\
-%EM My suggestion is to use \psi(y_i) until you switch to a product indexed by the j's.
-                             &\propto \prod_{i=1}^{\nCols} \ \max_{\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
-                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \max_{\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i)\in\mathcal{P}(\ancestralSplitSet)} P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
+                             &\propto \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
+                             &= \prod_{i=1}^{\nCols} \ P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \max_{\ancestralStateColumn_i} P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \\
                              &= \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
 where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ where the site split $\siteSplit_j$ or its complement appears.
 
 \paragraph{Example}
-%EM My long term suggestion is for you to put this in example in the main text and the above in the appendix. (But we should probably check with Vladimir.)
 \begin{figure}
     \centering
     \includegraphics[width=.45\textwidth]{unrooted_four_taxa}
@@ -325,7 +314,7 @@ $$
 $$
 and the partial log likelihood
 $$
-\tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV=\xi_j \mid \siteSplit_j, \tau, t)
+\tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, t)
 $$
 so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
 \begin{equation}
@@ -387,15 +376,16 @@ $$
 \end{figure}
 
 Define the Farris topology $\tau_1$ and the Felsenstein topology $\tau_2$ as in Figure~\ref{fig:farris-fels-top}.
-Call $t=\{x',y',w'\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ constrains the bottom three branches to share the same parameter, the classical construction of this topology.
-
-We parameterize these trees \textbf{not with branch lengths}, but, rather, such that the probability of a substitution on a branch with parameter $x'$ is $p_x'=(1-x')/2$.
-Here, $\{p_x',p_y',p_w'\}\in[0,1/2]^3$ and $\{x',y',w'\}\in[0,1]^3$.
+We parameterize the branches of these trees \textbf{not with branch lengths}, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$.
 This parametrization has been called edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge \cite{Matsen2007-jq}.
 Fidelities have useful algebraic properties, such as the ability to write generating probabilities using the Hadamard transform.
 
+Let $\{x',y',w'\}\in[0,1]^3$ be three fidelities and $\{p_x',p_y',p_w'\}\in[0,1/2]^3$ the corresponding substitution probabilities.
+Call $t=\{x',y',w'\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ constrains the bottom three branches to share the same parameter, the classical construction of this topology.
+
 %das: did this on paper, but can write it out.
-\textbf{Justification for estimand:} Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ counting from the top left.
+\textbf{Justification for estimand:} Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ with edge ordering in the order of the taxa, then the internal branch last.
+%EM Yeah, this next statement feels like it could use some justification, and or maybe you could skip to the following statement.
 The log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$ is a function of $\{x_1x_2, x_1+x_2, y_1y_2, y_1+y_2, w\}$ only.
 By symmetry, exchanging $x_1$ and $x_2$ does not change the value of $\ell$, requiring $x_1=x_2$ at the maximum.
 A similar property holds for $y_1$ and $y_2$.
@@ -552,6 +542,7 @@ See Appendix for full calculations.}
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
 For compactness, define
 $$
+%EM I'd suggest p_\emptyset for this particular one, but perhaps that will throw off your spacing below.
 p_0 = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})
 $$
 with similar definitions for the remaining generating probabilities.
