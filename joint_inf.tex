@@ -71,13 +71,14 @@
 \section*{Introduction}
 
 Classical maximum-likelihood (ML) estimation in phylogenetics operates by integrating out possible ancestral states at the internal nodes of the tree.
-Recently, \cite{Neher2017} have suggested using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences.
+Recently, \cite{Sagulenko2017-jo} have suggested using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences.
 This is attractive from a computational perspective: such joint ML inference can proceed according to an iterative procedure in which ML ancestral sequences are first inferred and then model parameters are optimized conditional on the ancestral sequences.
 This latter conditional optimization is simpler and more computationally efficient than marginalizing out ancestral sequences and then performing optimization.
 
 Existing consistency proofs for phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
 These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
+Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$ and limit themselves to optimizing branch lengths using this method, this motivates understanding when exactly this approximation breaks down, and what happens when we optimize branch lengths and tree topology using this approximation.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
 To do so, we use a binary symmetric model and imagine data being generated on the four taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the large-data limit.
@@ -136,7 +137,9 @@ then estimate the topology and branch lengths via
 using $\hat{\fullAncestralStates}$ maximizing \eqref{eq:profile_likelihood} as an estimate for $\fullAncestralStates$.
 Since $\alphabet$ is a discrete set, there exists a maximum \eqref{eq:profile_likelihood}, and \eqref{eq:profile_likelihood_topology_bl} recovers the joint ML values of the unknown parameters.
 In general, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities that depend on the unknown $(\tau,t)$.
-For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence \cite{Neher2017}.
+For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence \cite{Sagulenko2017-jo}.
+
+%EM It seems straightforward to come up with an example of where branch length estimation is inconsistent. It seems like any time a state at an internal node is uncertain we will get different branch lengths by fixing it to the ML state.
 
 \subsection{Site split formulation}
 
