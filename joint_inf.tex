@@ -651,6 +651,7 @@ where
     &\qquad + (1-p_{13})\cdot\log(1+w') \\
     &\qquad + p_{13}\cdot\log(1-w').
 \end{align*}
+%EM I need help understanding this application of Gibbs. p_{0} + p_{13} is not 1 if I understand correctly, and so I don't see how Gibbs applies.
 Applying Gibbs' inequality to the first two summands and maximizing over the remaining terms yields
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
@@ -684,6 +685,7 @@ Then,
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{0}  \cdot\log(p_{0}) \\
     &\qquad + p_{13} \cdot\log(p_{13}) \\
+%EM Sorry to be slow, but could you provide a little more detail on why this follows? Is there some convexity of entropy argument going on here?
     &\qquad + a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
