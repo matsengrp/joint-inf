@@ -387,50 +387,48 @@ Fidelities have useful algebraic properties, such as the ability to write genera
 Let $\{x',y',w'\}\in[0,1]^3$ be three fidelities and $\{p_x',p_y',p_w'\}\in[0,1/2]^3$ the corresponding substitution probabilities.
 Call $t=\{x',y',w'\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ constrains the bottom three branches to share the same parameter, the classical construction of this topology.
 
-\textbf{Justification for estimand:} Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ with edge ordering in the order of the taxa, then the internal branch last.
+We now show that, in the case of the Farris tree topology, fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal does not change the value of the likelihood.
+Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ with edge ordering in the order of the taxa, then the internal branch last.
 %EM complete to introduce: We now note that exchanging $x_1$ and $x_2$, or $y_1$ or $y_2$, does not change ...
 %EM please be a little more specific than just $ell$, because there are lots of variants-- e.g. likelihood with what data?
 Using the Hadamard transform approach outlined in 8.6 of Semple and Steel \cite{Semple2003-em}, we calculate the generating probabilities on the Farris tree topology.
 For site split $\emptyset$,
 \begin{align*}
-    P(\siteSplit=\emptyset|\tau_1, \tilde{t}) & = \frac{1}{8} \cdot (1 + x_1x_2 +  y_1y_2 +  x_1y_1w + x_1y_2w + y_1x_2w + x_2y_2w + x_1y_1x_2y_2) \\
-                                              & = \frac{1}{8} \cdot (1 + x_1x_2 +  y_1y_2 +  w[x_1y_1 + x_1y_2 + y_1x_2 + x_2y_2] + x_1y_1x_2y_2) \\
-                                              & = \frac{1}{8} \cdot (1 + x_1x_2 +  y_1y_2 +  w[x_1 + x_2][y_1 + y_2] + x_1y_1x_2y_2).
+    P(\siteSplitRV=\emptyset\mid \tau_1, \tilde{t}) & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  x_1y_1w + x_1y_2w + y_1x_2w + x_2y_2w + x_1y_1x_2y_2) \\
+                                              & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  w[x_1y_1 + x_1y_2 + y_1x_2 + x_2y_2] + x_1y_1x_2y_2) \\
+                                              & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  w[x_1 + x_2][y_1 + y_2] + x_1y_1x_2y_2).
 \end{align*}
 and this probability is unchanged when $x_1$ is exchanged with $x_2$ and $y_1$ is exchanged with $y_2$.
 All other generating probabilities will differ only in the signs of each term.
 For example, for site split $\{1\}$ we have
 \begin{align*}
-    P(\siteSplit=\{1\}|\tau_1, \tilde{t}) & = \frac{1}{8} \cdot (1 - x_1x_2 +  y_1y_2 +  w[-x_1 + x_2][y_1 + y_2] - x_1y_1x_2y_2)
+    P(\siteSplitRV=\{1\}\mid \tau_1, \tilde{t}) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[-x_1 + x_2][y_1 + y_2] - x_1y_1x_2y_2)
 \end{align*}
 and for site split $\{3\}$ we have
 \begin{align*}
-    P(\siteSplit=\{3\}|\tau_1, \tilde{t}) & = \frac{1}{8} \cdot (1 - x_1x_2 +  y_1y_2 +  w[x_1 - x_2][y_1 + y_2] - x_1y_1x_2y_2)
+    P(\siteSplitRV=\{3\}\mid \tau_1, \tilde{t}) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[x_1 - x_2][y_1 + y_2] - x_1y_1x_2y_2)
 \end{align*}
 meaning if we exchange the values of $x_1$ and $x_2$ then these probabilities swap values.
 The corresponding possibilities for the likelihood values are
-$$
-\left\{\begin{array}{l}
-        (1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2) \\
-        (1+x_1)(1-x_2)(1-w)(1+y_1)(1+y_2) \\
-        (1-x_1)(1+x_2)(1-w)(1-y_1)(1-y_2) \\
-        (1+x_1)(1-x_2)(1+w)(1-y_1)(1-y_2)
-\end{array}\right.
-$$
+\begin{align*}
+    P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2); \\
+    P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1+y_1)(1+y_2); \\
+    P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1-x_1)(1+x_2)(1-w)(1-y_1)(1-y_2); \\
+    P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1+x_1)(1-x_2)(1+w)(1-y_1)(1-y_2);
+\end{align*}
 for site split $\{1\}$ and
-$$
-\left\{\begin{array}{l}
-        (1+x_1)(1-x_2)(1+w)(1+y_1)(1+y_2) \\
-        (1-x_1)(1+x_2)(1-w)(1+y_1)(1+y_2) \\
-        (1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2) \\
-        (1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2)
-\end{array}\right.
-$$
+\begin{align*}
+        P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{3\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1+x_1)(1-x_2)(1+w)(1+y_1)(1+y_2); \\
+    P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{3\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1-x_1)(1+x_2)(1-w)(1+y_1)(1+y_2); \\
+    P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{3\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2); \\
+    P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{3\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2);
+\end{align*}
 for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exchanged.
 
 The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
-In summary, exchanging $x_1$ and $x_2$ does not change the value of $\ell$, and thus $x_1=x_2$ at the maximum.
+
+In summary, exchanging $x_1$ and $x_2$ does not change the value of the log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$, and thus $x_1=x_2$ at the maximum.
 The analogous statement holds for $y_1$ and $y_2$.
 The Felsenstein topology does not admit this property, but, since we are interested in a lower bound for this topology, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
@@ -564,7 +562,7 @@ All values are multiplied by $1/8$.}
                     (1+x')^2   (1-w')(1-y')^2
                     \end{array}$\\
      $\{1,2,3\}$       &
-
+    $\left\{\begin{array}{l}
                     \{2\} \\
                     \{1,2\}
                 \end{array}\right.$&
@@ -615,7 +613,19 @@ Seeking an upper bound, we use the facts that, for $x',y'\in[0,1]$,
 (1-x'^2+y'^2-x'^2y'^2) & = (1+x')(1-x')(1+y'^2) \le (1+x')(1-x')(1+y') \\
 (1+x'^2-y'^2-x'^2y'^2) & = (1+x'^2)(1+y')(1-y') \le (1+x')(1+y')(1-y') \\
 (1+x'^2+y'^2+x'^2y'^2) & = (1+x'^2)(1+y'^2) \le (1+x')(1+y') \\
-4x'y' & = 2x' \cdot 2y' \le (1+x'^2)(1+y'^2) \le (1+x')(1+y')
+4x'y' & = 2x' \cdot 2y' \le (1+x'^2)(1+y'^2) \le (1+x')(1+y').
+\end{align*}
+The term $p_{\emptyset}$ is bounded as
+\begin{align*}
+    p_{\emptyset} & = \log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+                  & \le \log(1+x'^2+y'^2+4x'y'+x'^2y'^2) \\
+                  & \le \log(2(1+x')(1+y'))
+\end{align*}
+and $p_{13}$ is bounded as
+\begin{align*}
+    p_{13} & = \log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+                  & \le \log(1+x'^2+y'^2+x'^2y'^2) \\
+                  & \le \log((1+x')(1+y')).
 \end{align*}
 Factoring and making these substitutions results in
 \begin{align*}
@@ -730,6 +740,15 @@ Then,
 %EM Ha! Still working on understanding. It seems to me that the statement is equivalent to saying
 %EM a_{1} \log a_{1} + a_{2} \log a_{2} + (1-p_{13}) \log(1-p_{13}) + p_{13}\cdot\log(2p_{13}) = a_{1}' \log a_{1}' + a_{2}' \log a_{2}'
 %EM am I thinking about this wrong? Is this what you are saying in your 2)?
+    %Hmm, I don't know if I see what you're saying now.
+    %The way I think about it is like this: a_1 is the coefficient for the log(1+x) term and a_2 for log(1-x).
+    %It is the sum of all the generating probabilities that had a log(1+x) term in it.
+    %Looking at Table 2, since our first bound (we calculated it for \eta_j = {1}) was constructed with the p_{13} term of
+    %   (1+x)^2(1-w)(1+y)^2,
+    %our second bound (that for \eta_j = \emptyset) will be constructed with the p_{13} term of
+    %   (1-x)^2(1+w)(1+y)^2.
+    %So we lose 2 log(1+x)s (hence a_1' = a_1 - 2p_{13}) and gain two log(1-x)s (hence a2' = a2 + 2p_{13}).
+    %Now every generating probability has log(1+w) so we replace the last two terms (p_{13}log(1-w) + (1-p_{13})log(1+w)) with just log(1+w)---maximized at log(2).
     &\qquad + a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
