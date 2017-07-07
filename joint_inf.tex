@@ -243,6 +243,7 @@ This tree has two internal nodes with $\ancestralSplitSet=\{1,2\}$ and unique an
 $$
 \mathcal{P}(\ancestralSplitSet) = \{\emptyset, \{1\}, \{2\}, \{1,2\}\}.
 $$
+Internal node $\{1\}$ is the node connected to leaves $\{1\}$ and $\{2\}$ and internal node $\{2\}$ connected to leaves $\{3\}$ and $\{4\}$.
 The mapping from characters to splits in this case will depend on the characters at the tips and the ancestral states.
 For example, we take both $\patternToSplit(0000)=\emptyset$ and $\patternToSplit(1111)=\emptyset$.
 Similarly, we have $\ancestralToSplit(0000, 00) = \emptyset$ and $\ancestralToSplit(1111, 11)=\emptyset$, needing to take the complement of all the characters present on the tree to identify splits.
@@ -390,12 +391,51 @@ Call $t=\{x',y',w'\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ constrains the bottom thr
 %das: did this on paper, but can write it out.
 \textbf{Justification for estimand:} Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ with edge ordering in the order of the taxa, then the internal branch last.
 %EM Yeah, this next statement feels like it could use some justification, and or maybe you could skip to the following statement.
-The log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$ is a function of $\{x_1x_2, x_1+x_2, y_1y_2, y_1+y_2, w\}$ only.
-By symmetry, exchanging $x_1$ and $x_2$ does not change the value of $\ell$, requiring $x_1=x_2$ at the maximum.
+Using the Hadamard transform approach outlined in 8.6 of Semple and Steel \cite{Semple2003-em}, we calculate the generating probabilities the Farris tree topology.
+For site split $\emptyset$,
+\begin{align*}
+    P(\siteSplit=\emptyset|\tau_1, \tilde{t}) & = \frac{1}{8} \cdot (1 + x_1x_2 +  y_1y_2 +  x_1y_1w + x_1y_2w + y_1x_2w + x_2y_2w + x_1y_1x_2y_2) \\
+                                              & = \frac{1}{8} \cdot (1 + x_1x_2 +  y_1y_2 +  w[x_1y_1 + x_1y_2 + y_1x_2 + x_2y_2] + x_1y_1x_2y_2) \\
+                                              & = \frac{1}{8} \cdot (1 + x_1x_2 +  y_1y_2 +  w[x_1 + x_2][y_1 + y_2] + x_1y_1x_2y_2).
+\end{align*}
+and this probability is unchanged when $x_1$ is exchanged with $x_2$ and $y_1$ is exchanged with $y_2$.
+All other generating probabilities will differ only in the signs of each term.
+For example, for site split $\{1\}$ we have
+\begin{align*}
+    P(\siteSplit=\{1\}|\tau_1, \tilde{t}) & = \frac{1}{8} \cdot (1 - x_1x_2 +  y_1y_2 +  w[-x_1 + x_2][y_1 + y_2] - x_1y_1x_2y_2)
+\end{align*}
+and for site split $\{3\}$ we have
+\begin{align*}
+    P(\siteSplit=\{3\}|\tau_1, \tilde{t}) & = \frac{1}{8} \cdot (1 - x_1x_2 +  y_1y_2 +  w[x_1 - x_2][y_1 + y_2] - x_1y_1x_2y_2)
+\end{align*}
+meaning if we exchange the values of $x_1$ and $x_2$ then these probabilities swap values.
+The corresponding possibilities for the likelihood values are
+$$
+\left\{\begin{array}{l}
+        (1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2) \\
+        (1+x_1)(1-x_2)(1-w)(1+y_1)(1+y_2) \\
+        (1-x_1)(1+x_2)(1-w)(1-y_1)(1-y_2) \\
+        (1+x_1)(1-x_2)(1+w)(1-y_1)(1-y_2)
+\end{array}\right.
+$$
+for site split $\{1\}$ and
+$$
+\left\{\begin{array}{l}
+        (1+x_1)(1-x_2)(1+w)(1+y_1)(1+y_2) \\
+        (1-x_1)(1+x_2)(1-w)(1+y_1)(1+y_2) \\
+        (1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2) \\
+        (1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2)
+\end{array}\right.
+$$
+for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exchanged.
+
+The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
+The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
+By symmetry exchanging $x_1$ and $x_2$ does not change the value of $\ell$, requiring $x_1=x_2$ at the maximum.
 A similar property holds for $y_1$ and $y_2$.
 The Felsenstein topology does not admit this property, but, since we are interested in a lower bound for this topology, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
-Table~\ref{tab:sitepatprob} contains calculations of site pattern frequencies under these two topologies, calculated using the Hadamard transform approach outlined in 8.6 of Semple and Steel \cite{Semple2003-em}.
+Table~\ref{tab:sitepatprob} contains calculations of site pattern frequencies under these two topologies.
 Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed site patterns and topologies that have been maximized over ancestral state patterns.
 Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} contain the values of the likelihood for all possible ancestral states.
 
@@ -430,51 +470,51 @@ All values are multiplied by $1/8$.}
     \hline
     $\emptyset$&
     $\emptyset$&
-    $(1+x)^2   (1+w)(1+y)^2$\\
+    $(1+x')^2   (1+w')(1+y')^2$\\
      $\{1\}$    &
     $\emptyset$&
-    $(1+x)(1-x)(1+w)(1+y)^2$\\
+    $(1+x')(1-x')(1+w')(1+y')^2$\\
      $\{2\}$    &
     $\emptyset$&
-    $(1+x)^2   (1+w)(1+y)(1-y)$\\
+    $(1+x')^2   (1+w')(1+y')(1-y')$\\
      $\{3\}$    &
     $\emptyset$&
-    $(1+x)(1-x)(1+w)(1+y)^2$\\
+    $(1+x')(1-x')(1+w')(1+y')^2$\\
     $\{1,2\}$  &
-    $\{\emptyset,\{1,2,3\}\}$&
-    $(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+    $\{\emptyset,\{1,2\}\}$&
+    $(1+x')(1-x')(1+w')(1+y')(1-y')$\\
     $\{1,3\}$  &
     $\left\{\begin{array}{l}
                     \emptyset\\
                     %EM Shouldn't this be \{1\}\\ ? Or perhaps the ordering of internal nodes is not what I thought?
-                    \{2\}\\
+                    \{1\}\\
                     \{1,2\}
                 \end{array}\right.$&
     $\begin{array}{l}
-                    (1+x)^2   (1+w)(1-y)^2\\
-                    (1+x)^2   (1-w)(1+y)^2\\
-                    (1-x)^2   (1+w)(1+y)^2
+                    (1-x')^2   (1+w')(1+y')^2\\
+                    (1+x')^2   (1-w')(1+y')^2\\
+                    (1+x')^2   (1+w')(1-y')^2
                 \end{array}$\\
     $\{2,3\}$  &
-                $\{\emptyset,\{1,2,3\}\}$&
-                $(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+                $\{\emptyset,\{1,2\}\}$&
+                $(1+x')(1-x')(1+w')(1+y')(1-y')$\\
     $\{1,2,3\}$&
-                $\emptyset$&
-                $(1+x)^2   (1+w)(1+y)(1-y)$\\
+                $\{1,2\}$&
+                $(1+x')^2   (1+w')(1+y')(1-y')$\\
     \hline
     \multicolumn{3}{c}{$\tau=\tau_2$}\\
     \hline
     $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau, t)$ & $P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
     \hline
-    $\emptyset$       &$\emptyset$&$(1+x)^2   (1+w)(1+y)^2$\\
+    $\emptyset$       &$\emptyset$&$(1+x')^2   (1+w')(1+y')^2$\\
     $\{1\}$          &
     $\left\{\begin{array}{l}
                     \emptyset\\
                     \{1\}
                 \end{array}\right.$&
     $\begin{array}{l}
-                        (1+x)(1-x)(1+w)(1+y)^2\\
-                        (1+x)^2   (1-w)(1+y)(1-y)
+                        (1+x')(1-x')(1+w')(1+y')^2\\
+                        (1+x')^2   (1-w')(1+y')(1-y')
                     \end{array}$\\
       $\{2\}$          &
     $\left\{\begin{array}{l}
@@ -482,8 +522,8 @@ All values are multiplied by $1/8$.}
                     \{1\}
                 \end{array}\right.$&
     $\begin{array}{l}
-                    (1+x)^2   (1+w)(1+y)(1-y)\\
-                    (1+x)(1-x)(1-w)(1+y)^2
+                    (1+x')^2   (1+w')(1+y')(1-y')\\
+                    (1+x')(1-x')(1-w')(1+y')^2
                     \end{array}$\\
       $\{3\}$          &
     $\left\{\begin{array}{l}
@@ -491,17 +531,17 @@ All values are multiplied by $1/8$.}
                     \{2\}
                 \end{array}\right.$&
     $\begin{array}{l}
-                    (1+x)(1-x)(1+w)(1+y)^2\\
-                    (1+x)^2   (1-w)(1+y)(1-y)
+                    (1+x')(1-x')(1+w')(1+y')^2\\
+                    (1+x')^2   (1-w')(1+y')(1-y')
                     \end{array}$\\
      $\{1,2\}$         &
     $\left\{\begin{array}{l}
                     \{\emptyset,\{1,2\}\}\\
-                    \{2\}
+                    \{1\}
                 \end{array}\right.$&
     $\begin{array}{l}
-                    (1+x)(1-x)(1+w)(1+y)(1-y)\\
-                    (1+x)^2   (1-w)(1+y)^2
+                    (1+x')(1-x')(1+w')(1+y')(1-y')\\
+                    (1+x')^2   (1-w')(1+y')^2
                     \end{array}$\\
      $\{1,3\}$         &
     $\left\{\begin{array}{l}
@@ -510,9 +550,9 @@ All values are multiplied by $1/8$.}
                     \{1,2\}
                 \end{array}\right.$&
     $\begin{array}{l}
-                    (1+x)^2   (1+w)(1-y)^2\\
-                    (1+x)(1-x)(1-w)(1+y)(1-y)\\
-                    (1-x)^2   (1+w)(1+y)^2
+                    (1-x')^2   (1+w')(1+y')^2\\
+                    (1+x')(1-x')(1-w')(1+y')(1-y')\\
+                    (1+x')^2   (1+w')(1-y')^2
                     \end{array}$\\
       $\{2,3\}$        &
     $\left\{\begin{array}{l}
@@ -521,18 +561,18 @@ All values are multiplied by $1/8$.}
                     \{2\}
                 \end{array}\right.$&
     $\begin{array}{l}
-                    (1+x)(1-x)(1+w)(1+y)(1-y)\\
-                    (1-x)^2   (1-w)(1+y)^2\\
-                    (1+x)^2   (1-w)(1-y)^2
+                    (1+x')(1-x')(1+w')(1+y')(1-y')\\
+                    (1-x')^2   (1-w')(1+y')^2\\
+                    (1+x')^2   (1-w')(1-y')^2
                     \end{array}$\\
      $\{1,2,3\}$       &
     $\left\{\begin{array}{l}
-                    \emptyset\\
-                    \{2\}
+                    \{2\} \\
+                    \{1,2\}
                 \end{array}\right.$&
     $\begin{array}{l}
-                    (1+x)^2   (1+w)(1+y)(1-y)\\
-                    (1+x)(1-x)(1-w)(1+y)^2
+                    (1+x')(1-x')(1-w')(1+y')^2 \\
+                    (1+x')^2   (1+w')(1+y')(1-y')
                     \end{array}$\\
     \hline
 \end{tabular}
@@ -549,29 +589,29 @@ Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
 For compactness, define
 $$
 %EM I'd suggest p_\emptyset for this particular one, but perhaps that will throw off your spacing below.
-p_0 = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})
+p_{\emptyset} = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})
 $$
 with similar definitions for the remaining generating probabilities.
-The full Farris tree log likelihood takes one of three values depending on branch lengths---assume for now the we are only interested in the ancestral state split $\{2\}$ for the site split $\{1,3\}$.
+The full Farris tree log likelihood takes one of three values depending on branch lengths---assume for now the we are only interested in the ancestral state split $\{1\}$ for the site split $\{1,3\}$.
 Directly substituting in \eqref{eq:site_pattern_likelihood}, the log likelihood is
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &=        p_{0}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
-    &\qquad + p_{1}  \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
-    &\qquad + p_{2}  \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
-    &\qquad + p_{3}  \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
-    &\qquad + p_{12} \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
-    &\qquad + p_{13} \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
-    &\qquad + p_{23} \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
-    &\qquad + p_{123}\cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
-    &\qquad + p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
-    &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{2}  \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
-    &\qquad + p_{3}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{12} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
-    &\qquad + p_{13} \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
-    &\qquad + p_{23} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
-    &\qquad + p_{123}\cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
+    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{1}          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + p_{2}          \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad + p_{3}          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + p_{12}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{23}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + p_{123}        \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad + p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{2}          \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{13}         \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
+    &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{123}        \cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
 \end{align*}
 Seeking an upper bound, we use the facts that, for $x',y'\in[0,1]$,
 \begin{align*}
@@ -583,27 +623,27 @@ Seeking an upper bound, we use the facts that, for $x',y'\in[0,1]$,
 Factoring and making these substitutions results in
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{0}  \cdot\log(2(1+x')(1+y')) \\
-    &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1+y')) \\
-    &\qquad + p_{2}  \cdot\log((1+x')(1+y')(1-y')) \\
-    &\qquad + p_{3}  \cdot\log((1+x')(1-x')(1+y')) \\
-    &\qquad + p_{12} \cdot\log((1+x')(1-x')(1+y')(1-y')) \\
-    &\qquad + p_{13} \cdot\log((1+x')(1+y')) \\
-    &\qquad + p_{23} \cdot\log((1+x')(1-x')(1+y')(1-y')) \\
-    &\qquad + p_{123}\cdot\log((1+x')(1+y')(1-y')) \\
-    &\qquad + p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
-    &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{2}  \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
-    &\qquad + p_{3}  \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{12} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
-    &\qquad + p_{13} \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
-    &\qquad + p_{23} \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
-    &\qquad + p_{123}\cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
+    &\le      p_{\emptyset}  \cdot\log(2(1+x')(1+y')) \\
+    &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+y')) \\
+    &\qquad + p_{2}          \cdot\log((1+x')(1+y')(1-y')) \\
+    &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1+y')) \\
+    &\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+y')(1-y')) \\
+    &\qquad + p_{13}         \cdot\log((1+x')(1+y')) \\
+    &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+y')(1-y')) \\
+    &\qquad + p_{123}        \cdot\log((1+x')(1+y')(1-y')) \\
+    &\qquad + p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{2}          \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{13}         \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
+    &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{123}        \cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
 \end{align*}
 Grouping together like terms,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{0}  \cdot\log(2) \\
+    &\le      p_{\emptyset}  \cdot\log(2) \\
     &\qquad + \log(1+x') \\
     &\qquad + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
     &\qquad + \log(1+y') \\
@@ -618,7 +658,7 @@ Grouping together like terms,
 which equals
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{0}  \cdot\log(2) \\
+    &\le      p_{\emptyset}  \cdot\log(2) \\
     &\qquad + (3-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x') \\
     &\qquad + 2(p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
     &\qquad + (3-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
@@ -642,7 +682,7 @@ $$
 where
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{0}  \cdot\log(2) \\
+    &\le      p_{\emptyset}  \cdot\log(2) \\
     &\qquad + a_{1}\cdot\log(1+x') \\
     &\qquad + a_{2}\cdot\log(1-x') \\
     &\qquad + a_{3}\cdot\log(1+y') \\
@@ -655,7 +695,7 @@ where
 Maximizing over the unknown terms yields
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{0}  \cdot\log(2) \\
+    &\le      p_{\emptyset}  \cdot\log(2) \\
     &\qquad + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}} \\
     &\qquad + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
     &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
@@ -682,8 +722,13 @@ $$
 Then,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{0}  \cdot\log(2) \\
+    &\le      p_{\emptyset}  \cdot\log(2) \\
 %EM Sorry to be slow, but could you provide a little more detail on why this follows? Is there some convexity of entropy argument going on here?
+%Not sure which part is confusing, but:
+    %1) a_1 log(1+x) + a_2 log(1-x) is maximized at x = (a_1 - a_2) / (a_1 + a_2).
+    %The below equation follows by rewriting 1+x and 1-x for the above x.
+    %2) a_1' and a_2' are just defined by rewriting the likelihood. There are now two fewer log(1+x) terms and two more log(1-x) terms since we replaced a (1+x)^2 in the likelihood with a (1-x)^2. That's why we have a -2p_{13} and a +2p_{13} respectively.
+    %Happy to clarify somewhere in the text but not sure what part would most need exposition.
     &\qquad + a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
@@ -693,7 +738,7 @@ Then,
 \end{align*}
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{0}  \cdot\log(2) \\
+    &\le      p_{\emptyset}  \cdot\log(2) \\
     &\qquad + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}} \\
     &\qquad + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
     &\qquad + a_{3}'\cdot\log\frac{2a_{3}'}{a_{3}'+a_{4}'} \\
@@ -710,26 +755,26 @@ Replace all $(1+w)$ terms with $(1-w)$ and focus just on the partial likelihood.
 Then, if $(1+x)(1-y) > (1-x)(1+y)$,
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
-    &\ge      p_{0}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
-    &\qquad + p_{1}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
-    &\qquad + p_{2}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
-    &\qquad + p_{3}  \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
-    &\qquad + p_{12} \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
-    &\qquad + p_{123}\cdot\log((1+x')^2   (1-w')(1+y')(1-y'))\\
-    &\qquad + p_{13} \cdot\log((1+x')^2   (1-w')(1-y')^2) \\
-    &\qquad + p_{23} \cdot\log((1+x')^2   (1-w')(1-y')^2),
+    &\ge      p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{1}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
+    &\qquad + p_{2}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
+    &\qquad + p_{3}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
+    &\qquad + p_{12}         \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
+    &\qquad + p_{123}        \cdot\log((1+x')^2   (1-w')(1+y')(1-y'))\\
+    &\qquad + p_{13}         \cdot\log((1+x')^2   (1-w')(1-y')^2) \\
+    &\qquad + p_{23}         \cdot\log((1+x')^2   (1-w')(1-y')^2),
 \end{align*}
 otherwise
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
-    &\ge      p_{0}  \cdot\log((1+x')^2    (1+w')(1+y')^2) \\
-    &\qquad + p_{1}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
-    &\qquad + p_{2}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
-    &\qquad + p_{3}  \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
-    &\qquad + p_{12} \cdot\log((1+x')^2    (1-w')(1+y')^2) \\
-    &\qquad + p_{123}\cdot\log((1+x')(1-x')(1-w')(1+y')^2)\\
-    &\qquad + p_{13} \cdot\log((1-x')^2    (1-w')(1+y')^2) \\
-    &\qquad + p_{23} \cdot\log((1-x')^2    (1-w')(1+y')^2).
+    &\ge      p_{\emptyset}  \cdot\log((1+x')^2    (1+w')(1+y')^2) \\
+    &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
+    &\qquad + p_{2}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
+    &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
+    &\qquad + p_{12}         \cdot\log((1+x')^2    (1-w')(1+y')^2) \\
+    &\qquad + p_{123}        \cdot\log((1+x')(1-x')(1-w')(1+y')^2)\\
+    &\qquad + p_{13}         \cdot\log((1-x')^2    (1-w')(1+y')^2) \\
+    &\qquad + p_{23}         \cdot\log((1-x')^2    (1-w')(1+y')^2).
 \end{align*}
 Letting
 $$
@@ -741,8 +786,8 @@ yields
     &\ge      2\cdot\log(1+x') \\
     &\qquad + (2-b)  \cdot\log(1+y') \\
     &\qquad + b      \cdot\log(1-y') \\
-    &\qquad + p_{0}\cdot\log(1+w') \\
-    &\qquad + (1-p_{0})\cdot\log(1-w')
+    &\qquad + p_{\emptyset}\cdot\log(1+w') \\
+    &\qquad + (1-p_{\emptyset})\cdot\log(1-w')
 \end{align*}
 for the first lower bound, but, upon maximizing, we obtain
 \begin{align*}
@@ -750,14 +795,14 @@ for the first lower bound, but, upon maximizing, we obtain
     &\ge      2\cdot\log(2) \\
     &\qquad + (2-b)  \cdot\log(2-b) \\
     &\qquad + b      \cdot\log(b) \\
-    &\qquad + p_{0}\cdot\log(2p_{0}) \\
-    &\qquad + (1-p_{0})\cdot\log(2(1-p_{0}))
+    &\qquad + p_{\emptyset}\cdot\log(2p_{\emptyset}) \\
+    &\qquad + (1-p_{\emptyset})\cdot\log(2(1-p_{\emptyset}))
 \end{align*}
-maximized at $\{1,1-b,1-2p_{0}\}$, which is the same if $(1+x)(1-y) > (1-x)(1+y)$ or $(1+x)(1-y) < (1-x)(1+y)$.
+maximized at $\{1,1-b,1-2p_{\emptyset}\}$, which is the same if $(1+x)(1-y) > (1-x)(1+y)$ or $(1+x)(1-y) < (1-x)(1+y)$.
 Our lower bound is
 \begin{align*}
-    L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) &:= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b,1-2p_{0}\}) \\
-                                           &+ 2\cdot\log(2) + (2-b)  \cdot\log(2-b) + b      \cdot\log(b) + p_{0}\cdot\log(2p_{0}) + (1-p_{0})\cdot\log(2(1-p_{0})).
+    L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) &:= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b,1-2p_{\emptyset}\}) \\
+                                           &+ 2\cdot\log(2) + (2-b)  \cdot\log(2-b) + b      \cdot\log(b) + p_{\emptyset}\cdot\log(2p_{\emptyset}) + (1-p_{\emptyset})\cdot\log(2(1-p_{\emptyset})).
 \end{align*}
 
 \subsubsection{Region of inconsistency}
