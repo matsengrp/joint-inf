@@ -238,7 +238,6 @@ $$
 \mathcal{P}(\{1,2,3,4\}) \setminus \mathcal{P}(\siteSplitSet) = \{\{1,2,3,4\}, \{2,3,4\}, \{1,3,4\}, \{1,2,4\}, \{3,4\}, \{2,4\}, \{1,4\}, \{4\}\},
 $$
 the symmetry of the binary character model allowing us to focus only on the elements of $\mathcal{P}(\siteSplitSet)$.
-%EM Is it indicated anywhere how the internal nodes are numbered? I would assume that 1 would be connected to leaf 1. If that's true please indicate here.
 This tree has two internal nodes with $\ancestralSplitSet=\{1,2\}$ and unique ancestral state splits
 $$
 \mathcal{P}(\ancestralSplitSet) = \{\emptyset, \{1\}, \{2\}, \{1,2\}\}.
@@ -381,17 +380,17 @@ $$
 \end{figure}
 
 Define the Farris topology $\tau_1$ and the Felsenstein topology $\tau_2$ as in Figure~\ref{fig:farris-fels-top}.
-We parameterize the branches of these trees \textbf{not with the standard notion of branch length in terms of number of substitutions per site}, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$.
+We parameterize the branches of these trees \textbf{not with the standard notion of branch length in terms of number of substitutions per site}, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$.
 This parametrization has been called edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge \cite{Matsen2007-jq}.
 Fidelities have useful algebraic properties, such as the ability to write generating probabilities using the Hadamard transform.
 
 Let $\{x',y',w'\}\in[0,1]^3$ be three fidelities and $\{p_x',p_y',p_w'\}\in[0,1/2]^3$ the corresponding substitution probabilities.
 Call $t=\{x',y',w'\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ constrains the bottom three branches to share the same parameter, the classical construction of this topology.
 
-%das: did this on paper, but can write it out.
 \textbf{Justification for estimand:} Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ with edge ordering in the order of the taxa, then the internal branch last.
-%EM Yeah, this next statement feels like it could use some justification, and or maybe you could skip to the following statement.
-Using the Hadamard transform approach outlined in 8.6 of Semple and Steel \cite{Semple2003-em}, we calculate the generating probabilities the Farris tree topology.
+%EM complete to introduce: We now note that exchanging $x_1$ and $x_2$, or $y_1$ or $y_2$, does not change ...
+%EM please be a little more specific than just $ell$, because there are lots of variants-- e.g. likelihood with what data?
+Using the Hadamard transform approach outlined in 8.6 of Semple and Steel \cite{Semple2003-em}, we calculate the generating probabilities on the Farris tree topology.
 For site split $\emptyset$,
 \begin{align*}
     P(\siteSplit=\emptyset|\tau_1, \tilde{t}) & = \frac{1}{8} \cdot (1 + x_1x_2 +  y_1y_2 +  x_1y_1w + x_1y_2w + y_1x_2w + x_2y_2w + x_1y_1x_2y_2) \\
@@ -431,8 +430,8 @@ for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exc
 
 The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
-By symmetry exchanging $x_1$ and $x_2$ does not change the value of $\ell$, requiring $x_1=x_2$ at the maximum.
-A similar property holds for $y_1$ and $y_2$.
+In summary, exchanging $x_1$ and $x_2$ does not change the value of $\ell$, and thus $x_1=x_2$ at the maximum.
+The analogous statement holds for $y_1$ and $y_2$.
 The Felsenstein topology does not admit this property, but, since we are interested in a lower bound for this topology, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
 Table~\ref{tab:sitepatprob} contains calculations of site pattern frequencies under these two topologies.
@@ -440,7 +439,6 @@ Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed
 Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} contain the values of the likelihood for all possible ancestral states.
 
 \begin{table}
-%EM I wonder why you use primes on all variables here but not in tab:likelihoods.
 \centering
 \begin{tabular}{|l|l|l|}
     \hline
@@ -566,7 +564,7 @@ All values are multiplied by $1/8$.}
                     (1+x')^2   (1-w')(1-y')^2
                     \end{array}$\\
      $\{1,2,3\}$       &
-    $\left\{\begin{array}{l}
+
                     \{2\} \\
                     \{1,2\}
                 \end{array}\right.$&
@@ -588,7 +586,6 @@ See Appendix for full calculations.}
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
 For compactness, define
 $$
-%EM I'd suggest p_\emptyset for this particular one, but perhaps that will throw off your spacing below.
 p_{\emptyset} = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})
 $$
 with similar definitions for the remaining generating probabilities.
@@ -643,6 +640,7 @@ Factoring and making these substitutions results in
 Grouping together like terms,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+%EM Afraid I don't see how all of the p_emptyset terms are bounded above here.
     &\le      p_{\emptyset}  \cdot\log(2) \\
     &\qquad + \log(1+x') \\
     &\qquad + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
@@ -729,6 +727,9 @@ Then,
     %The below equation follows by rewriting 1+x and 1-x for the above x.
     %2) a_1' and a_2' are just defined by rewriting the likelihood. There are now two fewer log(1+x) terms and two more log(1-x) terms since we replaced a (1+x)^2 in the likelihood with a (1-x)^2. That's why we have a -2p_{13} and a +2p_{13} respectively.
     %Happy to clarify somewhere in the text but not sure what part would most need exposition.
+%EM Ha! Still working on understanding. It seems to me that the statement is equivalent to saying
+%EM a_{1} \log a_{1} + a_{2} \log a_{2} + (1-p_{13}) \log(1-p_{13}) + p_{13}\cdot\log(2p_{13}) = a_{1}' \log a_{1}' + a_{2}' \log a_{2}'
+%EM am I thinking about this wrong? Is this what you are saying in your 2)?
     &\qquad + a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
