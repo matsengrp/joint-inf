@@ -341,6 +341,7 @@ In the next section, we show that such examples exist.
 Our approach seeks bounds for the terms inside the maximization in \eqref{eq:log_likelihood_simplified}.
 We obtain
 %EM Does it really make sense to talk about taking the max over \fullAncestralSplitPartitions(\tau,t)? This is already defined. I suggest just taking the max over \fullAncestralSplitPartitions as a variable.
+%EM Dave, did you already address this comment? It doesn't seem to make sense anymore.
 $$
 \max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
@@ -751,14 +752,17 @@ All bounds are functions only of $x,y$ through the true generating probabilities
 \subsubsection{Lower bound for Felsenstein tree partial likelihood}
 
 We construct a similar lower bound on the Felsenstein tree partial likelihood.
-Replace all $(1+w)$ terms with $(1-w)$ and focus just on the partial likelihood.
-Then, if $(1+x)(1-y) > (1-x)(1+y)$,
+In the Felsenstein case, there are various optimal internal states depending on branch lengths (Table~\ref{tab:likelihoods}; $\tau = \tau_2$).
+We can bound these below replacing $1+w$ with $1-w$, and by splitting into two cases.
+%EM Is this inequality flipped?
+If $(1+x)(1-y) > (1-x)(1+y)$,
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &\ge      p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
     &\qquad + p_{1}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{2}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{3}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
+%EM it seems to me that the following line should be (1+x')(1-x')(1-w')(1+y')(1-y')
     &\qquad + p_{12}         \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
     &\qquad + p_{123}        \cdot\log((1+x')^2   (1-w')(1+y')(1-y'))\\
     &\qquad + p_{13}         \cdot\log((1+x')^2   (1-w')(1-y')^2) \\
@@ -771,11 +775,13 @@ otherwise
     &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{2}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
+%EM it seems to me that the following line should be (1+x')(1-x')(1-w')(1+y')(1-y')
     &\qquad + p_{12}         \cdot\log((1+x')^2    (1-w')(1+y')^2) \\
     &\qquad + p_{123}        \cdot\log((1+x')(1-x')(1-w')(1+y')^2)\\
     &\qquad + p_{13}         \cdot\log((1-x')^2    (1-w')(1+y')^2) \\
     &\qquad + p_{23}         \cdot\log((1-x')^2    (1-w')(1+y')^2).
 \end{align*}
+%EM check below after the above is adjusted.
 Letting
 $$
 b = p_{1}+p_{2}+p_{3}+p_{123}
