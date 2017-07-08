@@ -482,7 +482,6 @@ All values are multiplied by $1/8$.}
     $\{1,3\}$  &
     $\left\{\begin{array}{l}
                     \emptyset\\
-                    %EM Shouldn't this be \{1\}\\ ? Or perhaps the ordering of internal nodes is not what I thought?
                     \{1\}\\
                     \{1,2\}
                 \end{array}\right.$&
@@ -587,7 +586,8 @@ $$
 p_{\emptyset} = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})
 $$
 with similar definitions for the remaining generating probabilities.
-The full Farris tree log likelihood takes one of three values depending on branch lengths---assume for now the we are only interested in the ancestral state split $\{1\}$ for the site split $\{1,3\}$.
+The full Farris tree log likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see Table~\ref{tab:likelihoods} for $\tau = \tau_1$).
+We will begin by writing out the middle case: for the ancestral state split $\{1\}$.
 Directly substituting in \eqref{eq:site_pattern_likelihood}, the log likelihood is
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
@@ -610,9 +610,9 @@ Directly substituting in \eqref{eq:site_pattern_likelihood}, the log likelihood 
 \end{align*}
 Seeking an upper bound, we use the facts that, for $x',y'\in[0,1]$,
 \begin{align*}
-(1-x'^2+y'^2-x'^2y'^2) & = (1+x')(1-x')(1+y'^2) \le (1+x')(1-x')(1+y') \\
-(1+x'^2-y'^2-x'^2y'^2) & = (1+x'^2)(1+y')(1-y') \le (1+x')(1+y')(1-y') \\
-(1+x'^2+y'^2+x'^2y'^2) & = (1+x'^2)(1+y'^2) \le (1+x')(1+y') \\
+1-x'^2+y'^2-x'^2y'^2 & = (1+x')(1-x')(1+y'^2) \le (1+x')(1-x')(1+y') \\
+1+x'^2-y'^2-x'^2y'^2 & = (1+x'^2)(1+y')(1-y') \le (1+x')(1+y')(1-y') \\
+1+x'^2+y'^2+x'^2y'^2 & = (1+x'^2)(1+y'^2) \le (1+x')(1+y') \\
 4x'y' & = 2x' \cdot 2y' \le (1+x'^2)(1+y'^2) \le (1+x')(1+y').
 \end{align*}
 The term $p_{\emptyset}$ is bounded as
@@ -650,7 +650,6 @@ Factoring and making these substitutions results in
 Grouping together like terms,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-%EM Afraid I don't see how all of the p_emptyset terms are bounded above here.
     &\le      p_{\emptyset}  \cdot\log(2) \\
     &\qquad + \log(1+x') \\
     &\qquad + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
@@ -698,8 +697,6 @@ where
     &\qquad + (1-p_{13})\cdot\log(1+w') \\
     &\qquad + p_{13}\cdot\log(1-w').
 \end{align*}
-%EM I need help understanding this application of Gibbs. p_{0} + p_{13} is not 1 if I understand correctly, and so I don't see how Gibbs applies.
-%You are totally right! That was an oversight on my part. I have redrawn the bounds on this term, and it will most likely affect the region of inconsistency, which is good, because I suspected something was making the inconsistency region larger than it should be. Though the bounds are not as tight as they could be now. Thanks!
 Maximizing over the unknown terms yields
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
@@ -727,35 +724,18 @@ $$
 $$
 a_{4}' = a_{4}+2p_{13}.
 $$
-Then,
+Then, to bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{\emptyset}  \cdot\log(2) \\
-%EM Sorry to be slow, but could you provide a little more detail on why this follows? Is there some convexity of entropy argument going on here?
-%Not sure which part is confusing, but:
-    %1) a_1 log(1+x) + a_2 log(1-x) is maximized at x = (a_1 - a_2) / (a_1 + a_2).
-    %The below equation follows by rewriting 1+x and 1-x for the above x.
-    %2) a_1' and a_2' are just defined by rewriting the likelihood. There are now two fewer log(1+x) terms and two more log(1-x) terms since we replaced a (1+x)^2 in the likelihood with a (1-x)^2. That's why we have a -2p_{13} and a +2p_{13} respectively.
-    %Happy to clarify somewhere in the text but not sure what part would most need exposition.
-%EM Ha! Still working on understanding. It seems to me that the statement is equivalent to saying
-%EM a_{1} \log a_{1} + a_{2} \log a_{2} + (1-p_{13}) \log(1-p_{13}) + p_{13}\cdot\log(2p_{13}) = a_{1}' \log a_{1}' + a_{2}' \log a_{2}'
-%EM am I thinking about this wrong? Is this what you are saying in your 2)?
-    %Hmm, I don't know if I see what you're saying now.
-    %The way I think about it is like this: a_1 is the coefficient for the log(1+x) term and a_2 for log(1-x).
-    %It is the sum of all the generating probabilities that had a log(1+x) term in it.
-    %Looking at Table 2, since our first bound (we calculated it for \eta_j = {1}) was constructed with the p_{13} term of
-    %   (1+x)^2(1-w)(1+y)^2,
-    %our second bound (that for \eta_j = \emptyset) will be constructed with the p_{13} term of
-    %   (1-x)^2(1+w)(1+y)^2.
-    %So we lose 2 log(1+x)s (hence a_1' = a_1 - 2p_{13}) and gain two log(1-x)s (hence a2' = a2 + 2p_{13}).
-    %Now every generating probability has log(1+w) so we replace the last two terms (p_{13}log(1-w) + (1-p_{13})log(1+w)) with just log(1+w)---maximized at log(2).
     &\qquad + a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
     &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
     &\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}} \\
     &\qquad + \log(2) \\
-    &\qquad := L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy});
+    &\qquad := L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
+To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{\emptyset}  \cdot\log(2) \\
