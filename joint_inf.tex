@@ -342,6 +342,7 @@ Our approach seeks bounds for the terms inside the maximization in \eqref{eq:log
 We obtain
 %EM Does it really make sense to talk about taking the max over \fullAncestralSplitPartitions(\tau,t)? This is already defined. I suggest just taking the max over \fullAncestralSplitPartitions as a variable.
 %EM Dave, did you already address this comment? It doesn't seem to make sense anymore.
+%Ah, yes, I believe it was commit 209f62b4ec37751a60c72edaa160b80d827bad04 (if that helps, for reference)
 $$
 \max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
@@ -754,8 +755,34 @@ All bounds are functions only of $x,y$ through the true generating probabilities
 We construct a similar lower bound on the Felsenstein tree partial likelihood.
 In the Felsenstein case, there are various optimal internal states depending on branch lengths (Table~\ref{tab:likelihoods}; $\tau = \tau_2$).
 We can bound these below replacing $1+w$ with $1-w$, and by splitting into two cases.
+The value of the likelihood for the site split $\{1,2\}$ is $(1+x')^2   (1-w')(1+y')^2$ since
+$$
+(1+x')^2   (1-w')(1+y')^2 > (1+x')(1-x')(1-w')(1+y')(1-y')
+$$
+always.
 %EM Is this inequality flipped?
-If $(1+x)(1-y) > (1-x)(1+y)$,
+If $(1+x')(1-y') > (1-x')(1+y')$, then
+$$
+(1+x')^2(1-w')(1+y')(1-y') > (1+x')(1-x')(1-w')(1+y')^2
+$$
+meaning the cases $\{1\}, \{2\}, \{3\}$ and $\{1,2,3\}$ will have likelihoods equal to
+$$
+(1+x')^2(1-w')(1+y')(1-y').
+$$
+For the cases $\{1,3\}$ and $\{2,3\}$ and the same condition, we have
+$$
+(1+x')^2(1-w')(1-y')^2 > (1-x')^2(1-w')(1+y')^2
+$$
+and
+$$
+(1+x')^2(1-w')(1-y')^2 > (1+x')(1-x')(1-w')(1+y')(1-y'),
+$$
+yielding
+$$
+(1+x')^2(1-w')(1-y')^2
+$$
+as the likelihood in these cases.
+The full likelihood in this case is then bounded below as
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &\ge      p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
@@ -763,12 +790,13 @@ If $(1+x)(1-y) > (1-x)(1+y)$,
     &\qquad + p_{2}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{3}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
 %EM it seems to me that the following line should be (1+x')(1-x')(1-w')(1+y')(1-y')
+    %I've added some clarification to the text. Let me know if there is still an issue.
     &\qquad + p_{12}         \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
     &\qquad + p_{123}        \cdot\log((1+x')^2   (1-w')(1+y')(1-y'))\\
     &\qquad + p_{13}         \cdot\log((1+x')^2   (1-w')(1-y')^2) \\
-    &\qquad + p_{23}         \cdot\log((1+x')^2   (1-w')(1-y')^2),
+    &\qquad + p_{23}         \cdot\log((1+x')^2   (1-w')(1-y')^2).
 \end{align*}
-otherwise
+When $(1+x')(1-y') < (1-x')(1+y')$, similar arguments yield the lower bound
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &\ge      p_{\emptyset}  \cdot\log((1+x')^2    (1+w')(1+y')^2) \\
@@ -776,6 +804,7 @@ otherwise
     &\qquad + p_{2}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
 %EM it seems to me that the following line should be (1+x')(1-x')(1-w')(1+y')(1-y')
+    %See above.
     &\qquad + p_{12}         \cdot\log((1+x')^2    (1-w')(1+y')^2) \\
     &\qquad + p_{123}        \cdot\log((1+x')(1-x')(1-w')(1+y')^2)\\
     &\qquad + p_{13}         \cdot\log((1-x')^2    (1-w')(1+y')^2) \\
