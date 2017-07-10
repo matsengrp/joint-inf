@@ -56,15 +56,6 @@
 \begin{document}
 \maketitle
 
-%comments from Erick:
-% >  This is great!
-% > - would be great to have all the calculations showing the "refinement" structure written out for the various tree structures (just done by hand and scanned is just fine)
-% > - I think of the "refinement" as a partition, so perhaps rather than "empty refinement" we have a "single-element partition"
-% > - in order to interpret the site patterns I need to figure out in what order the leaves are labeled
-% > - how is ell calculated?
-% > - on the numerical sanity check, it doesn't seem clear that the branch lengths can be different than the inferred ones-- they can!
-% > - re "general case", agreed though I don't think that we need numerical optimization of branch lengths in a set of a branch length partition-- we can just get the optimal branch length directly. Namely, for each branch, we know all hidden states (given that we are in a set of a partition) and so can count the number of mutations across that branch. From there we have a simple likelihood function, which either has an optimal in the interior or on the boundary of the partition.
-
 \renewcommand{\arraystretch}{1.2} % because otherwise exponents get eaten by \hline
 
 
@@ -78,7 +69,7 @@ This latter conditional optimization is simpler and more computationally efficie
 Existing consistency proofs for phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
 These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
-Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$ and limit themselves to optimizing branch lengths using this method, this motivates understanding when exactly this approximation breaks down, and what happens when we optimize branch lengths and tree topology using this approximation.
+Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$ and limit themselves to optimizing branch lengths using this method, their work motivates understanding when exactly this approximation breaks down, and what happens when we optimize branch lengths and tree topology using this approximation.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
 To do so, we use a binary symmetric model and imagine data being generated on the four taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the large-data limit.
@@ -340,9 +331,6 @@ In the next section, we show that such examples exist.
 
 Our approach seeks bounds for the terms inside the maximization in \eqref{eq:log_likelihood_simplified}.
 We obtain
-%EM Does it really make sense to talk about taking the max over \fullAncestralSplitPartitions(\tau,t)? This is already defined. I suggest just taking the max over \fullAncestralSplitPartitions as a variable.
-%EM Dave, did you already address this comment? It doesn't seem to make sense anymore.
-%Ah, yes, I believe it was commit 209f62b4ec37751a60c72edaa160b80d827bad04 (if that helps, for reference)
 $$
 \max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
@@ -754,18 +742,22 @@ All bounds are functions only of $x,y$ through the true generating probabilities
 
 We construct a similar lower bound on the Felsenstein tree partial likelihood.
 In the Felsenstein case, there are various optimal internal states depending on branch lengths (Table~\ref{tab:likelihoods}; $\tau = \tau_2$).
-We can bound these below replacing $1+w$ with $1-w$, and by splitting into two cases.
-The value of the likelihood for the site split $\{1,2\}$ is $(1+x')^2   (1-w')(1+y')^2$ since
+We can bound these below replacing $1+w$ with $1-w$, for example as follows.
+For the site split $\{1,2\}$, we would like to find a lower bound for
 $$
-(1+x')^2   (1-w')(1+y')^2 > (1+x')(1-x')(1-w')(1+y')(1-y')
+\max\left((1+x')^2 (1-w')(1+y')^2, (1+x')(1-x')(1+w')(1+y')(1-y')\right).
 $$
-always.
-%EM Is this inequality flipped?
+We observe that
+$$
+(1+x')^2 (1-w')(1+y')^2 > (1+x')(1-x')(1-w')(1+y')(1-y')
+$$
+always, and thus the maximum can be bounded below by $(1+x')^2 (1-w')(1+y')^2$.
+For the other site splits we consider two cases.
 If $(1+x')(1-y') > (1-x')(1+y')$, then
 $$
 (1+x')^2(1-w')(1+y')(1-y') > (1+x')(1-x')(1-w')(1+y')^2
 $$
-meaning the cases $\{1\}, \{2\}, \{3\}$ and $\{1,2,3\}$ will have likelihoods equal to
+meaning the cases $\{1\}, \{2\}, \{3\}$ and $\{1,2,3\}$ will have likelihoods bounded below by
 $$
 (1+x')^2(1-w')(1+y')(1-y').
 $$
@@ -777,11 +769,11 @@ and
 $$
 (1+x')^2(1-w')(1-y')^2 > (1+x')(1-x')(1-w')(1+y')(1-y'),
 $$
-yielding
+yielding lower bounds of
 $$
 (1+x')^2(1-w')(1-y')^2
 $$
-as the likelihood in these cases.
+in these cases.
 The full likelihood in this case is then bounded below as
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
@@ -789,8 +781,6 @@ The full likelihood in this case is then bounded below as
     &\qquad + p_{1}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{2}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{3}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
-%EM it seems to me that the following line should be (1+x')(1-x')(1-w')(1+y')(1-y')
-    %I've added some clarification to the text. Let me know if there is still an issue.
     &\qquad + p_{12}         \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
     &\qquad + p_{123}        \cdot\log((1+x')^2   (1-w')(1+y')(1-y'))\\
     &\qquad + p_{13}         \cdot\log((1+x')^2   (1-w')(1-y')^2) \\
@@ -803,14 +793,12 @@ When $(1+x')(1-y') < (1-x')(1+y')$, similar arguments yield the lower bound
     &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{2}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
-%EM it seems to me that the following line should be (1+x')(1-x')(1-w')(1+y')(1-y')
     %See above.
     &\qquad + p_{12}         \cdot\log((1+x')^2    (1-w')(1+y')^2) \\
     &\qquad + p_{123}        \cdot\log((1+x')(1-x')(1-w')(1+y')^2)\\
     &\qquad + p_{13}         \cdot\log((1-x')^2    (1-w')(1+y')^2) \\
     &\qquad + p_{23}         \cdot\log((1-x')^2    (1-w')(1+y')^2).
 \end{align*}
-%EM check below after the above is adjusted.
 Letting
 $$
 b = p_{1}+p_{2}+p_{3}+p_{123}
@@ -824,16 +812,18 @@ yields
     &\qquad + p_{\emptyset}\cdot\log(1+w') \\
     &\qquad + (1-p_{\emptyset})\cdot\log(1-w')
 \end{align*}
-for the first lower bound, but, upon maximizing, we obtain
+for the first lower bound, and we get the equivalent expression for the second lower bound by exchanging $x'$ and $y'$.
+Maximizing either lower bound over $\{x',y',w'\}$, we obtain
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &\ge      2\cdot\log(2) \\
     &\qquad + (2-b)  \cdot\log(2-b) \\
     &\qquad + b      \cdot\log(b) \\
     &\qquad + p_{\emptyset}\cdot\log(2p_{\emptyset}) \\
-    &\qquad + (1-p_{\emptyset})\cdot\log(2(1-p_{\emptyset}))
+    &\qquad + (1-p_{\emptyset})\cdot\log(2(1-p_{\emptyset})),
 \end{align*}
-maximized at $\{1,1-b,1-2p_{\emptyset}\}$, which is the same if $(1+x)(1-y) > (1-x)(1+y)$ or $(1+x)(1-y) < (1-x)(1+y)$.
+%EM Shouldn't this be 2p_{\emptyset}-1 ? It doesn't matter for the bound, but...
+i.e.\ the maximum is achieved at $\{1,1-b,1-2p_{\emptyset}\}$.
 Our lower bound is
 \begin{align*}
     L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) &:= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b,1-2p_{\emptyset}\}) \\
