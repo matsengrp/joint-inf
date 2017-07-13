@@ -1,4 +1,4 @@
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
 from numpy import log, meshgrid, arange, maximum
 
 ALL_PATTERNS = [
@@ -66,9 +66,6 @@ def P_FELSENSTEIN(theta0, site_pattern):
          theta[1]*theta[3]*theta[4] + \
          theta[0]*theta[1]*theta[2]*theta[3])
 
-def split_to_gen(pattern, x, y):
-    return P_FARRIS([x, y, x, y, y], pattern)
-
 ## Generating probabilities
 # Left column of tab:sitepatprob
 def gen_prob(split, x, y):
@@ -76,19 +73,22 @@ def gen_prob(split, x, y):
 
 ## Upper bound for Farris tree topology
 # Constants from eq:a_const
+def sum_of_four(split_list, x, y):
+    return sum([gen_prob(split, x, y) for split in split_list])
+
 def a_const_1(x, y):
-    return 3. - gen_prob('1', x, y) - gen_prob('3', x, y) - gen_prob('12', x, y) - gen_prob('23', x, y)
+    return 3. - sum_of_four(['1', '3', '12', '23'], x, y)
 
 def a_const_2(x, y):
-    return 2. * (gen_prob('1', x, y) + gen_prob('3', x, y) + gen_prob('12', x, y) + gen_prob('23', x, y))
+    return 2. * sum_of_four(['1', '3', '12', '23'], x, y)
 
 def a_const_3(x, y):
-    return 3. - gen_prob('2', x, y) - gen_prob('12', x, y) - gen_prob('23', x, y) - gen_prob('123', x, y)
+    return 3. - sum_of_four(['2', '12', '23', '123'], x, y)
 
 def a_const_4(x, y):
-    return 2. * (gen_prob('2', x, y) + gen_prob('12', x, y) + gen_prob('23', x, y) + gen_prob('123', x, y))
+    return 2. * sum_of_four(['2', '12', '23', '123'], x, y)
 
-# Constants from eq:a_const
+# Constants from eq:a_const_prime
 def a_const_1_prime(x, y):
     return a_const_1(x, y) - 2.*gen_prob('13', x, y)
 
@@ -101,41 +101,41 @@ def a_const_3_prime(x, y):
 def a_const_4_prime(x, y):
     return a_const_4(x, y) + 2.*gen_prob('13', x, y)
 
+def max_of_logs(a1, a2):
+    """
+    the value of max { a1 * log(1 + x) + a2 * log(1 - x), i.e.,
+        a1 * log((2*a1/(a1+a2))) + a2 * log((2*a2/(a1+a2)))
+    """
+    return a1 * log((2*a1/(a1+a2))) + a2 * log((2*a2/(a1+a2)))
+
 # L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy})
 def farris_likelihood_1(x, y):
     return gen_prob('0', x, y)*log(2.) \
-        + a_const_1(x, y)* log((2*a_const_1(x, y))/(a_const_1(x, y)+a_const_2(x, y))) \
-        + a_const_2(x, y)* log((2*a_const_2(x, y))/(a_const_1(x, y)+a_const_2(x, y))) \
-        + a_const_3(x, y)* log((2*a_const_3(x, y))/(a_const_3(x, y)+a_const_4(x, y))) \
-        + a_const_4(x, y)* log((2*a_const_4(x, y))/(a_const_3(x, y)+a_const_4(x, y))) \
-        + gen_prob('13', x, y)*log(2*gen_prob('13', x, y)) \
-        + (1-gen_prob('13', x, y))*log(2*(1-gen_prob('13', x, y))) \
-        - log(8.)
-# !! either put the normalizing log(8) in joint_inf.tex or rewrite constants
+            + max_of_logs(a_const_1(x, y), a_const_2(x, y)) \
+            + max_of_logs(a_const_3(x, y), a_const_4(x, y)) \
+            + gen_prob('13', x, y)*log(2*gen_prob('13', x, y)) \
+            + (1-gen_prob('13', x, y))*log(2*(1-gen_prob('13', x, y))) \
+            - log(8.)
 
 # L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy})
 def farris_likelihood_2(x, y):
     return gen_prob('0', x, y)*log(2.) \
-    + a_const_1_prime(x, y)* log((2*a_const_1_prime(x, y))/(a_const_1_prime(x, y)+a_const_2_prime(x, y))) \
-    + a_const_2_prime(x, y)* log((2*a_const_2_prime(x, y))/(a_const_1_prime(x, y)+a_const_2_prime(x, y))) \
-    + a_const_3(x, y)*log((2*a_const_3(x, y))/(a_const_3(x, y)+a_const_4(x, y))) \
-    + a_const_4(x, y)*log((2*a_const_4(x, y))/(a_const_3(x, y)+a_const_4(x, y))) \
-    + log(2.) \
-    - log(8.)
+            + max_of_logs(a_const_1_prime(x, y), a_const_2_prime(x, y)) \
+            + max_of_logs(a_const_3(x, y), a_const_4(x, y)) \
+            + log(2.) \
+            - log(8.)
 
 # L^{3}_{\tau_1,\tau_1}(\mathbf{p}_{xy})
 def farris_likelihood_3(x, y):
     return gen_prob('0', x, y)*log(2.) \
-    + a_const_1(x, y)* log((2*a_const_1(x, y))/(a_const_1(x, y)+a_const_2(x, y))) \
-    + a_const_2(x, y)* log((2*a_const_2(x, y))/(a_const_1(x, y)+a_const_2(x, y))) \
-    + a_const_3_prime(x, y)*log((2*a_const_3_prime(x, y))/(a_const_3_prime(x, y)+a_const_4_prime(x, y))) \
-    + a_const_4_prime(x, y)*log((2*a_const_4_prime(x, y))/(a_const_3_prime(x, y)+a_const_4_prime(x, y))) \
-    + log(2.) \
-    - log(8.)
+            + max_of_logs(a_const_1(x, y), a_const_2(x, y)) \
+            + max_of_logs(a_const_3_prime(x, y), a_const_4_prime(x, y)) \
+            + log(2.) \
+            - log(8.)
 
 ## Lower bound for the Felsenstein tree topology
 def b_const(x, y):
-    return gen_prob('1', x, y) + gen_prob('2', x, y) + gen_prob('3', x, y) + gen_prob('123', x, y)
+    return sum_of_four(['1', '2', '3', '123'], x, y)
 
 def felsenstein_likelihood(x, y):
     x_max = 1.
@@ -155,6 +155,9 @@ X, Y = meshgrid(x_range,y_range)
 
 region = maximum(farris_likelihood_1(X, Y), farris_likelihood_2(X, Y), farris_likelihood_3(X, Y)) - felsenstein_likelihood(X, Y)
 
-matplotlib.pyplot.contour(X, Y, region, [0])
-matplotlib.pyplot.show()
+plt.contour(X, Y, region, [0])
+plt.xlabel(r'x', fontsize=16)
+plt.ylabel(r'y', fontsize=16)
+plt.title(r'Region of inconsistency for Farris-generating topology')
+plt.savefig('figures/analytic-inconsistency.svg')
 
