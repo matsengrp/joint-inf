@@ -589,6 +589,7 @@ Directly substituting in \eqref{eq:site_pattern_likelihood}, the log likelihood 
     &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
     &\qquad + p_{23}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
     &\qquad + p_{123}        \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad - \log(8) \\
     &\qquad + p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
     &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
     &\qquad + p_{2}          \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
@@ -628,6 +629,7 @@ Factoring and making these substitutions results in
     &\qquad + p_{13}         \cdot\log((1+x')(1+y')) \\
     &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+y')(1-y')) \\
     &\qquad + p_{123}        \cdot\log((1+x')(1+y')(1-y')) \\
+    &\qquad - \log(8) \\
     &\qquad + p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
     &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
     &\qquad + p_{2}          \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
@@ -650,7 +652,8 @@ Grouping together like terms,
     &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
     &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
     &\qquad + (1-p_{13})\cdot\log(1+w') \\
-    &\qquad + p_{13}\cdot\log(1-w'),
+    &\qquad + p_{13}\cdot\log(1-w') \\
+    &\qquad - \log(8),
 \end{align*}
 which equals
 \begin{align*}
@@ -661,7 +664,8 @@ which equals
     &\qquad + (3-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
     &\qquad + 2(p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
     &\qquad + (1-p_{13})\cdot\log(1+w') \\
-    &\qquad + p_{13}\cdot\log(1-w').
+    &\qquad + p_{13}\cdot\log(1-w') \\
+    &\qquad - \log(8).
 \end{align*}
 To make matters further compact, let
 \begin{equation}
@@ -682,9 +686,25 @@ where
     &\qquad + a_{3}\cdot\log(1+y') \\
     &\qquad + a_{4}\cdot\log(1-y') \\
     &\qquad + (1-p_{13})\cdot\log(1+w') \\
-    &\qquad + p_{13}\cdot\log(1-w').
+    &\qquad + p_{13}\cdot\log(1-w') \\
+    &\qquad - \log(8).
 \end{align*}
 Maximizing over the unknown terms yields
+$$
+\hat{x}' = \frac{a_{1}-a_{2}}{a_{1}+a_{2}}, \ \hat{y}' = \frac{a_{3}-a_{4}}{a_{3}+a_{4}}.
+$$
+We check that $0 \le \hat{x}' \le 1$ and $0 \le \hat{y}' \le 1$ so these maximizers are valid.
+Letting
+$$
+\tilde{p} = p_{1}+p_{3}+p_{12}+p_{23}
+$$
+we have
+$$
+\hat{x}' = \frac{3-\tilde{p} - 2\tilde{p}}{3-\tilde{p}+2\tilde{p}} = \frac{3-3\tilde{p}}{3+\tilde{p}},
+$$
+and, since $0 \le \tilde{p} \le 1/2$, $0 \le \hat{x}' \le 1$.
+The same approach works for $\hat{y}'$.
+The upper bound for the likelihood is then maximized at
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{\emptyset}  \cdot\log(2) \\
@@ -694,6 +714,7 @@ Maximizing over the unknown terms yields
     &\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}} \\
     &\qquad + (1-p_{13})\cdot\log(2(1-p_{13})) \\
     &\qquad + p_{13}\cdot\log(2p_{13}) \\
+    &\qquad - \log(8) \\
     &\qquad := L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
 
@@ -708,7 +729,36 @@ Call
     \end{aligned}
     \label{eq:a_const_prime}
 \end{equation}
-Then, to bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
+We also now need to check that
+$$
+\hat{x}' = \frac{a_{1}'-a_{2}'}{a_{1}'+a_{2}'}, \ \hat{y}' = \frac{a_{3}'-a_{4}'}{a_{3}'+a_{4}'}
+$$
+are both between zero and one.
+It will suffice to show
+$$
+0 \le \tilde{p} - 2p_{13} \le 1
+$$
+and
+$$
+0 \le \tilde{p} + 2p_{13} \le 1
+$$
+for $\tilde{p}$ defined above, which is equivalent to showing $p_{13} \le 1/4$.
+Using Table~\ref{tab:sitepatprob},
+$$
+p_{13} = \frac{1}{8}\left(1 + x^2 + y^2 - 4xy^2 + x^2y^2\right).
+$$
+We see that
+$$
+1 + x^2 + y^2 - 4xy^2 + x^2y^2 \le 2 \iff y^2\left(1 - 4x + x^2\right) \le 1 - x^2
+$$
+and
+$$
+y^2\left(1 - 4x + x^2\right) \le 1 - 4x + x^2 \le 1 - x^2,
+$$
+the last inequality holding if $x \le 2$.
+Thus, $p_{13} \le 2/8 = 1/4$ and our $\hat{x}'$ and $\hat{y}'$ are valid.
+
+To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{\emptyset}  \cdot\log(2) \\
@@ -717,9 +767,10 @@ Then, to bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
     &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
     &\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}} \\
     &\qquad + \log(2) \\
-    &\qquad := L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
+    &\qquad - \log(8) \\
+    &\qquad := L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy}),
 \end{align*}
-To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
+and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
     &\le      p_{\emptyset}  \cdot\log(2) \\
@@ -728,6 +779,7 @@ To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
     &\qquad + a_{3}'\cdot\log\frac{2a_{3}'}{a_{3}'+a_{4}'} \\
     &\qquad + a_{4}'\cdot\log\frac{2a_{4}'}{a_{3}'+a_{4}'} \\
     &\qquad + \log(2) \\
+    &\qquad - \log(8) \\
     &\qquad := L^{3}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
 All bounds are functions only of $x,y$ through the true generating probabilities $\mathbf{p}_{xy}$.
@@ -768,10 +820,10 @@ $$
 (1+x')^2(1-w')(1-y')^2
 $$
 in these cases.
-The full likelihood in this case is then bounded below as
+The full likelihood in this case is then bounded below by
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
-    &\ge      p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
+    &\ge      p_{\emptyset}  \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
     &\qquad + p_{1}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{2}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
     &\qquad + p_{3}          \cdot\log((1+x')^2   (1-w')(1+y')(1-y')) \\
@@ -783,7 +835,7 @@ The full likelihood in this case is then bounded below as
 When $(1+x')(1-y') < (1-x')(1+y')$, similar arguments yield the lower bound
 \begin{align*}
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
-    &\ge      p_{\emptyset}  \cdot\log((1+x')^2    (1+w')(1+y')^2) \\
+    &\ge      p_{\emptyset}  \cdot\log((1+x')^2    (1-w')(1+y')^2) \\
     &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{2}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
     &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1-w')(1+y')^2) \\
@@ -803,8 +855,7 @@ yields
     &\ge      2\cdot\log(1+x') \\
     &\qquad + (2-b)  \cdot\log(1+y') \\
     &\qquad + b      \cdot\log(1-y') \\
-    &\qquad + p_{\emptyset}\cdot\log(1+w') \\
-    &\qquad + (1-p_{\emptyset})\cdot\log(1-w')
+    &\qquad + \log(1-w')
 \end{align*}
 for the first lower bound, and we get the equivalent expression for the second lower bound by exchanging $x'$ and $y'$.
 Maximizing either lower bound over $\{x',y',w'\}$, we obtain
@@ -812,16 +863,22 @@ Maximizing either lower bound over $\{x',y',w'\}$, we obtain
     \tilde{\ell}_{\tau_1,\{x,y,y\}}(\tau_2, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_2,\{x',y',w'\}))
     &\ge      2\cdot\log(2) \\
     &\qquad + (2-b)  \cdot\log(2-b) \\
-    &\qquad + b      \cdot\log(b) \\
-    &\qquad + p_{\emptyset}\cdot\log(2p_{\emptyset}) \\
-    &\qquad + (1-p_{\emptyset})\cdot\log(2(1-p_{\emptyset})),
+    &\qquad + b      \cdot\log(b)
 \end{align*}
 %EM Shouldn't this be 2p_{\emptyset}-1 ? It doesn't matter for the bound, but...
-i.e.\ the maximum is achieved at $\{1,1-b,1-2p_{\emptyset}\}$.
+%das If we call p_{\emptyset} just p, we're maximizing
+%   p log (1 + w) + (1 - p) log (1 - w).
+%As before, a_1 log(1+x) + a_2 log(1-x) is maximized at x = (a_1 - a_2) / (a_1 + a_2).
+%So then w = (p - (1 - p)) / (p + (1 - p)) = (2p - 1) / 1 = 2p - 1.
+%So you're right. Good catch.
+%
+%Unfortunately, I realized the above does not work for us since 2p - 1 is not guaranteed to be between 0 and 1, as x should be (see the stuff I added justifying this above).
+%Rather than do a constrained optimization, I just bounded the p_{\emptyset}\log(1+w) term below by p_{\emptyset}\log(1-w).
+i.e.\ the maximum is achieved at $\{1,1-b,0\}$.
 Our lower bound is
 \begin{align*}
-    L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) &:= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b,1-2p_{\emptyset}\}) \\
-                                           &+ 2\cdot\log(2) + (2-b)  \cdot\log(2-b) + b      \cdot\log(b) + p_{\emptyset}\cdot\log(2p_{\emptyset}) + (1-p_{\emptyset})\cdot\log(2(1-p_{\emptyset})).
+    L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) &:= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b,0\}) \\
+                                           &+ 2\cdot\log(2) + (2-b)  \cdot\log(2-b) + b      \cdot\log(b).
 \end{align*}
 
 \subsubsection{Region of inconsistency}
