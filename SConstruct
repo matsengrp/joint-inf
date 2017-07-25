@@ -1,22 +1,26 @@
-from SCons.Script import VariantDir, Environment,         Builder, Depends, Flatten
+from SCons.Script import VariantDir, Environment, \
+        Builder, Depends, Flatten
 import os
 
 VariantDir('_build', src_dir='.')
 
 env = Environment(ENV=os.environ)
+inkscape = Builder(action = 'inkscape --without-gui --export-pdf=$TARGET $SOURCE')
+env['BUILDERS']['Inkscape'] = inkscape
 env['BUILDERS']['Latexdiff'] = Builder(action = 'latexdiff $SOURCES > $TARGET')
 
+svgs = [
+    'figures/analytic-inconsistency.svg',
+]
+
+pdfs = [env.Inkscape(target="figures/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
+        for svg in svgs]
+
 joint_inf, = env.PDF(target='_build/joint_inf.pdf',source='joint_inf.tex')
-#joint_inf_supp, = env.PDF(target='_build/joint_inf_supp.pdf', source='joint_inf_supp.tex')
 Default([joint_inf])
 
-#env.Latexdiff(target='diff.tex',source=['stored_joint_inf.tex','joint_inf.tex'])
-#diff = env.PDF(target='diff.pdf',source='diff.tex')
-
 Depends(Flatten([joint_inf]),
-        Flatten(['joint_inf.bib'])) #, 'defs.tex'
-
-#Depends(joint_inf, joint_inf_supp)
+        Flatten([pdfs, 'joint_inf.bib']))
 
 cont_build = env.Command('.continuous', ['joint_inf.bib', 'joint_inf.tex'],
     'while :; do inotifywait -e modify $SOURCES; scons -Q; done')
