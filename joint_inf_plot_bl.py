@@ -1,8 +1,8 @@
 import matplotlib
 matplotlib.use('pdf')
+import matplotlib.pylab as plt
 from numpy import log, arange, vectorize
 from scipy.optimize import basinhopping
-from pylab import meshgrid,cm,imshow,title,savefig,xlabel,ylabel,colorbar
 
 def p13(x, y, w):
     return 0.125 * (1 + x*x + y*y + x*x*y*y - 4*x*y*w)
@@ -33,13 +33,18 @@ def max_likelihood(x, y):
 delta = 0.01
 x_range = arange(0.0, 1.0, delta)
 y_range = arange(0.0, 1.0, delta)
-X, Y = meshgrid(x_range,y_range)
+X, Y = plt.meshgrid(x_range,y_range)
 
 Z = vectorize(lambda x, y: max_likelihood(x, y))(X, Y)
-im = imshow(Z, cmap=cm.gray, origin='lower')
-colorbar()
-title('Value of $\hat{w}$')
-xlabel('$x$')
-ylabel('$y$')
-savefig('figures/w_hat_heatmap.svg')
+im = plt.imshow(Z, cmap=plt.cm.gray, origin='lower')
+plt.colorbar()
+plt.title('Value of $\hat{w}$')
+plt.xlabel('$x$')
+plt.ylabel('$y$')
+ax = plt.gca()
+ax.set_xticks(arange(0, 1/delta, .2/delta))
+ax.set_yticks(arange(0, 1/delta, .2/delta))
+ax.set_xticklabels(arange(0, 1, .2))
+ax.set_yticklabels(arange(0, 1, .2))
+plt.savefig('figures/w_hat_heatmap.svg')
 
