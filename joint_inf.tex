@@ -378,8 +378,8 @@ Let $\{x',y',w'\}\in[0,1]^3$ be three fidelities and $\{p_x',p_y',p_w'\}\in[0,1/
 Call $t=\{x',y',w'\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ constrains the bottom three branches to share the same parameter, the classical construction of this topology.
 
 %EM This sentence should be made more precise-- it certainly changes the value of the log likelihood-- you mean this restriction does not change the ML.
-We now show that, in the case of the Farris tree topology, fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal does not change the value of the likelihood.
 Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ with edge ordering in the order of the taxa, then the internal branch last.
+We now show that, in the case of the Farris tree topology, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
 %EM complete to introduce: We now note that exchanging $x_1$ and $x_2$, or $y_1$ or $y_2$, does not change ...
 %EM please be a little more specific than just $ell$, because there are lots of variants-- e.g. likelihood with what data?
 Using the Hadamard transform approach outlined in 8.6 of Semple and Steel \cite{Semple2003-em}, we calculate the generating probabilities on the Farris tree topology.
@@ -907,6 +907,7 @@ Neyman-Scott paradox.
 Interesting that here we are simulating on the Farris tree and end up with the Felsenstein tree.
 For maximum parsimony it's the opposite \cite{Felsenstein1978-rr}.
 %EM We should be clear here that thus this is not "long branch attraction". I haven't read the Farris papers, but I wonder what his argument is and if it relates to this, in that there are too many parameters. Probably something should go in the intro as well pointing out that this is not LBA.
+%das: Noted. I will work on this.
 Discussion of number of parameters of each.
 
 However, note that \cite{Siddall1998-hq} get things going the same way, although \cite{Swofford2001-hr} show that the problem is that they didn't simulate long enough sequences.
