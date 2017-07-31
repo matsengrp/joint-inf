@@ -369,7 +369,7 @@ $$
 \label{fig:farris-fels-top}
 \end{figure}
 
-Define the Farris topology $\tau_1$ and the Felsenstein topology $\tau_2$ as in Figure~\ref{fig:farris-fels-top}.
+Define the Farris topology $\tau_1$ and the Felsenstein topology $\tau_2$ as in Fig.~\ref{fig:farris-fels-top}.
 We parameterize the branches of these trees \textbf{not with the standard notion of branch length in terms of number of substitutions per site}, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$.
 This parametrization has been called edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge \cite{Matsen2007-jq}.
 Fidelities have useful algebraic properties, such as the ability to write generating probabilities using the Hadamard transform.
@@ -920,20 +920,24 @@ or
     &\qquad + (1 - p_{13})\cdot\log((1+w')) \\
     &\qquad + p_{13}\cdot\log((1-w')).
 \end{align*}
-When computing the global minimum for $0 \le w' \le 1$ using basin-hopping, we obtain the fit $\hat{w}$ in Figure~\ref{fig:w_hat}.
+When computing the global minimum for $0 \le w' \le 1$ using basin-hopping, we obtain the fit $\hat{w}$ in Fig.~\ref{fig:w_hat}.
 The estimate for $\hat{w}$ will typically be an overestimate, and in fact is almost always identically equal to 1, indicating no change along that particular branch.
 
 \begin{figure}
 \centering
-\includegraphics[width=.9\textwidth]{w_hat_heatmap}
+    \begin{tabular}{cc}
+\includegraphics[width=.45\textwidth]{w_hat_heatmap} &
+\includegraphics[width=.45\textwidth]{w_hat_heatmap_no_joint}\\
+Joint inference & Marginal inference \\
+    \end{tabular}
 \caption{
     Estimating $\hat{w}$ for $x'$ and $y'$ fixed at their true values.
 }
 \label{fig:w_hat}
 \end{figure}
 
-Since we do not know the true values of $x$ and $y$, standard methods will not obtain the situation in Figure~\ref{fig:w_hat}.
-The form of the likelihood will alter the fitted values of $x$ and $y$ so that even with perfect information we will not necessarily obtain the true parameters back.
+Since we do not know the true values of $x$ and $y$, standard methods will not be in the situation in Figure~\ref{fig:w_hat}.
+The form of the likelihood will alter the fitted values of $x$ and $y$ so that even with perfect information we will not necessarily estimate $\hat{x}=x$ and $\hat{y}=y$.
 If we estimate $(x', y', w')$ jointly using the same approach above, we obtain the fit $\hat{w}$ in Figure~\ref{fig:w_hat_joint}.
 
 \begin{figure}
@@ -942,10 +946,11 @@ If we estimate $(x', y', w')$ jointly using the same approach above, we obtain t
 \caption{
     Estimating $(\hat{x}, \hat{y}, \hat{w})$.
 }
-\label{fig:w_hat}
+\label{fig:w_hat_joint}
 \end{figure}
 
 We no longer consistently overestimate $\hat{w}$, but the estimates are surprisingly unstable, with estimates of 1 for $\hat{w}$ scattered throughout the $(x,y)$ lattice.
+Even given the correct Farris topology we obtain poor estimates for the value of the interior branch length.
 
 \section{Discussion}
 
