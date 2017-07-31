@@ -900,6 +900,53 @@ Since this is an inequality in two variables, we plot them analytically---see Fi
 \label{fig:inconsistency-farris}
 \end{figure}
 
+\section{Branch lengths}
+
+Consider only the Farris-tree topology.
+Assume we know the true values of $x'$ and $y'$ but not $w'$.
+In other words, we fix $x'=x$ and $y'=y$ to their true, generating values and wish to estimate the internal branch parameter $w'$.
+In this case, the likelihood as a function of $w'$ is proportional to either
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
+    &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
+    &\qquad + \log((1+w'))
+\end{align*}
+or
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
+    &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
+    &\qquad + (1 - p_{13})\cdot\log((1+w')) \\
+    &\qquad + p_{13}\cdot\log((1-w')).
+\end{align*}
+When computing the global minimum for $0 \le w' \le 1$ using basin-hopping, we obtain the fit $\hat{w}$ in Figure~\ref{fig:w_hat}.
+The estimate for $\hat{w}$ will typically be an overestimate, and in fact is almost always identically equal to 1, indicating no change along that particular branch.
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{w_hat_heatmap}
+\caption{
+    Estimating $\hat{w}$ for $x'$ and $y'$ fixed at their true values.
+}
+\label{fig:w_hat}
+\end{figure}
+
+Since we do not know the true values of $x$ and $y$, standard methods will not obtain the situation in Figure~\ref{fig:w_hat}.
+The form of the likelihood will alter the fitted values of $x$ and $y$ so that even with perfect information we will not necessarily obtain the true parameters back.
+If we estimate $(x', y', w')$ jointly using the same approach above, we obtain the fit $\hat{w}$ in Figure~\ref{fig:w_hat_joint}.
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{w_hat_heatmap_joint}
+\caption{
+    Estimating $(\hat{x}, \hat{y}, \hat{w})$.
+}
+\label{fig:w_hat}
+\end{figure}
+
+We no longer consistently overestimate $\hat{w}$, but the estimates are surprisingly unstable, with estimates of 1 for $\hat{w}$ scattered throughout the $(x,y)$ lattice.
+
 \section{Discussion}
 
 Neyman-Scott paradox.

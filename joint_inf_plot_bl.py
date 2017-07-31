@@ -11,8 +11,8 @@ def p0(x, y, w):
     return 0.125 * (1 + x*x + y*y + x*x*y*y + 4*x*y*w)
 
 def likelihood(x, y, w):
-    if (1 - x) * (1 + w) * (1 + y) > (1 + x) * (1 - w) * (1 - y) or \
-        (1 + x) * (1 + w) * (1 - y) > (1 - x) * (1 - w) * (1 + y):
+    if (1 - x) * (1 - x) * (1 + w) > (1 + x) * (1 + x) * (1 - w) or \
+        (1 - y) * (1 - y) * (1 + w) > (1 + y) * (1 + y) * (1 - w):
         return p0(x, y, y) * log(p0(x, y, w)) + p13(x, y, y) * log(p13(x, y, w)) + \
             log(1 + w)
     else:

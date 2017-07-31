@@ -11,6 +11,8 @@ env['BUILDERS']['Latexdiff'] = Builder(action = 'latexdiff $SOURCES > $TARGET')
 
 svgs = [
     'figures/analytic-inconsistency.svg',
+    'figures/w_hat_heatmap.svg',
+    'figures/w_hat_heatmap_joint.svg',
 ]
 
 pdfs = [env.Inkscape(target="figures/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
