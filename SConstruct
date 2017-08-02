@@ -14,6 +14,13 @@ svgs = [
     'figures/w_hat_heatmap.svg',
     'figures/w_hat_heatmap_no_joint.svg',
     'figures/w_hat_heatmap_joint.svg',
+    'figures/farris_like00.svg',
+    'figures/farris_like01.svg',
+    'figures/farris_like10.svg',
+    'figures/farris_like11.svg',
+    'figures/unrooted_four_taxa.svg',
+    'figures/farris_blank.svg',
+    'figures/felsenstein_blank.svg',
 ]
 
 pdfs = [env.Inkscape(target="figures/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
