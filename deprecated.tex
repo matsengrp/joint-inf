@@ -1,3 +1,94 @@
+\section{Disjointed notes}
+
+\subsection{Branch lengths with $x$ and $y$ known}
+
+In this case, the likelihood as a function of $w'$ is proportional to either
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
+    &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
+    &\qquad + \log(1+w')
+\end{align*}
+or
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
+    &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
+    &\qquad + (1 - p_{13})\cdot\log(1+w') \\
+    &\qquad + p_{13}\cdot\log(1-w').
+\end{align*}
+Some computer work shows that the first likelihood will always be chosen over the second when maximizing ancestral states, so we focus on that.
+The likelihood can be written
+$$
+\ell = \alpha_1\log(\beta+\gamma w') + \alpha_2\log(\beta-\gamma w') + log(1+w')
+$$
+where
+$$
+\alpha_1 = 1+x^2+y^2+4xy^2+x^2y^2,
+\alpha_2 = 1+x^2+y^2-4xy^2+x^2y^2,
+\beta = 1+x^2+y^2+x^2y^2,
+\gamma = 4xy.
+$$
+The derivative of this is quadratic in w', with
+$$
+\ell' = (\gamma\alpha_1\beta-\gamma\alpha_2\beta+\beta^2) + w\cdot(\gamma\alpha_1\beta-\gamma^2\alpha_1-\gamma\alpha_2\beta-\gamma^2\alpha_2) + w^2(-\gamma^2\alpha_1-\gamma^2\alpha_2-\gamma^2),
+$$
+so we have a closed form solution for $w'$ via the quadratic formula, where
+$$
+a = -\gamma^2 \alpha_1 - \gamma^2 \alpha_2 - \gamma^2,
+b = \gamma \alpha_1 \beta - \gamma^2\alpha_1 - \gamma \alpha_2 \beta - \gamma^2 \alpha_2,
+c = \gamma \alpha_1 \beta - \gamma \alpha_2 \beta + \beta^2,
+$$
+and
+$$
+\hat{w}_1' = (-b + \sqrt{b^2 - 4ac}) / 2a,
+\hat{w}_2' = (-b - \sqrt{b^2 - 4ac}) / 2a.
+$$
+These are all functions of $x$ and $y$.
+Let's plan to get these in as simplified a form as possible.
+Then, we need cases where either $\hat{w}_1'\in[0,1]$ or $\hat{w}_2'\in[0,1]$, and, if not, we set them equal to their extrema.
+Whichever yields a higher value of the likelihood will then be the maximizer.
+The interesting case, to me, is that where $\hat{w}_2' \ge 1$, which is the case where we estimate $w'$ to be one.
+We can plot this in two variables, as we did before.
+Let's see.
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{bl-inconsistency}
+\caption{Region of inconsistency with $x$ and $y$ fixed}
+\label{fig:bl-inconsistency}
+\end{figure}
+
+\subsection{Below is wrong}
+
+My initial hunch is that $w'$ is always equal to 1, though the empirical fits don't show this.
+I argue that $w'=1$ always like so: consider just the last term of the likelihood $\log(1+w')$.
+This is obviously maximized when $w'=1$.
+For the remaining two terms, $p_{\emptyset} \ge p_{13}$, with equality only when $x=y=0$.
+So, excepting the case of infinite branch lengths, the term $\log(1+x^2+y^2+4xyw'+x^2y^2)$ will always be weighted more than $\log(1+x^2+y^2-4xyw'+x^2y^2)$.
+Additionally, these two terms can be written as
+$$
+c_1 \cdot f(x, y, w') + c_2 \cdot f(x, y, -w')
+$$
+where $c_1 > c_2$.
+Clearly $\hat{w}_1'=1$ where
+$$
+\hat{w}_1' = \arg\max \ f(x, y, w')
+$$
+and
+$\hat{w}_2'=0$ where
+$$
+\hat{w}_2' = \arg\max \ f(x, y, -w').
+$$
+I would think that $\hat{w}'=1$ where
+$$
+\hat{w}_2' = \arg\max \ c_1 \cdot f(x, y, w') + c_2 \cdot f(x, y, -w').
+$$
+This is clearly true if $f$ is linear in $w'$.
+Here, though, $f$ is $log(a+b*w')$.
+We have ranges $a\in[1,4]$ and $b\in[0,4]$ where $a$ increases quartically with $x$ and $y$ while $b$ increases quadratically.
+
+
 \section{Temporarily unused text I may want later to show more general results on the likelihood estimates}
 
 \begin{table}

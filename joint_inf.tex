@@ -889,7 +889,7 @@ Since this is an inequality in two variables, we plot them analytically---see Fi
 
 \begin{figure}
 \centering
-\includegraphics[width=.9\textwidth]{analytic-inconsistency}
+\includegraphics[width=.9\textwidth]{analytic-inconsistency-legend}
 \caption{
     Regions of inconsistency.
     Due to the looseness of the upper and lower bounds, the parameters in the top right do not necessarily indicate consistency, though all parameters in the labeled region result in an inconsistency.
@@ -909,17 +909,91 @@ In this case, the likelihood as a function of $w'$ is proportional to either
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
     &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
     &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
-    &\qquad + \log((1+w'))
+    &\qquad + \log(1+w')
 \end{align*}
 or
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
     &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
     &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
-    &\qquad + (1 - p_{13})\cdot\log((1+w')) \\
-    &\qquad + p_{13}\cdot\log((1-w')).
+    &\qquad + (1 - p_{13})\cdot\log(1+w') \\
+    &\qquad + p_{13}\cdot\log(1-w').
 \end{align*}
-When computing the global minimum for $0 \le w' \le 1$ using basin-hopping, we obtain the fit $\hat{w}$ in Fig.~\ref{fig:w_hat}.
+
+\subsection{Analytic}
+
+In this case, the likelihood as a function of $w'$ is proportional to either
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
+    &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
+    &\qquad + \log(1+w')
+\end{align*}
+or
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
+    &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
+    &\qquad + (1 - p_{13})\cdot\log(1+w') \\
+    &\qquad + p_{13}\cdot\log(1-w').
+\end{align*}
+At the risk of sounding circular, if $\hat{w}'$ is estimated to be one, then the first likelihood will be chosen, so the region in which that likelihood estimates $\hat{w}'$ to be one will always do so; let's focus on the first likelihood then.
+The likelihood can be written
+$$
+\ell = \alpha_1\log(\beta+\gamma w') + \alpha_2\log(\beta-\gamma w') + \log(1+w')
+$$
+where
+$$
+\alpha_1 = 1+x^2+y^2+4xy^2+x^2y^2,
+$$
+$$
+\alpha_2 = 1+x^2+y^2-4xy^2+x^2y^2,
+$$
+$$
+\beta = 1+x^2+y^2+x^2y^2,
+$$
+$$
+\gamma = 4xy.
+$$
+The derivative of this is quadratic in w', with
+$$
+\ell' = (\gamma\alpha_1\beta-\gamma\alpha_2\beta+\beta^2) + w\cdot(\gamma\alpha_1\beta-\gamma^2\alpha_1-\gamma\alpha_2\beta-\gamma^2\alpha_2) + w^2(-\gamma^2\alpha_1-\gamma^2\alpha_2-\gamma^2),
+$$
+so we have a closed form solution for $w'$ via the quadratic formula, where
+$$
+a = -\gamma^2 \alpha_1 - \gamma^2 \alpha_2 - \gamma^2,
+$$
+$$
+b = \gamma \alpha_1 \beta - \gamma^2\alpha_1 - \gamma \alpha_2 \beta - \gamma^2 \alpha_2,
+$$
+$$
+c = \gamma \alpha_1 \beta - \gamma \alpha_2 \beta + \beta^2,
+$$
+and
+$$
+\hat{w}_1' = (-b + \sqrt{b^2 - 4ac}) / 2a,
+$$
+$$
+\hat{w}_2' = (-b - \sqrt{b^2 - 4ac}) / 2a.
+$$
+These are all functions of $x$ and $y$.
+Let's plan to get these in as simplified a form as possible.
+Then, we need cases where either $\hat{w}_1'\in[0,1]$ or $\hat{w}_2'\in[0,1]$, and, if not, we set them equal to their extrema.
+Whichever yields a higher value of the likelihood will then be the maximizer.
+The interesting case, to me, is that where $\hat{w}_2' \ge 1$, which is the case where we guarantee $w'$ will be one.
+We can plot this in two variables, as we did before.
+Let's see.
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{bl-inconsistency}
+\caption{Region of inconsistency with $x$ and $y$ fixed}
+\label{fig:bl-inconsistency}
+\end{figure}
+
+\subsection{Numerical}
+
+When computing the global maximum for $0 \le w' \le 1$ using basin-hopping, we obtain the fit $\hat{w}$ in Fig.~\ref{fig:w_hat}.
 We find that the estimate for $\hat{w}$ will typically be an overestimate, and in fact is almost always identically equal to 1, indicating no change along that particular branch.
 
 \begin{figure}
