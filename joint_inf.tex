@@ -889,7 +889,7 @@ Since this is an inequality in two variables, we plot them analytically---see Fi
 
 \begin{figure}
 \centering
-\includegraphics[width=.9\textwidth]{analytic-inconsistency-legend}
+\includegraphics[width=.9\textwidth]{topology-inconsistency-legend}
 \caption{
     Regions of inconsistency.
     Due to the looseness of the upper and lower bounds, the parameters in the top right do not necessarily indicate consistency, though all parameters in the labeled region result in an inconsistency.
@@ -919,111 +919,89 @@ or
     &\qquad + (1 - p_{13})\cdot\log(1+w') \\
     &\qquad + p_{13}\cdot\log(1-w').
 \end{align*}
-
-\subsection{Analytic}
-
-In this case, the likelihood as a function of $w'$ is proportional to either
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
-    &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
-    &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
-    &\qquad + \log(1+w')
-\end{align*}
-or
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
-    &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
-    &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
-    &\qquad + (1 - p_{13})\cdot\log(1+w') \\
-    &\qquad + p_{13}\cdot\log(1-w').
-\end{align*}
-At the risk of sounding circular, if $\hat{w}'$ is estimated to be one, then the first likelihood will be chosen, so the region in which that likelihood estimates $\hat{w}'$ to be one will always do so; let's focus on the first likelihood then.
-The likelihood can be written
+Since
 $$
-\ell = \alpha_1\log(\beta+\gamma w') + \alpha_2\log(\beta-\gamma w') + \log(1+w')
+\log(1+w') >= (1 - p_{13})\cdot\log(1+w') + p_{13}\cdot\log(1-w')
+$$
+with equality only when $w'=0$, we focus on the first likelihood.
+Simplifying and suppressing some variables, this likelihood can be written
+$$
+\ell(w') = \alpha_1\log(\beta+\gamma w') + \alpha_2\log(\beta-\gamma w') + \log(1+w')
 $$
 where
 $$
-\alpha_1 = 1+x^2+y^2+4xy^2+x^2y^2,
+\alpha_1 := \alpha_1(x, y) = 1+x^2+y^2+4xy^2+x^2y^2,
 $$
 $$
-\alpha_2 = 1+x^2+y^2-4xy^2+x^2y^2,
+\alpha_2 := \alpha_2(x, y) = 1+x^2+y^2-4xy^2+x^2y^2,
 $$
 $$
-\beta = 1+x^2+y^2+x^2y^2,
+\beta := \beta(x, y) = 1+x^2+y^2+x^2y^2,
 $$
 $$
-\gamma = 4xy.
+\gamma := \gamma(x, y) = 4xy.
 $$
-The derivative of this is quadratic in w', with
+Since $x$ and $y$ fall between zero and one, we make use of the inequalities (excepting the cases of $x=y=0$ and $x=y=1$)
 $$
-\ell' = (\gamma\alpha_1\beta-\gamma\alpha_2\beta+\beta^2) + w\cdot(\gamma\alpha_1\beta-\gamma^2\alpha_1-\gamma\alpha_2\beta-\gamma^2\alpha_2) + w^2(-\gamma^2\alpha_1-\gamma^2\alpha_2-\gamma^2),
-$$
-so we have a closed form solution for $w'$ via the quadratic formula, where
-$$
-a = -\gamma^2 \alpha_1 - \gamma^2 \alpha_2 - \gamma^2,
-$$
-$$
-b = \gamma \alpha_1 \beta - \gamma^2\alpha_1 - \gamma \alpha_2 \beta - \gamma^2 \alpha_2,
-$$
-$$
-c = \gamma \alpha_1 \beta - \gamma \alpha_2 \beta + \beta^2,
+\alpha_1 > \alpha_2
 $$
 and
 $$
-\hat{w}_1' = (-b + \sqrt{b^2 - 4ac}) / 2a,
+\beta > \gamma.
+$$
+% Not sure if I need to show this, but if x and y aren't 1 it's 1+x^2+y^2+x^2y^2 > 4xy => (1+x^2)(1+y^2) > 4xy and 1+x^2 > 2x, 1+y^2 > 2y qed
+The derivative is
+$$
+\ell'(w') := \frac{d}{dw'} \ell(w') = \frac{\alpha_1 \gamma}{\beta+\gamma w'} + \frac{\alpha_2 \gamma}{\beta-\gamma w'} + \frac{1}{1+w'}.
+$$
+The inequality $\beta > \gamma$ implies that any inequality relating $\ell'$ and 0 is equivalent to the same inequality relating 0 and the quadratic function
+\begin{align*}
+f(w') &= w^2\cdot(-\gamma^2\alpha_1-\gamma^2\alpha_2-\gamma^2) \\
+      &\qquad + w\cdot(\gamma\alpha_1\beta-\gamma^2\alpha_1-\gamma\alpha_2\beta-\gamma^2\alpha_2) \\
+      &\qquad + (\gamma\alpha_1\beta-\gamma\alpha_2\beta+\beta^2), \\
+\end{align*}
+implying $\ell'$ has two zeros according to the quadratic formula.
+By $\alpha_1 > \alpha_2$, $\ell'(0) > 0$ implies $\ell$ is increasing at $w'=0$.
+We use this fact to show that, if the smaller of the zeros of $f(w')$ is greater than one, $\hat{w}' \equiv 1$.
+Using the quadratic formula with
+$$
+a(x, y) = -\gamma^2 \alpha_1 - \gamma^2 \alpha_2 - \gamma^2,
 $$
 $$
-\hat{w}_2' = (-b - \sqrt{b^2 - 4ac}) / 2a.
+b(x, y) = \gamma \alpha_1 \beta - \gamma^2\alpha_1 - \gamma \alpha_2 \beta - \gamma^2 \alpha_2,
 $$
-These are all functions of $x$ and $y$.
-Let's plan to get these in as simplified a form as possible.
-Then, we need cases where either $\hat{w}_1'\in[0,1]$ or $\hat{w}_2'\in[0,1]$, and, if not, we set them equal to their extrema.
-Whichever yields a higher value of the likelihood will then be the maximizer.
-The interesting case, to me, is that where $\hat{w}_2' \ge 1$, which is the case where we guarantee $w'$ will be one.
-We can plot this in two variables, as we did before.
-Let's see.
+$$
+c(x, y) = \gamma \alpha_1 \beta - \gamma \alpha_2 \beta + \beta^2,
+$$
+the smaller zero is
+$$
+\hat{w}'(x, y) = \frac{-b(x, y) - \sqrt{b(x, y)^2 - 4a(x, y)c(x, y)}}{2a(x, y)},
+$$
+which is a function of the generating parameters $x$ and $y$.
+We plot the region where $\hat{w}'(x, y) \ge 1$ in Figure~\ref{fig:bl-inconsistency}.
 
 \begin{figure}
 \centering
-\includegraphics[width=.9\textwidth]{bl-inconsistency}
+\includegraphics[width=.9\textwidth]{branch-length-inconsistency-legend}
 \caption{Region of inconsistency with $x$ and $y$ fixed}
 \label{fig:bl-inconsistency}
 \end{figure}
 
-\subsection{Numerical}
-
-When computing the global maximum for $0 \le w' \le 1$ using basin-hopping, we obtain the fit $\hat{w}$ in Fig.~\ref{fig:w_hat}.
-We find that the estimate for $\hat{w}$ will typically be an overestimate, and in fact is almost always identically equal to 1, indicating no change along that particular branch.
-
-\begin{figure}
-\centering
-    \begin{tabular}{cc}
-\includegraphics[width=.45\textwidth]{w_hat_heatmap} &
-\includegraphics[width=.45\textwidth]{w_hat_heatmap_no_joint}\\
-Joint inference & Marginal inference \\
-    \end{tabular}
-\caption{
-    Estimating $\hat{w}$ for $x'$ and $y'$ fixed at their true values.
-}
-\label{fig:w_hat}
-\end{figure}
-
-Second, we consider the more standard case where the true values of $x$ and $y$ are not known.
-The form of the likelihood will alter the fitted values of $x$ and $y$ so that even with perfect information we will not necessarily estimate $\hat{x}=x$ and $\hat{y}=y$.
-If we estimate $(x', y', w')$ jointly using the same approach above, we obtain the fit $\hat{w}$ in Figure~\ref{fig:w_hat_joint}.
+We consider the more standard case where the true values of $x$ and $y$ are not known.
+The form of the likelihood will alter the fitted values of $x$ and $y$ so that even with perfect information we will not necessarily estimate $\hat{x}'=x$ and $\hat{y}'=y$.
+When computing the global maximum for $0 \le x',y',w' \le 1$ using basin-hopping, we obtain the fit $\hat{w}'$ in Fig.~\ref{fig:w_hat_joint}.
+The region in which $\hat{w}'$ is estimated to be one---indicating no change along that particular branch---is now much smaller, but still nontrivial.
+Additionally, the estimates are surprisingly unstable, with estimates of 1 for $\hat{w}'$ scattered throughout the $(x,y)$ lattice.
+Even given the correct Farris topology we have a region of the space of true parameters where we will always estimate the interior branch parameter to be one.
 
 \begin{figure}
 \centering
 \includegraphics[width=.9\textwidth]{w_hat_heatmap_joint}
 \caption{
-    Estimating $(\hat{x}, \hat{y}, \hat{w})$.
+    Estimating $(\hat{x}', \hat{y}', \hat{w}')$.
 }
 \label{fig:w_hat_joint}
 \end{figure}
-
-We no longer consistently overestimate $\hat{w}$, but the estimates are surprisingly unstable, with estimates of 1 for $\hat{w}$ scattered throughout the $(x,y)$ lattice.
-In summary, even given the correct Farris topology we obtain poor estimates for the value of the interior branch length.
 
 \section{Discussion}
 

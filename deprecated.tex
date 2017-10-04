@@ -59,6 +59,60 @@ Let's see.
 \label{fig:bl-inconsistency}
 \end{figure}
 
+\subsection{Branch lengths with $x$ and $y$ unknown}
+
+Our plan of attack is to focus on the likelihood
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{1}          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + p_{2}          \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad + p_{3}          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + p_{12}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{23}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + p_{123}        \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad - \log(8) \\
+    &\qquad + p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{2}          \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{13}         \cdot\log((1-x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{123}        \cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
+\end{align*}
+This simplifies to
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + (p_{1} + p_{3})          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + (p_{2} + p_{123})          \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad + (p_{12} + p_{23})         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23}-2p_{13})\log(1+x') \\
+    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23}+2p_{13})\log(1-x') \\
+    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\log(1+y') \\
+    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\log(1-y') \\
+    &\qquad + \log(1+w').
+\end{align*}
+This likelihood occurs when $\hat{w}' = 1$ and $\hat{y}' > \hat{x}'$, the latter coming from
+$$
+(1-x'^2)(1+y'^2) > (1+x'^2)(1-y'^2)
+$$
+only if $y' > x'$.
+We simply need to obtain
+$$
+(\hat{x}', \hat{y}', \hat{w}') = \arg\max_{x, y, w} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+$$
+as functions of $x$ and $y$ and verify the region where $\hat{w}'(x, y) = 1$ and $\hat{y}'(x, y) > \hat{x}'(x, y)$.
+This region will be consistent with one always estimating $\hat{w}'$ to be one.
+This can similarly be done for the other likelihood term with $\hat{x}'(x, y) > \hat{y}'(x, y)$.
+
+To do is to find these functions---or subsets of their varieties---in as closed a form as possible.
+
+When we are in the region where $\hat{w}'$ is one, necessarily (I think) our region is going to be a subset of the case where $x'$ and $y'$ are fixed.
+
 \subsection{Below is wrong}
 
 My initial hunch is that $w'$ is always equal to 1, though the empirical fits don't show this.

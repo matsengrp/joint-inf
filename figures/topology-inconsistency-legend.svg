@@ -25,6 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -37,14 +38,14 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1371"
-     inkscape:window-height="1103"
+     inkscape:window-width="1710"
+     inkscape:window-height="1223"
      id="namedview356"
      showgrid="false"
-     inkscape:zoom="1.5478465"
-     inkscape:cx="207.0197"
+     inkscape:zoom="2.1889855"
+     inkscape:cx="615.62897"
      inkscape:cy="215.625"
-     inkscape:window-x="0"
+     inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg2" />
@@ -84,7 +85,7 @@
                id="defs19">
               <path
                  d="M 0 0  L 0 3.5  "
-                 id="m7fa3a2e88c"
+                 id="m6ca3cd1e9f"
                  style="stroke:#000000;stroke-width:0.8;" />
             </defs>
             <g
@@ -92,7 +93,7 @@
               <use
                  style="stroke:#000000;stroke-width:0.8;"
                  x="57.6"
-                 xlink:href="#m7fa3a2e88c"
+                 xlink:href="#m6ca3cd1e9f"
                  y="307.584"
                  id="use24" />
             </g>
@@ -135,7 +136,7 @@
               <use
                  style="stroke:#000000;stroke-width:0.8;"
                  x="130.855385"
-                 xlink:href="#m7fa3a2e88c"
+                 xlink:href="#m6ca3cd1e9f"
                  y="307.584"
                  id="use43" />
             </g>
@@ -175,7 +176,7 @@
               <use
                  style="stroke:#000000;stroke-width:0.8;"
                  x="204.110769"
-                 xlink:href="#m7fa3a2e88c"
+                 xlink:href="#m6ca3cd1e9f"
                  y="307.584"
                  id="use61" />
             </g>
@@ -215,7 +216,7 @@
               <use
                  style="stroke:#000000;stroke-width:0.8;"
                  x="277.366154"
-                 xlink:href="#m7fa3a2e88c"
+                 xlink:href="#m6ca3cd1e9f"
                  y="307.584"
                  id="use79" />
             </g>
@@ -255,7 +256,7 @@
               <use
                  style="stroke:#000000;stroke-width:0.8;"
                  x="350.621538"
-                 xlink:href="#m7fa3a2e88c"
+                 xlink:href="#m6ca3cd1e9f"
                  y="307.584"
                  id="use97" />
             </g>
@@ -314,7 +315,7 @@
                id="defs122">
               <path
                  d="M 0 0  L -3.5 0  "
-                 id="m06b82a06d9"
+                 id="m7356086bb0"
                  style="stroke:#000000;stroke-width:0.8;" />
             </defs>
             <g
@@ -322,7 +323,7 @@
               <use
                  style="stroke:#000000;stroke-width:0.8;"
                  x="57.6"
-                 xlink:href="#m06b82a06d9"
+                 xlink:href="#m7356086bb0"
                  y="307.584"
                  id="use127" />
             </g>
@@ -356,7 +357,7 @@
               <use
                  style="stroke:#000000;stroke-width:0.8;"
                  x="57.6"
-                 xlink:href="#m06b82a06d9"
+                 xlink:href="#m7356086bb0"
                  y="252.996923"
                  id="use142" />
             </g>
@@ -390,7 +391,7 @@
               <use
                  style="stroke:#000000;stroke-width:0.8;"
                  x="57.6"
-                 xlink:href="#m06b82a06d9"
+                 xlink:href="#m7356086bb0"
                  y="198.409846"
                  id="use157" />
             </g>
@@ -424,7 +425,7 @@
               <use
                  style="stroke:#000000;stroke-width:0.8;"
                  x="57.6"
-                 xlink:href="#m06b82a06d9"
+                 xlink:href="#m7356086bb0"
                  y="143.822769"
                  id="use172" />
             </g>
@@ -458,7 +459,7 @@
               <use
                  style="stroke:#000000;stroke-width:0.8;"
                  x="57.6"
-                 xlink:href="#m06b82a06d9"
+                 xlink:href="#m7356086bb0"
                  y="89.235692"
                  id="use187" />
             </g>
@@ -504,7 +505,7 @@
       <g
          id="LineCollection_1">
         <path
-           clip-path="url(#p88be2d7539)"
+           clip-path="url(#p5f2eaea3ab)"
            d="M 57.6 206.684443  L 66.756923 206.476465  L 75.913846 206.497322  L 85.070769 206.756056  L 94.227692 207.262556  L 103.384615 208.027528  L 112.541538 209.062457  L 121.698462 210.379564  L 130.855385 211.991759  L 131.166342 212.056615  L 140.012308 214.10205  L 149.169231 216.574021  L 156.604422 218.88  L 158.326154 219.473565  L 167.483077 223.044139  L 173.557776 225.703385  L 176.64 227.20782  L 185.796923 232.174534  L 186.38557 232.526769  L 194.953846 238.264466  L 196.4328 239.350154  L 204.110769 245.694915  L 204.642207 246.173538  L 211.319917 252.996923  L 213.267692 255.281789  L 216.837147 259.820308  L 221.44377 266.643692  L 222.424615 268.374939  L 225.09646 273.467077  L 228.009772 280.290462  L 230.267035 287.113846  L 231.581538 292.692914  L 231.853693 293.937231  L 232.747063 300.760615  L 233.044639 307.584  "
            style="fill:none;stroke:#440154;stroke-width:1.5;"
            id="path207" />
@@ -818,7 +819,7 @@
   <defs
      id="defs351">
     <clipPath
-       id="p88be2d7539">
+       id="p5f2eaea3ab">
       <rect
          height="266.112"
          width="357.12"
@@ -829,26 +830,26 @@
   </defs>
   <path
      style="fill:#cccccc;stroke-linecap:butt;stroke-linejoin:round"
-     d="m 73.11864,321.88851 0,-61.97024 4.352759,-0.46614 c 9.317441,-0.99781 45.029981,0.8296 63.806451,3.26498 59.96711,7.77796 105.30594,30.26407 129.70353,64.32738 9.58363,13.38042 16.93662,32.0136 18.21331,46.15428 0.22457,2.48732 0.56866,5.90336 0.76465,7.59119 l 0.35634,3.06878 -108.59852,0 -108.59852,0 0,-61.97023 z"
-     id="path3341"
+     d="m 72.788665,321.855 0,-62.06715 2.119508,-0.29051 c 3.175443,-0.43524 20.073454,-0.34221 31.457687,0.17318 49.23875,2.22918 88.87764,11.67606 119.5508,28.49178 24.83988,13.61778 43.61981,32.27191 53.86364,53.50282 6.35603,13.17325 9.21568,24.01749 10.20964,38.71657 l 0.2394,3.54045 -108.72033,0 -108.720345,0 0,-62.06714 z"
+     id="path3335"
      inkscape:connector-curvature="0"
      transform="scale(0.8,0.8)" />
   <rect
      style="fill:#cccccc;stroke-linecap:butt;stroke-linejoin:round"
-     id="rect3343"
-     width="13.438025"
-     height="6.7190123"
-     x="275.52896"
-     y="57.632999" />
+     id="rect3337"
+     width="24.486229"
+     height="8.7711868"
+     x="280.67798"
+     y="57.012714" />
   <text
      xml:space="preserve"
-     style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-     x="296.15338"
-     y="63.835163"
-     id="text3345"
+     style="font-size:6.4000001px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     x="312.05908"
+     y="63.956566"
+     id="text3339"
      sodipodi:linespacing="125%"><tspan
        sodipodi:role="line"
-       id="tspan3347"
-       x="296.15338"
-       y="63.835163">Joint inference inconsistent</tspan></text>
+       id="tspan3341"
+       x="312.05908"
+       y="63.956566">Joint inference inconsistent</tspan></text>
 </svg>
