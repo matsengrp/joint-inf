@@ -101,6 +101,7 @@ $$
 (1-x'^2)(1+y'^2) > (1+x'^2)(1-y'^2)
 $$
 only if $y' > x'$.
+
 We simply need to obtain
 $$
 (\hat{x}', \hat{y}', \hat{w}') = \arg\max_{x, y, w} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
@@ -111,9 +112,62 @@ This can similarly be done for the other likelihood term with $\hat{x}'(x, y) > 
 
 To do is to find these functions---or subsets of their varieties---in as closed a form as possible.
 
-When we are in the region where $\hat{w}'$ is one, necessarily (I think) our region is going to be a subset of the case where $x'$ and $y'$ are fixed.
+\subsubsection{Maximization of functionals---calculus of variations?}
+
+Call the likelihood $\ell$.
+The likelihood is maximized at functions of $x$ and $y$ with the property that $\hat{x}'(x,y) = \hat{y}'(y,x)$.
+Let's call $\hat{y}'(x, y) := g(x, y)$.
+Look at
+\begin{align*}
+    \ell
+    &=        p_{\emptyset}  \cdot\log(1+g(y, x)^2+g(x, y)^2+4g(y, x)g(x, y)w'+g(y, x)^2g(x, y)^2) \\
+    &\qquad   p_{13}  \cdot\log(1+g(y, x)^2+g(x, y)^2-4g(y, x)g(x, y)w'+g(y, x)^2g(x, y)^2) \\
+    &\qquad + (p_{1} + p_{3})          \cdot\log(1-g(y, x)^2+g(x, y)^2-g(y, x)^2g(x, y)^2) \\
+    &\qquad + (p_{2} + p_{123})          \cdot\log(1+g(y, x)^2-g(x, y)^2-g(y, x)^2g(x, y)^2) \\
+    &\qquad + (p_{12} + p_{23})         \cdot\log(1-g(y, x)^2-g(x, y)^2+g(y, x)^2g(x, y)^2) \\
+    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23}-2p_{13})\log(1+g(y, x)) \\
+    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23}+2p_{13})\log(1-g(y, x)) \\
+    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\log(1+g(x, y)) \\
+    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\log(1-g(x, y)) \\
+    &\qquad + \log(1+w')
+\end{align*}
+with the restriction that $g(x, y) > g(y, x)$.
+We now have two problems: 1) what to do with $w'$?; and how to solve the two-variable functional maximization?
+We may be able to take $\hat{w}'(x, y)$ to be like our quadratic formula version but now with 
+$$
+\alpha_1 := \alpha_1(x, y) = 1+x^2+y^2+4xy^2+x^2y^2,
+$$
+$$
+\alpha_2 := \alpha_2(x, y) = 1+x^2+y^2-4xy^2+x^2y^2,
+$$
+$$
+\beta := \beta(x, y) = 1+g(y, x)^2+g(x, y)^2+g(y, x)^2g(x, y)^2,
+$$
+$$
+\gamma := \gamma(x, y) = 4g(y, x)g(x, y).
+$$
+So in a way we want again the region where $\hat{w}'(x, y) \ge 1$ with
+$$
+\hat{w}'(x, y) = \frac{-b(x, y) - \sqrt{b(x, y)^2 - 4a(x, y)c(x, y)}}{2a(x, y)}.
+$$
+We have a functional maximization of one two-variable function such that
+\begin{align*}
+    \ell
+    &=        p_{\emptyset}  \cdot\log(1+g(y, x)^2+g(x, y)^2+4g(y, x)g(x, y)\hat{w}'(g)+g(y, x)^2g(x, y)^2) \\
+    &\qquad   p_{13}  \cdot\log(1+g(y, x)^2+g(x, y)^2-4g(y, x)g(x, y)\hat{w}'(g)+g(y, x)^2g(x, y)^2) \\
+    &\qquad + (p_{1} + p_{3})          \cdot\log(1-g(y, x)^2+g(x, y)^2-g(y, x)^2g(x, y)^2) \\
+    &\qquad + (p_{2} + p_{123})          \cdot\log(1+g(y, x)^2-g(x, y)^2-g(y, x)^2g(x, y)^2) \\
+    &\qquad + (p_{12} + p_{23})         \cdot\log(1-g(y, x)^2-g(x, y)^2+g(y, x)^2g(x, y)^2) \\
+    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23}-2p_{13})\log(1+g(y, x)) \\
+    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23}+2p_{13})\log(1-g(y, x)) \\
+    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\log(1+g(x, y)) \\
+    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\log(1-g(x, y)) \\
+    &\qquad + \log(1+\hat{w}'(g)).
+\end{align*}
 
 \subsection{Below is wrong}
+
+When we are in the region where $\hat{w}'$ is one, necessarily (I think) our region is going to be a subset of the case where $x'$ and $y'$ are fixed.
 
 My initial hunch is that $w'$ is always equal to 1, though the empirical fits don't show this.
 I argue that $w'=1$ always like so: consider just the last term of the likelihood $\log(1+w')$.

@@ -372,6 +372,10 @@ $$
 Define the Farris topology $\tau_1$ and the Felsenstein topology $\tau_2$ as in Fig.~\ref{fig:farris-fels-top}.
 We parameterize the branches of these trees \textbf{not with the standard notion of branch length in terms of number of substitutions per site}, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$.
 This parametrization has been called edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge \cite{Matsen2007-jq}.
+% In Semple/Steel, there are some assumptions that are necessary for some of the results, called M1, M2 and M3.
+% M1 and M2 seem definitely necessary, which pretty much just imply x and y can't be zero.
+% M3 implies x and y can't be one?
+% (das TODO: double check these; currently working from notes and memory)
 Fidelities have useful algebraic properties, such as the ability to write generating probabilities using the Hadamard transform.
 
 Let $\{x',y',w'\}\in[0,1]^3$ be three fidelities and $\{p_x',p_y',p_w'\}\in[0,1/2]^3$ the corresponding substitution probabilities.
