@@ -907,6 +907,8 @@ Since this is an inequality in two variables, we plot them analytically---see Fi
 Consider only the Farris-tree topology.
 We will consider two settings, corresponding to whether some branch lengths are known ahead of time or not.
 
+\subsection{Fixed $x'$ and $y'$}
+
 First, assume we know the true values of $x'$ and $y'$ but not $w'$.
 In other words, we fix $x'=x$ and $y'=y$ to their true, generating values and wish to estimate the internal branch parameter $w'$.
 Recalling Table~\ref{tab:likelihoods}, the likelihood can take one of three forms corresponding to which ancestral state for $\siteSplit_j=\{1,3\}$ maximizes the likelihood for $(x',y',w')$.
@@ -994,8 +996,121 @@ We plot the region where $\hat{w}'(x, y) \ge 1$ in Figure~\ref{fig:bl-inconsiste
 \label{fig:bl-inconsistency}
 \end{figure}
 
+\subsection{General case}
+
 We consider the more standard case where the true values of $x$ and $y$ are not known.
 The form of the likelihood will alter the fitted values of $x$ and $y$ so that even with perfect information we will not necessarily estimate $\hat{x}'=x$ and $\hat{y}'=y$.
+
+Our plan of attack is to determine inequalities at which a particular form of likelihood is necessary and plot the regions of $x$ and $y$ where these occur in addition to the region where $\hat{w}'$ is estimated to be one.
+Since we are interested in the region where $\hat{w}'=1$, we choose either the term $(1-x')^2(1+w')(1+y')^2$ or $(1+x')^2(1+w')(1-y')^2$ in Table~\ref{tab:likelihoods} for $\siteSplit_j=\{1,3\}$.
+Now,
+$$
+(1-x'^2)(1+y'^2) > (1+x'^2)(1-y'^2),
+$$
+so we are also interested in the inequality $\hat{y}' > \hat{x}'$ if we use the likelihood
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{1}          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + p_{2}          \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad + p_{3}          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + p_{12}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{23}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + p_{123}        \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad - \log(8) \\
+    &\qquad + p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{2}          \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{13}         \cdot\log((1-x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{123}        \cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
+\end{align*}
+This simplifies to
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + (p_{1} + p_{3})          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + (p_{2} + p_{123})          \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad + (p_{12} + p_{23})         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23}-2p_{13})\log(1+x') \\
+    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23}+2p_{13})\log(1-x') \\
+    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\log(1+y') \\
+    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\log(1-y') \\
+    &\qquad + \log(1+w').
+\end{align*}
+We need to obtain
+$$
+(\hat{x}', \hat{y}', \hat{w}') = \arg\max_{x, y, w} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+$$
+as functions of $x$ and $y$ and verify the region where $\hat{w}'(x, y) = 1$ and $\hat{y}'(x, y) > \hat{x}'(x, y)$.
+This region will be consistent with one always estimating $\hat{w}'$ to be one.
+This can similarly be done for the other likelihood term with $\hat{x}'(x, y) > \hat{y}'(x, y)$.
+To do is to find these functions---or subsets of their varieties---in as closed a form as possible.
+
+As a first attempt, simplify further to
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + (p_{2} + p_{123})          \cdot\log(1+x'^2) \\
+    &\qquad + (p_{1} + p_{3} + p_{12} + p_{23})          \cdot\log(1-x'^2) \\
+    &\qquad + (p_{1} + p_{3})          \cdot\log(1+y'^2) \\
+    &\qquad + (p_{2} + p_{123} + p_{12} + p_{23})          \cdot\log(1-y'^2) \\
+    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23}-2p_{13})\log(1+x') \\
+    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23}+2p_{13})\log(1-x') \\
+    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\log(1+y') \\
+    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\log(1-y') \\
+    &\qquad + \log(1+w').
+\end{align*}
+% das: there might be something with 1+y^2 < 1+y here?
+% I'm not sure how specifically it would affect the maximization, and it might be too loose of a bound, but could work to try.
+% The first two terms kind of gunk up the works a little.
+Say we had estimated $\hat{x}'$ and $\hat{y}'$.
+We can use a similar argument as in the restricted case, though now
+$$
+\alpha_1 := \alpha_1(x, y) = 1+x^2+y^2+4xy^2+x^2y^2,
+$$
+$$
+\alpha_2 := \alpha_2(x, y) = 1+x^2+y^2-4xy^2+x^2y^2,
+$$
+$$
+\beta := \beta(x', y') = 1+x'^2+y'^2+x'^2y'^2,
+$$
+$$
+\gamma := \gamma(x', y') = 4x'y'.
+$$
+So instead of the lower bound for $\hat{w}'$ being a function of $x$ and $y$ through $\alpha_1,\alpha_2,\beta$ and $\gamma$, it is a function of $x$ and $y$ through $\beta$ and $\gamma$ via $\hat{x}'$ and $\hat{y}'$.
+Operating on the assumption $\hat{y}' > \hat{x}'$, which we needed to specify the form of the likelihood, we now see
+$$
+1 < 1 + 2x'^2 + x'^4 < \beta < 1+2y'^2+y'^4 < 4
+$$
+and
+$$
+0 < 4x'^2 < \gamma < 4y'^2 < 4.
+$$
+We may be able to use this to restrict our attention to fewer variables, but we need to determine how $a,b$ and $c$ are varying with $\beta$ and $\gamma$ to see which inequalities are useful.
+Recall
+$$
+\hat{w}'(x, y) = \frac{-b(x, y) - \sqrt{b(x, y)^2 - 4a(x, y)c(x, y)}}{2a(x, y)}
+$$
+where
+$$
+a(x, y) = -\gamma^2 \alpha_1 - \gamma^2 \alpha_2 - \gamma^2,
+$$
+$$
+b(x, y) = \gamma \alpha_1 \beta - \gamma^2\alpha_1 - \gamma \alpha_2 \beta - \gamma^2 \alpha_2,
+$$
+$$
+c(x, y) = \gamma \alpha_1 \beta - \gamma \alpha_2 \beta + \beta^2.
+$$
+We know for sure $a$ is decreasing with $\gamma$ and $c$ is increasing with $\gamma$, while $c$ is increasing with $\beta$.
+
+\subsection{Empirical results for the general case}
+
 When computing the global maximum for $0 \le x',y',w' \le 1$ using basin-hopping, we obtain the fit $\hat{w}'$ in Fig.~\ref{fig:w_hat_joint}.
 The region in which $\hat{w}'$ is estimated to be one---indicating no change along that particular branch---is now much smaller, but still nontrivial.
 Additionally, the estimates are surprisingly unstable, with estimates of 1 for $\hat{w}'$ scattered throughout the $(x,y)$ lattice.
