@@ -904,23 +904,25 @@ Since this is an inequality in two variables, we plot them analytically---see Fi
 
 \section{Branch lengths}
 
-Consider only the Farris-tree topology.
-We will consider two settings, corresponding to whether some branch lengths are known ahead of time or not.
+We will now consider the problem of branch length estimation on the correct tree using joint ancestral state and branch length estimation.
+We will consider two settings on the Farris topology, corresponding to whether some branch lengths are known ahead of time or not.
+As above, we will assume that data is generated with two sister branches of fidelity $x$, with all other branches of length $y$.
+%EM We will show XXX... and introduce \hat{w'} here.
 
 \subsection{Fixed $x'$ and $y'$}
 
 First, assume we know the true values of $x'$ and $y'$ but not $w'$.
 In other words, we fix $x'=x$ and $y'=y$ to their true, generating values and wish to estimate the internal branch parameter $w'$.
 Recalling Table~\ref{tab:likelihoods}, the likelihood can take one of three forms corresponding to which ancestral state for $\siteSplit_j=\{1,3\}$ maximizes the likelihood for $(x',y',w')$.
-If $x'$ and $y'$ are fixed, the likelihood in \eqref{eq:farris_likelihood} as a function of $w'$ is proportional to
+%EM You are talking about a log likelihood here, right? So a likelihood being proportional to means that there is some additive constant. Makes things a little confusing.
+If $x'$ and $y'$ are fixed, by collapsing like terms and ignoring terms with only $x'$ and $y'$, the likelihood in \eqref{eq:farris_likelihood} as a function of $w'$ is proportional to
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
     &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
     &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
     &\qquad + (1 - p_{13})\cdot\log(1+w') \\
-    &\qquad + p_{13}\cdot\log(1-w')
+    &\qquad + p_{13}\cdot\log(1-w').
 \end{align*}
-by collapsing like terms and ignoring terms with only $x'$ and $y'$.
 Similarly, the other two possibilities for the likelihood are both proportional to
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
@@ -930,9 +932,12 @@ Similarly, the other two possibilities for the likelihood are both proportional 
 \end{align*}
 Since
 $$
-\log(1+w') >= (1 - p_{13})\cdot\log(1+w') + p_{13}\cdot\log(1-w')
+\log(1+w') \geq (1 - p_{13})\cdot\log(1+w') + p_{13}\cdot\log(1-w')
 $$
-with equality only when $w'=0$, we focus on the second likelihood.
+with equality only when $w'=0$, the second likelihood is the likelihood with the maximum-likelihood ancestral state, and so we need only analyze that case.
+
+Now substitute in values for $p_{\emptyset}$ and $p_{13}$ from Table~\ref{tab:sitepatprob}.
+%EM Not sure what's being suppressed here. Sounds naughty.
 Simplifying and suppressing some variables, this likelihood can be written
 $$
 \ell(w') = \alpha_1\log(\beta+\gamma w') + \alpha_2\log(\beta-\gamma w') + \log(1+w')
@@ -959,19 +964,22 @@ $$
 \beta > \gamma.
 $$
 % Not sure if I need to show this, but if x and y aren't 1 it's 1+x^2+y^2+x^2y^2 > 4xy => (1+x^2)(1+y^2) > 4xy and 1+x^2 > 2x, 1+y^2 > 2y qed
-The derivative is
+The derivative of the log likelihood is
 $$
 \ell'(w') := \frac{d}{dw'} \ell(w') = \frac{\alpha_1 \gamma}{\beta+\gamma w'} - \frac{\alpha_2 \gamma}{\beta-\gamma w'} + \frac{1}{1+w'}.
 $$
-The inequality $\beta > \gamma$ implies that any inequality relating $\ell'$ and 0 is equivalent to the same inequality relating 0 and the quadratic function
+The inequality $\beta > \gamma$ implies that this function stays finite.
+%EM I don't think you mean "any inequality"... what about sin(ell') > 0?
+any inequality relating $\ell'$ and 0 is equivalent to the same inequality relating 0 and the quadratic function
 \begin{align*}
-f(w') &= w^2\cdot(-\gamma^2\alpha_1-\gamma^2\alpha_2-\gamma^2) \\
-      &\qquad + w\cdot(\gamma\alpha_1\beta-\gamma^2\alpha_1-\gamma\alpha_2\beta-\gamma^2\alpha_2) \\
-      &\qquad + (\gamma\alpha_1\beta-\gamma\alpha_2\beta+\beta^2), \\
+f(w') &= (w')^2\cdot(-\gamma^2\alpha_1-\gamma^2\alpha_2-\gamma^2) \\
+      &\qquad + w'\cdot(\gamma\alpha_1\beta-\gamma^2\alpha_1-\gamma\alpha_2\beta-\gamma^2\alpha_2) \\
+      &\qquad + (\gamma\alpha_1\beta-\gamma\alpha_2\beta+\beta^2),
 \end{align*}
+%EM Is this obvious at this point? Couldn't b^2 - 4ac be zero in principle?
 implying $\ell'$ has two zeros according to the quadratic formula.
-By $\alpha_1 > \alpha_2$, $\ell'(0) > 0$ implies $\ell$ is increasing at $w'=0$.
-We use this fact to show that, if the smaller of the zeros of $f(w')$ is greater than one, $\hat{w}' \equiv 1$.
+Because $\alpha_1 > \alpha_2$ we have $\ell'(0) > 0$, and thus $\ell$ is increasing at $w'=0$.
+This implies that if the smaller of the zeros of $f(w')$ is greater than one, then $\hat{w}' \equiv 1$.
 Using the quadratic formula with
 $$
 a(x, y) = -\gamma^2 \alpha_1 - \gamma^2 \alpha_2 - \gamma^2,
