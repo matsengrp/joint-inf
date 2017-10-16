@@ -937,8 +937,6 @@ $$
 with equality only when $w'=0$, the second likelihood is the likelihood with the maximum-likelihood ancestral state, and so we need only analyze that case.
 
 Now substitute in values for $p_{\emptyset}$ and $p_{13}$ from Table~\ref{tab:sitepatprob}.
-%EM Not sure what's being suppressed here. Sounds naughty.
-%das: I meant suppressing terms not involving $w'$, but I guess I already did that...
 Simplifying, the likelihood can be written
 $$
 \ell(w') = \alpha_1\log(\beta+\gamma w') + \alpha_2\log(\beta-\gamma w') + \log(1+w')
@@ -970,18 +968,13 @@ The derivative of the log likelihood is
 $$
 \ell'(w') := \frac{d}{dw'} \ell(w') = \frac{\alpha_1 \gamma}{\beta+\gamma w'} - \frac{\alpha_2 \gamma}{\beta-\gamma w'} + \frac{1}{1+w'}.
 $$
-%EM I don't think you mean "any inequality"... what about sin(ell') > 0?
 The inequality $\beta > \gamma$ implies that this function stays finite and that, when considering $\ell'(w') \lessgtr 0$, we equivalently consider $f(w') \lessgtr 0$ where $f$ is the quadratic function
 \begin{align*}
 f(w') &= (w')^2\cdot(-\gamma^2\alpha_1-\gamma^2\alpha_2-\gamma^2) \\
       &\qquad + w'\cdot(\gamma\alpha_1\beta-\gamma^2\alpha_1-\gamma\alpha_2\beta-\gamma^2\alpha_2) \\
       &\qquad + (\gamma\alpha_1\beta-\gamma\alpha_2\beta+\beta^2).
 \end{align*}
-%EM Is this obvious at this point? Couldn't b^2 - 4ac be zero in principle?
-%das: only if x or y is zero (though one could be nonzero).
-%b^2 - 4ac is always \ge 0 by \alpha_1 > \alpha_2, so b^2 - 4ac can only be zero if b is zero and a or c is zero.
-%c is never zero, so this means a must be zero for this to happen, which only occurs if \gamma = 0, i.e., if x or y is zero.
-%Added clarification.
+% Note from das: b^2 - 4ac is always \ge 0 by \alpha_1 > \alpha_2, so b^2 - 4ac can only be zero if b is zero and a or c is zero. c is never zero, so this means a must be zero for this to happen, which only occurs if \gamma = 0, i.e., if x or y is zero.
 Excepting all the cases where $x=0$ or where $y=0$, this implies $\ell'$ has two zeros according to the quadratic formula.
 Because $\alpha_1 > \alpha_2$ we have $\ell'(0) > 0$, and thus $\ell$ is increasing at $w'=0$.
 This implies that if the smaller of the zeros of $f(w')$ is greater than one, then $\hat{w}' \equiv 1$.
@@ -1016,7 +1009,6 @@ The form of the likelihood will alter the fitted values of $x$ and $y$ so that e
 
 Our plan of attack is to determine inequalities at which a particular form of likelihood is necessary and plot the regions of $x$ and $y$ where these occur in addition to the region where $\hat{w}'$ is estimated to be one.
 Since we are interested in the region where $\hat{w}'=1$, we choose either the term $(1-x')^2(1+w')(1+y')^2$ or $(1+x')^2(1+w')(1-y')^2$ in Table~\ref{tab:likelihoods} for $\siteSplit_j=\{1,3\}$.
-%EM I don't think I follow the thread of argument here-- what's being assumed when? I think you are assuming $\hat{y}' > \hat{x}'$ ?
 Now, assume that, having estimated $\hat{x}'$ and $\hat{y}'$, $\hat{y}' > \hat{x}'$.
 In this case,
 $$
