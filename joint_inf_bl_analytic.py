@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from numpy import sqrt, log, meshgrid, arange, maximum
 
 def get_what(x, y):
-    alpha_1 = 1+x**2+y**2+4*x*y**2+x**2*y**2
-    alpha_2 = 1+x**2+y**2-4*x*y**2+x**2*y**2
+    alpha_1 = 1./8 * (1+x**2+y**2+4*x*y**2+x**2*y**2)
+    alpha_2 = 1./8 * (1+x**2+y**2-4*x*y**2+x**2*y**2)
     beta =    1+x**2+y**2+x**2*y**2
     gamma = 4*x*y
 
