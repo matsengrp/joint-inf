@@ -11,7 +11,7 @@ env['BUILDERS']['Latexdiff'] = Builder(action = 'latexdiff $SOURCES > $TARGET')
 
 svgs = [
     'figures/topology-inconsistency-legend.svg',
-    'figures/w_hat_heatmap_joint.svg',
+    'figures/w-hat-heatmap-joint-diff-evol.svg',
     'figures/farris_like00.svg',
     'figures/farris_like01.svg',
     'figures/farris_like10.svg',

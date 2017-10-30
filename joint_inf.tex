@@ -894,6 +894,8 @@ Since this is an inequality in two variables, we plot them analytically---see Fi
 
 \begin{figure}
 \centering
+% obtained by running
+% python joint_inf_plot.py --topology --delta .001 --plot-name figures/topology-inconsistency.svg
 \includegraphics[width=.9\textwidth]{topology-inconsistency-legend}
 \caption{
     Regions of inconsistency.
@@ -1004,12 +1006,80 @@ We plot the region where $\hat{w}'(x, y) \ge 1$ in Figure~\ref{fig:bl-inconsiste
 
 \begin{figure}
 \centering
+% obtained by running
+% python joint_inf_plot.py --restricted-branch-lengths --delta .001 --plot-name figures/branch-length-inconsistency.svg
 \includegraphics[width=.9\textwidth]{branch-length-inconsistency-legend}
 \caption{Region of inconsistency with $x$ and $y$ fixed}
 \label{fig:bl-inconsistency}
 \end{figure}
 
 \subsection{General case}
+
+\subsubsection{Restricted general limiting case}
+
+Let $x=y=u$ and $x'=y'=w'=u'$, a ``restricted'' Farris topology.
+We will show that, as $u\rightarrow 0$, $\hat{u'}\rightarrow u_0 > 0$, which is less than ideal.
+Our first mode of approximation is to let $u'^p\approx 0$ for all $p > 1$, preserving only linear terms.
+After some algebra, we show the likelihood is equal to
+\begin{align*}
+    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
+    &=        p_{\emptyset}  \cdot\log(1+2u'^2+4u'^3+u'^4) \\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log(1-u'^4) \\
+    &\qquad + (p_{12}+p_{23})         \cdot\log(1-2u'^2+u'^4) \\
+    &\qquad + p_{13}         \cdot\log(1+2u'^2-4u'^3+u'^4) \\
+    &\qquad - \log(8) \\
+    &\qquad + p_{\emptyset}  \cdot\log((1+u')^5)\\
+    &\qquad + p_{1}          \cdot\log((1+u')^4(1-u'))\\
+    &\qquad + p_{2}          \cdot\log((1+u')^4(1-u'))\\
+    &\qquad + p_{3}          \cdot\log((1+u')^4(1-u'))\\
+    &\qquad + p_{12}         \cdot\log((1+u')^3(1-u')^2)\\
+    &\qquad + p_{13}         \cdot\log((1+u')^4(1-u'))\\
+    &\qquad + p_{23}         \cdot\log((1+u')^3(1-u')^2)\\
+    &\qquad + p_{123}        \cdot\log((1+u')^4(1-u')).
+\end{align*}
+Expanding and simplifying,
+\begin{align*}
+    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
+    &=        p_{\emptyset}  \cdot\log((1+u')(1-u'+3u'^2+u'^3))\\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log(1+u'^2) \\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log((1+u')(1-u')) \\
+    &\qquad + 2(p_{12}+p_{23})         \cdot\log((1+u')(1-u')) \\
+    &\qquad   p_{13}  \cdot\log((1-u')(1+u'+3u'^2-u'^3))\\
+    &\qquad - \log(8) \\
+    &\qquad + 5\cdot\log(1+u')\\
+    &\qquad - (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1+u') \\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1-u').
+\end{align*}
+Now, applying $u'^p\rightarrow 0$ for $p > 1$, this approaches
+\begin{align*}
+    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
+    &\rightarrow        p_{\emptyset}  \cdot\log((1+u')(1-u'))\\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log((1+u')(1-u')) \\
+    &\qquad + 2(p_{12}+p_{23})         \cdot\log((1+u')(1-u')) \\
+    &\qquad   p_{13}  \cdot\log((1-u')(1+u'))\\
+    &\qquad - \log(8) \\
+    &\qquad + 5\cdot\log(1+u')\\
+    &\qquad - (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1+u') \\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1-u'),
+\end{align*}
+and
+\begin{align*}
+    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
+    &\rightarrow (1+p_{12}+p_{23})\cdot\log((1+u')(1-u'))\\
+    &\qquad - \log(8) \\
+    &\qquad + 5\cdot\log(1+u')\\
+    &\qquad - (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1+u') \\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1-u').
+\end{align*}
+This is of the form
+$$
+\alpha\log(1+u') + \beta\log(1-u')
+$$
+and maximized at $\hat{u}' = (\alpha - \beta) / (\alpha + \beta)$ provided $\hat{u}' \in [0,1]$.
+As $u\rightarrow 0$, $\alpha\rightarrow 21/4$ and $\beta\rightarrow 9/4$ so $\hat{u}'\rightarrow 2/5.$
+I don't know if this is interesting yet.
+
+\subsubsection{General general case}
 
 We consider the more standard case where the true values of $x$ and $y$ are not known.
 The form of the likelihood will alter the fitted values of $x$ and $y$ so that even with perfect information we will not necessarily estimate $\hat{x}'=x$ and $\hat{y}'=y$.
@@ -1160,14 +1230,16 @@ We know for sure $a$ is decreasing with $\gamma$ and $c$ is increasing with $\ga
 
 \subsection{Empirical results for the general case}
 
-When computing the global maximum for $0 \le x',y',w' \le 1$ using basin-hopping, we obtain the fit $\hat{w}'$ in Fig.~\ref{fig:w_hat_joint}.
-The region in which $\hat{w}'$ is estimated to be one---indicating no change along that particular branch---is now much smaller, but still nontrivial.
-Additionally, the estimates are surprisingly unstable, with estimates of 1 for $\hat{w}'$ scattered throughout the $(x,y)$ lattice.
-Even given the correct Farris topology we have a region of the space of true parameters where we will always estimate the interior branch parameter to be one.
+When seeking a global maximum for $0 \le x',y',w' \le 1$, we use the method of differential evolution \cite{Storn1997}---we obtain the fit $\hat{w}'$ in Fig.~\ref{fig:w_hat_joint}.
+The estimates for $\hat{w}'$ when $x$ and $y$ are large seem to be unbiased, with $\hat{w}'$ increasing as $y$ increases, though the region where $\hat{w}'$ is estimated to be one---indicating no change along that particular branch---is similar to that in the restricted case.
+Although the restricted and general case are similar, comparing Figures~\ref{fig:bl-inconsistency} and~\ref{fig:w_hat_joint} shows that the general case has a smaller region where $\hat{w}'$ is one, as expected.
+Nevertheless, this region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have a region of the space of true parameters where we will always estimate the interior branch parameter to be one.
 
 \begin{figure}
 \centering
-\includegraphics[width=.9\textwidth]{w_hat_heatmap_joint}
+% obtained by running
+% python joint_inf_plot.py --general-branch-lengths --delta .001 --plot-name figures/w-hat-heatmap-joint-diff-evol.svg --n-jobs 10
+\includegraphics[width=.9\textwidth]{w-hat-heatmap-joint-diff-evol}
 \caption{
     Estimating $(\hat{x}', \hat{y}', \hat{w}')$.
 }
