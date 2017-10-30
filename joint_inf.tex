@@ -325,7 +325,7 @@ for $\tau'\neq\tau^*$ with $\{\hat{t}_1,\fullAncestralSplitPartitions(\tau', \ha
 By Gibbs' inequality, $\shannonDivergence_{\tau^*,t^*}(\tau,t)$ is maximized when $(\tau,t) = (\tau^*,t^*)$, so any example of inconsistency must overcome that difference with substantially greater partial likelihoods on the non-generating topology.
 In the next section, we show that such examples exist.
 
-\section{Inconsistency of joint maximum likelihood}
+\section{Inconsistency of joint maximum likelihood in estimating topology}
 
 \subsection{Bounding the likelihoods}
 
@@ -904,31 +904,44 @@ Since this is an inequality in two variables, we plot them analytically---see Fi
 \label{fig:inconsistency-farris}
 \end{figure}
 
-\section{Branch lengths}
+\section{Inconsistency of joint maximum likelihood in estimating branch fidelities}
 
-We will now consider the problem of branch length estimation on the correct tree using joint ancestral state and branch length estimation.
-We will consider two settings on the Farris topology, corresponding to whether some branch lengths are known ahead of time or not.
+We will now consider the problem of branch fidelity estimation on the correct tree using joint ancestral state and branch fidelity estimation.
+We will consider two settings on the Farris topology, corresponding to whether some branch fidelities are known ahead of time or not.
 As above, we will assume that data is generated with two sister branches of fidelity $x$, with all other branches of length $y$.
+We will show that, for a nontrivial subset of possible values for $x$ and $y$, the interior branch fidelity parameter $w'$ will be consistently overestimated as exactly equal to one instead of its true value of $y$.
+That is, for the restricted case, with
+$$
+\hat{w}' = \arg\max_{w'} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x,y,w'\}; \fullAncestralSplitPartitions(\tau_1,\{x,y,w'\})),
+$$
+we show there are values for $x$ and $y$ where $\hat{w}'\equiv 1$.
+In the general case, we do the same but with
+$$
+(\hat{x}', \hat{y}', \hat{w}') = \arg\max_{x',y',w'} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\})).
+$$
 %EM We will show XXX... and introduce \hat{w'} here.
+%das: updated
 
-\subsection{Fixed $x'$ and $y'$}
+\subsection{Restricted case: fixed $x'$ and $y'$}
 
 First, assume we know the true values of $x'$ and $y'$ but not $w'$.
 In other words, we fix $x'=x$ and $y'=y$ to their true, generating values and wish to estimate the internal branch parameter $w'$.
 Recalling Table~\ref{tab:likelihoods}, the likelihood can take one of three forms corresponding to which ancestral state for $\siteSplit_j=\{1,3\}$ maximizes the likelihood for $(x',y',w')$.
 %EM You are talking about a log likelihood here, right? So a likelihood being proportional to means that there is some additive constant. Makes things a little confusing.
-If $x'$ and $y'$ are fixed, by collapsing like terms and ignoring terms with only $x'$ and $y'$, the likelihood in \eqref{eq:farris_likelihood} as a function of $w'$ is proportional to
+%das: updated
+If $x'$ and $y'$ are fixed, by collapsing like terms and ignoring terms with only $x'$ and $y'$, the log-likelihood in \eqref{eq:farris_likelihood} as a function of $w'$ is
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
-    &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
+    &\sim     p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
     &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
     &\qquad + (1 - p_{13})\cdot\log(1+w') \\
-    &\qquad + p_{13}\cdot\log(1-w').
+    &\qquad + p_{13}\cdot\log(1-w')
 \end{align*}
-Similarly, the other two possibilities for the likelihood are both proportional to
+where $\sim$ denotes equality up to an additive constant.
+Similarly, the other two possibilities for the likelihood both satisfy
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, w'; \fullAncestralSplitPartitions(\tau_1,w'))
-    &\propto        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
+    &\sim     p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw'+x^2y^2) \\
     &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw'+x^2y^2) \\
     &\qquad + \log(1+w').
 \end{align*}
@@ -1162,7 +1175,7 @@ Let's consider first $x'=y'$; if we can show that for $x,y<\epsilon$ where it lo
 So fix $x'=y'=u$ and get
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, u; \fullAncestralSplitPartitions(\tau_1,u))
-    &\propto   p_{\emptyset}  \cdot\log(1+6u^2+u^4) \\
+    &\sim     p_{\emptyset}  \cdot\log(1+6u^2+u^4) \\
     &\qquad + p_{13}         \cdot\log(1-2u^2+u^4) \\
     &\qquad + (p_{1} + p_{2} + p_{3} + p_{123})          \cdot\log(1+u^2) \\
     &\qquad + (4-2p_{13})\log(1+u) \\
@@ -1171,7 +1184,7 @@ So fix $x'=y'=u$ and get
 which is
 \begin{align*}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, u; \fullAncestralSplitPartitions(\tau_1,u))
-    &\propto   p_{\emptyset}  \cdot\log(1+6u^2+u^4) \\
+    &\sim     p_{\emptyset}  \cdot\log(1+6u^2+u^4) \\
     &\qquad + (p_{13} + p_{1} + p_{2} + p_{3} + p_{123})          \cdot\log(1+u^2) \\
     &\qquad + (4-p_{13})\log(1+u) \\
     &\qquad + (2p_{1}+2p_{2}+2p_{3}+2p_{123}+3p_{13}+4p_{12}+4p_{23})\log(1-u). \\
