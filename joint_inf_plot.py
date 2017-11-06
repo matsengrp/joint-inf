@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import argparse
 import sys
+import pickle
 
 from operator import mul
 from multiprocessing import Pool
@@ -56,6 +57,13 @@ def parse_args():
         default=1,
     )
     parser.add_argument(
+        '--param-index',
+        type=int,
+        default=2,
+        choices=(0, 1, 2),
+        help='which parameter to optimize; 0: x, 1: y, 2: w',
+    )
+    parser.add_argument(
         '--topology',
         action="store_true",
         help='topology plot',
@@ -69,6 +77,21 @@ def parse_args():
         '--general-branch-lengths',
         action="store_true",
         help='general branch lengths plot',
+    )
+    parser.add_argument(
+        '--general-likelihood',
+        action="store_true",
+        help='general likelihood pickle',
+    )
+    parser.add_argument(
+        '--analytic',
+        action="store_true",
+        help='plot analytic',
+    )
+    parser.add_argument(
+        '--empirical',
+        action="store_true",
+        help='compute empirical',
     )
 
     args = parser.parse_args()
@@ -261,9 +284,28 @@ def what_lower_minus_one(x, y):
 
     what_lower = (-b - np.sqrt(b**2 - 4*a*c)) / (2*a)
 
-    return (what_lower - 1)
+    # a + b + c = -gamma**2 * (1+.5*beta) + 2*gamma*beta*x*y**2 + beta**2
+    # for general case, gamma are fns of (x', y') and 2nd and 3rd betas are too
+    #return -gamma**2 * (1+.5*beta) + 2*gamma*beta*x*y**2 + beta**2
 
-def max_likelihood(xy):
+    #return (what_lower - 1)
+    #return -gamma**2 * (1+.5*beta) + 2*gamma*beta*x*y**2 + beta**2
+    return (a + b + c)
+
+def what_lower_general(x, y):
+    beta = 1+x**2+y**2+x**2*y**2
+    gamma = 4*x*y
+    x_l = x-.1
+    x_u = x+.1
+    y_l = y-.1
+    y_u = y+.1
+    gamma_l = 4*x_l*y_l
+    gamma_u = 4*x_u*y_u
+    beta_l = 1+x_l**2+y_l**2+x_l**2*y_l**2
+
+    return -gamma_u**2 * (1+.5*beta) + 2*gamma_l*beta_l*x*y**2 + beta_l**2
+
+def max_likelihood(xy, param_index):
     """
     differential evolution to find maximum likelihood estimate of interior branch length
     """
@@ -272,7 +314,35 @@ def max_likelihood(xy):
         lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2]),
         bounds=bnds
     )
-    return what.x[2]
+    return what.x[param_index]
+
+def max_likelihood_all(xy):
+    """
+    differential evolution to find maximum likelihood estimate of interior branch length
+    """
+    bnds = [(0,1), (0,1), (0,1)]
+    what = differential_evolution(
+        lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2]),
+        bounds=bnds
+    )
+    return what
+
+def max_likelihood_all_w(xy):
+    """
+    differential evolution to find maximum likelihood estimate of interior branch length
+    """
+    bnds = [(0,1)]
+    what = differential_evolution(
+        lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], xy[0], xy[1], z),
+        bounds=bnds
+    )
+    return what
+
+class MaxLikelihood(object):
+    def __init__(self, param_index):
+        self.param_index = param_index
+    def __call__(self, xy):
+        return max_likelihood(xy, self.param_index)
 
 def main(args=sys.argv[1:]):
     args = parse_args()
@@ -293,30 +363,50 @@ def main(args=sys.argv[1:]):
         plt.contour(X, Y, region, [0])
         plt.xlabel(r'x', fontsize=16)
         plt.ylabel(r'y', fontsize=16)
-        plt.title(r'Region of inconsistent branch length estimation (restricted case)')
+        plt.title(r'Region of inconsistent branch parameter estimation (restricted case)')
         plt.savefig(args.plot_name)
-    elif args.general_branch_lengths:
+    elif args.general_branch_lengths and args.analytic:
+        region = what_lower_general(X, Y)
+        plt.contour(X, Y, region, [0])
+        plt.xlabel(r'x', fontsize=16)
+        plt.ylabel(r'y', fontsize=16)
+        plt.title(r'Region of inconsistent branch parameter estimation (general case)')
+        plt.savefig(args.plot_name)
+    elif args.general_branch_lengths and args.empirical:
         if args.n_jobs > 1:
-            p = Pool(processes=8)
-            ZZ = p.map( max_likelihood , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
+            p = Pool(processes=args.n_jobs)
+            ZZ = p.map( MaxLikelihood(args.param_index) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
             Z = np.reshape(ZZ, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
         else:
-            Z = np.vectorize(lambda x, y: max_likelihood((x, y)))(X, Y)
+            Z = np.vectorize(lambda x, y: max_likelihood((x, y), param_index=args.param_index))(X, Y)
 
         im = plt.imshow(Z, cmap=plt.cm.gray, origin='lower')
         plt.colorbar()
         plt.xlabel(r'x', fontsize=16)
         plt.ylabel(r'y', fontsize=16)
-        plt.title(r'Value of $\hat{w}$')
+        plt.title(r'Value of $\hat{%s}$' % 'xyw'[args.param_index])
         ax = plt.gca()
         ax.set_xticks(np.arange(0, 1/args.delta, .2/args.delta))
         ax.set_yticks(np.arange(0, 1/args.delta, .2/args.delta))
         ax.set_xticklabels(np.arange(0, 1, .2))
         ax.set_yticklabels(np.arange(0, 1, .2))
         plt.savefig(args.plot_name)
+    elif args.general_likelihood:
+        if args.n_jobs > 1:
+            p = Pool(processes=args.n_jobs)
+            ZZ = p.map( max_likelihood_all , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
+            Z = np.reshape(ZZ, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
+            ZZ = p.map( max_likelihood_all_w , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
+            Z2 = np.reshape(ZZ, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
+        else:
+            Z = np.vectorize(lambda x, y: max_likelihood_all((x, y)))(X, Y)
+            Z2 = np.vectorize(lambda x, y: max_likelihood_all_w((x, y)))(X, Y)
+
+        with open(args.plot_name, 'w') as f:
+            pickle.dump([X, Y, Z, Z2], f)
     else:
         print "No plotting argument given!"
-        print "Options: --topology, --restricted-branch-lengths, --general-branch-lengths"
+        print "Options: --topology, --restricted-branch-lengths, --general-branch-lengths, --general-likelihood"
 
 if __name__ == "__main__":
     main(sys.argv[1:])

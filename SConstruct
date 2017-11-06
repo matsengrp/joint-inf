@@ -20,6 +20,7 @@ svgs = [
     'figures/farris_blank.svg',
     'figures/felsenstein_blank.svg',
     'figures/branch-length-inconsistency-legend.svg',
+    'figures/bl-loose-inconsistency.svg',
 ]
 
 pdfs = [env.Inkscape(target="figures/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)

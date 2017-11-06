@@ -1017,6 +1017,65 @@ We plot the region where $\hat{w}'(x, y) \ge 1$ in Figure~\ref{fig:bl-inconsiste
 
 \subsection{General case}
 
+\subsubsection{General case: loose bounds}
+
+In the general case, $\hat{w}'$ is a function of $x$, $y$, $\hat{x}'$, and $\hat{y}'$.
+Looking to the previous section, $\hat{w}'$ is still given by the quadratic formula, only with $\gamma$ and $\beta$ now being functions of $\hat{x}'$ and $\hat{y}'$ instead of $x'$ and $y'$.
+Now, suppressing function arguments and given that $a < 0$, we are interested in the cases where
+$$
+\frac{-b - \sqrt{b^2 - 4ac}}{2a} \ge 1,
+$$
+$$
+-b - \sqrt{b^2 - 4ac} \le 2a,
+$$
+$$
+-b - 2a \le \sqrt{b^2 - 4ac},
+$$
+$$
+b^2 + 4ab + 4a^2 \le b^2 - 4ac,
+$$
+$$
+a^2 + ab + ac \le 0,
+$$
+$$
+a + b + c \ge 0.
+$$
+Simplifying, this is
+$$
+-\gamma^2(x', y')(1 + \frac{1}{2}\beta(x, y)) + 2\gamma(x', y')\beta(x', y')xy^2 + \beta^2(x', y') \ge 0.
+$$
+If we can find
+$$
+\gamma_{L}(x, y) \le \gamma(x', y') \le \gamma_{U}(x, y),
+$$
+$$
+\beta_{L}(x, y) \le \beta(x', y'),
+$$
+then we are interested in
+$$
+-\gamma_{U}^2(x, y)(1 + \frac{1}{2}\beta(x, y)) + 2\gamma_{L}(x, y)\beta_{L}(x, y)xy^2 + \beta_{L}^2(x, y) \ge 0,
+$$
+an inequality of two variables.
+The loosest possible bounds are $\gamma_{L} = 0$, $\beta_{L} = 1$ and $\gamma_{U} = 4$ which gives
+$$
+-16(1 + \frac{1}{2}\beta(x, y)) + 1 \ge 0,
+$$
+which is never true.
+The tightest possible bounds are $\gamma_{L} = \gamma_{U} = \gamma(x, y)$ and $\beta_{L} = \beta(x, y)$, which gives Figure~\ref{fig:bl-inconsistency}.
+
+Let's say you are willing to tolerate a specified level of error in your estimates for $\hat{x}'$ and $\hat{y}'$.
+If we're generous, let's call this error $.1$ in either direction; this would be a substantial deviation from the truth in many applications.
+In this case, we have the left side of Figure~\ref{fig:bl-loose-inconsistency} where we either estimate $\hat{w}'$ to be one or we poorly estimate $\hat{x}'$ or $\hat{y}'$.
+
+\begin{figure}
+\centering
+% obtained by running
+% python joint_inf_plot.py --general-branch-lengths --analytic --delta .001 --plot-name figures/bl-loose-inconsistency.svg
+\includegraphics[width=.9\textwidth]{bl-loose-inconsistency}
+\caption{Region of inconsistency with $x-.1 \le \hat{x}' \le x+.1$ and $y-.1 \le \hat{y}' \le y+.1$.}
+\label{fig:bl-loose-inconsistency}
+\end{figure}
+
 \subsubsection{Restricted general limiting case}
 
 Let $x=y=u$ and $x'=y'=w'=u'$, a ``restricted'' Farris topology.
