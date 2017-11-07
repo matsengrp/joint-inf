@@ -2,6 +2,218 @@
 
 \subsection{Branch lengths with $x$ and $y$ unknown}
 
+\subsubsection{Restricted general limiting case}
+
+Let $x=y=u$ and $x'=y'=w'=u'$, a ``restricted'' Farris topology.
+We will show that, as $u\rightarrow 0$, $\hat{u'}\rightarrow u_0 > 0$, which is less than ideal.
+Our first mode of approximation is to let $u'^p\approx 0$ for all $p > 1$, preserving only linear terms.
+After some algebra, we show the likelihood is equal to
+\begin{align*}
+    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
+    &=        p_{\emptyset}  \cdot\log(1+2u'^2+4u'^3+u'^4) \\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log(1-u'^4) \\
+    &\qquad + (p_{12}+p_{23})         \cdot\log(1-2u'^2+u'^4) \\
+    &\qquad + p_{13}         \cdot\log(1+2u'^2-4u'^3+u'^4) \\
+    &\qquad - \log(8) \\
+    &\qquad + p_{\emptyset}  \cdot\log((1+u')^5)\\
+    &\qquad + p_{1}          \cdot\log((1+u')^4(1-u'))\\
+    &\qquad + p_{2}          \cdot\log((1+u')^4(1-u'))\\
+    &\qquad + p_{3}          \cdot\log((1+u')^4(1-u'))\\
+    &\qquad + p_{12}         \cdot\log((1+u')^3(1-u')^2)\\
+    &\qquad + p_{13}         \cdot\log((1+u')^4(1-u'))\\
+    &\qquad + p_{23}         \cdot\log((1+u')^3(1-u')^2)\\
+    &\qquad + p_{123}        \cdot\log((1+u')^4(1-u')).
+\end{align*}
+Expanding and simplifying,
+\begin{align*}
+    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
+    &=        p_{\emptyset}  \cdot\log((1+u')(1-u'+3u'^2+u'^3))\\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log(1+u'^2) \\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log((1+u')(1-u')) \\
+    &\qquad + 2(p_{12}+p_{23})         \cdot\log((1+u')(1-u')) \\
+    &\qquad   p_{13}  \cdot\log((1-u')(1+u'+3u'^2-u'^3))\\
+    &\qquad - \log(8) \\
+    &\qquad + 5\cdot\log(1+u')\\
+    &\qquad - (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1+u') \\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1-u').
+\end{align*}
+Now, applying $u'^p\rightarrow 0$ for $p > 1$, this approaches
+\begin{align*}
+    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
+    &\rightarrow        p_{\emptyset}  \cdot\log((1+u')(1-u'))\\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log((1+u')(1-u')) \\
+    &\qquad + 2(p_{12}+p_{23})         \cdot\log((1+u')(1-u')) \\
+    &\qquad   p_{13}  \cdot\log((1-u')(1+u'))\\
+    &\qquad - \log(8) \\
+    &\qquad + 5\cdot\log(1+u')\\
+    &\qquad - (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1+u') \\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1-u'),
+\end{align*}
+and
+\begin{align*}
+    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
+    &\rightarrow (1+p_{12}+p_{23})\cdot\log((1+u')(1-u'))\\
+    &\qquad - \log(8) \\
+    &\qquad + 5\cdot\log(1+u')\\
+    &\qquad - (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1+u') \\
+    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1-u').
+\end{align*}
+This is of the form
+$$
+\alpha\log(1+u') + \beta\log(1-u')
+$$
+and maximized at $\hat{u}' = (\alpha - \beta) / (\alpha + \beta)$ provided $\hat{u}' \in [0,1]$.
+As $u\rightarrow 0$, $\alpha\rightarrow 21/4$ and $\beta\rightarrow 9/4$ so $\hat{u}'\rightarrow 2/5.$
+I don't know if this is interesting yet.
+
+\subsubsection{General general case}
+
+We consider the more standard case where the true values of $x$ and $y$ are not known.
+The form of the likelihood will alter the fitted values of $x$ and $y$ so that even with perfect information we will not necessarily estimate $\hat{x}'=x$ and $\hat{y}'=y$.
+
+Our plan of attack is to determine inequalities at which a particular form of likelihood is necessary and plot the regions of $x$ and $y$ where these occur in addition to the region where $\hat{w}'$ is estimated to be one.
+Since we are interested in the region where $\hat{w}'=1$, we choose either the term $(1-x')^2(1+w')(1+y')^2$ or $(1+x')^2(1+w')(1-y')^2$ in Table~\ref{tab:likelihoods} for $\siteSplit_j=\{1,3\}$.
+Now, assume that, having estimated $\hat{x}'$ and $\hat{y}'$, $\hat{y}' > \hat{x}'$.
+In this case,
+$$
+(1-\hat{x}'^2)(1+\hat{y}'^2) > (1+\hat{x}'^2)(1-\hat{y}'^2),
+$$
+so we use the likelihood
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{1}          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + p_{2}          \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad + p_{3}          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + p_{12}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{23}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + p_{123}        \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad - \log(8) \\
+    &\qquad + p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{2}          \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+    &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{13}         \cdot\log((1-x')^2   (1+w')(1+y')^2) \\
+    &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
+    &\qquad + p_{123}        \cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
+\end{align*}
+This simplifies to
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + (p_{1} + p_{3})          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
+    &\qquad + (p_{2} + p_{123})          \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
+    &\qquad + (p_{12} + p_{23})         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
+    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23}-2p_{13})\log(1+x') \\
+    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23}+2p_{13})\log(1-x') \\
+    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\log(1+y') \\
+    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\log(1-y') \\
+    &\qquad + \log(1+w').
+\end{align*}
+We need to obtain
+$$
+(\hat{x}', \hat{y}', \hat{w}') = \arg\max_{x, y, w} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+$$
+as functions of $x$ and $y$ and verify the region where $\hat{w}'(x, y) = 1$ and $\hat{y}'(x, y) > \hat{x}'(x, y)$.
+This region will be consistent with one always estimating $\hat{w}'$ to be one.
+This can similarly be done for the other likelihood term with $\hat{x}'(x, y) > \hat{y}'(x, y)$.
+To do is to find these functions---or subsets of their varieties---in as closed a form as possible.
+
+As a first attempt, simplify further to
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + (p_{2} + p_{123})          \cdot\log(1+x'^2) \\
+    &\qquad + (p_{1} + p_{3} + p_{12} + p_{23})          \cdot\log(1-x'^2) \\
+    &\qquad + (p_{1} + p_{3})          \cdot\log(1+y'^2) \\
+    &\qquad + (p_{2} + p_{123} + p_{12} + p_{23})          \cdot\log(1-y'^2) \\
+    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23}-2p_{13})\log(1+x') \\
+    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23}+2p_{13})\log(1-x') \\
+    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\log(1+y') \\
+    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\log(1-y') \\
+    &\qquad + \log(1+w')
+\end{align*}
+and
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
+    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
+    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
+    &\qquad + (p_{2} + p_{123})          \cdot\log(1+x'^2) \\
+    &\qquad + (p_{1} + p_{3})          \cdot\log(1+y'^2) \\
+    &\qquad + 2(1-p_{13})\log(1+x') \\
+    &\qquad + 2(p_{1}+p_{3}+p_{12}+p_{23}+p_{13})\log(1-x') \\
+    &\qquad + 2\log(1+y') \\
+    &\qquad + 2(p_{2}+p_{12}+p_{23}+p_{123})\log(1-y') \\
+    &\qquad + \log(1+w').
+\end{align*}
+Say we had estimated $\hat{w}'=1$.
+Then we need is the region where $\hat{y}'>\hat{x}'$ and $0<\hat{x}',\hat{y}'<1$---the case for $\hat{x}'>\hat{y}'$ will be a reflection of this case.
+Let's consider first $x'=y'$; if we can show that for $x,y<\epsilon$ where it looks like $\epsilon\approx 0.4$ then $\hat{w}'=1$ we are at least getting close to something.
+So fix $x'=y'=u$ and get
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, u; \fullAncestralSplitPartitions(\tau_1,u))
+    &\sim     p_{\emptyset}  \cdot\log(1+6u^2+u^4) \\
+    &\qquad + p_{13}         \cdot\log(1-2u^2+u^4) \\
+    &\qquad + (p_{1} + p_{2} + p_{3} + p_{123})          \cdot\log(1+u^2) \\
+    &\qquad + (4-2p_{13})\log(1+u) \\
+    &\qquad + 2(p_{1}+p_{2}+p_{3}+p_{123}+p_{13}+2p_{12}+2p_{23})\log(1-u) \\
+\end{align*}
+which is
+\begin{align*}
+    \ell_{\tau_1,\{x,y,y\}}(\tau_1, u; \fullAncestralSplitPartitions(\tau_1,u))
+    &\sim     p_{\emptyset}  \cdot\log(1+6u^2+u^4) \\
+    &\qquad + (p_{13} + p_{1} + p_{2} + p_{3} + p_{123})          \cdot\log(1+u^2) \\
+    &\qquad + (4-p_{13})\log(1+u) \\
+    &\qquad + (2p_{1}+2p_{2}+2p_{3}+2p_{123}+3p_{13}+4p_{12}+4p_{23})\log(1-u). \\
+\end{align*}
+
+% das: there might be something with 1+y^2 < 1+y here?
+% I'm not sure how specifically it would affect the maximization, and it might be too loose of a bound, but could work to try.
+% The first two terms kind of gunk up the works a little.
+Say we had estimated $\hat{x}'$ and $\hat{y}'$.
+We can use a similar argument as in the restricted case, though now
+$$
+\alpha_1 := \alpha_1(x, y) = 1+x^2+y^2+4xy^2+x^2y^2,
+$$
+$$
+\alpha_2 := \alpha_2(x, y) = 1+x^2+y^2-4xy^2+x^2y^2,
+$$
+$$
+\beta := \beta(x', y') = 1+x'^2+y'^2+x'^2y'^2,
+$$
+$$
+\gamma := \gamma(x', y') = 4x'y'.
+$$
+So instead of the lower bound for $\hat{w}'$ being a function of $x$ and $y$ through $\alpha_1,\alpha_2,\beta$ and $\gamma$, it is a function of $x$ and $y$ through $\beta$ and $\gamma$ via $\hat{x}'$ and $\hat{y}'$.
+Operating on the assumption $\hat{y}' > \hat{x}'$, which we needed to specify the form of the likelihood, we now see
+$$
+1 < 1 + 2x'^2 + x'^4 < \beta < 1+2y'^2+y'^4 < 4
+$$
+and
+$$
+0 < 4x'^2 < \gamma < 4y'^2 < 4.
+$$
+We may be able to use this to restrict our attention to fewer variables, but we need to determine how $a,b$ and $c$ are varying with $\beta$ and $\gamma$ to see which inequalities are useful.
+Recall
+$$
+\hat{w}'(x, y) = \frac{-b(x, y) - \sqrt{b(x, y)^2 - 4a(x, y)c(x, y)}}{2a(x, y)}
+$$
+where
+$$
+a(x, y) = -\gamma^2 \alpha_1 - \gamma^2 \alpha_2 - \gamma^2,
+$$
+$$
+b(x, y) = \gamma \alpha_1 \beta - \gamma^2\alpha_1 - \gamma \alpha_2 \beta - \gamma^2 \alpha_2,
+$$
+$$
+c(x, y) = \gamma \alpha_1 \beta - \gamma \alpha_2 \beta + \beta^2.
+$$
+We know for sure $a$ is decreasing with $\gamma$ and $c$ is increasing with $\gamma$, while $c$ is increasing with $\beta$.
+
 \subsubsection{Maximization of functionals---calculus of variations?}
 
 Call the likelihood $\ell$.

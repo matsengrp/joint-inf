@@ -1021,51 +1021,53 @@ We plot the region where $\hat{w}'(x, y) \ge 1$ in Figure~\ref{fig:bl-inconsiste
 
 In the general case, $\hat{w}'$ is a function of $x$, $y$, $\hat{x}'$, and $\hat{y}'$.
 Looking to the previous section, $\hat{w}'$ is still given by the quadratic formula, only with $\gamma$ and $\beta$ now being functions of $\hat{x}'$ and $\hat{y}'$ instead of $x'$ and $y'$.
-Now, suppressing function arguments and given that $a < 0$, we are interested in the cases where
+Assume we know $\hat{x}'$ and $\hat{y}'$ as functions of $x$ and $y$ only.
+Suppressing function arguments and given that $a < 0$, we are interested in the cases where
 $$
 \frac{-b - \sqrt{b^2 - 4ac}}{2a} \ge 1,
 $$
-$$
--b - \sqrt{b^2 - 4ac} \le 2a,
-$$
-$$
--b - 2a \le \sqrt{b^2 - 4ac},
-$$
-$$
-b^2 + 4ab + 4a^2 \le b^2 - 4ac,
-$$
-$$
-a^2 + ab + ac \le 0,
-$$
+which, after some algebra, is equivalent to
+%-b - \sqrt{b^2 - 4ac} \le 2a,
+%-b - 2a \le \sqrt{b^2 - 4ac},
+%b^2 + 4ab + 4a^2 \le b^2 - 4ac,
+%a^2 + ab + ac \le 0,
 $$
 a + b + c \ge 0.
 $$
 Simplifying, this is
 $$
--\gamma^2(x', y')(1 + \frac{1}{2}\beta(x, y)) + 2\gamma(x', y')\beta(x', y')xy^2 + \beta^2(x', y') \ge 0.
+-\gamma^2(\hat{x}', \hat{y}')(1 + \frac{1}{2}\beta(x, y)) + 2\gamma(\hat{x}', \hat{y}')\beta(\hat{x}', \hat{y}')xy^2 + \beta^2(\hat{x}', \hat{y}') \ge 0.
 $$
 If we can find
 $$
-\gamma_{L}(x, y) \le \gamma(x', y') \le \gamma_{U}(x, y),
+\gamma_{L}(x, y) \le \gamma(\hat{x}', \hat{y}') \le \gamma_{U}(x, y)
 $$
+and
 $$
-\beta_{L}(x, y) \le \beta(x', y'),
+\beta_{L}(x, y) \le \beta(\hat{x}', \hat{y}')
 $$
-then we are interested in
+then we are interested in the region where
 $$
 -\gamma_{U}^2(x, y)(1 + \frac{1}{2}\beta(x, y)) + 2\gamma_{L}(x, y)\beta_{L}(x, y)xy^2 + \beta_{L}^2(x, y) \ge 0,
 $$
-an inequality of two variables.
-The loosest possible bounds are $\gamma_{L} = 0$, $\beta_{L} = 1$ and $\gamma_{U} = 4$ which gives
+an inequality involving only $x$ and $y$.
+The loosest possible bounds are $\gamma_{L} = 0$, $\beta_{L} = 1$ and $\gamma_{U} = 4$, giving
 $$
 -16(1 + \frac{1}{2}\beta(x, y)) + 1 \ge 0,
 $$
 which is never true.
-The tightest possible bounds are $\gamma_{L} = \gamma_{U} = \gamma(x, y)$ and $\beta_{L} = \beta(x, y)$, which gives Figure~\ref{fig:bl-inconsistency}.
+The tightest possible bounds are $\gamma_{L} = \gamma_{U} = \gamma(x, y)$ and $\beta_{L} = \beta(x, y)$, which is the case in Figure~\ref{fig:bl-inconsistency}.
 
-Let's say you are willing to tolerate a specified level of error in your estimates for $\hat{x}'$ and $\hat{y}'$.
-If we're generous, let's call this error $.1$ in either direction; this would be a substantial deviation from the truth in many applications.
-In this case, we have the left side of Figure~\ref{fig:bl-loose-inconsistency} where we either estimate $\hat{w}'$ to be one or we poorly estimate $\hat{x}'$ or $\hat{y}'$.
+Say we are willing to tolerate a specified level of error in our estimates for $\hat{x}'$ and $\hat{y}'$ so that
+$$
+x-x_{L} \le \hat{x}' \le x+x_{U}
+$$
+and
+$$
+y-y_{L} \le \hat{y}' \le y+y_{U}.
+$$
+As an example, let this error be $.1$ in either direction, i.e., $x_{L}=x_{U}=y_{L}=y_{U}=.1$.
+In this case, the region to the left side of the curve in Figure~\ref{fig:bl-loose-inconsistency} will either estimate $\hat{w}'$ to be one or estimate either $\hat{x}'$ or $\hat{y}'$ to be more than $.1$ away from its true value.
 
 \begin{figure}
 \centering
@@ -1075,218 +1077,6 @@ In this case, we have the left side of Figure~\ref{fig:bl-loose-inconsistency} w
 \caption{Region of inconsistency with $x-.1 \le \hat{x}' \le x+.1$ and $y-.1 \le \hat{y}' \le y+.1$.}
 \label{fig:bl-loose-inconsistency}
 \end{figure}
-
-\subsubsection{Restricted general limiting case}
-
-Let $x=y=u$ and $x'=y'=w'=u'$, a ``restricted'' Farris topology.
-We will show that, as $u\rightarrow 0$, $\hat{u'}\rightarrow u_0 > 0$, which is less than ideal.
-Our first mode of approximation is to let $u'^p\approx 0$ for all $p > 1$, preserving only linear terms.
-After some algebra, we show the likelihood is equal to
-\begin{align*}
-    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
-    &=        p_{\emptyset}  \cdot\log(1+2u'^2+4u'^3+u'^4) \\
-    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log(1-u'^4) \\
-    &\qquad + (p_{12}+p_{23})         \cdot\log(1-2u'^2+u'^4) \\
-    &\qquad + p_{13}         \cdot\log(1+2u'^2-4u'^3+u'^4) \\
-    &\qquad - \log(8) \\
-    &\qquad + p_{\emptyset}  \cdot\log((1+u')^5)\\
-    &\qquad + p_{1}          \cdot\log((1+u')^4(1-u'))\\
-    &\qquad + p_{2}          \cdot\log((1+u')^4(1-u'))\\
-    &\qquad + p_{3}          \cdot\log((1+u')^4(1-u'))\\
-    &\qquad + p_{12}         \cdot\log((1+u')^3(1-u')^2)\\
-    &\qquad + p_{13}         \cdot\log((1+u')^4(1-u'))\\
-    &\qquad + p_{23}         \cdot\log((1+u')^3(1-u')^2)\\
-    &\qquad + p_{123}        \cdot\log((1+u')^4(1-u')).
-\end{align*}
-Expanding and simplifying,
-\begin{align*}
-    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
-    &=        p_{\emptyset}  \cdot\log((1+u')(1-u'+3u'^2+u'^3))\\
-    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log(1+u'^2) \\
-    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log((1+u')(1-u')) \\
-    &\qquad + 2(p_{12}+p_{23})         \cdot\log((1+u')(1-u')) \\
-    &\qquad   p_{13}  \cdot\log((1-u')(1+u'+3u'^2-u'^3))\\
-    &\qquad - \log(8) \\
-    &\qquad + 5\cdot\log(1+u')\\
-    &\qquad - (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1+u') \\
-    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1-u').
-\end{align*}
-Now, applying $u'^p\rightarrow 0$ for $p > 1$, this approaches
-\begin{align*}
-    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
-    &\rightarrow        p_{\emptyset}  \cdot\log((1+u')(1-u'))\\
-    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123})          \cdot\log((1+u')(1-u')) \\
-    &\qquad + 2(p_{12}+p_{23})         \cdot\log((1+u')(1-u')) \\
-    &\qquad   p_{13}  \cdot\log((1-u')(1+u'))\\
-    &\qquad - \log(8) \\
-    &\qquad + 5\cdot\log(1+u')\\
-    &\qquad - (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1+u') \\
-    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1-u'),
-\end{align*}
-and
-\begin{align*}
-    \ell_{\tau_1,\{u\}}(\tau_1, \{u'\}; \fullAncestralSplitPartitions(\tau_1,\{u'\}))
-    &\rightarrow (1+p_{12}+p_{23})\cdot\log((1+u')(1-u'))\\
-    &\qquad - \log(8) \\
-    &\qquad + 5\cdot\log(1+u')\\
-    &\qquad - (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1+u') \\
-    &\qquad + (p_{1}+p_{2}+p_{3}+p_{123}+2p_{12}+2p_{23})\cdot\log(1-u').
-\end{align*}
-This is of the form
-$$
-\alpha\log(1+u') + \beta\log(1-u')
-$$
-and maximized at $\hat{u}' = (\alpha - \beta) / (\alpha + \beta)$ provided $\hat{u}' \in [0,1]$.
-As $u\rightarrow 0$, $\alpha\rightarrow 21/4$ and $\beta\rightarrow 9/4$ so $\hat{u}'\rightarrow 2/5.$
-I don't know if this is interesting yet.
-
-\subsubsection{General general case}
-
-We consider the more standard case where the true values of $x$ and $y$ are not known.
-The form of the likelihood will alter the fitted values of $x$ and $y$ so that even with perfect information we will not necessarily estimate $\hat{x}'=x$ and $\hat{y}'=y$.
-
-Our plan of attack is to determine inequalities at which a particular form of likelihood is necessary and plot the regions of $x$ and $y$ where these occur in addition to the region where $\hat{w}'$ is estimated to be one.
-Since we are interested in the region where $\hat{w}'=1$, we choose either the term $(1-x')^2(1+w')(1+y')^2$ or $(1+x')^2(1+w')(1-y')^2$ in Table~\ref{tab:likelihoods} for $\siteSplit_j=\{1,3\}$.
-Now, assume that, having estimated $\hat{x}'$ and $\hat{y}'$, $\hat{y}' > \hat{x}'$.
-In this case,
-$$
-(1-\hat{x}'^2)(1+\hat{y}'^2) > (1+\hat{x}'^2)(1-\hat{y}'^2),
-$$
-so we use the likelihood
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
-    &\qquad + p_{1}          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
-    &\qquad + p_{2}          \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
-    &\qquad + p_{3}          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
-    &\qquad + p_{12}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
-    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
-    &\qquad + p_{23}         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
-    &\qquad + p_{123}        \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
-    &\qquad - \log(8) \\
-    &\qquad + p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
-    &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{2}          \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
-    &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
-    &\qquad + p_{13}         \cdot\log((1-x')^2   (1+w')(1+y')^2) \\
-    &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
-    &\qquad + p_{123}        \cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
-\end{align*}
-This simplifies to
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
-    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
-    &\qquad + (p_{1} + p_{3})          \cdot\log(1-x'^2+y'^2-x'^2y'^2) \\
-    &\qquad + (p_{2} + p_{123})          \cdot\log(1+x'^2-y'^2-x'^2y'^2) \\
-    &\qquad + (p_{12} + p_{23})         \cdot\log(1-x'^2-y'^2+x'^2y'^2) \\
-    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23}-2p_{13})\log(1+x') \\
-    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23}+2p_{13})\log(1-x') \\
-    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\log(1+y') \\
-    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\log(1-y') \\
-    &\qquad + \log(1+w').
-\end{align*}
-We need to obtain
-$$
-(\hat{x}', \hat{y}', \hat{w}') = \arg\max_{x, y, w} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-$$
-as functions of $x$ and $y$ and verify the region where $\hat{w}'(x, y) = 1$ and $\hat{y}'(x, y) > \hat{x}'(x, y)$.
-This region will be consistent with one always estimating $\hat{w}'$ to be one.
-This can similarly be done for the other likelihood term with $\hat{x}'(x, y) > \hat{y}'(x, y)$.
-To do is to find these functions---or subsets of their varieties---in as closed a form as possible.
-
-As a first attempt, simplify further to
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
-    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
-    &\qquad + (p_{2} + p_{123})          \cdot\log(1+x'^2) \\
-    &\qquad + (p_{1} + p_{3} + p_{12} + p_{23})          \cdot\log(1-x'^2) \\
-    &\qquad + (p_{1} + p_{3})          \cdot\log(1+y'^2) \\
-    &\qquad + (p_{2} + p_{123} + p_{12} + p_{23})          \cdot\log(1-y'^2) \\
-    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23}-2p_{13})\log(1+x') \\
-    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23}+2p_{13})\log(1-x') \\
-    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\log(1+y') \\
-    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\log(1-y') \\
-    &\qquad + \log(1+w')
-\end{align*}
-and
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &=        p_{\emptyset}  \cdot\log(1+x'^2+y'^2+4x'y'w'+x'^2y'^2) \\
-    &\qquad + p_{13}         \cdot\log(1+x'^2+y'^2-4x'y'w'+x'^2y'^2) \\
-    &\qquad + (p_{2} + p_{123})          \cdot\log(1+x'^2) \\
-    &\qquad + (p_{1} + p_{3})          \cdot\log(1+y'^2) \\
-    &\qquad + 2(1-p_{13})\log(1+x') \\
-    &\qquad + 2(p_{1}+p_{3}+p_{12}+p_{23}+p_{13})\log(1-x') \\
-    &\qquad + 2\log(1+y') \\
-    &\qquad + 2(p_{2}+p_{12}+p_{23}+p_{123})\log(1-y') \\
-    &\qquad + \log(1+w').
-\end{align*}
-Say we had estimated $\hat{w}'=1$.
-Then we need is the region where $\hat{y}'>\hat{x}'$ and $0<\hat{x}',\hat{y}'<1$---the case for $\hat{x}'>\hat{y}'$ will be a reflection of this case.
-Let's consider first $x'=y'$; if we can show that for $x,y<\epsilon$ where it looks like $\epsilon\approx 0.4$ then $\hat{w}'=1$ we are at least getting close to something.
-So fix $x'=y'=u$ and get
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, u; \fullAncestralSplitPartitions(\tau_1,u))
-    &\sim     p_{\emptyset}  \cdot\log(1+6u^2+u^4) \\
-    &\qquad + p_{13}         \cdot\log(1-2u^2+u^4) \\
-    &\qquad + (p_{1} + p_{2} + p_{3} + p_{123})          \cdot\log(1+u^2) \\
-    &\qquad + (4-2p_{13})\log(1+u) \\
-    &\qquad + 2(p_{1}+p_{2}+p_{3}+p_{123}+p_{13}+2p_{12}+2p_{23})\log(1-u) \\
-\end{align*}
-which is
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, u; \fullAncestralSplitPartitions(\tau_1,u))
-    &\sim     p_{\emptyset}  \cdot\log(1+6u^2+u^4) \\
-    &\qquad + (p_{13} + p_{1} + p_{2} + p_{3} + p_{123})          \cdot\log(1+u^2) \\
-    &\qquad + (4-p_{13})\log(1+u) \\
-    &\qquad + (2p_{1}+2p_{2}+2p_{3}+2p_{123}+3p_{13}+4p_{12}+4p_{23})\log(1-u). \\
-\end{align*}
-
-% das: there might be something with 1+y^2 < 1+y here?
-% I'm not sure how specifically it would affect the maximization, and it might be too loose of a bound, but could work to try.
-% The first two terms kind of gunk up the works a little.
-Say we had estimated $\hat{x}'$ and $\hat{y}'$.
-We can use a similar argument as in the restricted case, though now
-$$
-\alpha_1 := \alpha_1(x, y) = 1+x^2+y^2+4xy^2+x^2y^2,
-$$
-$$
-\alpha_2 := \alpha_2(x, y) = 1+x^2+y^2-4xy^2+x^2y^2,
-$$
-$$
-\beta := \beta(x', y') = 1+x'^2+y'^2+x'^2y'^2,
-$$
-$$
-\gamma := \gamma(x', y') = 4x'y'.
-$$
-So instead of the lower bound for $\hat{w}'$ being a function of $x$ and $y$ through $\alpha_1,\alpha_2,\beta$ and $\gamma$, it is a function of $x$ and $y$ through $\beta$ and $\gamma$ via $\hat{x}'$ and $\hat{y}'$.
-Operating on the assumption $\hat{y}' > \hat{x}'$, which we needed to specify the form of the likelihood, we now see
-$$
-1 < 1 + 2x'^2 + x'^4 < \beta < 1+2y'^2+y'^4 < 4
-$$
-and
-$$
-0 < 4x'^2 < \gamma < 4y'^2 < 4.
-$$
-We may be able to use this to restrict our attention to fewer variables, but we need to determine how $a,b$ and $c$ are varying with $\beta$ and $\gamma$ to see which inequalities are useful.
-Recall
-$$
-\hat{w}'(x, y) = \frac{-b(x, y) - \sqrt{b(x, y)^2 - 4a(x, y)c(x, y)}}{2a(x, y)}
-$$
-where
-$$
-a(x, y) = -\gamma^2 \alpha_1 - \gamma^2 \alpha_2 - \gamma^2,
-$$
-$$
-b(x, y) = \gamma \alpha_1 \beta - \gamma^2\alpha_1 - \gamma \alpha_2 \beta - \gamma^2 \alpha_2,
-$$
-$$
-c(x, y) = \gamma \alpha_1 \beta - \gamma \alpha_2 \beta + \beta^2.
-$$
-We know for sure $a$ is decreasing with $\gamma$ and $c$ is increasing with $\gamma$, while $c$ is increasing with $\beta$.
 
 \subsection{Empirical results for the general case}
 
