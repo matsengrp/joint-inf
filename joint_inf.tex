@@ -50,7 +50,7 @@
 
 \allowdisplaybreaks
 
-\title{On joint estimation of ancestral states and phylogenetic model parameters}
+\title{Joint estimation of ancestral states and phylogenetic model parameters is inconsistent}
 \author{Shaw, Matsen, Minin}
 
 \begin{document}
@@ -71,8 +71,18 @@ These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
 Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$ and limit themselves to optimizing branch lengths using this method, their work motivates understanding when exactly this approximation breaks down, and what happens when we optimize branch lengths and tree topology using this approximation.
 
+%EM clarify that we aren't doing sequence-level simulation somewhere.
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
 To do so, we use a binary symmetric model and imagine data being generated on the four taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the large-data limit.
+
+%EM Potential re-outline--
+%
+%EM 1. Describe setup with Fels and Farris trees, and how we are talking about the case of infinite data.
+%EM 2. Describe fidelities
+%EM 3. State theorems
+%EM 4. Plots
+%EM 5. Discussion, already below. This motivates a more thorough investigation under simulation.
+
 
 \section{Ancestral state reconstruction using maximum likelihood}
 
