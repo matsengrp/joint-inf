@@ -901,8 +901,8 @@ Since this is an inequality in two variables, we plot them analytically---see Fi
 \begin{figure}
 \centering
 % obtained by running
-% python joint_inf_plot.py --topology --delta .001 --plot-name figures/topology-inconsistency.svg
-\includegraphics[width=.9\textwidth]{topology-inconsistency-legend}
+% python joint_inf_plot.py --analytic --topology --delta .001 --plot-name figures/topology-inconsistency.svg
+\includegraphics[width=.9\textwidth]{topology-inconsistency}
 \caption{
     Regions of inconsistency.
     Due to the looseness of the upper and lower bounds, the parameters in the top right do not necessarily indicate consistency, though all parameters in the labeled region result in an inconsistency.
@@ -1019,8 +1019,8 @@ We plot the region where $\hat{w}'(x, y) \ge 1$ in Figure~\ref{fig:bl-inconsiste
 \begin{figure}
 \centering
 % obtained by running
-% python joint_inf_plot.py --restricted-branch-lengths --delta .001 --plot-name figures/branch-length-inconsistency.svg
-\includegraphics[width=.9\textwidth]{branch-length-inconsistency-legend}
+% python joint_inf_plot.py --analytic --restricted-branch-lengths --delta .001 --plot-name figures/branch-length-inconsistency.svg
+\includegraphics[width=.9\textwidth]{branch-length-inconsistency}
 \caption{Region of inconsistency with $x$ and $y$ fixed}
 \label{fig:bl-inconsistency}
 \end{figure}
@@ -1082,7 +1082,7 @@ In this case, the region to the left side of the curve in Figure~\ref{fig:bl-loo
 \begin{figure}
 \centering
 % obtained by running
-% python joint_inf_plot.py --general-branch-lengths --analytic --delta .001 --plot-name figures/bl-loose-inconsistency.svg
+% python joint_inf_plot.py --analytic --general-branch-lengths --delta .001 --plot-name figures/bl-loose-inconsistency.svg
 \includegraphics[width=.9\textwidth]{bl-loose-inconsistency}
 \caption{Region of inconsistency with $x-.1 \le \hat{x}' \le x+.1$ and $y-.1 \le \hat{y}' \le y+.1$.}
 \label{fig:bl-loose-inconsistency}

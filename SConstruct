@@ -10,7 +10,7 @@ env['BUILDERS']['Inkscape'] = inkscape
 env['BUILDERS']['Latexdiff'] = Builder(action = 'latexdiff $SOURCES > $TARGET')
 
 svgs = [
-    'figures/topology-inconsistency-legend.svg',
+    'figures/topology-inconsistency.svg',
     'figures/w-hat-heatmap-joint-diff-evol.svg',
     'figures/farris_like00.svg',
     'figures/farris_like01.svg',
@@ -19,7 +19,7 @@ svgs = [
     'figures/unrooted_four_taxa.svg',
     'figures/farris_blank.svg',
     'figures/felsenstein_blank.svg',
-    'figures/branch-length-inconsistency-legend.svg',
+    'figures/branch-length-inconsistency.svg',
     'figures/bl-loose-inconsistency.svg',
 ]
 
