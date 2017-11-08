@@ -395,8 +395,8 @@ class LegendHandler(object):
     def legend_artist(self, legend, orig_handle, fontsize, handlebox):
         x0, y0 = handlebox.xdescent, handlebox.ydescent
         width, height = handlebox.width, handlebox.height
-        patch = mpatches.Rectangle([x0, y0], width, height, facecolor='k',
-                                   edgecolor='black', lw=1, alpha=.2,
+        patch = mpatches.Rectangle([x0, y0], width, height, facecolor='w',
+                                   edgecolor='black', lw=1,
                                    transform=handlebox.get_transform())
         handlebox.add_artist(patch)
         return patch
@@ -423,20 +423,19 @@ def main(args=sys.argv[1:]):
             legendtext = r'$\hat{w}=1$ or $\hat{x}$ or $\hat{y}$ poorly estimated'
 
         ct = plt.contour(X, Y, region, [0], colors='k', linewidths=1)
+        plt.axis('scaled')
         vec = ct.collections[0].get_paths()[0].vertices
-        if args.topology:
-            x = vec[:,0]
-            y = vec[:,1]
-            plt.fill_between(x, args.delta, y, alpha=.2, color="k")
+        plt.xlabel(r'$x$')
+        plt.ylabel(r'$y$')
+        ttl = plt.title(plottitle, fontsize=14)
+        ttl.set_position([.5, 1.02])
+        if args.restricted_branch_lengths:
+            plt.legend([Legend()], [legendtext],
+                handler_map={Legend: LegendHandler()},
+                bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         else:
-            x = np.append(vec[:,0], args.delta)
-            y = np.append(vec[:,1], 1-args.delta)
-            plt.fill_between(x, y, args.delta, alpha=.2, color="k")
-        plt.xlabel(r'$x$', fontsize=16)
-        plt.ylabel(r'$y$', fontsize=16)
-        plt.title(plottitle, fontsize=16)
-        plt.legend([Legend()], [legendtext],
-            handler_map={Legend: LegendHandler()})
+            plt.legend([Legend()], [legendtext],
+                handler_map={Legend: LegendHandler()})
         sns.despine()
         plt.savefig(args.plot_name)
     elif args.empirical:
