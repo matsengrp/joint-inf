@@ -429,6 +429,11 @@ def main(args=sys.argv[1:]):
         plt.ylabel(r'$y$')
         ttl = plt.title(plottitle, fontsize=14)
         ttl.set_position([.5, 1.02])
+        if not args.topology:
+            x = np.concatenate(([1-args.delta], vec[:,0], [args.delta]))
+            y = np.concatenate(([args.delta], vec[:,1], [1-args.delta]))
+            plt.plot(x, y, '-', alpha=.15, lw=.5)
+
         if args.restricted_branch_lengths:
             plt.legend([Legend()], [legendtext],
                 handler_map={Legend: LegendHandler()},
@@ -436,6 +441,7 @@ def main(args=sys.argv[1:]):
         else:
             plt.legend([Legend()], [legendtext],
                 handler_map={Legend: LegendHandler()})
+
         sns.despine()
         plt.savefig(args.plot_name)
     elif args.empirical:
