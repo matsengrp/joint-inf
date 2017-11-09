@@ -154,9 +154,9 @@ def L_FARRIS(theta, site_pattern, joint=True):
         1
     )
     if joint:
-        return 0.125 * max(s1, s2, s3, s4)
+        return 0.03125 * max(s1, s2, s3, s4)
     else:
-        return 0.125 * sum([s1, s2, s3, s4])
+        return 0.03125 * sum([s1, s2, s3, s4])
 
 def FARRIS_LIKELIHOOD(x, y, xp, yp, wp, joint=True):
     """
@@ -166,7 +166,7 @@ def FARRIS_LIKELIHOOD(x, y, xp, yp, wp, joint=True):
     theta0 = [x, y, x, y, y]
     theta1 = [xp, yp, xp, yp, wp]
     for site_pattern in ALL_PATTERNS:
-        if P_FARRIS(theta0, site_pattern) != 0:
+        if not np.isclose(P_FARRIS(theta0, site_pattern), 0):
             if np.isclose(P_FARRIS(theta1, site_pattern), 0) or np.isclose(L_FARRIS(theta1, site_pattern, joint=joint), 0):
                 likelihood = -np.inf
                 break
@@ -347,18 +347,23 @@ def what_lower_general(x, y):
 #
 #    return what.x[param_index]
 
-def max_likelihood(xy, param_index):
+def max_likelihood(xy, param_index, delta):
     """
     max likelihood as function of marginal likelihood
     """
-    bnds = [(0,1)]*3
-    what = minimize(lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2]),
-        x0=[xy[0], xy[1], xy[1]],
-        method="SLSQP",
-        bounds=bnds,
-    )
 
-    return what.x[param_index]
+    what_gen = differential_evolution(lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2]),
+        bounds=[(delta,1-delta)]*3,
+    )
+    what_res = differential_evolution(lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], 1.-delta),
+        bounds=[(delta,1-delta)]*2,
+    )
+    if -what_res.fun > -what_gen.fun:
+        what = 1.-delta
+    else:
+        what = what_gen.x[param_index]
+
+    return what
 
 def max_likelihood_all(xy):
     """
@@ -383,10 +388,11 @@ def max_likelihood_all_w(xy):
     return what
 
 class MaxLikelihood(object):
-    def __init__(self, param_index):
+    def __init__(self, param_index, delta):
         self.param_index = param_index
+        self.delta = delta
     def __call__(self, xy):
-        return max_likelihood(xy, self.param_index)
+        return max_likelihood(xy, self.param_index, self.delta)
 
 class Legend(object):
     pass
@@ -448,7 +454,7 @@ def main(args=sys.argv[1:]):
         if args.general_branch_lengths:
             if args.n_jobs > 1:
                 p = Pool(processes=args.n_jobs)
-                ZZ = p.map( MaxLikelihood(args.param_index) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
+                ZZ = p.map( MaxLikelihood(args.param_index, args.delta) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
                 Z = np.reshape(ZZ, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
             else:
                 Z = np.vectorize(lambda x, y: max_likelihood((x, y), param_index=args.param_index))(X, Y)
