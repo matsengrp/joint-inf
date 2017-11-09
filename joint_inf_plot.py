@@ -55,6 +55,12 @@ def parse_args():
         default='temporary-plot.svg',
     )
     parser.add_argument(
+        '--pkl-name',
+        type=str,
+        help='file name for where to save pkl',
+        default='temporary-plot.pkl',
+    )
+    parser.add_argument(
         '--delta',
         type=float,
         help='coarseness parameter for plotting',
@@ -304,8 +310,6 @@ def what_lower_minus_one(x, y):
     # for general case, gamma are fns of (x', y') and 2nd and 3rd betas are too
     #return -gamma**2 * (1+.5*beta) + 2*gamma*beta*x*y**2 + beta**2
 
-    #return (what_lower - 1)
-    #return -gamma**2 * (1+.5*beta) + 2*gamma*beta*x*y**2 + beta**2
     return (a + b + c)
 
 def what_lower_general(x, y):
@@ -321,33 +325,7 @@ def what_lower_general(x, y):
 
     return -gamma_u**2 * (1+.5*beta) + 2*gamma_l*beta_l*x*y**2 + beta_l**2
 
-#def max_likelihood(xy, param_index):
-#    """
-#    differential evolution to find maximum likelihood estimate of interior branch length
-#    """
-#    bnds = [(0,1), (0,1), (0,1)]
-#    what = differential_evolution(
-#        lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2]),
-#        bounds=bnds
-#    )
-#
-#def max_likelihood(xy, param_index):
-#    """
-#    max likelihood as function of marginal likelihood
-#    """
-#    bnds = [(0,1)]*3
-#    minimizer_kwargs = dict(
-#        method="SLSQP",
-#        bounds=bnds,
-#    )
-#    what = basinhopping(lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2]),
-#        x0=[xy[0], xy[1], xy[1]],
-#        minimizer_kwargs=minimizer_kwargs
-#    )
-#
-#    return what.x[param_index]
-
-def max_likelihood(xy, param_index, delta):
+def max_likelihood(xy, delta):
     """
     max likelihood as function of marginal likelihood
     """
@@ -361,38 +339,15 @@ def max_likelihood(xy, param_index, delta):
     if -what_res.fun > -what_gen.fun:
         what = 1.-delta
     else:
-        what = what_gen.x[param_index]
+        what = what_gen.x[2]
 
-    return what
-
-def max_likelihood_all(xy):
-    """
-    differential evolution to find maximum likelihood estimate of interior branch length
-    """
-    bnds = [(0,1), (0,1), (0,1)]
-    what = differential_evolution(
-        lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2]),
-        bounds=bnds
-    )
-    return what
-
-def max_likelihood_all_w(xy):
-    """
-    differential evolution to find maximum likelihood estimate of interior branch length
-    """
-    bnds = [(0,1)]
-    what = differential_evolution(
-        lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], xy[0], xy[1], z),
-        bounds=bnds
-    )
     return what
 
 class MaxLikelihood(object):
-    def __init__(self, param_index, delta):
-        self.param_index = param_index
+    def __init__(self, delta):
         self.delta = delta
     def __call__(self, xy):
-        return max_likelihood(xy, self.param_index, self.delta)
+        return max_likelihood(xy, self.delta)
 
 class Legend(object):
     pass
@@ -454,35 +409,24 @@ def main(args=sys.argv[1:]):
         if args.general_branch_lengths:
             if args.n_jobs > 1:
                 p = Pool(processes=args.n_jobs)
-                ZZ = p.map( MaxLikelihood(args.param_index, args.delta) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
-                Z = np.reshape(ZZ, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
+                Z_pool = p.map( MaxLikelihood(args.delta) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
+                Z = np.reshape(Z_pool, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
             else:
-                Z = np.vectorize(lambda x, y: max_likelihood((x, y), param_index=args.param_index))(X, Y)
+                Z = np.vectorize(lambda x, y: max_likelihood((x, y), delta=args.delta))(X, Y)
 
             im = plt.imshow(Z, cmap=plt.cm.gray, origin='lower')
             plt.colorbar()
-            plt.xlabel(r'$x$', fontsize=16)
-            plt.ylabel(r'$x$', fontsize=16)
-            plt.title(r'Value of $\hat{%s}$' % 'xyw'[args.param_index])
+            plt.xlabel(r'$x$')
+            plt.ylabel(r'$y$')
+            plt.title(r'Value of $\hat{w}$', fontsize=14)
             ax = plt.gca()
             ax.set_xticks(np.arange(0, 1/args.delta, .2/args.delta))
             ax.set_yticks(np.arange(0, 1/args.delta, .2/args.delta))
             ax.set_xticklabels(np.arange(0, 1, .2))
             ax.set_yticklabels(np.arange(0, 1, .2))
             plt.savefig(args.plot_name)
-        elif args.output_likelihood:
-            if args.n_jobs > 1:
-                p = Pool(processes=args.n_jobs)
-                ZZ = p.map( max_likelihood_all , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
-                Z = np.reshape(ZZ, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
-                ZZ = p.map( max_likelihood_all_w , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
-                Z2 = np.reshape(ZZ, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
-            else:
-                Z = np.vectorize(lambda x, y: max_likelihood_all((x, y)))(X, Y)
-                Z2 = np.vectorize(lambda x, y: max_likelihood_all_w((x, y)))(X, Y)
-
-            with open(args.plot_name, 'w') as f:
-                pickle.dump([X, Y, Z, Z2], f)
+            with open(args.pkl_name, 'w') as f:
+                pickle.dump([X, Y, Z], f)
     else:
         print "No plotting argument given!"
 
