@@ -55,10 +55,16 @@ def parse_args():
         default='temporary-plot.svg',
     )
     parser.add_argument(
-        '--pkl-name',
+        '--in-pkl-name',
         type=str,
         help='file name for where to save pkl',
-        default='temporary-plot.pkl',
+        default=None,
+    )
+    parser.add_argument(
+        '--out-pkl-name',
+        type=str,
+        help='file name for where to save pkl',
+        default='output.pkl',
     )
     parser.add_argument(
         '--delta',
@@ -385,12 +391,12 @@ def main(args=sys.argv[1:]):
 
         ct = plt.contour(X, Y, region, [0], colors='k', linewidths=1)
         plt.axis('scaled')
-        vec = ct.collections[0].get_paths()[0].vertices
         plt.xlabel(r'$x$')
         plt.ylabel(r'$y$')
         ttl = plt.title(plottitle, fontsize=14)
         ttl.set_position([.5, 1.02])
         if not args.topology:
+            vec = ct.collections[0].get_paths()[0].vertices
             x = np.concatenate(([1-args.delta], vec[:,0], [args.delta]))
             y = np.concatenate(([args.delta], vec[:,1], [1-args.delta]))
             plt.plot(x, y, '-', alpha=.15, lw=.5)
@@ -407,26 +413,33 @@ def main(args=sys.argv[1:]):
         plt.savefig(args.plot_name)
     elif args.empirical:
         if args.general_branch_lengths:
-            if args.n_jobs > 1:
-                p = Pool(processes=args.n_jobs)
-                Z_pool = p.map( MaxLikelihood(args.delta) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
-                Z = np.reshape(Z_pool, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
+            if args.in_pkl_name is None:
+                if args.n_jobs > 1:
+                    p = Pool(processes=args.n_jobs)
+                    Z_pool = p.map( MaxLikelihood(args.delta) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
+                    Z = np.reshape(Z_pool, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
+                else:
+                    Z = np.vectorize(lambda x, y: max_likelihood((x, y), delta=args.delta))(X, Y)
+
+                with open(args.out_pkl_name, 'w') as f:
+                    pickle.dump([X, Y, Z], f)
             else:
-                Z = np.vectorize(lambda x, y: max_likelihood((x, y), delta=args.delta))(X, Y)
+                with open(args.in_pkl_name, 'w') as f:
+                    X, Y, Z = pickle.load(f)
 
             im = plt.imshow(Z, cmap=plt.cm.gray, origin='lower')
             plt.colorbar()
             plt.xlabel(r'$x$')
             plt.ylabel(r'$y$')
-            plt.title(r'Value of $\hat{w}$', fontsize=14)
+            ttl = plt.title(r'Value of $\hat{w}$', fontsize=14)
+            ttl.set_position([.5, 1.02])
             ax = plt.gca()
             ax.set_xticks(np.arange(0, 1/args.delta, .2/args.delta))
             ax.set_yticks(np.arange(0, 1/args.delta, .2/args.delta))
             ax.set_xticklabels(np.arange(0, 1, .2))
             ax.set_yticklabels(np.arange(0, 1, .2))
+            sns.despine()
             plt.savefig(args.plot_name)
-            with open(args.pkl_name, 'w') as f:
-                pickle.dump([X, Y, Z], f)
     else:
         print "No plotting argument given!"
 
