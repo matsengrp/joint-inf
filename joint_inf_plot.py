@@ -422,13 +422,12 @@ def main(args=sys.argv[1:]):
                     Z = np.vectorize(lambda x, y: max_likelihood((x, y), delta=args.delta))(X, Y)
 
                 with open(args.out_pkl_name, 'w') as f:
-                    pickle.dump([X, Y, Z], f)
+                    pickle.dump((X, Y, Z), f)
             else:
-                with open(args.in_pkl_name, 'w') as f:
+                with open(args.in_pkl_name, 'r') as f:
                     X, Y, Z = pickle.load(f)
 
             im = plt.imshow(Z, cmap=plt.cm.gray, origin='lower')
-            plt.colorbar()
             plt.xlabel(r'$x$')
             plt.ylabel(r'$y$')
             ttl = plt.title(r'Value of $\hat{w}$', fontsize=14)
@@ -436,9 +435,10 @@ def main(args=sys.argv[1:]):
             ax = plt.gca()
             ax.set_xticks(np.arange(0, 1/args.delta, .2/args.delta))
             ax.set_yticks(np.arange(0, 1/args.delta, .2/args.delta))
-            ax.set_xticklabels(np.arange(0, 1, .2))
-            ax.set_yticklabels(np.arange(0, 1, .2))
+            ax.set_xticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$'])
+            ax.set_yticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$'])
             sns.despine()
+            plt.colorbar()
             plt.savefig(args.plot_name)
     else:
         print "No plotting argument given!"
