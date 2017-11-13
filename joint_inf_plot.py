@@ -422,10 +422,10 @@ def main(args=sys.argv[1:]):
                     Z = np.vectorize(lambda x, y: max_likelihood((x, y), delta=args.delta))(X, Y)
 
                 with open(args.out_pkl_name, 'w') as f:
-                    pickle.dump((X, Y, Z), f)
+                    pickle.dump((X, Y, Z, args.delta), f)
             else:
                 with open(args.in_pkl_name, 'r') as f:
-                    X, Y, Z = pickle.load(f)
+                    X, Y, Z, args.delta = pickle.load(f)
 
             im = plt.imshow(Z, cmap=plt.cm.gray, origin='lower')
             plt.xlabel(r'$x$')

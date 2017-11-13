@@ -14,7 +14,7 @@ svgs = [
     'figures/farris_like01.svg',
     'figures/farris_like10.svg',
     'figures/farris_like11.svg',
-    'figures/unrooted_four_taxa.svg',
+    'figures/unrooted_farris_tree.svg',
     'figures/farris_blank.svg',
     'figures/felsenstein_blank.svg',
     'figures/topology-inconsistency-inkscape.svg',

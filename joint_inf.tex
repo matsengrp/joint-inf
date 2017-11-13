@@ -74,6 +74,7 @@ Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for
 %EM clarify that we aren't doing sequence-level simulation somewhere.
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
 To do so, we use a binary symmetric model and imagine data being generated on the four taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the large-data limit.
+We find similar areas where joint inference consistently overestimates interior branch lengths when the topology is known.
 
 %EM Potential re-outline--
 %
@@ -86,10 +87,10 @@ To do so, we use a binary symmetric model and imagine data being generated on th
 
 \section{Ancestral state reconstruction using maximum likelihood}
 
-We consider the standard phylogenetic likelihood on unrooted phylogenetic trees \cite{Felsenstein2004}.
+We consider the standard phylogenetic likelihood on unrooted trees \cite{Felsenstein2004}.
 We assume the character alphabet $\alphabet=\{0,1\}$ and a uniform stationary distribution.
 Let $\nSiteRows$ be the number of tips of the tree, and $\nAncestralStateRows = \nSiteRows-2$ the number of internal nodes.
-Assume we observe $\nCols$ samples of character data, i.e., an alignment with $\nCols$ columns, $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$ distributed as the random variable $\alignmentColumnRV$.
+We observe $\nCols$ samples of character data, i.e., an alignment with $\nCols$ columns, $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$ distributed as the random variable $\alignmentColumnRV$.
 The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$ and distributed as $\ancestralStateColumnRV$.
 
 \subsection{Classical maximum-likelihood inference in phylogenetics}
@@ -124,7 +125,7 @@ $$
 
 \subsection{Joint maximization}
 
-An alternative approach is to do away with the marginalization and directly estimate the maximum likelihood parameters from the fully-observed likelihood in \eqref{eq:full_likelihood}.
+An alternative approach does away with the marginalization and directly estimates the maximum likelihood parameters from the fully-observed likelihood in \eqref{eq:full_likelihood}.
 One can compute the profile likelihood
 \begin{equation}
 \label{eq:profile_likelihood}
@@ -144,7 +145,7 @@ For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestra
 
 \subsection{Site split formulation}
 
-Since we have a finite character alphabet, for a given column $i$ there are a finite number of possibilities of assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$; this results in a simplification of likelihood calculation (we follow Section 8.6 of \cite{Semple2003-em}).
+Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$; this results in a simplification of likelihood calculation (we follow Section 8.6 of \cite{Semple2003-em}).
 Take the tip labels of $\tau$ to be $\{1,\ldots,\nSiteRows\}$.
 For likelihood calculation under the binary symmetric model, we describe a given $\alignmentColumn_i$ as a subset of indices $\siteSplit\subseteq\siteSplitSet:=\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
 Indeed, we start by including those tip labels in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$.
@@ -181,14 +182,14 @@ $$
 \ancestralToSplit:\alphabet^\nAncestralStateRows\times\alphabet^\nSiteRows\rightarrow\mathcal{P}(\ancestralSplitSet)
 $$
 as a mapping of ancestral states and tip states to ancestral state splits.
-It is defined by if the tip states have their complements taken or not: if a set of tip labels $\alignmentColumn$ is not contained in $\siteSplitSet$ and thus we must take a complement to become a site split, we let $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ be the complement of $\ancestralStateColumn$; otherwise it is simply $\ancestralStateColumn$.
-Note $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective for each $\alignmentColumn_i$.
+It is defined by whether the tip states have their complements taken or not: if a set of tip labels $\alignmentColumn$ is in $\siteSplitSet$, $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is $\ancestralStateColumn$; otherwise, if $\alignmentColumn$ is not in $\siteSplitSet$, then the complement of $\alignmentColumn$ necessarily is in $\siteSplitSet$, and $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is the complement of $\ancestralStateColumn$.
 We define
 $$
 \ancestralSplitRV := \ancestralToSplit(\alignmentColumnRV, \ancestralStateColumnRV)
 $$
-for a tip state--valued random variable $\alignmentColumnRV$ and an ancestral state--valued random variable $\ancestralStateColumnRV$.
-By considering the case requiring complementing and that not requiring complementing separately,
+for a tip state--valued random variable $\alignmentColumnRV$ and an ancestral state--valued random variable $\ancestralStateColumnRV$, so that
+%By considering the case requiring complementing and that not requiring complementing separately,
+%das: did I write the above? I don't remember the significance of it...
 \begin{align*}
     P(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t) &= P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t).
 \end{align*}
@@ -196,7 +197,8 @@ Given $(\tau, t)$, there exists an ordered list of sets $\fullAncestralSplitPart
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ P(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t) &= P(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
-By the surjectivity of $\ancestralToSplit(\alignmentColumn_i, \cdot)$, we also have
+In other words, for the $j$th site split, $\ancestralSplitPartition_j(\tau, t)\subset\mathcal{P}(\ancestralSplitSet)$ is the set of most likely ancestral splits for that particular site split, topology and set of branch lengths, and $\xi_j$ is one of possibly many equiprobable ancestral state splits in $\ancestralSplitPartition_j(\tau, t)$.
+For each $\alignmentColumn_i$, $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective, and from this have
 \begin{align*}
 \max_{\ancestralStateColumn_i} P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) &= P(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
@@ -215,12 +217,12 @@ where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ wh
 \paragraph{Example}
 \begin{figure}
     \centering
-    \includegraphics[width=.45\textwidth]{unrooted_four_taxa}
-    \caption{Four taxon tree}
+    \includegraphics[width=.45\textwidth]{unrooted_farris_tree}
+    \caption{Four taxon ``Farris zone'' tree.}
 \label{fig:four-taxa-tree}
 \end{figure}
 
-Consider the fixed, binary four-tip tree $\tau$ in Fig.~\ref{fig:four-taxa-tree}.
+Consider the fixed, binary four-tip tree $\tau$ in Fig.~\ref{fig:four-taxa-tree}---this is commonly known as the ``Farris zone'' topology.
 The set of all possible character assignments is
 \begin{align*}
 \mathcal{P}(\{1,2,3,4\}) &= \{\emptyset, \{1,2,3,4\}, \{1\}, \{2,3,4\}, \{2\}, \{1,3,4\}, \{3\}, \{1,2,4\}, \\
@@ -235,26 +237,29 @@ The unique site splits, collapsing complements, are
 & := \{\siteSplit_1, \ldots, \siteSplit_8\}.
 \end{align*}
 Since we identify character complements, we do not consider the additional splits
-$$
-\mathcal{P}(\{1,2,3,4\}) \setminus \mathcal{P}(\siteSplitSet) = \{\{1,2,3,4\}, \{2,3,4\}, \{1,3,4\}, \{1,2,4\}, \{3,4\}, \{2,4\}, \{1,4\}, \{4\}\},
-$$
+\begin{equation*}
+\begin{split}
+& \mathcal{P}(\{1,2,3,4\}) \setminus \mathcal{P}(\siteSplitSet) = \\
+&\qquad \{\{1,2,3,4\}, \{2,3,4\}, \{1,3,4\}, \{1,2,4\}, \{3,4\}, \{2,4\}, \{1,4\}, \{4\}\},
+\end{split}
+\end{equation*}
 the symmetry of the binary character model allowing us to focus only on the elements of $\mathcal{P}(\siteSplitSet)$.
 This tree has two internal nodes with $\ancestralSplitSet=\{1,2\}$ and unique ancestral state splits
 $$
 \mathcal{P}(\ancestralSplitSet) = \{\emptyset, \{1\}, \{2\}, \{1,2\}\}.
 $$
-Internal node $\{1\}$ is the node connected to leaves $\{1\}$ and $\{2\}$ and internal node $\{2\}$ connected to leaves $\{3\}$ and $\{4\}$.
+Internal node $\{1\}$ is the node connected to leaves $\{1\}$ and $\{3\}$ and internal node $\{2\}$ connected to leaves $\{2\}$ and $\{4\}$.
 The mapping from characters to splits in this case will depend on the characters at the tips and the ancestral states.
 For example, we take both $\patternToSplit(0000)=\emptyset$ and $\patternToSplit(1111)=\emptyset$.
 Similarly, we have $\ancestralToSplit(0000, 00) = \emptyset$ and $\ancestralToSplit(1111, 11)=\emptyset$, needing to take the complement of all the characters present on the tree to identify splits.
-We cannot identify complements for ancestral states since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
+We cannot identify complements for ancestral states in the same way as tip states since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
 $$
 P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit, \tau, t)\neq P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\siteSplit, \tau, t)
 $$
 in general.
 
 For each site split $\siteSplit\in\mathcal{P}(\siteSplitSet)$, we maximize the likelihood over all $\ancestralSplit\in\mathcal{P}(\ancestralSplitSet)$.
-A maximum occurs at one of possibly several ancestral splits in $\mathcal{P}(\ancestralSplitSet)$; for the $j$th site split, define $\ancestralSplitPartition_j(\tau, t)\subset\mathcal{P}(\ancestralSplitSet)$ as the set of most likely ancestral splits for that particular site split, topology and set of branch lengths.
+A maximum occurs at one of possibly several ancestral splits in $\mathcal{P}(\ancestralSplitSet)$, defined via $\ancestralSplitPartition_j(\tau, t)$ for the $j$th site split.
 As a simple example, say all branch lengths correspond to a probability $p$ ($< 1/2$) of changing character along that branch.
 The probabilities of observing ancestral splits for $\siteSplit_1=\emptyset$ are
 $$
@@ -274,22 +279,23 @@ The set of most likely ancestral states contains a single element, here $\ancest
 Then, taking $\xi_1\in\ancestralSplitPartition_1(\tau, p)$ we have
 $$
 P(\ancestralSplitRV=\xi_1 \mid \siteSplitRV=\emptyset, \tau, t) =
+P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\emptyset, \tau, t) =
 (1-p)^5.
 $$
-For $\siteSplit_6=\{1,3\}$ we have
+For $\siteSplit_5=\{1,2\}$ we have
 $$
-P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1,3\}, \tau, t) =
-P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
+P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1,2\}, \tau, t) =
+P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1,2\}, \tau, t) =
 p^2(1-p)^3,
 $$
 $$
-P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
-P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1,3\}, \tau, t) =
+P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1,2\}, \tau, t) =
+P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1,2\}, \tau, t) =
 p^3(1-p)^2.
 $$
-Here, the set of most likely ancestral states is $\ancestralSplitPartition_6(\tau, p)=\{\emptyset,\{1,2\}\}$, and, for $\xi_6\in\ancestralSplitPartition_6(\tau, p)$,
+Here, the set of most likely ancestral states is $\ancestralSplitPartition_5(\tau, p)=\{\emptyset,\{1,2\}\}$, and, for $\xi_5\in\ancestralSplitPartition_5(\tau, p)$,
 $$
-P(\ancestralSplitRV=\xi_6 \mid \siteSplitRV=\{1,3\}, \tau, t) =
+P(\ancestralSplitRV=\xi_5 \mid \siteSplitRV=\{1,2\}, \tau, t) =
 p^2(1-p)^3.
 $$
 
@@ -301,17 +307,22 @@ $$
 L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau, t)) = \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t) \cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)}
 $$
 be the final product in \eqref{eq:site_pattern_likelihood}.
-Assume our $\nCols$ observations were generated from a model with parameters $(\tau^*, t^*)$.
+Assume $\nCols$ observations are generated from a model with parameters $(\tau^*, t^*)$.
 We have
-\begin{align}
-    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau,t))
-        &= \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t) \\
-        &= \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) +
+\begin{equation*}
+\begin{split}
+&    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau,t)) \\
+&\qquad = \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t) \\
+&\qquad = \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) +
             \log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
-\end{align}
+\end{split}
+\end{equation*}
 so that, in the limit of infinite data,
 \begin{equation}
-    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau, t)) \rightarrow \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
+\begin{split}
+&    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau, t)) \\
+&\qquad \rightarrow \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
+\end{split}
 \end{equation}
 Define the divergence quantity
 $$
@@ -326,7 +337,7 @@ so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
     \label{eq:log_likelihood_simplified}
     \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
 \end{equation}
-For data generated from $(\tau^*, t^*)$, we have an inconsistency if
+For data generated from $(\tau^*, t^*)$, we have an inconsistency in estimating topology if
 \begin{equation}
 \label{eq:inconsistency_inequality}
 \ell_{\tau^*,t^*}(\tau', \hat{t}_1; \fullAncestralSplitPartitions(\tau', \hat{t}_1)) > \ell_{\tau^*,t^*}(\tau^*, \hat{t}_2; \fullAncestralSplitPartitions(\tau^*, \hat{t}_2))
@@ -380,16 +391,16 @@ $$
 \end{figure}
 
 Define the Farris topology $\tau_1$ and the Felsenstein topology $\tau_2$ as in Fig.~\ref{fig:farris-fels-top}.
-We parameterize the branches of these trees \textbf{not with the standard notion of branch length in terms of number of substitutions per site}, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$.
+We parameterize the branches of these trees not with the standard notion of branch length in terms of number of substitutions per site, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$.
 This parametrization has been called edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge \cite{Matsen2007-jq}.
-Fidelities have useful algebraic properties, such as the ability to write generating probabilities using the Hadamard transform.
+Fidelities have useful algebraic properties, such as the ability to write generating probabilities using the Hadamard transform (see either 8.6 of Semple and Steel \cite{Semple2003-em} or Appendix (TODO)).
 
 Let $\{x',y',w'\}\in[0,1]^3$ be three fidelities and $\{p_x',p_y',p_w'\}\in[0,1/2]^3$ the corresponding substitution probabilities.
 Call $t=\{x',y',w'\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ constrains the bottom three branches to share the same parameter, the classical construction of this topology.
 
 Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ with edge ordering in the order of the taxa, then the internal branch last.
 We now show that, in the case of the Farris tree topology, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
-Using the Hadamard transform approach outlined in 8.6 of Semple and Steel \cite{Semple2003-em}, we calculate the generating probabilities on the Farris tree topology.
+Using the Hadamard transform approach, we calculate the generating probabilities on the Farris tree topology.
 For site split $\emptyset$,
 \begin{align*}
     P(\siteSplitRV=\emptyset\mid \tau_1, \tilde{t}) & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  x_1y_1w + x_1y_2w + y_1x_2w + x_2y_2w + x_1y_1x_2y_2) \\
@@ -426,7 +437,7 @@ for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exc
 The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
 
-In summary, exchanging $x_1$ and $x_2$ does not change the value of the log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$, and thus $x_1=x_2$ at the maximum.
+Since exchanging $x_1$ and $x_2$ does not change the value of the log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$, $x_1=x_2$ at the maximum.
 The analogous statement holds for $y_1$ and $y_2$.
 The Felsenstein topology does not admit this property, but, since we are interested in a lower bound for this topology, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
@@ -585,7 +596,7 @@ p_{\emptyset} = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})
 $$
 with similar definitions for the remaining generating probabilities.
 The full Farris tree log likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see Table~\ref{tab:likelihoods} for $\tau = \tau_1$).
-We will begin by writing out the middle case: for the ancestral state split $\{1\}$.
+We begin by writing out the middle case: for the ancestral state split $\{1\}$.
 Directly substituting in \eqref{eq:site_pattern_likelihood}, the log likelihood is
 \begin{align}
     \label{eq:farris_likelihood}
@@ -629,52 +640,44 @@ and $p_{13}$ is bounded as
 \end{align*}
 Factoring and making these substitutions results in
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{\emptyset}  \cdot\log(2(1+x')(1+y')) \\
-    &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+y')) \\
-    &\qquad + p_{2}          \cdot\log((1+x')(1+y')(1-y')) \\
-    &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1+y')) \\
-    &\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+y')(1-y')) \\
-    &\qquad + p_{13}         \cdot\log((1+x')(1+y')) \\
-    &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+y')(1-y')) \\
-    &\qquad + p_{123}        \cdot\log((1+x')(1+y')(1-y')) \\
-    &\qquad - \log(8) \\
-    &\qquad + p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2) \\
-    &\qquad + p_{1}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{2}          \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
-    &\qquad + p_{3}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
-    &\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
-    &\qquad + p_{13}         \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
-    &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \\
-    &\qquad + p_{123}        \cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
-\end{align*}
-Grouping together like terms,
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{\emptyset}  \cdot\log(2) \\
-    &\qquad + \log(1+x') \\
-    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
-    &\qquad + \log(1+y') \\
-    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
-    &\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x') \\
-    &\qquad + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
-    &\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
-    &\qquad + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
-    &\qquad + (1-p_{13})\cdot\log(1+w') \\
-    &\qquad + p_{13}\cdot\log(1-w') \\
-    &\qquad - \log(8),
-\end{align*}
-which equals
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{\emptyset}  \cdot\log(2) \\
-    &\qquad + (3-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x') \\
-    &\qquad + 2(p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
-    &\qquad + (3-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y') \\
-    &\qquad + 2(p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
-    &\qquad + (1-p_{13})\cdot\log(1+w') \\
-    &\qquad + p_{13}\cdot\log(1-w') \\
-    &\qquad - \log(8).
+&    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\})) \\
+&\qquad \le      p_{\emptyset}  \cdot\log(2(1+x')(1+y'))
++ p_{1}          \cdot\log((1+x')(1-x')(1+y')) \\
+    &\qquad\qquad + p_{2}          \cdot\log((1+x')(1+y')(1-y'))
++ p_{3}          \cdot\log((1+x')(1-x')(1+y')) \\
+    &\qquad\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+y')(1-y'))
++ p_{13}         \cdot\log((1+x')(1+y')) \\
+    &\qquad\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+y')(1-y'))
++ p_{123}        \cdot\log((1+x')(1+y')(1-y'))
+- \log(8) \\
+    &\qquad\qquad + p_{\emptyset}  \cdot\log((1+x')^2   (1+w')(1+y')^2)
++ p_{1}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad\qquad + p_{2}          \cdot\log((1+x')^2   (1+w')(1+y')(1-y'))
++ p_{3}          \cdot\log((1+x')(1-x')(1+w')(1+y')^2) \\
+    &\qquad\qquad + p_{12}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y'))
++ p_{13}         \cdot\log((1+x')^2   (1-w')(1+y')^2) \\
+    &\qquad\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y'))
++ p_{123}        \cdot\log((1+x')^2   (1+w')(1+y')(1-y')) \\
+&\qquad =      p_{\emptyset}  \cdot\log(2)
++ \log(1+x')
++ (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
+&\qquad\qquad + \log(1+y')
++ (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
+&\qquad\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x')
++ (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
+&\qquad\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y')
++ (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
+&\qquad\qquad + (1-p_{13})\cdot\log(1+w')
++ p_{13}\cdot\log(1-w')
+- \log(8) \\
+&\qquad =      p_{\emptyset}  \cdot\log(2)
++ (3-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x')
++ 2(p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x') \\
+&\qquad\qquad + (3-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y')
++ 2(p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y') \\
+&\qquad\qquad + (1-p_{13})\cdot\log(1+w')
++ p_{13}\cdot\log(1-w')
+- \log(8).
 \end{align*}
 To make matters further compact, let
 \begin{equation}
@@ -687,17 +690,19 @@ To make matters further compact, let
     \label{eq:a_const}
 \end{equation}
 where
-\begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{\emptyset}  \cdot\log(2) \\
-    &\qquad + a_{1}\cdot\log(1+x') \\
-    &\qquad + a_{2}\cdot\log(1-x') \\
-    &\qquad + a_{3}\cdot\log(1+y') \\
-    &\qquad + a_{4}\cdot\log(1-y') \\
-    &\qquad + (1-p_{13})\cdot\log(1+w') \\
-    &\qquad + p_{13}\cdot\log(1-w') \\
-    &\qquad - \log(8).
-\end{align*}
+\begin{equation*}
+\begin{split}
+&    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\})) \\
+&\qquad \le      p_{\emptyset}  \cdot\log(2)
++ a_{1}\cdot\log(1+x')
++ a_{2}\cdot\log(1-x')
++ a_{3}\cdot\log(1+y') \\
+&\qquad\qquad + a_{4}\cdot\log(1-y')
++ (1-p_{13})\cdot\log(1+w')
++ p_{13}\cdot\log(1-w')
+- \log(8).
+\end{split}
+\end{equation*}
 Maximizing over the unknown terms yields
 $$
 \hat{x}' = \frac{a_{1}-a_{2}}{a_{1}+a_{2}}, \ \hat{y}' = \frac{a_{3}-a_{4}}{a_{3}+a_{4}}.
@@ -715,16 +720,16 @@ and, since $0 \le \tilde{p} \le 1/2$, $0 \le \hat{x}' \le 1$.
 The same approach works for $\hat{y}'$.
 The upper bound for the likelihood is then maximized at
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{\emptyset}  \cdot\log(2) \\
-    &\qquad + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}} \\
-    &\qquad + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
-    &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
-    &\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}} \\
-    &\qquad + (1-p_{13})\cdot\log(2(1-p_{13})) \\
-    &\qquad + p_{13}\cdot\log(2p_{13}) \\
-    &\qquad - \log(8) \\
-    &\qquad := L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
+&    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\})) \\
+&\qquad\le      p_{\emptyset}  \cdot\log(2)
++ a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}}
++ a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}}
++ a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
+&\qquad\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}}
++ (1-p_{13})\cdot\log(2(1-p_{13}))
++ p_{13}\cdot\log(2p_{13})
+- \log(8) \\
+&\qquad := L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
 
 The other two possible ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications.
@@ -769,27 +774,27 @@ Thus, $p_{13} \le 2/8 = 1/4$ and our $\hat{x}'$ and $\hat{y}'$ are valid.
 
 To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{\emptyset}  \cdot\log(2) \\
-    &\qquad + a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'} \\
-    &\qquad + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
-    &\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
-    &\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}} \\
-    &\qquad + \log(2) \\
-    &\qquad - \log(8) \\
-    &\qquad := L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy}),
+&    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\})) \\
+&\qquad\le      p_{\emptyset}  \cdot\log(2)
++ a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'}
++ a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
+&\qquad\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}}
++ a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}}
++ \log(2)
+- \log(8) \\
+&\qquad := L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy}),
 \end{align*}
 and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 \begin{align*}
-    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
-    &\le      p_{\emptyset}  \cdot\log(2) \\
-    &\qquad + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}} \\
-    &\qquad + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
-    &\qquad + a_{3}'\cdot\log\frac{2a_{3}'}{a_{3}'+a_{4}'} \\
-    &\qquad + a_{4}'\cdot\log\frac{2a_{4}'}{a_{3}'+a_{4}'} \\
-    &\qquad + \log(2) \\
-    &\qquad - \log(8) \\
-    &\qquad := L^{3}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
+&    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\})) \\
+&\qquad\le      p_{\emptyset}  \cdot\log(2)
++ a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}}
++ a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
+&\qquad\qquad+ a_{3}'\cdot\log\frac{2a_{3}'}{a_{3}'+a_{4}'}
++ a_{4}'\cdot\log\frac{2a_{4}'}{a_{3}'+a_{4}'}
++ \log(2)
+- \log(8) \\
+&\qquad := L^{3}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
 All bounds are functions only of $x,y$ through the true generating probabilities $\mathbf{p}_{xy}$.
 
@@ -797,7 +802,7 @@ All bounds are functions only of $x,y$ through the true generating probabilities
 
 We construct a similar lower bound on the Felsenstein tree partial likelihood.
 In the Felsenstein case, there are various optimal internal states depending on branch lengths (Table~\ref{tab:likelihoods}; $\tau = \tau_2$).
-We can bound these below replacing $1+w$ with $1-w$, for example as follows.
+We can bound these below replacing $1+w$ with $1-w$ as follows.
 For the site split $\{1,2\}$, we would like to find a lower bound for
 $$
 \max\left((1+x')^2 (1-w')(1+y')^2, (1+x')(1-x')(1+w')(1+y')(1-y')\right).
@@ -929,6 +934,7 @@ $$
 %das: updated
 
 \subsection{Restricted case: fixed $x'$ and $y'$}
+\label{sec:restricted-case}
 
 First, assume we know the true values of $x'$ and $y'$ but not $w'$.
 In other words, we fix $x'=x$ and $y'=y$ to their true, generating values and wish to estimate the internal branch parameter $w'$.
@@ -1027,7 +1033,7 @@ We plot the region where $\hat{w}'(x, y) \ge 1$ in Figure~\ref{fig:bl-inconsiste
 
 \subsection{General case}
 
-\subsubsection{General case: loose bounds}
+\subsubsection{Loose bounds}
 
 In the general case, $\hat{w}'$ is a function of $x$, $y$, $\hat{x}'$, and $\hat{y}'$.
 Looking to the previous section, $\hat{w}'$ is still given by the quadratic formula, only with $\gamma$ and $\beta$ now being functions of $\hat{x}'$ and $\hat{y}'$ instead of $x'$ and $y'$.
@@ -1088,23 +1094,32 @@ In this case, the region to the left side of the curve in Figure~\ref{fig:bl-loo
 \label{fig:bl-loose-inconsistency}
 \end{figure}
 
-\subsection{Empirical results for the general case}
+\subsubsection{Empirical results}
 
-When seeking a global maximum for $0 \le x',y',w' \le 1$, we use the method of differential evolution \cite{Storn1997}---we obtain the fit $\hat{w}'$ in Fig.~\ref{fig:w_hat_joint}.
-The estimates for $\hat{w}'$ when $x$ and $y$ are large seem to be unbiased, with $\hat{w}'$ increasing as $y$ increases, though the region where $\hat{w}'$ is estimated to be one---indicating no change along that particular branch---is similar to that in the restricted case.
-Although the restricted and general case are similar, comparing Figures~\ref{fig:bl-inconsistency} and~\ref{fig:w_hat_joint} shows that the general case has a smaller region where $\hat{w}'$ is one, as expected.
-Nevertheless, this region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have a region of the space of true parameters where we will always estimate the interior branch parameter to be one.
+The region of inconsistency in Figure~\ref{fig:bl-loose-inconsistency} is potentially a conservative estimate of where $\hat{w}=1$.
+To determine how conservative, we use the method of differential evolution \cite{Storn1997} to perform joint maximum likelihood estimation.
+Since empirical estimates can be somewhat unstable, we perform two maximizations---one over $0 \le x',y',w' \le 1$ and one over $0 \le x',y' \le 1$ with $w'=1$---and take the value of $\hat{w}'$ with the higher likelihood.
+We compute these maxima over a lattice in steps of $1e-3$ for $x$ and $y$ from $1e-3$ to $1-1e-3$---we do not include zero or one in our lattice to further stabilize the fits, recalling from Section~\ref{sec:restricted-case} that cases where $x$ or $y$ are equal to zero or one can result in pathologies.
+From this process we obtain Fig.~\ref{fig:bl-general-inconsistency}.
+
+The estimates for $\hat{w}'$ when $x$ and $y$ are both large seem to be unbiased, with $\hat{w}'$ increasing as $y$ increases, though the region where $\hat{w}'$ is estimated to be one---indicating no change along that particular branch---is similar to that in the restricted case.
+Although the restricted and general case are similar, comparing Figures~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case has a slightly different character, possibly due to potential looseness of the bound in the restricted case.
+%das: TODO double check this; do the same empirical plot for the restricted case
+This region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have a region of the space of true parameters where we will always estimate the interior branch parameter to be one.
 
 \begin{figure}
 \centering
 % obtained by running
 % python joint_inf_plot.py --empirical --general-branch-lengths --delta .001 --plot-name figures/w-hat-empirical-001.svg --pkl-name figures/w-hat-empirical-001.pkl --n-jobs 16
+% or
+% python joint_inf_plot.py --empirical --general-branch-lengths --plot-name figures/w-hat-empirical-001.svg --in-pkl-name figures/w-hat-empirical-001.pkl
+% if fit already
 \includegraphics[width=.9\textwidth]{w-hat-empirical-001}
 \caption{
     %das: note to update caption
     Estimating $(\hat{x}', \hat{y}', \hat{w}')$.
 }
-\label{fig:w_hat_joint}
+\label{fig:bl-general-inconsistnecy}
 \end{figure}
 
 \section{Discussion}
