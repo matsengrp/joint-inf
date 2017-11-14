@@ -203,15 +203,16 @@ $$
 $$
 We show the following.
 \begin{theorem}
-There exist $L_0$ and $L_1$ such that
+There exist $L_0(x, y)$ and $L_1(x, y)$ such that
 $$
-\max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t)) \le L_0,
+\max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t)) \le L_0(x, y),
 $$
 $$
-\max_{t} \ \ell_{\tau_1,t^*}(\tau_2, t; \fullAncestralSplitPartitions(\tau_2,t)) \ge L_1
+\max_{t} \ \ell_{\tau_1,t^*}(\tau_2, t; \fullAncestralSplitPartitions(\tau_2,t)) \ge L_1(x, y)
 $$
-and $L_1 > L_0$.
+and $L_1(x, y) > L_0(x, y)$.
 \end{theorem}
+Fig.~\ref{fig:inconsistency-farris} shows the region where $L_1(x, y) > L_0(x, y)$.
 
 \begin{figure}
 \centering
@@ -341,7 +342,7 @@ This region encompasses the majority of the parameter space; even given the corr
 \includegraphics[width=.9\textwidth]{w-hat-empirical-001}
 \caption{
     %das: note to update caption
-    Estimating $(\hat{x}', \hat{y}', \hat{w}')$.
+    Region where $\hat{w}'=1$ computing empirical estimates of $(\hat{x}', \hat{y}', \hat{w}')$.
 }
 \label{fig:bl-general-inconsistency}
 \end{figure}
