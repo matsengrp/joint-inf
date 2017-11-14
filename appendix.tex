@@ -1,6 +1,6 @@
-\section{Appendix}
+\section*{Appendix}
 
-\subsection{Likelihood compuations}
+\subsection*{Likelihood computations}
 
 To compute the likelihood of observing a set of data, we need $P(\ancestralStateColumn=\ancestralSplit_k\mid \alignmentColumn=\siteSplit_j,\tau,t)$ for each $\ancestralSplit_k$ and $\siteSplit_j$.
 The probability of a character change along a branch with fidelity parameter $x$ is $(1-x)/2$, while the probability of a character remaining the same is $(1+x)/2$.
@@ -107,7 +107,7 @@ All values multiplied by $1/32$.}
 \label{tab:fels_likelihoods}
 \end{table}
 
-\subsection{Hadamard transform}
+\subsection*{Hadamard transform}
 
 Define: $\mathcal{T}$, $X$, $A$, $n$, $P$ and $\theta$.
 Let
@@ -119,3 +119,6 @@ $$
 p_A = \frac{1}{2^{n-1}} \ \sum_{Y \subset X : |Y| \equiv 0 (\mathrm{mod} \ 2)} \ \left[(-1)^{|Y \cap A|} \ \prod_{e \in P(\mathcal{T}, Y)} \ \theta(e) \right]
 $$
 
+
+%EM Here we are restating.
+\topoInconsist*
