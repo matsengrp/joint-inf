@@ -94,6 +94,8 @@ We observe $\nCols$ samples of character data, i.e., an alignment with $\nCols$ 
 The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$ and distributed as $\ancestralStateColumnRV$.
 
 We parameterize branches on the unique unrooted four-tip phylogenetic tree in ways known as the ``Farris'' and ``Felsenstein'' trees (Fig.~\ref{fig:farris-fels-top}).
+In the classical configuration of each of these topologies, the interior branch length parameters are equal to the bottom two parameters.
+We show in the Appendix that, in the case of the Farris tree, fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
 
 \begin{figure}
 \centering
@@ -102,6 +104,7 @@ We parameterize branches on the unique unrooted four-tip phylogenetic tree in wa
 %EM Wouldn't it be better to just parameterize these with x,y,w without primes? Also, it looks super pro if we can use tex fonts in this figure too. I love the mathjax fonts, which I think you can get https://packages.ubuntu.com/trusty/fonts/fonts-mathjax . LMK if you run into trouble. The font I use is "MathJax_Math".
 %das: I think I'm either going to go with something other than the primes, like z_1, z_2, z_3, or replace x and y with greek letters or whatever, but it'll be a little bit of a tedious edit.
 %EM You mean globally in the whole document? Let's kick around ideas if so.
+%das: I think we just need the true generating parameters---x^* and y^*---and the estimands---x', y', w'. I've been bad about using x and y instead of x^* and y^* for function arguments because it's cleaner, and I think there is inconsistency in using the primes and not. How about Greek for unknown (truth) and Latin for estimands? \alpha and \beta for generating parameters and x, y, z for estimands? Would have to change some other notation but shouldn't be too hard I hope.
 \includegraphics[width=.95\textwidth]{farris_blank}
 \caption[short]{Farris topology $\tau_1$}
 \end{subfigure}
@@ -144,7 +147,8 @@ L_\nCols'(\tau, t; \fullAlignment) = \max_{\fullAncestralStates\in\alphabet^{\nA
 %EM Does this have to be unique? Can we just say "denote an estimate"?
 %das: what does this refer to? the deleted sentence about the alphabet being discrete? I had that in just to show that there will be a maximum---i.e., no degeneracy---but maybe it's not necessary.
 %EM Damn, sorry to be unclear. The following statement says "denote THE estimate" which makes the ancestral state sound unique. Are you saying that it is? It's not obvious to me.
-We will use $\hat{\fullAncestralStates}$ to denote the estimate for $\fullAncestralStates$ obtained by maximization \eqref{eq:profile_likelihood}.
+%das: ah, got it. It's not unique, and why we needed the $\eta$s; hopefully "an" is better than "the?"
+We will use $\hat{\fullAncestralStates}$ to denote an estimate for $\fullAncestralStates$ obtained by maximization \eqref{eq:profile_likelihood}.
 One can then estimate a topology and branch lengths using this profile likelihood:
 \begin{equation}
 \label{eq:profile_likelihood_topology_bl}
@@ -167,12 +171,6 @@ $$
 We give $\ell$ explicitly in \eqref{eq:site_pattern_profile_likelihood_mean} in the Appendix.
 %EM I think that this is a technicality. I propose that we just state that we can restrict to the parameterization shown in the figure (with certain branch lengths equal) and that a formal statement and proof is in the appendix.
 %EM :) I think that we can make this even simpler by skipping the following statement and cutting straight to "fixing both the top two branch lengths..."
-Consider the Farris tree but with arbitrary branch lengths, i.e.,
-$$
-\tilde{t}=\{x_1,y_1,x_2,y_2,w\}
-$$
-with edge ordering in the order of the taxa, then the internal branch last.
-We show in the Appendix that, in the case of the Farris tree, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
 
 \subsection*{Inconsistency in topology estimation}
 
@@ -301,7 +299,7 @@ Since empirical estimates can be somewhat unstable, we perform two maximizations
 %EM XXXX below because no bio journals have numbered sections.
 %das: what should we do you think? I ran into this with the hadamard transform and went with the equation number instead of section, but not sure what to do here.
 %EM In fact I wasn't even sure exactly to what you were referring when the section number was in there. It doesn't seem to me to need a whole lot of justification though.
-We compute these maxima over a lattice in steps of $10^{-3}$ for $x$ and $y$ from $10^{-3}$ to $1-10^{-3}$---we do not include zero or one in our lattice to further stabilize the fits, recalling from Section~XXXX that cases where $x$ or $y$ are equal to zero or one can result in pathologies.
+We compute these maxima over a lattice in steps of $10^{-3}$ for $x$ and $y$ from $10^{-3}$ to $1-10^{-3}$---we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
 From this process we obtain Fig.~\ref{fig:bl-general-inconsistency}.
 
 The estimates for $\hat{w}'$ when $x$ and $y$ are both large seem to be unbiased, with $\hat{w}'$ increasing as $y$ increases, though the region where $\hat{w}'$ is estimated to be one---indicating no change along that particular branch---is similar to that in the restricted case.
