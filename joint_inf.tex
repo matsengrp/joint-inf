@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage[colorinlistoftodos]{todonotes}
@@ -99,6 +100,7 @@ We parameterize branches on the unique unrooted four-tip phylogenetic tree in wa
 \begin{subfigure}{.45\linewidth}
 \centering
 %EM Wouldn't it be better to just parameterize these with x,y,w without primes? Also, it looks super pro if we can use tex fonts in this figure too. I love the mathjax fonts, which I think you can get https://packages.ubuntu.com/trusty/fonts/fonts-mathjax . LMK if you run into trouble. The font I use is "MathJax_Math".
+%das: I think I'm either going to go with something other than the primes, like z_1, z_2, z_3, or replace x and y with greek letters or whatever, but it'll be a little bit of a tedious edit.
 \includegraphics[width=.95\textwidth]{farris_blank}
 \caption[short]{Farris topology $\tau_1$}
 \end{subfigure}
@@ -113,8 +115,7 @@ We parameterize branches on the unique unrooted four-tip phylogenetic tree in wa
 
 We parameterize the branches of these trees not with the standard notion of branch length in terms of number of substitutions per site, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$.
 This parametrization has been called edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge \cite{Matsen2007-jq}.
-Fidelities have useful algebraic properties, which mean that the generating probabilities using the Hadamard transform have an especially simple form (see either 8.6 of Semple and Steel \cite{Semple2003-em} or Appendix (TODO)).
-
+Fidelities have useful algebraic properties, which mean that the generating probabilities using the Hadamard transform have an especially simple form (see either 8.6 of Semple and Steel \cite{Semple2003-em} or \eqref{eq:hadamard_probability} in the Appendix).
 
 \subsection*{Two paths to maximum likelihood}
 
@@ -140,6 +141,7 @@ This is known as a profile likelihood \cite{Murphy2000-ry}, which exists here be
 L_\nCols'(\tau, t; \fullAlignment) = \max_{\fullAncestralStates\in\alphabet^{\nAncestralStateRows\times\nCols}} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates).
 \end{equation}
 %EM Does this have to be unique? Can we just say "denote an estimate"?
+%das: what does this refer to? the deleted sentence about the alphabet being discrete? I had that in just to show that there will be a maximum---i.e., no degeneracy---but maybe it's not necessary.
 We will use $\hat{\fullAncestralStates}$ to denote the estimate for $\fullAncestralStates$ obtained by maximization \eqref{eq:profile_likelihood}.
 One can then estimate a topology and branch lengths using this profile likelihood:
 \begin{equation}
@@ -160,7 +162,7 @@ Define $\ell_{\tau^*,t^*}(\tau, t)$ such that
 $$
 \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) \rightarrow \ell_{\tau^*,t^*}(\tau, t).
 $$
-We give $\ell$ explicitly in the Appendix.
+We give $\ell$ explicitly in \eqref{eq:site_pattern_profile_likelihood_mean} in the Appendix.
 %EM I think that this is a technicality. I propose that we just state that we can restrict to the parameterization shown in the figure (with certain branch lengths equal) and that a formal statement and proof is in the appendix.
 Consider the Farris tree but with arbitrary branch lengths, i.e.,
 $$
@@ -295,6 +297,7 @@ The region of inconsistency in Figure~\ref{fig:bl-loose-inconsistency} is potent
 To determine how conservative, we use the method of differential evolution \cite{Storn1997} to perform joint maximum likelihood estimation.
 Since empirical estimates can be somewhat unstable, we perform two maximizations---one over $0 \le x',y',w' \le 1$ and one over $0 \le x',y' \le 1$ with $w'=1$---and take the value of $\hat{w}'$ with the higher likelihood.
 %EM XXXX below because no bio journals have numbered sections.
+%das: what should we do you think? I ran into this with the hadamard transform and went with the equation number instead of section, but not sure what to do here.
 We compute these maxima over a lattice in steps of $10^{-3}$ for $x$ and $y$ from $10^{-3}$ to $1-10^{-3}$---we do not include zero or one in our lattice to further stabilize the fits, recalling from Section~XXXX that cases where $x$ or $y$ are equal to zero or one can result in pathologies.
 From this process we obtain Fig.~\ref{fig:bl-general-inconsistency}.
 
