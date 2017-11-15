@@ -155,45 +155,35 @@ For this reason, in practice the joint ML strategy estimates $\hat{\fullAncestra
 We can now state our results on inconsistency of joint inference.
 All proofs are deferred to the Appendix.
 
+Assume $\fullAlignment$ is generated from topology $\tau^*$ and branch lengths $t^*$.
+Define $\ell_{\tau^*,t^*}(\tau, t)$ such that
+$$
+\frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) \rightarrow \ell_{\tau^*,t^*}(\tau, t).
+$$
+We give $\ell$ explicitly in the Appendix.
 %EM I think that this is a technicality. I propose that we just state that we can restrict to the parameterization shown in the figure (with certain branch lengths equal) and that a formal statement and proof is in the appendix.
 Consider the Farris tree but with arbitrary branch lengths, i.e.,
 $$
 \tilde{t}=\{x_1,y_1,x_2,y_2,w\}
 $$
 with edge ordering in the order of the taxa, then the internal branch last.
-We now show that, in the case of the Farris tree, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
-
-\begin{lemma}
-For $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ and $t=\{x,y,x,y,w\}$,
-$$
-\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t})) = \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t)).
-$$
-\end{lemma}
-
-Since exchanging $x_1$ and $x_2$ does not change the value of the log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$, $x_1=x_2$ at the maximum.
-The analogous statement holds for $y_1$ and $y_2$.
-The Felsenstein topology does not admit this property, but, since we are interested in a lower bound for this topology, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
+We show in the Appendix that, in the case of the Farris tree, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
 
 \subsection*{Inconsistency in topology estimation}
 
-Define $\ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t))$ as
-$$
-\frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) \rightarrow \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
-$$
 We show the following.
 %EM Here's an example of restatable in action. See the end of the appendix.
 \begin{restatable}{theorem}{topoInconsist}
-There exist $L_0(x, y)$ and $L_1(x, y)$ such that
+There exist $L_0(x, y), L_1(x, y)$ and $0 < x', y' < 1$ such that
 $$
-\max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t)) \le L_0(x, y),
+\max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t) \le L_0(x, y),
 $$
 $$
-\max_{t} \ \ell_{\tau_1,t^*}(\tau_2, t; \fullAncestralSplitPartitions(\tau_2,t)) \ge L_1(x, y)
+\max_{t} \ \ell_{\tau_1,t^*}(\tau_2, t) \ge L_1(x, y)
 $$
-and $L_1(x, y) > L_0(x, y)$.
+and $L_1(x', y') > L_0(x', y')$.
 \end{restatable}
-
-Fig.~\ref{fig:inconsistency-farris} shows the region where $L_1(x, y) > L_0(x, y)$.
+Fig.~\ref{fig:inconsistency-farris} shows the values of $x$ and $y$ where $L_1(x, y) > L_0(x, y)$.
 
 \begin{figure}
 \centering
@@ -216,12 +206,12 @@ As above, we will assume that data is generated with two sister branches of fide
 We will show that, for a nontrivial subset of possible values for $x$ and $y$, the interior branch fidelity parameter $w'$ will be consistently overestimated as exactly equal to one instead of its true value of $y$.
 That is, for the restricted case, with
 $$
-\hat{w}' = \arg\max_{w'} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x,y,w'\}; \fullAncestralSplitPartitions(\tau_1,\{x,y,w'\})),
+\hat{w}' = \arg\max_{w'} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x,y,w'\}),
 $$
 we show there are values for $x$ and $y$ where $\hat{w}'\equiv 1$.
 In the general case, we do the same but with
 $$
-(\hat{x}', \hat{y}', \hat{w}') = \arg\max_{x',y',w'} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\})).
+(\hat{x}', \hat{y}', \hat{w}') = \arg\max_{x',y',w'} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}).
 $$
 
 \subsubsection*{Restricted case}
@@ -241,13 +231,13 @@ $$
 $$
 \gamma := \gamma(x, y) = 4xy.
 $$
-\begin{theorem}
+\begin{restatable}{theorem}{restrictedBranchInconsist}
 \label{thm:restricted-bl}
 The maximum likelihood value $\hat{w}' = 1$ if
 $$
 \beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
 $$
-\end{theorem}
+\end{restatable}
 The inequality in Theorem~\ref{thm:restricted-bl} is a function of the generating parameters $x$ and $y$.
 This region is shown in Fig.~\ref{fig:bl-inconsistency}.
 
@@ -265,7 +255,7 @@ This region is shown in Fig.~\ref{fig:bl-inconsistency}.
 In the general case, $\hat{w}'$ is a function of $x$, $y$, $\hat{x}'$, and $\hat{y}'$.
 Looking to the previous section, $\hat{w}'$ is still given by the quadratic formula, only with $\gamma$ and $\beta$ now being functions of $\hat{x}'$ and $\hat{y}'$ instead of $x'$ and $y'$.
 Assume we know $\hat{x}'$ and $\hat{y}'$ as functions of $x$ and $y$ only.
-\begin{theorem}
+\begin{restatable}{theorem}{generalBranchInconsist}
 \label{thm:general-bl}
 For
 $$
@@ -279,7 +269,7 @@ then the maximum likelihood value $\hat{w}=1$ when
 $$
 -\gamma_{U}^2(x, y)(1 + \frac{1}{2}\beta(x, y)) + 2\gamma_{L}(x, y)\beta_{L}(x, y)xy^2 + \beta_{L}^2(x, y) \ge 0.
 $$
-\end{theorem}
+\end{restatable}
 Similar to Theorem~\ref{thm:restricted-bl}, the inequality in Theorem~\ref{thm:general-bl} is also a function of only $x$ and $y$.
 The loosest possible bounds are $\gamma_{L} = 0$, $\beta_{L} = 1$ and $\gamma_{U} = 4$, giving
 $$

@@ -313,6 +313,18 @@ Call $t=\{x',y',w'\}$ and $t^*=\{x,y,y\}$, i.e., $t^*$ constrains the bottom thr
 
 Consider the Farris topology with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ with edge ordering in the order of the taxa, then the internal branch last.
 We now show that, in the case of the Farris tree topology, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
+
+\begin{lemma}
+For $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$ and $t=\{x,y,x,y,w\}$,
+$$
+\ell_{\tau_1,t^*}(\tau_1, \tilde{t}) = \ell_{\tau_1,t^*}(\tau_1, t).
+$$
+\end{lemma}
+
+Since exchanging $x_1$ and $x_2$ does not change the value of the log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t})$, $x_1=x_2$ at the maximum.
+The analogous statement holds for $y_1$ and $y_2$.
+The Felsenstein topology does not admit this property, but, since we are interested in a lower bound for this topology, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
+
 Using the Hadamard transform approach, we calculate the generating probabilities on the Farris tree topology.
 For site split $\emptyset$,
 \begin{align*}
