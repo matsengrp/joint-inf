@@ -101,6 +101,7 @@ We parameterize branches on the unique unrooted four-tip phylogenetic tree in wa
 \centering
 %EM Wouldn't it be better to just parameterize these with x,y,w without primes? Also, it looks super pro if we can use tex fonts in this figure too. I love the mathjax fonts, which I think you can get https://packages.ubuntu.com/trusty/fonts/fonts-mathjax . LMK if you run into trouble. The font I use is "MathJax_Math".
 %das: I think I'm either going to go with something other than the primes, like z_1, z_2, z_3, or replace x and y with greek letters or whatever, but it'll be a little bit of a tedious edit.
+%EM You mean globally in the whole document? Let's kick around ideas if so.
 \includegraphics[width=.95\textwidth]{farris_blank}
 \caption[short]{Farris topology $\tau_1$}
 \end{subfigure}
@@ -142,6 +143,7 @@ L_\nCols'(\tau, t; \fullAlignment) = \max_{\fullAncestralStates\in\alphabet^{\nA
 \end{equation}
 %EM Does this have to be unique? Can we just say "denote an estimate"?
 %das: what does this refer to? the deleted sentence about the alphabet being discrete? I had that in just to show that there will be a maximum---i.e., no degeneracy---but maybe it's not necessary.
+%EM Damn, sorry to be unclear. The following statement says "denote THE estimate" which makes the ancestral state sound unique. Are you saying that it is? It's not obvious to me.
 We will use $\hat{\fullAncestralStates}$ to denote the estimate for $\fullAncestralStates$ obtained by maximization \eqref{eq:profile_likelihood}.
 One can then estimate a topology and branch lengths using this profile likelihood:
 \begin{equation}
@@ -164,6 +166,7 @@ $$
 $$
 We give $\ell$ explicitly in \eqref{eq:site_pattern_profile_likelihood_mean} in the Appendix.
 %EM I think that this is a technicality. I propose that we just state that we can restrict to the parameterization shown in the figure (with certain branch lengths equal) and that a formal statement and proof is in the appendix.
+%EM :) I think that we can make this even simpler by skipping the following statement and cutting straight to "fixing both the top two branch lengths..."
 Consider the Farris tree but with arbitrary branch lengths, i.e.,
 $$
 \tilde{t}=\{x_1,y_1,x_2,y_2,w\}
@@ -174,7 +177,6 @@ We show in the Appendix that, in the case of the Farris tree, exchanging $x_1$ w
 \subsection*{Inconsistency in topology estimation}
 
 We show the following.
-%EM Here's an example of restatable in action. See the end of the appendix.
 \begin{restatable}{theorem}{topoInconsist}
 There exist $L_0(x, y), L_1(x, y)$ and $0 < x', y' < 1$ such that
 $$
@@ -298,6 +300,7 @@ To determine how conservative, we use the method of differential evolution \cite
 Since empirical estimates can be somewhat unstable, we perform two maximizations---one over $0 \le x',y',w' \le 1$ and one over $0 \le x',y' \le 1$ with $w'=1$---and take the value of $\hat{w}'$ with the higher likelihood.
 %EM XXXX below because no bio journals have numbered sections.
 %das: what should we do you think? I ran into this with the hadamard transform and went with the equation number instead of section, but not sure what to do here.
+%EM In fact I wasn't even sure exactly to what you were referring when the section number was in there. It doesn't seem to me to need a whole lot of justification though.
 We compute these maxima over a lattice in steps of $10^{-3}$ for $x$ and $y$ from $10^{-3}$ to $1-10^{-3}$---we do not include zero or one in our lattice to further stabilize the fits, recalling from Section~XXXX that cases where $x$ or $y$ are equal to zero or one can result in pathologies.
 From this process we obtain Fig.~\ref{fig:bl-general-inconsistency}.
 
