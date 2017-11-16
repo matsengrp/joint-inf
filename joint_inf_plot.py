@@ -21,6 +21,8 @@ sns.set_style('ticks')
 # ~~~~~~~~~
 # global variables
 
+FONT_SIZE = 16
+
 ALL_PATTERNS = [
         '0000',
         '1000',
@@ -387,14 +389,15 @@ def main(args=sys.argv[1:]):
         elif args.general_branch_lengths:
             region = what_lower_general(X, Y)
             plottitle = r'Region of inconsistent branch parameter estimation (general case)'
-            legendtext = r'$\hat{w}=1$ or $\hat{x}$ or $\hat{y}$ poorly estimated'
+            legendtext = r'$\hat{w}=1$ or $\hat{x}$ or $\hat{y}$''\n'r'poorly estimated'
 
         ct = plt.contour(X, Y, region, [0], colors='k', linewidths=1)
         plt.axis('scaled')
-        plt.xlabel(r'$x$')
-        plt.ylabel(r'$y$')
-        ttl = plt.title(plottitle, fontsize=14)
+        plt.xlabel(r'$x$', fontsize=FONT_SIZE)
+        plt.ylabel(r'$y$', fontsize=FONT_SIZE)
+        ttl = plt.title(plottitle, fontsize=FONT_SIZE+2)
         ttl.set_position([.5, 1.02])
+        ct.ax.tick_params(labelsize=FONT_SIZE-2)
         if not args.topology:
             vec = ct.collections[0].get_paths()[0].vertices
             x = np.concatenate(([1-args.delta], vec[:,0], [args.delta]))
@@ -404,10 +407,10 @@ def main(args=sys.argv[1:]):
         if args.restricted_branch_lengths:
             plt.legend([Legend()], [legendtext],
                 handler_map={Legend: LegendHandler()},
-                bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+                bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=FONT_SIZE)
         else:
             plt.legend([Legend()], [legendtext],
-                handler_map={Legend: LegendHandler()})
+                handler_map={Legend: LegendHandler()}, fontsize=FONT_SIZE)
 
         sns.despine()
         plt.savefig(args.plot_name)
@@ -428,17 +431,18 @@ def main(args=sys.argv[1:]):
                     X, Y, Z, args.delta = pickle.load(f)
 
             im = plt.imshow(Z, cmap=plt.cm.gray, origin='lower')
-            plt.xlabel(r'$x$')
-            plt.ylabel(r'$y$')
-            ttl = plt.title(r'Value of $\hat{w}$', fontsize=14)
+            plt.xlabel(r'$x$', fontsize=FONT_SIZE)
+            plt.ylabel(r'$y$', fontsize=FONT_SIZE)
+            ttl = plt.title(r'Value of $\hat{w}$', fontsize=FONT_SIZE+2)
             ttl.set_position([.5, 1.02])
             ax = plt.gca()
             ax.set_xticks(np.arange(0, 1/args.delta, .2/args.delta))
             ax.set_yticks(np.arange(0, 1/args.delta, .2/args.delta))
-            ax.set_xticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$'])
-            ax.set_yticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$'])
+            ax.set_xticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$'], fontsize=FONT_SIZE-2)
+            ax.set_yticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$'], fontsize=FONT_SIZE-2)
             sns.despine()
-            plt.colorbar()
+            cbar = plt.colorbar()
+            cbar.ax.tick_params(labelsize=FONT_SIZE-2)
             plt.savefig(args.plot_name)
     else:
         print "No plotting argument given!"
