@@ -396,7 +396,7 @@ def main(args=sys.argv[1:]):
         plt.xlabel(r'$x$', fontsize=FONT_SIZE)
         plt.ylabel(r'$y$', fontsize=FONT_SIZE)
         ttl = plt.title(plottitle, fontsize=FONT_SIZE+2)
-        ttl.set_position([.5, 1.02])
+        ttl.set_position([.5, 1.05])
         ct.ax.tick_params(labelsize=FONT_SIZE-2)
         if not args.topology:
             vec = ct.collections[0].get_paths()[0].vertices
@@ -434,7 +434,7 @@ def main(args=sys.argv[1:]):
             plt.xlabel(r'$x$', fontsize=FONT_SIZE)
             plt.ylabel(r'$y$', fontsize=FONT_SIZE)
             ttl = plt.title(r'Value of $\hat{w}$', fontsize=FONT_SIZE+2)
-            ttl.set_position([.5, 1.02])
+            ttl.set_position([.5, 1.05])
             ax = plt.gca()
             ax.set_xticks(np.arange(0, 1/args.delta, .2/args.delta))
             ax.set_yticks(np.arange(0, 1/args.delta, .2/args.delta))
