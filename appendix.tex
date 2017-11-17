@@ -2,10 +2,10 @@
 
 \subsection*{Site split formulation}
 
-Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$; this results in a simplification of likelihood calculation (we follow Section 8.6 of \cite{Semple2003-em}).
+Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$; this results in a simplification of likelihood calculation.
 Take the tip labels of $\tau$ to be $\{1,\ldots,\nSiteRows\}$.
 For likelihood calculation under the binary symmetric model, we describe a given $\alignmentColumn_i$ as a subset of indices $\siteSplit\subseteq\siteSplitSet:=\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
-Indeed, we start by including those tip labels in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$.
+We start by including those tip labels in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$.
 Then, because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model, we take the complement if needed to exclude label $\nSiteRows$ from $\siteSplit$.
 
 For topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization of $\ancestralStateColumn_i$.
@@ -14,15 +14,27 @@ In this case the entire set of internal nodes must be enumerated: the probabilit
 We enumerate the site splits $\siteSplit_j$ of which there are $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ in total where $\mathcal{P}$ denotes the power set.
 Similarly we enumerate ancestral splits $\ancestralSplit_k$ of which there are $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$ in total.
 
-This split formulation defines mappings from patterns to splits as
- $$
- \patternToSplit:\alphabet^\nSiteRows\rightarrow\mathcal{P}(\siteSplitSet).
- $$
-Given a site pattern--valued random variable $\alignmentColumnRV$, define the random variable
+\begin{definition}
+Let the mapping from site patterns to site splits be
+$$
+\patternToSplit:\alphabet^\nSiteRows\rightarrow\mathcal{P}(\siteSplitSet)
+$$
+and the mapping from ancestral states and tip states to ancestral state splits be
+$$
+\ancestralToSplit:\alphabet^\nAncestralStateRows\times\alphabet^\nSiteRows\rightarrow\mathcal{P}(\ancestralSplitSet).
+$$
+Then, given a site pattern--valued random variable $\alignmentColumnRV$, define the random variable
 $$
 \siteSplitRV := \patternToSplit(\alignmentColumnRV)
 $$
-that takes corresponding realizations $\siteSplit_j$ for some $j$.
+that takes corresponding realizations $\siteSplit_j$ for some $j$, and
+$$
+\ancestralSplitRV := \ancestralToSplit(\alignmentColumnRV, \ancestralStateColumnRV)
+$$
+for a tip state--valued random variable $\alignmentColumnRV$ and an ancestral state--valued random variable $\ancestralStateColumnRV$.
+\end{definition}
+The mapping $\patternToSplit$ takes the complement of site patterns to obtain a site split in $\mathcal{P}(\siteSplitSet)$.
+The mapping $\ancestralToSplit$ is defined by whether the tip states have their complements taken or not: if a set of tip labels $\alignmentColumn$ is in $\siteSplitSet$, $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is $\ancestralStateColumn$; otherwise, if $\alignmentColumn$ is not in $\siteSplitSet$, then the complement of $\alignmentColumn$ necessarily is in $\siteSplitSet$, and $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is the complement of $\ancestralStateColumn$.
 
 For the $i$th factor of \eqref{eq:full_likelihood},
 $$
@@ -33,20 +45,7 @@ As a consequence of assuming a binary symmetric model, taking complements yields
     2\cdot P(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t) &= P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \\
                                                                  &= P(\siteSplitRV=\siteSplit_j \mid \tau, t)
 \end{align*}
-for some $j$.
-For the other term, we define
-$$
-\ancestralToSplit:\alphabet^\nAncestralStateRows\times\alphabet^\nSiteRows\rightarrow\mathcal{P}(\ancestralSplitSet)
-$$
-as a mapping of ancestral states and tip states to ancestral state splits.
-It is defined by whether the tip states have their complements taken or not: if a set of tip labels $\alignmentColumn$ is in $\siteSplitSet$, $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is $\ancestralStateColumn$; otherwise, if $\alignmentColumn$ is not in $\siteSplitSet$, then the complement of $\alignmentColumn$ necessarily is in $\siteSplitSet$, and $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is the complement of $\ancestralStateColumn$.
-We define
-$$
-\ancestralSplitRV := \ancestralToSplit(\alignmentColumnRV, \ancestralStateColumnRV)
-$$
-for a tip state--valued random variable $\alignmentColumnRV$ and an ancestral state--valued random variable $\ancestralStateColumnRV$, so that
-%By considering the case requiring complementing and that not requiring complementing separately,
-%das: did I write the above? I don't remember the significance of it...
+for some $j$ and
 \begin{align*}
     P(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t) &= P(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t).
 \end{align*}
@@ -109,18 +108,22 @@ so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
     \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
 \end{equation}
 
-\subsection*{Hadamard transform}
+\subsection*{Hadamard representation}
 
-Define: $\mathcal{T}$, $X$, $A$, $n$, $P$ and $\theta$.
-Let
+We follow Section 8.6 of \cite{Semple2003-em} to state the Hadamard representation of site split generating probabilities.
+%das: @EM thoughts on including all of this in full generality? should we just reference using the sentence above and be done with it?
+For each edge $e$ define the edge fidelity for that edge as
 $$
 \theta(e) = 1-2p(e).
 $$
-Then
+For an even-sized subset of $Y\subseteq\mathcal{S}$, we define the path set $P(Y)$ as the set of edges in the path connecting both elements of $Y$.
+For $n$ taxa, the probability of observing site split $A\in\mathcal{P}(\siteSplitSet)$ is
 \begin{equation}
 \label{eq:hadamard_probability}
-p_A = \frac{1}{2^{n-1}} \ \sum_{Y \subset X : |Y| \equiv 0 (\mathrm{mod} \ 2)} \ \left[(-1)^{|Y \cap A|} \ \prod_{e \in P(\mathcal{T}, Y)} \ \theta(e) \right]
+p_A = \frac{1}{2^{n-1}} \ \sum_{Y \subseteq \mathcal{S} : |Y| \equiv 0 (\mathrm{mod} \ 2)} \ \left[(-1)^{|Y \cap A|} \ \prod_{e\in P(Y)} \ \theta(e) \right].
 \end{equation}
+By convention, we set $P(\emptyset)=\emptyset$ and $\prod_{e\in\emptyset} \ \theta(e) = 1$.
+We follow with an expository example computing these probabilities and likelihoods.
 
 \paragraph{Example}
 \begin{figure}
@@ -214,7 +217,7 @@ Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed
 Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} contain the values of the likelihood for all possible ancestral states.
 
 To compute the likelihood of observing a set of data, we need $P(\ancestralStateColumn=\ancestralSplit_k\mid \alignmentColumn=\siteSplit_j,\tau,t)$ for each $\ancestralSplit_k$ and $\siteSplit_j$.
-The probability of a character change along a branch with fidelity parameter $x$ is $(1-x)/2$, while the probability of a character remaining the same is $(1+x)/2$.
+The probability of a character change along a branch with fidelity parameter $\theta$ is $(1-\theta)/2$, while the probability of a character remaining the same is $(1+\theta)/2$.
 See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern.
 Likelihood computations for all site patterns and ancestral states are in Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods}.
 Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}
@@ -530,7 +533,7 @@ $$
 $$
 
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
-For compactness, define
+For compactness, we follow the convention in \eqref{eq:hadamard_probability} and define
 $$
 p_{\emptyset} = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})
 $$

@@ -26,6 +26,7 @@
 % Commands
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{definition}{Definition}
 
 \newcommand{\alphabet}{\mathcal{A}}
 \newcommand{\fullAlignment}{\mathbf{Y}}
@@ -118,7 +119,7 @@ We show in the Appendix that, in the case of the Farris tree, fixing both the to
 
 We parameterize the branches of these trees not with the standard notion of branch length in terms of number of substitutions per site, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$ where $0 \le \theta \le 1$.
 We follow \cite{Matsen2007-jq} in calling this edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge.
-Fidelities have useful algebraic properties, and generating probabilities using the Hadamard transform have an especially simple form (see either 8.6 of Semple and Steel \cite{Semple2003-em} or \eqref{eq:hadamard_probability} in the Appendix).
+Fidelities have useful algebraic properties, and generating probabilities using the Hadamard transform have an especially simple form (see \eqref{eq:hadamard_probability} in the Appendix).
 
 \subsection*{Two paths to maximum likelihood}
 
@@ -220,6 +221,8 @@ These situations are in contrast to the approach using marginal likelihood where
 \subsubsection*{Restricted case}
 
 Fix $x'=x$ and $y'=y$ to their true, generating values and proceed to estimate the internal branch parameter $w'$.
+\begin{restatable}{theorem}{restrictedBranchInconsist}
+\label{thm:restricted-bl}
 Let
 $$
 \alpha_1 := \alpha_1(x, y) = \frac{1}{8} \left(1+x^2+y^2+4xy^2+x^2y^2\right),
@@ -233,8 +236,6 @@ $$
 $$
 \gamma := \gamma(x, y) = 4xy.
 $$
-\begin{restatable}{theorem}{restrictedBranchInconsist}
-\label{thm:restricted-bl}
 The maximum likelihood value $\hat{w}' = 1$ if
 $$
 \beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
@@ -242,6 +243,8 @@ $$
 \end{restatable}
 The inequality in Theorem~\ref{thm:restricted-bl} is a function of the generating parameters $x$ and $y$.
 This region is shown in Fig.~\ref{fig:bl-inconsistency}.
+Intuitively, since we perform maximization over internal states, branch fidelities will have a tendency to be overestimated.
+Seeing no change along a branch more likely increases the likelihood by introducing a term of $(1+\theta)$ instead of $(1-\theta)$, and branch fidelities will be positively biased due to this.
 
 \begin{figure}
 \centering
@@ -252,9 +255,6 @@ This region is shown in Fig.~\ref{fig:bl-inconsistency}.
 \label{fig:bl-inconsistency}
 \end{figure}
 
-Intuitively, since we perform maximization over internal states, branch fidelities will have a tendency to be overestimated.
-Seeing no change along a branch more likely increases the likelihood by introducing a term of $(1+\theta)$ instead of $(1-\theta)$, and branch fidelities will be positively biased due to this.
-
 \subsubsection*{General case}
 
 In the general case, $\hat{w}'$ is a function of $x$, $y$, $\hat{x}'$, and $\hat{y}'$.
@@ -263,6 +263,13 @@ Assume we know $\hat{x}'$ and $\hat{y}'$ as functions of $x$ and $y$ only.
 \begin{restatable}{theorem}{generalBranchInconsist}
 \label{thm:general-bl}
 For
+$$
+\beta(x, y) = 1+x^2+y^2+x^2y^2,
+$$
+$$
+\gamma(x, y) = 4xy,
+$$
+and bounds
 $$
 \gamma_{L}(x, y) \le \gamma(\hat{x}', \hat{y}') \le \gamma_{U}(x, y)
 $$
@@ -336,7 +343,7 @@ This region encompasses the majority of the parameter space; even given the corr
 
 The method of profile likleihood is well-studied \cite{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known \cite{Geman1982}, and joint inference of phylogenetic parameters and ancestral states \cite{Sagulenko2017-jo} is a similar approach to profile likelihood.
-Elsewhere in statistics literature, undesirable properties of maximum likelihood estimates in the case of infinite parameters have been shown by the Neyman-Scott paradox \cite{Neyman1948-tt}, though the fact of parameters tending to infinity is not necessarily the reason for inconsistency \cite{LeCam1990}.
+Elsewhere in statistics literature, undesirable properties of maximum likelihood estimates in the case of infinite parameters have been shown by the Neyman-Scott paradox \cite{Neyman1948-tt}, though parameters tending to infinity is not a necessary condition for inconsistency \cite{LeCam1990}.
 Until recently \cite{RoyChoudhury2015-ta}, results on the properties of standard maximum likelihood estimates of phylogeny as in \eqref{eq:marginal_likelihood} have been difficult to prove, and no results have been obtained for profile likelihood.
 We have furthered progress to understand the limitations of this joint maximum likelihood approach in the case of phylogenetics.
 
