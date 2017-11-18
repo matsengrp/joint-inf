@@ -98,7 +98,7 @@ Define the divergence quantity
 $$
 \shannonDivergence_{\tau^*,t^*}(\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\siteSplitRV=\siteSplit_j \mid \tau, t),
 $$
-and the partial log likelihood
+and the partial log-likelihood
 $$
 \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, t)
 $$
@@ -502,7 +502,7 @@ for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exc
 The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
 
-Since exchanging $x_1$ and $x_2$ does not change the value of the log likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$, $x_1=x_2$ at the maximum.
+Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$, $x_1=x_2$ at the maximum.
 The analogous statement holds for $y_1$ and $y_2$.
 The Felsenstein topology does not admit this property, but, since we are interested in a lower bound for this topology, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
@@ -510,14 +510,13 @@ The Felsenstein topology does not admit this property, but, since we are interes
 \topoInconsist*
 
 \begin{proof}
-Our approach seeks bounds for the terms inside the maximization in \eqref{eq:log_likelihood_simplified}.
-We obtain
+In general,
 $$
 \max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
     + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \fullAncestralSplitPartitions(\tau, \hat{t}))
 $$
-as an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} using Gibbs's inequality
+is an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} using Gibbs's inequality
 $$
 \shannonDivergence_{\tau^*,t^*}(\tau,t) \le \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
 $$
@@ -525,22 +524,23 @@ and
 $$
 \hat{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
 $$
-Similarly, we have the lower bound
+Similarly,
 $$
 \max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \ge
     \shannonDivergence_{\tau^*,t^*}(\tau,\hat{t})
-    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \fullAncestralSplitPartitions(\tau, \hat{t})).
+    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \fullAncestralSplitPartitions(\tau, \hat{t}))
 $$
+is a lower bound.
 
 Assume $\tau^*=\tau_1$ and $t^*=\{x,y,y\}$.
-For compactness, we follow the convention in \eqref{eq:hadamard_probability} and define
+Following \eqref{eq:hadamard_probability},
 $$
-p_{\emptyset} = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\})
+p_{\emptyset} = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=\{x,y,y\}),
 $$
 with similar definitions for the remaining generating probabilities.
-The full Farris tree log likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see Table~\ref{tab:likelihoods} for $\tau = \tau_1$).
-We begin by writing out the middle case: for the ancestral state split $\{1\}$.
-Directly substituting in \eqref{eq:site_pattern_likelihood}, the log likelihood is
+The full Farris tree log-likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see Table~\ref{tab:likelihoods} for $\tau = \tau_1$).
+We begin by writing out the case for the ancestral state split $\{1\}$.
+Directly substituting in \eqref{eq:site_pattern_likelihood}, the log-likelihood is
 \begin{align}
     \label{eq:farris_likelihood}
     \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\}))
@@ -562,7 +562,7 @@ Directly substituting in \eqref{eq:site_pattern_likelihood}, the log likelihood 
     &\qquad + p_{23}         \cdot\log((1+x')(1-x')(1+w')(1+y')(1-y')) \nonumber \\
     &\qquad + p_{123}        \cdot\log((1+x')^2   (1+w')(1+y')(1-y')).
 \end{align}
-Seeking an upper bound, we use the facts that, for $x',y'\in[0,1]$,
+We use the facts that, for $x',y'\in[0,1]$,
 \begin{align*}
 1-x'^2+y'^2-x'^2y'^2 & = (1+x')(1-x')(1+y'^2) \le (1+x')(1-x')(1+y') \\
 1+x'^2-y'^2-x'^2y'^2 & = (1+x'^2)(1+y')(1-y') \le (1+x')(1+y')(1-y') \\
@@ -622,7 +622,7 @@ Factoring and making these substitutions results in
 + p_{13}\cdot\log(1-w')
 - \log(8).
 \end{align*}
-To make matters further compact, let
+To simplify, let
 \begin{equation}
     \begin{aligned}
         a_{1} &= 3-p_{1}-p_{3}-p_{12}-p_{23}, \\
@@ -632,7 +632,7 @@ To make matters further compact, let
     \end{aligned}
     \label{eq:a_const}
 \end{equation}
-where
+so that
 \begin{equation*}
 \begin{split}
 &    \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}; \fullAncestralSplitPartitions(\tau_1,\{x',y',w'\})) \\
@@ -740,6 +740,10 @@ and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 &\qquad := L^{3}_{\tau_1,\tau_1}(\mathbf{p}_{xy}).
 \end{align*}
 All bounds are functions only of $x,y$ through the true generating probabilities $\mathbf{p}_{xy}$.
+Call the upper bound
+$$
+L_0(x, y) := max(L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy}), L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy}), L^{3}_{\tau_1,\tau_1}(\mathbf{p}_{xy})).
+$$
 
 We construct a similar lower bound on the Felsenstein tree partial likelihood.
 In the Felsenstein case, there are various optimal internal states depending on branch lengths (Table~\ref{tab:likelihoods}; $\tau = \tau_2$).
@@ -831,10 +835,10 @@ Maximizing either lower bound over $\{x',y',w'\}$, we obtain
 %Rather than do a constrained optimization, I just bounded the p_{\emptyset}\log(1+w) term below by p_{\emptyset}\log(1-w).
 i.e.\ the maximum is achieved at $\{1,1-b,0\}$.
 Our lower bound is
-\begin{align*}
-    L_{\tau_1,\tau_2}(\mathbf{p}_{xy}) &:= \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b,0\}) \\
-                                           &+ 2\cdot\log(2) + (2-b)  \cdot\log(2-b) + b      \cdot\log(b).
-\end{align*}
+$$
+L_1(x, y) := \shannonDivergence_{\tau_1,\{x,y,y\}}(\tau_2,\{1,1-b,0\}) + 2\cdot\log(2) + (2-b)\cdot\log(2-b) + b\cdot\log(b).
+$$
+See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < x', y' < 1$ where $L_1(x', y') > L_0(x', y')$ and joint inference in inconsistent.
 \end{proof}
 
 \restrictedBranchInconsist*
@@ -893,7 +897,7 @@ $$
 $$
 % Not sure if I need to show this, but if x and y aren't 1 it's 1+x^2+y^2+x^2y^2 > 4xy => (1+x^2)(1+y^2) > 4xy and 1+x^2 > 2x, 1+y^2 > 2y qed
 %EM Rather confusing to be using ' for two things here. What about using a dot over the l? In retrospect something other than ' would have been good because of the proliferation of w^{'2} etc. Prob not worth changing now though.
-The derivative of the log likelihood is
+The derivative of the log-likelihood is
 $$
 \ell'(w') := \frac{d}{dw'} \ell(w') = \frac{\alpha_1 \gamma}{\beta+\gamma w'} - \frac{\alpha_2 \gamma}{\beta-\gamma w'} + \frac{1}{1+w'}.
 $$
@@ -922,6 +926,23 @@ $$
 \hat{w}'(x, y) = \frac{-b(x, y) - \sqrt{b(x, y)^2 - 4a(x, y)c(x, y)}}{2a(x, y)},
 $$
 which is a function of the generating parameters $x$ and $y$.
+We see that
+$$
+\hat{w}'(x, y) \ge 1
+$$
+is equivalent to
+%-b - \sqrt{b^2 - 4ac} \le 2a,
+%-b - 2a \le \sqrt{b^2 - 4ac},
+%b^2 + 4ab + 4a^2 \le b^2 - 4ac,
+%a^2 + ab + ac \le 0,
+$$
+a(x, y) + b(x, y) + c(x, y) \ge 0,
+$$
+which, simplifying as functions of $\alpha_1, \alpha_2, \gamma$ and $\beta$ yields
+\begin{equation}
+\label{eq:restricted-bl-result}
+\beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
+\end{equation}
 \end{proof}
 
 \generalBranchInconsist*
@@ -930,43 +951,40 @@ which is a function of the generating parameters $x$ and $y$.
 In the general case, $\hat{w}'$ is a function of $x$, $y$, $\hat{x}'$, and $\hat{y}'$.
 Looking to the previous section, $\hat{w}'$ is still given by the quadratic formula, only with $\gamma$ and $\beta$ now being functions of $\hat{x}'$ and $\hat{y}'$ instead of $x'$ and $y'$.
 Assume we know $\hat{x}'$ and $\hat{y}'$ as functions of $x$ and $y$ only.
-Suppressing function arguments and given that $a < 0$, we are interested in the cases where
+Since
 $$
-\frac{-b - \sqrt{b^2 - 4ac}}{2a} \ge 1,
+\alpha_1 + \alpha_2 = \frac{1}{2}\beta
 $$
-which, after some algebra, is equivalent to
-%-b - \sqrt{b^2 - 4ac} \le 2a,
-%-b - 2a \le \sqrt{b^2 - 4ac},
-%b^2 + 4ab + 4a^2 \le b^2 - 4ac,
-%a^2 + ab + ac \le 0,
+and
 $$
-a + b + c \ge 0.
+\alpha_1 - \alpha_2 = xy^2,
 $$
-Simplifying, this is
-$$
+simplifying \eqref{eq:restricted-bl-result} further yields
+\begin{equation}
+\label{eq:general-bl-result}
 -\gamma^2(\hat{x}', \hat{y}')(1 + \frac{1}{2}\beta(x, y)) + 2\gamma(\hat{x}', \hat{y}')\beta(\hat{x}', \hat{y}')xy^2 + \beta^2(\hat{x}', \hat{y}') \ge 0.
-$$
-If we can find
+\end{equation}
+Given the bounds
 $$
 \gamma_{L}(x, y) \le \gamma(\hat{x}', \hat{y}') \le \gamma_{U}(x, y)
 $$
 and
 $$
-\beta_{L}(x, y) \le \beta(\hat{x}', \hat{y}')
+\beta_{L}(x, y) \le \beta(\hat{x}', \hat{y}'),
 $$
-then we are interested in the region where
+if
 $$
 -\gamma_{U}^2(x, y)(1 + \frac{1}{2}\beta(x, y)) + 2\gamma_{L}(x, y)\beta_{L}(x, y)xy^2 + \beta_{L}^2(x, y) \ge 0,
 $$
-an inequality involving only $x$ and $y$.
+then \eqref{general-bl-result} holds, and this is an inequality involving only $x$ and $y$.
 The loosest possible bounds are $\gamma_{L} = 0$, $\beta_{L} = 1$ and $\gamma_{U} = 4$, giving
 $$
 -16(1 + \frac{1}{2}\beta(x, y)) + 1 \ge 0,
 $$
 which is never true.
-The tightest possible bounds are $\gamma_{L} = \gamma_{U} = \gamma(x, y)$ and $\beta_{L} = \beta(x, y)$, which is the case in Figure~\ref{fig:bl-inconsistency}.
+The tightest possible bounds are $\gamma_{L} = \gamma_{U} = \gamma(x, y)$ and $\beta_{L} = \beta(x, y)$, which is the case in Fig.~\ref{fig:bl-inconsistency}.
 
-Say we are willing to tolerate a specified level of error in our estimates for $\hat{x}'$ and $\hat{y}'$ so that
+For an intermediate bound, define a specified level of error in estimates for $\hat{x}'$ and $\hat{y}'$ so that
 $$
 x-x_{L} \le \hat{x}' \le x+x_{U}
 $$
@@ -974,4 +992,6 @@ and
 $$
 y-y_{L} \le \hat{y}' \le y+y_{U}.
 $$
+Then $\gamma_L(x, y), \gamma_U(x, y)$ and $\beta_L(x, y)$ are defined directly from the bounds on $\hat{x}'$ and $\hat{y}'$.
+To get a sense of the region of overestimation, Fig.~\ref{fig:bl-loose-inconsistency} plots the case where $x_L=x_U=y_L=y_U=0.1$.
 \end{proof}
