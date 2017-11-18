@@ -68,21 +68,24 @@
 
 \renewcommand{\arraystretch}{1.2} % because otherwise exponents get eaten by \hline
 
+\begin{abstract}
+TODO
+\end{abstract}
 
 \section*{Introduction}
 
 Classical maximum-likelihood (ML) estimation in phylogenetics operates by integrating out possible ancestral states at the internal nodes of the tree.
 Recently, \cite{Sagulenko2017-jo} have suggested using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences.
 This is attractive from a computational perspective: such joint ML inference can proceed according to an iterative procedure in which ML ancestral sequences are first inferred and then model parameters are optimized conditional on the ancestral sequences.
-This latter conditional optimization is simpler and more computationally efficient than marginalizing out ancestral sequences and then performing optimization.
+This latter conditional optimization is simpler and more computationally efficient than marginalizing over ancestral sequences and then performing optimization.
 
 Existing consistency proofs for maximum-likelihood phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
 These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
-Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$ and limit themselves to optimizing branch lengths using this method, their work motivates understanding when exactly this approximation breaks down, and what happens when we optimize branch lengths and tree topology using this approximation.
+Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$ and limit themselves to optimizing branch lengths using this method, their work motivates understanding when exactly this approximation breaks down, and what happens when optimizing branch lengths and tree topology using this approximation.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
-To do so, we use a binary symmetric model and imagine data being generated on the four taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the limit of infinite data.
+To do so, we use a binary symmetric model and imagine data being generated on the four-taxa ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the limit of infinite data.
 We find similar areas where joint inference consistently overestimates interior branch lengths when the topology is known.
 
 \section*{Phylogenetic maximum likelihood}
@@ -113,7 +116,7 @@ We show in the Appendix that, in the case of the Farris tree, fixing both the to
 \includegraphics[width=.95\textwidth]{felsenstein_blank}
 \caption[short]{Felsenstein topology $\tau_2$}
 \end{subfigure}
-\caption{Two simple topologies}
+\caption{Two four-taxa topologies}
 \label{fig:farris-fels-top}
 \end{figure}
 
@@ -138,7 +141,7 @@ The typical approach to is to maximize the likelihood marginalized across ancest
 \end{equation}
 to estimate the tree $\tau$ and branch fidelities $t$.
 
-An alternative approach \cite{Sagulenko2017-jo} does away with the marginalization and directly estimates the maximum likelihood parameters of the fully\hyp{}observed likelihood in \eqref{eq:full_likelihood}.
+An alternative approach \cite{Sagulenko2017-jo} does away with the marginalization and directly estimates the maximum likelihood parameters of the fully-observed likelihood in \eqref{eq:full_likelihood}.
 This is known as a profile likelihood \cite{Murphy2000-ry}, which exists here because $\alphabet$ is a finite set:
 \begin{equation}
 \label{eq:profile_likelihood}
@@ -205,9 +208,9 @@ This results in more possible maxima for $\tau_2$ even if data are generated fro
 
 We now consider the problem of branch fidelity estimation on the correct tree using joint ancestral state and branch fidelity estimation.
 We analyze two settings on the Farris topology, corresponding to whether some branch fidelities are fixed at their true values or not.
-As above, assume that data is generated with two sister branches of fidelity $x$, with all other branches of fidelity $y$.
+As above, assume that data is generated from the ``Farris zone'' with two top branches of fidelity $x$ and all other branches of fidelity $y$.
 We show that, for a nontrivial subset of possible values for $x$ and $y$, the interior branch fidelity parameter $w'$ will be consistently overestimated as exactly equal to one instead of its true value of $y$.
-That is, for the restricted case, with
+That is, if we know $x'$ and $y'$, then for
 $$
 \hat{w}' = \arg\max_{w'} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x,y,w'\}),
 $$
@@ -216,7 +219,7 @@ In the general case, we do the same but with
 $$
 (\hat{x}', \hat{y}', \hat{w}') = \arg\max_{x',y',w'} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}).
 $$
-These situations are in contrast to the approach using marginal likelihood where necessarily $\hat{w}'=y$.
+These situations are in contrast to the approach using marginal likelihood where necessarily $\hat{w}'=y$ in the limit of infinite data.
 
 \subsubsection*{Restricted case}
 
@@ -282,21 +285,24 @@ $$
 -\gamma_{U}^2(x, y)\left(1 + \frac{1}{2}\beta(x, y)\right) + 2\gamma_{L}(x, y)\beta_{L}(x, y)xy^2 + \beta_{L}^2(x, y) \ge 0.
 $$
 \end{restatable}
-Similar to Theorem~\ref{thm:restricted-bl}, the inequality in Theorem~\ref{thm:general-bl} is also a function of only $x$ and $y$.
+Similar to Theorem~\ref{thm:restricted-bl}, the inequality in Theorem~\ref{thm:general-bl} is also a function of only $x$ and $y$, though general forms for $\gamma_L(x, y)$, $\gamma_U(x, y)$, and $\beta_L(x, y)$ are difficult to obtain.
 The loosest possible bounds are $\gamma_{L} = 0$, $\beta_{L} = 1$ and $\gamma_{U} = 4$, giving
 $$
 -16\left(1 + \frac{1}{2}\beta(x, y)\right) + 1 \ge 0,
 $$
 which is never true.
-The tightest possible bounds are $\gamma_{L} = \gamma_{U} = \gamma(x, y)$ and $\beta_{L} = \beta(x, y)$, which is the case in Figure~\ref{fig:bl-inconsistency}.
-As an example middle case, let the error in estimating both $\hat{x}'$ and $\hat{y}'$ be $0.1$ in either direction, i.e.,
+The tightest possible bounds are $\gamma_{L} = \gamma_{U} = \gamma(x, y)$ and $\beta_{L} = \beta(x, y)$, which is the case in Fig.~\ref{fig:bl-inconsistency}.
+For an intermediate bound, define a specified level of error in estimates for $\hat{x}'$ and $\hat{y}'$ so that
 $$
-x-0.1\le\hat{x}'\le x+0.1,
+x-x_{L} \le \hat{x}' \le x+x_{U}
 $$
+and
 $$
-y-0.1\le\hat{y}'\le y+0.1.
+y-y_{L} \le \hat{y}' \le y+y_{U}.
 $$
-In this case, the region to the left side of the curve in Figure~\ref{fig:bl-loose-inconsistency} will either estimate $\hat{w}'$ to be one or estimate either $\hat{x}'$ or $\hat{y}'$ to be more than $0.1$ away from its true value.
+Then $\gamma_L(x, y), \gamma_U(x, y)$ and $\beta_L(x, y)$ are defined directly from the bounds on $\hat{x}'$ and $\hat{y}'$.
+As an example, the region to the left side of the curve in Fig.~\ref{fig:bl-loose-inconsistency} shows the case where $x_L=x_U=y_L=y_U=0.1$.
+In this case, we will either estimate $\hat{w}'$ to be one or estimate either $\hat{x}'$ or $\hat{y}'$ to be more than $0.1$ away from its true value.
 
 \begin{figure}
 \centering
@@ -309,7 +315,7 @@ In this case, the region to the left side of the curve in Figure~\ref{fig:bl-loo
 
 \subsubsection*{Empirical validation}
 
-The region of inconsistency in Figure~\ref{fig:bl-loose-inconsistency} is a conservative estimate of where $\hat{w}=1$.
+The region of inconsistency in Fig.~\ref{fig:bl-loose-inconsistency} is a conservative estimate of where $\hat{w}=1$.
 To determine how conservative, we use the method of differential evolution \cite{Storn1997} to perform joint maximum likelihood estimation using numerical optimization.
 Since empirical estimates can be unstable, we perform two maximizations---one over $0 \le x',y',w' \le 1$ and one over $0 \le x',y' \le 1$ with $w'=1$---and take the value of $\hat{w}'$ with the higher likelihood.
 %EM XXXX below because no bio journals have numbered sections.
@@ -318,10 +324,10 @@ Since empirical estimates can be unstable, we perform two maximizations---one ov
 We compute these maxima over a lattice in steps of $10^{-3}$ for $x$ and $y$ from $10^{-3}$ to $1-10^{-3}$---we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
 From this process we obtain Fig.~\ref{fig:bl-general-inconsistency}.
 
-The estimates for $\hat{w}'$ when $x$ and $y$ are both large seem to be unbiased, with $\hat{w}'$ increasing as $y$ increases, though the region where $\hat{w}'$ is estimated to be one---indicating no change along that particular branch---is similar to that in the restricted case.
-Although the restricted and general case are similar, comparing Figures~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case has a slightly different character, possibly due to potential looseness of the bound in the restricted case.
+The estimates for $\hat{w}'$ when $x$ and $y$ are both large look unbiased, with $\hat{w}'$ increasing as $y$ increases, though the region where $\hat{w}'$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
+Although the restricted and general case are similar, comparing Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case has a slightly different character, possibly due to potential looseness of the bound in the restricted case.
 %das: TODO double check this; do the same empirical plot for the restricted case
-This region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have a region of the space of true parameters where we will always estimate the interior branch parameter to be one.
+This region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have many situations where we will always estimate the interior branch parameter to be one.
 
 \begin{figure}
 \centering
@@ -342,15 +348,16 @@ This region encompasses the majority of the parameter space; even given the corr
 \section*{Discussion}
 
 The method of profile likleihood is well-studied \cite{Murphy2000-ry}.
-Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known \cite{Geman1982}, and joint inference of phylogenetic parameters and ancestral states \cite{Sagulenko2017-jo} is a similar approach to profile likelihood.
-Elsewhere in statistics literature, undesirable properties of maximum likelihood estimates in the case of infinite parameters have been shown by the Neyman-Scott paradox \cite{Neyman1948-tt}, though parameters tending to infinity is not a necessary condition for inconsistency \cite{LeCam1990}.
+Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., \cite{Geman1982}.
+Joint inference of phylogenetic parameters and ancestral states \cite{Sagulenko2017-jo} is a similar approach to profile likelihood.
+Elsewhere in statistics literature, the failure of maximum likelihood estimates to obtain consistent estimates in the case of infinite parameters have been shown by the Neyman-Scott paradox \cite{Neyman1948-tt}, though parameters tending to infinity is not a necessary condition for inconsistency \cite{LeCam1990}.
 Until recently \cite{RoyChoudhury2015-ta}, results on the properties of standard maximum likelihood estimates of phylogeny as in \eqref{eq:marginal_likelihood} have been difficult to prove, and no results have been obtained for profile likelihood.
-We have furthered progress to understand the limitations of this joint maximum likelihood approach in the case of phylogenetics.
+We have furthered progress in understanding the limitations of this joint maximum likelihood approach.
 
 In phylogenetics, counterexamples showing methods of phylogenetic inference are inconsistent have been shown using the same four-taxa topologies used here \cite{Felsenstein1978-rr}.
-In this case, the converse is shown: when simulating data under the ``Felsenstein zone'' topology $\tau_2$, as the number of observations increases, the ``Farris zone'' topology $\tau_1$ becomes more likely.
+In this case, the converse is shown: when simulating data under the ``Felsenstein zone'' topology $\tau_2$, as the number of observations increases, the ``Farris zone'' topology $\tau_1$ becomes more likely when performing a particular estimation procedure.
 Looking at the figure in \cite{Felsenstein1978-rr}, the region in Fig.~\ref{fig:inconsistency-farris} has a similar character, albeit a smaller region.
-Difficulties in phylogenetic estimation when the ``Farris zone'' generates characters is used in \cite{Siddall1998-hq}, though \cite{Swofford2001-hr} show that sequence length plays a major role in these issues.
+Difficulties in phylogenetic estimation when the ``Farris zone'' generates characters have been found by \cite{Siddall1998-hq}, though \cite{Swofford2001-hr} show that sequence length plays a major role in these issues.
 
 %EM We should be clear here that thus this is not "long branch attraction". I haven't read the Farris papers, but I wonder what his argument is and if it relates to this, in that there are too many parameters. Probably something should go in the intro as well pointing out that this is not LBA.
 %das: Noted. I will work on this.
