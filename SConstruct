@@ -21,7 +21,6 @@ svgs = [
     'figures/branch-length-inconsistency-inkscape.svg',
     'figures/bl-loose-inconsistency-inkscape.svg',
     'figures/w-hat-empirical-001.svg',
-    #'figures/w-hat-empirical-05-marginal.svg',
     'figures/w-hat-empirical-001-marginal.svg',
 ]
 

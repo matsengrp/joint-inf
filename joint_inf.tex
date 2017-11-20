@@ -314,12 +314,13 @@ In this case, we will either estimate $\hat{w}'$ to be one or estimate either $\
 \subsubsection*{Empirical validation}
 
 The region of inconsistency in Fig.~\ref{fig:bl-loose-inconsistency} is a conservative estimate of where $\hat{w}=1$.
-To determine how conservative, we use the method of differential evolution \cite{Storn1997} to perform joint maximum likelihood estimation using numerical optimization.
+To determine how conservative, we use the method of basin-hopping \cite{Wales1997} to perform joint maximum likelihood estimation using numerical optimization, described in the Appendix.
 Since empirical estimates can be unstable, we perform two maximizations---one over $0 \le x',y',w' \le 1$ and one over $0 \le x',y' \le 1$ with $w'=1$---and take the value of $\hat{w}'$ with the higher likelihood.
 We compute these maxima over a lattice in steps of $10^{-3}$ for $x$ and $y$ from $10^{-3}$ to $1-10^{-3}$---we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
-From this process we obtain Fig.~\ref{fig:bl-general-inconsistency}.
+From this process we obtain the plots in Fig.~\ref{fig:bl-general-inconsistency}.
 
-The estimates for $\hat{w}'$ when $x$ and $y$ are both large look unbiased, with $\hat{w}'$ increasing as $y$ increases, though the region where $\hat{w}'$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
+The case of marginal inference in as expected, where $\hat{w}'$ is equal to $y$ regardless of the value of $x$.
+For joint inference, the estimates for $\hat{w}'$ when $x$ and $y$ are both large look unbiased, with $\hat{w}'$ increasing as $y$ increases, though the region where $\hat{w}'$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
 Although the restricted and general case are similar, comparing Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case has a slightly different character, possibly due to potential looseness of the bound in the restricted case.
 This region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have many situations where we will always estimate the interior branch parameter to be one.
 
@@ -332,7 +333,6 @@ This region encompasses the majority of the parameter space; even given the corr
 % or
 % python joint_inf_plot.py --empirical --general-branch-lengths --plot-name figures/w-hat-empirical-001-marginal.svg --in-pkl-name figures/w-hat-empirical-001-marginal.pkl
 % if fit already
-% !! TODO: update with finer-grained plot; this is a placeholder as the global optimization runs...
 \includegraphics[width=\textwidth]{w-hat-empirical-001-marginal}
 \caption[short]{Marginal inference optimizing \eqref{eq:marginal_likelihood}}
 \end{subfigure}
@@ -348,7 +348,7 @@ This region encompasses the majority of the parameter space; even given the corr
 \end{subfigure}
 \caption{
     %das: note to update caption
-    Estimates for $\hat{w}'$ when computing empirical estimates of $(\hat{x}', \hat{y}', \hat{w}')$ using differential evolution \cite{Storn1997}.
+    Estimates for $\hat{w}'$ when computing empirical estimates of $(\hat{x}', \hat{y}', \hat{w}')$ using basin-hopping \cite{Wales1997}.
 }
 \label{fig:bl-general-inconsistency}
 \end{figure}

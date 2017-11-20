@@ -984,3 +984,21 @@ To get a sense of the region of overestimation, Fig.~\ref{fig:bl-loose-inconsist
 \end{proof}
 
 %EM Wanna add a short section about numerical optimization? You've seen that it's not entirely trivial.
+
+\subsection*{Empirical validation}
+
+We use basin-hopping \cite{Wales1997} implemented in \texttt{scipy} \cite{Jones2001} to obtain the plots in Fig.~\ref{fig:bl-general-inconsistency}.
+This method randomly perturbs candidate solutions and accepts or rejects them based on the nearby likelihood surface, eventually obtaining an estimate of the ``global'' optimum.
+While it is not guaranteed to always obtain a global optimum---or even always converge---its implementation here leads us to believe that we can estimate $\hat{w}'$ as well as any optimization method available.
+
+We take various safeguards to ensure convergence and stability of the procedure.
+Since this method involves randomness, we take precautions to not evaluate the likelihood near or outside of boundary conditions, i.e., when $x$ or $y$ are either $0$ or $1$.
+As is apparent from Table~\ref{tab:sitepatprob}, if $0 < x, y < 1$ and we try to evaluate the case of $x'=y'=w'=1$ we have a likelihood of exactly zero.
+Worse still, in Table~\ref{tab:likelihoods} for the Farris topology, in the cases of $\{2,\}, \{1,2\}, \{2,3\},$ and $\{1,2,3\}$, any attempt to evaluate $y'=1$ will similarly yield a zero likelihood.
+In these cases of zero likelihood, methods that evaluate many candidate parameter values can fail to converge when near these boundaries.
+We sidestep these computational issues by restricting ourselves to the region $x,y\in [10^{-3},1-10^{-3}]^2$.
+
+We initialize our optimization procedure at the true branch parameter vector $\{x, y, y\}$.
+We posit that $\hat{w}'$ is equal to one for regions of $x$ and $y$ small; methods that use local optimization may never see candidate values for large $x$ and $y$ if our initial value is small, so we perform two maximizations, one with $w'$ fixed and one where it is estimated.
+We take the value of $\hat{w}'$ with the larger likelihood as our estimate.
+
