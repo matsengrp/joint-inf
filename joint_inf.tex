@@ -85,18 +85,20 @@ Moreover, examples of inconsistency arising from including a large number of add
 Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$ and limit themselves to optimizing branch lengths using this method, their work motivates understanding when exactly this approximation breaks down, and what happens when optimizing branch lengths and tree topology using this approximation.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
-To do so, we use a binary symmetric model and imagine data being generated on the four-taxa ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the limit of infinite data.
+To do so, we use a binary symmetric model and imagine data being generated on the four-taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the limit of infinite data.
 We find similar areas where joint inference consistently overestimates interior branch lengths when the topology is known.
 
 \section*{Phylogenetic maximum likelihood}
 
 Assume the binary symmetric model, namely with a character alphabet $\alphabet=\{0,1\}$ and a uniform stationary distribution.
 %das: @EM is there a good reference to binary symmetric model, or should we trot out the definition and all implications/corollaries of it? I guess it depends where we'd submit?
+%EM I think that this is enough. In the lcfit paper we referenced the Semple and Stell phylogenetics book.
 Let $\nSiteRows$ be the number of tips of the tree, and $\nAncestralStateRows = \nSiteRows-2$ the number of internal nodes.
 We observe $\nCols$ samples of character data, i.e., an alignment with $\nCols$ columns, $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$ distributed as the random variable $\alignmentColumnRV$.
 The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$ and distributed as $\ancestralStateColumnRV$.
 
 We parameterize branches on the unique unrooted four-tip phylogenetic tree in ways known as the ``Farris'' and ``Felsenstein'' trees (Fig.~\ref{fig:farris-fels-top}).
+%EM Do you know that "topology" means tree without branch lengths? Therefore I think "tree" is more appropriate in the following sentence and elsewhere.
 In the classical configuration of each of these topologies, the interior branch length parameters are equal to the bottom two parameters.
 We show in the Appendix that, in the case of the Farris tree, fixing both the top two branch parameters to be equal and the bottom two branch parameters to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch parameters.
 
@@ -108,6 +110,7 @@ We show in the Appendix that, in the case of the Farris tree, fixing both the to
 %das: I think I'm either going to go with something other than the primes, like z_1, z_2, z_3, or replace x and y with greek letters or whatever, but it'll be a little bit of a tedious edit.
 %EM You mean globally in the whole document? Let's kick around ideas if so.
 %das: I think we just need the true generating parameters---x^* and y^*---and the estimands---x', y', w'. I've been bad about using x and y instead of x^* and y^* for function arguments because it's cleaner, and I think there is inconsistency in using the primes and not. How about Greek for unknown (truth) and Latin for estimands? \alpha and \beta for generating parameters and x, y, z for estimands? Would have to change some other notation but shouldn't be too hard I hope.
+%EM Wow, this is going to be some work. Sounds like a good plan, but I'd prefer for a system in which it's easy to remember which greek goes with which latin. could we do a, b, g and alpha, beta, gamma or something? Let's keep discussing before making the big change.
 \includegraphics[width=.95\textwidth]{farris_blank}
 \caption[short]{Farris topology $\tau_1$}
 \end{subfigure}
@@ -116,7 +119,7 @@ We show in the Appendix that, in the case of the Farris tree, fixing both the to
 \includegraphics[width=.95\textwidth]{felsenstein_blank}
 \caption[short]{Felsenstein topology $\tau_2$}
 \end{subfigure}
-\caption{Two four-taxa topologies}
+\caption{Two four-taxon topologies}
 \label{fig:farris-fels-top}
 \end{figure}
 
@@ -147,10 +150,6 @@ This is known as a profile likelihood \cite{Murphy2000-ry}, which exists here be
 \label{eq:profile_likelihood}
 L_\nCols'(\tau, t; \fullAlignment) = \max_{\fullAncestralStates\in\alphabet^{\nAncestralStateRows\times\nCols}} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates).
 \end{equation}
-%EM Does this have to be unique? Can we just say "denote an estimate"?
-%das: what does this refer to? the deleted sentence about the alphabet being discrete? I had that in just to show that there will be a maximum---i.e., no degeneracy---but maybe it's not necessary.
-%EM Damn, sorry to be unclear. The following statement says "denote THE estimate" which makes the ancestral state sound unique. Are you saying that it is? It's not obvious to me.
-%das: ah, got it. It's not unique, and why we needed the $\eta$s; hopefully "an" is better than "the?"
 We will use $\hat{\fullAncestralStates}$ to denote an estimate for $\fullAncestralStates$ obtained by maximization \eqref{eq:profile_likelihood}.
 One can then estimate a topology and branch fidelities using this profile likelihood:
 \begin{equation}
@@ -172,8 +171,6 @@ $$
 \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) \rightarrow \ell_{\tau^*,t^*}(\tau, t).
 $$
 We give $\ell$ explicitly in \eqref{eq:site_pattern_profile_likelihood_mean} in the Appendix.
-%EM I think that this is a technicality. I propose that we just state that we can restrict to the parameterization shown in the figure (with certain branch lengths equal) and that a formal statement and proof is in the appendix.
-%EM :) I think that we can make this even simpler by skipping the following statement and cutting straight to "fixing both the top two branch lengths..."
 
 \subsection*{Inconsistency in topology estimation}
 
@@ -204,9 +201,10 @@ This results in more possible maxima for $\tau_2$ even if data are generated fro
 \label{fig:inconsistency-farris}
 \end{figure}
 
-\subsection*{Inconsistency in branch fidelity estimation}
+\subsection*{Inconsistency in branch length estimation}
 
 We now consider the problem of branch fidelity estimation on the correct tree using joint ancestral state and branch fidelity estimation.
+As described above, we will use the equivalent but different notion of branch fidelities.
 We analyze two settings on the Farris topology, corresponding to whether some branch fidelities are fixed at their true values or not.
 As above, assume that data is generated from the ``Farris zone'' with two top branches of fidelity $x$ and all other branches of fidelity $y$.
 We show that, for a nontrivial subset of possible values for $x$ and $y$, the interior branch fidelity parameter $w'$ will be consistently overestimated as exactly equal to one instead of its true value of $y$.
@@ -318,9 +316,6 @@ In this case, we will either estimate $\hat{w}'$ to be one or estimate either $\
 The region of inconsistency in Fig.~\ref{fig:bl-loose-inconsistency} is a conservative estimate of where $\hat{w}=1$.
 To determine how conservative, we use the method of differential evolution \cite{Storn1997} to perform joint maximum likelihood estimation using numerical optimization.
 Since empirical estimates can be unstable, we perform two maximizations---one over $0 \le x',y',w' \le 1$ and one over $0 \le x',y' \le 1$ with $w'=1$---and take the value of $\hat{w}'$ with the higher likelihood.
-%EM XXXX below because no bio journals have numbered sections.
-%das: what should we do you think? I ran into this with the hadamard transform and went with the equation number instead of section, but not sure what to do here.
-%EM In fact I wasn't even sure exactly to what you were referring when the section number was in there. It doesn't seem to me to need a whole lot of justification though.
 We compute these maxima over a lattice in steps of $10^{-3}$ for $x$ and $y$ from $10^{-3}$ to $1-10^{-3}$---we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
 From this process we obtain Fig.~\ref{fig:bl-general-inconsistency}.
 
@@ -356,6 +351,8 @@ We have furthered progress in understanding the limitations of this joint maximu
 
 In phylogenetics, counterexamples showing methods of phylogenetic inference are inconsistent have been shown using the same four-taxa topologies used here \cite{Felsenstein1978-rr}.
 In this case, the converse is shown: when simulating data under the ``Felsenstein zone'' topology $\tau_2$, as the number of observations increases, the ``Farris zone'' topology $\tau_1$ becomes more likely when performing a particular estimation procedure.
+%EM Re LBA I was only thinking of putting a little sentence here that says that thus this is _not_ long branch attraction.
+%EM I don't know what "similar character" means here. I guess you are talking about his Figure 2?
 Looking at the figure in \cite{Felsenstein1978-rr}, the region in Fig.~\ref{fig:inconsistency-farris} has a similar character, albeit a smaller region.
 Difficulties in phylogenetic estimation when the ``Farris zone'' generates characters have been found by \cite{Siddall1998-hq}, though \cite{Swofford2001-hr} show that sequence length plays a major role in these issues.
 
