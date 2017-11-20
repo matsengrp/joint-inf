@@ -1,15 +1,16 @@
 from __future__ import unicode_literals
 import matplotlib
+matplotlib.use('SVG')
 matplotlib.rcParams['text.usetex'] = True
 matplotlib.rcParams['text.latex.unicode'] = True
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import seaborn as sns
-
 import numpy as np
 import argparse
 import sys
 import pickle
+import time
 
 from operator import mul
 from multiprocessing import Pool
@@ -116,6 +117,11 @@ def parse_args():
         '--empirical',
         action="store_true",
         help='compute empirical',
+    )
+    parser.add_argument(
+        '--marginal',
+        action="store_true",
+        help='do marginal likelihood instead of joint inference',
     )
 
     args = parser.parse_args()
@@ -333,16 +339,20 @@ def what_lower_general(x, y):
 
     return -gamma_u**2 * (1+.5*beta) + 2*gamma_l*beta_l*x*y**2 + beta_l**2
 
-def max_likelihood(xy, delta):
+def max_likelihood(xy, delta, joint=True):
     """
     max likelihood as function of marginal likelihood
     """
 
-    what_gen = differential_evolution(lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2]),
-        bounds=[(delta,1-delta)]*3,
+    minimizer_kwargs = dict(method="L-BFGS-B", bounds=[(delta,1-delta)]*3)
+    what_gen = basinhopping(lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2], joint=joint),
+        x0=[xy[0], xy[1], xy[1]],
+        minimizer_kwargs=minimizer_kwargs
     )
-    what_res = differential_evolution(lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], 1.-delta),
-        bounds=[(delta,1-delta)]*2,
+    minimizer_kwargs = dict(method="L-BFGS-B", bounds=[(delta,1-delta)]*2)
+    what_res = basinhopping(lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], 1.-delta, joint=joint),
+        x0=[xy[0], xy[1]],
+        minimizer_kwargs=minimizer_kwargs
     )
     if -what_res.fun > -what_gen.fun:
         what = 1.-delta
@@ -352,10 +362,11 @@ def max_likelihood(xy, delta):
     return what
 
 class MaxLikelihood(object):
-    def __init__(self, delta):
+    def __init__(self, delta, joint=True):
         self.delta = delta
+        self.joint = joint
     def __call__(self, xy):
-        return max_likelihood(xy, self.delta)
+        return max_likelihood(xy, self.delta, joint=self.joint)
 
 class Legend(object):
     pass
@@ -373,6 +384,7 @@ class LegendHandler(object):
 def main(args=sys.argv[1:]):
     args = parse_args()
 
+    st_time = time.time()
     x_range = np.arange(args.delta, 1.0, args.delta)
     y_range = np.arange(args.delta, 1.0, args.delta)
     X, Y = np.meshgrid(x_range,y_range)
@@ -419,10 +431,10 @@ def main(args=sys.argv[1:]):
             if args.in_pkl_name is None:
                 if args.n_jobs > 1:
                     p = Pool(processes=args.n_jobs)
-                    Z_pool = p.map( MaxLikelihood(args.delta) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
+                    Z_pool = p.map( MaxLikelihood(args.delta, joint=not args.marginal) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
                     Z = np.reshape(Z_pool, (int(1. / args.delta) - 1, int(1. / args.delta) - 1))
                 else:
-                    Z = np.vectorize(lambda x, y: max_likelihood((x, y), delta=args.delta))(X, Y)
+                    Z = np.vectorize(lambda x, y: max_likelihood((x, y), delta=args.delta, joint=not args.marginal))(X, Y)
 
                 with open(args.out_pkl_name, 'w') as f:
                     pickle.dump((X, Y, Z, args.delta), f)
@@ -446,6 +458,9 @@ def main(args=sys.argv[1:]):
             plt.savefig(args.plot_name)
     else:
         print "No plotting argument given!"
+
+    print "Completed! Time: %s" % str(time.time() - st_time)
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

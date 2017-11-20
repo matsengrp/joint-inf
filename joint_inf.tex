@@ -99,7 +99,7 @@ The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancest
 
 We parameterize branches on the unique unrooted four-tip phylogenetic tree in ways known as the ``Farris'' and ``Felsenstein'' trees (Fig.~\ref{fig:farris-fels-top}).
 %EM Do you know that "topology" means tree without branch lengths? Therefore I think "tree" is more appropriate in the following sentence and elsewhere.
-In the classical configuration of each of these topologies, the interior branch length parameters are equal to the bottom two parameters.
+In the classical configuration of each of these trees, the interior branch length parameters are equal to the bottom two parameters.
 We show in the Appendix that, in the case of the Farris tree, fixing both the top two branch parameters to be equal and the bottom two branch parameters to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch parameters.
 
 \begin{figure}
@@ -112,14 +112,14 @@ We show in the Appendix that, in the case of the Farris tree, fixing both the to
 %das: I think we just need the true generating parameters---x^* and y^*---and the estimands---x', y', w'. I've been bad about using x and y instead of x^* and y^* for function arguments because it's cleaner, and I think there is inconsistency in using the primes and not. How about Greek for unknown (truth) and Latin for estimands? \alpha and \beta for generating parameters and x, y, z for estimands? Would have to change some other notation but shouldn't be too hard I hope.
 %EM Wow, this is going to be some work. Sounds like a good plan, but I'd prefer for a system in which it's easy to remember which greek goes with which latin. could we do a, b, g and alpha, beta, gamma or something? Let's keep discussing before making the big change.
 \includegraphics[width=.95\textwidth]{farris_blank}
-\caption[short]{Farris topology $\tau_1$}
+\caption[short]{Farris tree $\tau_1$}
 \end{subfigure}
 \begin{subfigure}{.45\linewidth}
 \centering
 \includegraphics[width=.95\textwidth]{felsenstein_blank}
-\caption[short]{Felsenstein topology $\tau_2$}
+\caption[short]{Felsenstein tree $\tau_2$}
 \end{subfigure}
-\caption{Two four-taxon topologies}
+\caption{Two four-taxon trees}
 \label{fig:farris-fels-top}
 \end{figure}
 
@@ -321,24 +321,37 @@ From this process we obtain Fig.~\ref{fig:bl-general-inconsistency}.
 
 The estimates for $\hat{w}'$ when $x$ and $y$ are both large look unbiased, with $\hat{w}'$ increasing as $y$ increases, though the region where $\hat{w}'$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
 Although the restricted and general case are similar, comparing Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case has a slightly different character, possibly due to potential looseness of the bound in the restricted case.
-%das: TODO double check this; do the same empirical plot for the restricted case
 This region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have many situations where we will always estimate the interior branch parameter to be one.
 
 \begin{figure}
 \centering
+\begin{subfigure}{.45\linewidth}
+\centering
 % obtained by running
-% python joint_inf_plot.py --empirical --general-branch-lengths --delta .001 --plot-name figures/w-hat-empirical-001.svg --pkl-name figures/w-hat-empirical-001.pkl --n-jobs 16
+% python joint_inf_plot.py --empirical --general-branch-lengths --delta .001 --plot-name figures/w-hat-empirical-001-marginal.svg --out-pkl-name figures/w-hat-empirical-001-marginal.pkl --n-jobs 16 --marginal
+% or
+% python joint_inf_plot.py --empirical --general-branch-lengths --plot-name figures/w-hat-empirical-001-marginal.svg --in-pkl-name figures/w-hat-empirical-001-marginal.pkl
+% if fit already
+% !! TODO: update with finer-grained plot; this is a placeholder as the global optimization runs...
+\includegraphics[width=\textwidth]{w-hat-empirical-001-marginal}
+\caption[short]{Marginal inference optimizing \eqref{eq:marginal_likelihood}}
+\end{subfigure}
+\begin{subfigure}{.45\linewidth}
+\centering
+% obtained by running
+% python joint_inf_plot.py --empirical --general-branch-lengths --delta .001 --plot-name figures/w-hat-empirical-001.svg --out-pkl-name figures/w-hat-empirical-001.pkl --n-jobs 16
 % or
 % python joint_inf_plot.py --empirical --general-branch-lengths --plot-name figures/w-hat-empirical-001.svg --in-pkl-name figures/w-hat-empirical-001.pkl
 % if fit already
 \includegraphics[width=\textwidth]{w-hat-empirical-001}
+\caption[short]{Joint inference optimizing \eqref{eq:profile_likelihood}}
+\end{subfigure}
 \caption{
     %das: note to update caption
     Estimates for $\hat{w}'$ when computing empirical estimates of $(\hat{x}', \hat{y}', \hat{w}')$ using differential evolution \cite{Storn1997}.
 }
 \label{fig:bl-general-inconsistency}
 \end{figure}
-
 
 \section*{Discussion}
 
@@ -353,7 +366,7 @@ In phylogenetics, counterexamples showing methods of phylogenetic inference are 
 In this case, the converse is shown: when simulating data under the ``Felsenstein zone'' topology $\tau_2$, as the number of observations increases, the ``Farris zone'' topology $\tau_1$ becomes more likely when performing a particular estimation procedure.
 %EM Re LBA I was only thinking of putting a little sentence here that says that thus this is _not_ long branch attraction.
 %EM I don't know what "similar character" means here. I guess you are talking about his Figure 2?
-Looking at the figure in \cite{Felsenstein1978-rr}, the region in Fig.~\ref{fig:inconsistency-farris} has a similar character, albeit a smaller region.
+Looking at the figure in \cite{Felsenstein1978-rr} we see similarities in curve shape to the region in Fig.~\ref{fig:inconsistency-farris}, though the latter has a smaller region of inconsistency.
 Difficulties in phylogenetic estimation when the ``Farris zone'' generates characters have been found by \cite{Siddall1998-hq}, though \cite{Swofford2001-hr} show that sequence length plays a major role in these issues.
 
 %EM We should be clear here that thus this is not "long branch attraction". I haven't read the Farris papers, but I wonder what his argument is and if it relates to this, in that there are too many parameters. Probably something should go in the intro as well pointing out that this is not LBA.
