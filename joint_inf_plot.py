@@ -3,6 +3,7 @@ import matplotlib
 matplotlib.use('SVG')
 matplotlib.rcParams['text.usetex'] = True
 matplotlib.rcParams['text.latex.unicode'] = True
+matplotlib.rcParams['figure.autolayout'] = True
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import seaborn as sns
@@ -22,7 +23,7 @@ sns.set_style('ticks')
 # ~~~~~~~~~
 # global variables
 
-FONT_SIZE = 16
+FONT_SIZE = 20
 
 ALL_PATTERNS = [
         '0000',
@@ -396,11 +397,11 @@ def main(args=sys.argv[1:]):
             legendtext = r'joint inference inconsistent'
         elif args.restricted_branch_lengths:
             region = what_lower_minus_one(X, Y)
-            plottitle = r'Region of inconsistent branch parameter estimation (restricted case)'
+            plottitle = r'Region of inconsistent branch parameter estimation''\n'r'(restricted case)'
             legendtext = r'$\hat{w}=1$'
         elif args.general_branch_lengths:
             region = what_lower_general(X, Y)
-            plottitle = r'Region of inconsistent branch parameter estimation (general case)'
+            plottitle = r'Region of inconsistent branch parameter estimation''\n'r'(general case)'
             legendtext = r'$\hat{w}=1$ or $\hat{x}$ or $\hat{y}$''\n'r'poorly estimated'
 
         ct = plt.contour(X, Y, region, [0], colors='k', linewidths=1)
@@ -419,11 +420,16 @@ def main(args=sys.argv[1:]):
         if args.restricted_branch_lengths:
             plt.legend([Legend()], [legendtext],
                 handler_map={Legend: LegendHandler()},
-                bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=FONT_SIZE)
+                bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=FONT_SIZE-4)
         else:
             plt.legend([Legend()], [legendtext],
-                handler_map={Legend: LegendHandler()}, fontsize=FONT_SIZE)
+                handler_map={Legend: LegendHandler()}, fontsize=FONT_SIZE-4)
 
+        ax = plt.gca()
+        ax.set_xticks(np.arange(0, 1.1, .2))
+        ax.set_yticks(np.arange(0, 1.1, .2))
+        ax.set_xticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$', r'$1.0$'], fontsize=FONT_SIZE-2)
+        ax.set_yticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$', r'$1.0$'], fontsize=FONT_SIZE-2)
         sns.despine()
         plt.savefig(args.plot_name)
     elif args.empirical:

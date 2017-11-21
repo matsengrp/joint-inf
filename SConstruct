@@ -20,8 +20,8 @@ svgs = [
     'figures/topology-inconsistency-inkscape.svg',
     'figures/branch-length-inconsistency-inkscape.svg',
     'figures/bl-loose-inconsistency-inkscape.svg',
-    'figures/w-hat-empirical-001.svg',
-    'figures/w-hat-empirical-001-marginal.svg',
+    'figures/w-hat-empirical-01.svg',
+    'figures/w-hat-empirical-01-marginal.svg',
 ]
 
 pdfs = [env.Inkscape(target="figures/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
