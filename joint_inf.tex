@@ -90,9 +90,7 @@ We find similar areas where joint inference consistently overestimates interior 
 
 \section*{Phylogenetic maximum likelihood}
 
-Assume the binary symmetric model, namely with a character alphabet $\alphabet=\{0,1\}$ and a uniform stationary distribution.
-%das: @EM is there a good reference to binary symmetric model, or should we trot out the definition and all implications/corollaries of it? I guess it depends where we'd submit?
-%EM I think that this is enough. In the lcfit paper we referenced the Semple and Stell phylogenetics book.
+Assume the binary symmetric model, namely with a character alphabet $\alphabet=\{0,1\}$ and a uniform stationary distribution \cite{Semple2003-em}.
 Let $\nSiteRows$ be the number of tips of the tree, and $\nAncestralStateRows = \nSiteRows-2$ the number of internal nodes.
 We observe $\nCols$ samples of character data, i.e., an alignment with $\nCols$ columns, $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$ distributed as the random variable $\alignmentColumnRV$.
 The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$ and distributed as $\ancestralStateColumnRV$.
@@ -368,18 +366,11 @@ We have furthered progress in understanding the limitations of this joint maximu
 
 In phylogenetics, counterexamples showing methods of phylogenetic inference are inconsistent have been shown using the same four-taxa topologies used here \cite{Felsenstein1978-rr}.
 In this case, the converse is shown: when simulating data under the ``Felsenstein zone'' topology $\tau_2$, as the number of observations increases, the ``Farris zone'' topology $\tau_1$ becomes more likely when performing a particular estimation procedure.
-%EM Re LBA I was only thinking of putting a little sentence here that says that thus this is _not_ long branch attraction.
-%EM I don't know what "similar character" means here. I guess you are talking about his Figure 2?
-%das: took a stab at it
 Looking at the figure in \cite{Felsenstein1978-rr} we see similarities in curve shape to the region in Fig.~\ref{fig:inconsistency-farris}, though the latter has a smaller region of inconsistency.
 Moreover, the inconsistency in \cite{Felsenstein1978-rr} is attributed to long branch attraction, i.e., the fact that there may be multiple long branches where parallel changes are more likely than a single change along a short branch.
 This is not the case here; for our case, the inconsistency generally occurs when all branches are long, and has more to do with the choices of the form of the likelihood than from the interplay of long and short branches.
 Difficulties in phylogenetic estimation when the ``Farris zone'' generates characters have been found by \cite{Siddall1998-hq}, though \cite{Swofford2001-hr} show that sequence length plays a major role in these issues.
 
-%EM We should be clear here that thus this is not "long branch attraction". I haven't read the Farris papers, but I wonder what his argument is and if it relates to this, in that there are too many parameters. Probably something should go in the intro as well pointing out that this is not LBA.
-%das: Noted. I will work on this.
-%das: still not quite sure about what to say re LBA, but I'm thinking about it
-%Discussion of number of parameters of each.
 
 
 \section*{Acknowledgements}
