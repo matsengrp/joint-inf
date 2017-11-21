@@ -124,6 +124,7 @@ We show in the Appendix that, in the case of the Farris tree, fixing both the to
 We parameterize the branches of these trees not with the standard notion of branch length in terms of number of substitutions per site, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$ where $0 \le \theta \le 1$.
 We follow \cite{Matsen2007-jq} in calling this edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge.
 Fidelities have useful algebraic properties, and generating probabilities using the Hadamard transform have an especially simple form (see \eqref{eq:hadamard_probability} in the Appendix).
+For the trees in Fig.~\ref{fig:farris-fels-top}, define the general branch fidelity parameter $t=\{\theta_1,\theta_2,\theta_3,\theta_4,\theta_5\}$ where fidelities are ordered in the order of the taxa with the internal branch last.
 
 \subsection*{Two paths to maximum likelihood}
 
@@ -173,7 +174,7 @@ We give $\ell$ explicitly in \eqref{eq:site_pattern_profile_likelihood_mean} in 
 \subsection*{Inconsistency in topology estimation}
 
 \begin{restatable}{theorem}{topoInconsist}
-Let $t^*=\{x^*, y^*, y^*\}$ and $t=\{x, y, w\}$.
+Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x, y, x, y, w\}$.
 There exist $L_0(x^*, y^*), L_1(x^*, y^*)$ and $0 < x^*, y^* < 1$ such that
 $$
 \max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t) \le L_0(x^*, y^*),
@@ -192,7 +193,7 @@ This results in more possible maxima for $\tau_2$ even if data are generated fro
 % obtained by running
 % python joint_inf_plot.py --analytic --topology --delta .001 --plot-name figures/topology-inconsistency.svg
 %EM Sorry I didn't notice this before, but the font size everywhere in the plots should be at least doubled before submission. Fine if you want to wait one more cycle. The goal is that it should be the same size as the font in the text.
-\includegraphics[width=.9\textwidth]{topology-inconsistency-inkscape}
+\includegraphics[width=\textwidth]{topology-inconsistency-inkscape}
 \caption{
     Regions of inconsistency.
     Due to the looseness of the upper and lower bounds, the parameters in the top right do not necessarily indicate consistency, though all parameters in the labeled region result in an inconsistency.
@@ -209,12 +210,12 @@ As above, assume that data is generated from the ``Farris zone'' with two top br
 We show that, for a nontrivial subset of possible values for $x^*$ and $y^*$, the interior branch fidelity parameter $w$ will be consistently overestimated as exactly equal to one instead of its true value of $y^*$.
 That is, if we know $x^*$ and $y^*$, then for
 $$
-\hat{w} = \arg\max_{w} \ \ell_{\tau_1,\{x^*,y^*,y^*\}}(\tau_1, \{x^*,y^*,w\}),
+\hat{w} = \arg\max_{w} \ \ell_{\tau_1,t^*}(\tau_1, \{x^*,y^*,x^*,y^*,w\}),
 $$
 we show there are values for $x^*$ and $y^*$ where $\hat{w}\equiv 1$.
 In the general case, we do the same but with
 $$
-(\hat{x}, \hat{y}, \hat{w}) = \arg\max_{x,y,w} \ \ell_{\tau_1,\{x^*,y^*,y^*\}}(\tau_1, \{x,y,w\}).
+(\hat{x}, \hat{y}, \hat{w}) = \arg\max_{x,y,w} \ \ell_{\tau_1,t^*}(\tau_1, \{x,y,x,y,w\}).
 $$
 These situations are in contrast to the approach using marginal likelihood where necessarily $\hat{w}=y^*$ in the limit of infinite data.
 
@@ -250,7 +251,7 @@ Seeing no change along a branch more likely increases the likelihood by introduc
 \centering
 % obtained by running
 % python joint_inf_plot.py --analytic --restricted-branch-lengths --delta .001 --plot-name figures/branch-length-inconsistency.svg
-\includegraphics[width=.9\textwidth]{branch-length-inconsistency-inkscape}
+\includegraphics[width=\textwidth]{branch-length-inconsistency-inkscape}
 \caption{Region of inconsistency with $x=x^*$ and $y=y^*$ fixed.}
 \label{fig:bl-inconsistency}
 \end{figure}
@@ -308,7 +309,7 @@ In this case, we will either estimate $\hat{w}$ to be one or estimate either $\h
 \centering
 % obtained by running
 % python joint_inf_plot.py --analytic --general-branch-lengths --delta .001 --plot-name figures/bl-loose-inconsistency.svg
-\includegraphics[width=.9\textwidth]{bl-loose-inconsistency-inkscape}
+\includegraphics[width=\textwidth]{bl-loose-inconsistency-inkscape}
 \caption{Region of inconsistency with $x^*-0.1 \le \hat{x} \le x^*+0.1$ and $y^*-0.1 \le \hat{y} \le y^*+0.1$.}
 \label{fig:bl-loose-inconsistency}
 \end{figure}
@@ -318,39 +319,26 @@ In this case, we will either estimate $\hat{w}$ to be one or estimate either $\h
 The region of inconsistency in Fig.~\ref{fig:bl-loose-inconsistency} is a conservative estimate of where $\hat{w}=1$.
 To determine how conservative, we use the method of basin-hopping \cite{Wales1997} to perform joint maximum likelihood estimation using numerical optimization, described in the Appendix.
 Since empirical estimates can be unstable, we perform two maximizations---one over $0 \le x,y,w \le 1$ and one over $0 \le x,y \le 1$ with $w=1$---and take the value of $\hat{w}$ with the higher likelihood.
-We compute these maxima over a lattice in steps of $10^{-3}$ for $x^*$ and $y^*$ from $10^{-3}$ to $1-10^{-3}$---we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
-From this process we obtain the plots in Fig.~\ref{fig:bl-general-inconsistency}.
+We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*$ and $y^*$ from $10^{-2}$ to $1-10^{-2}$---we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
+From this process we obtain the plots in Fig.~\ref{fig:bl-general-inconsistency} and Fig.~\ref{fig:bl-general-marginal}.
 
 The case of marginal inference in as expected, where $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$.
 For joint inference, the estimates for $\hat{w}$ when $x^*$ and $y^*$ are both large look unbiased, with $\hat{w}$ increasing as $y^*$ increases, though the region where $\hat{w}$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
-Although the restricted and general case are similar, comparing Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case has a slightly different character, possibly due to potential looseness of the bound in the restricted case.
+Comparing Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case is similar to that of the general case.
 This region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have many situations where we will always estimate the interior branch parameter to be one.
+As a positive control, Fig.~\ref{fig:bl-general-marginal} shows the result of optimizing \eqref{eq:marginal_likelihood} using the same procedure.
+Here we obtain the correct $\hat{w}=y^*$.
 
 \begin{figure}
 \centering
-\begin{subfigure}{.45\linewidth}
-\centering
 % obtained by running
-% python joint_inf_plot.py --empirical --general-branch-lengths --delta .001 --plot-name figures/w-hat-empirical-001-marginal.svg --out-pkl-name figures/w-hat-empirical-001-marginal.pkl --n-jobs 16 --marginal
+% python joint_inf_plot.py --empirical --general-branch-lengths --delta .01 --plot-name figures/w-hat-empirical-01.svg --out-pkl-name figures/w-hat-empirical-01.pkl --n-jobs 16
 % or
-% python joint_inf_plot.py --empirical --general-branch-lengths --plot-name figures/w-hat-empirical-001-marginal.svg --in-pkl-name figures/w-hat-empirical-001-marginal.pkl
+% python joint_inf_plot.py --empirical --general-branch-lengths --plot-name figures/w-hat-empirical-01.svg --in-pkl-name figures/w-hat-empirical-01.pkl
 % if fit already
-\includegraphics[width=\textwidth]{w-hat-empirical-001-marginal}
-\caption[short]{Marginal inference optimizing \eqref{eq:marginal_likelihood}}
-\end{subfigure}
-\begin{subfigure}{.45\linewidth}
-\centering
-% obtained by running
-% python joint_inf_plot.py --empirical --general-branch-lengths --delta .001 --plot-name figures/w-hat-empirical-001.svg --out-pkl-name figures/w-hat-empirical-001.pkl --n-jobs 16
-% or
-% python joint_inf_plot.py --empirical --general-branch-lengths --plot-name figures/w-hat-empirical-001.svg --in-pkl-name figures/w-hat-empirical-001.pkl
-% if fit already
-\includegraphics[width=\textwidth]{w-hat-empirical-001}
-\caption[short]{Joint inference optimizing \eqref{eq:profile_likelihood}}
-\end{subfigure}
+\includegraphics[width=\textwidth]{w-hat-empirical-01}
 \caption{
-    %das: note to update caption
-    Estimates for $\hat{w}$ when computing empirical estimates of $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997}.
+    Estimates for $\hat{w}$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997} optimizing \eqref{eq:profile_likelihood}.
 }
 \label{fig:bl-general-inconsistency}
 \end{figure}

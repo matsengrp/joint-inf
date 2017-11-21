@@ -228,25 +228,18 @@ Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}
 \begin{subfigure}{.45\linewidth}
 \centering
 \includegraphics[width=.95\textwidth]{farris_like00}
-\caption[short]{$P(\ancestralStateColumn=\emptyset\mid \alignmentColumn=\{2,3\},\tau_1,\{x,y,w\})$}
+\caption[short]{}
 \end{subfigure}
-\begin{subfigure}{.45\linewidth}
-\centering
-\includegraphics[width=.95\textwidth]{farris_like01}
-\caption[short]{$P(\ancestralStateColumn=\{2\}\mid \alignmentColumn=\{2,3\},\tau_1,\{x,y,w\})$}
-\end{subfigure}
-\vskip\baselineskip
 \begin{subfigure}{.45\linewidth}
 \centering
 \includegraphics[width=.95\textwidth]{farris_like10}
-\caption[short]{$P(\ancestralStateColumn=\{1\}\mid \alignmentColumn=\{2,3\},\tau_1,\{x,y,w\})$}
+\caption[short]{}
 \end{subfigure}
-\begin{subfigure}{.45\linewidth}
-\centering
-\includegraphics[width=.95\textwidth]{farris_like11}
-\caption[short]{$P(\ancestralStateColumn=\{1,2\}\mid \alignmentColumn=\{2,3\},\tau_1,\{x,y,w\})$}
-\end{subfigure}
-\caption{Example likelihood computation}
+\caption{
+    Example likelihood computations given the above branch probability parameterizations.
+    In (a), we compute the product to obtain $P(\ancestralStateColumn=\emptyset\mid \alignmentColumn=\{2,3\},\tau_1,t) = (1+x)(1-x)(1+y)(1-y)(1+w)/32$.
+    In (b), the same process yields $P(\ancestralStateColumn=\{1\}\mid \alignmentColumn=\{2,3\},\tau_1,t) = (1+x)(1-x)(1+y)(1-y)(1-w)/32$.
+}
 \label{fig:example_likelihoods}
 \end{figure}
 
@@ -466,6 +459,8 @@ See Appendix for full calculations.}
 
 \subsection*{Form of the likelihood}
 
+Consider the Farris tree with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$.
+We now show that, in the case of the Farris tree topology, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
 Using the Hadamard transform approach, we calculate the generating probabilities on the Farris tree topology.
 For site split $\emptyset$,
 \begin{align*}
@@ -535,7 +530,7 @@ $$
 $$
 is a lower bound.
 
-Assume $\tau^*=\tau_1$ and $t^*=\{x^*,y^*,y^*\}$.
+Assume $\tau^*=\tau_1$.
 Following \eqref{eq:hadamard_probability}, let
 $$
 p_{\emptyset} := p_{\emptyset}(x^*, y^*) = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=t^*),
@@ -746,7 +741,7 @@ and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 All bounds are functions only of $x,y$ through the true generating probabilities $x^*, y^*$.
 Call the upper bound
 $$
-L_0(x^*, y^*) := \max(L^{1}_{\tau_1,\tau_1}(x^*, y^*), L^{2}_{\tau_1,\tau_1}(x^*, y^*), L^{3}_{\tau_1,\tau_1}(x^*, y^*)).
+L_0(x^*, y^*) := \max\left(L^{1}_{\tau_1,\tau_1}(x^*, y^*), L^{2}_{\tau_1,\tau_1}(x^*, y^*), L^{3}_{\tau_1,\tau_1}(x^*, y^*)\right).
 $$
 
 We construct a similar lower bound on the Felsenstein tree partial likelihood.
@@ -953,7 +948,7 @@ which, simplifying as functions of $\alpha_1, \alpha_2, \gamma$ and $\beta$ yiel
 
 \begin{proof}
 In the general case, $\hat{w}$ is a function of $x^*$, $y^*$, $\hat{x}$, and $\hat{y}$.
-Looking to the previous section, $\hat{w}$ is still given by the quadratic formula, only with $\gamma$ and $\beta$ now being functions of $\hat{x}$ and $\hat{y}$ instead of $x^*$ and $y^*$.
+From the previous section, $\hat{w}$ is given by the quadratic formula, though now with $\gamma$ and $\beta$ as functions of $\hat{x}$ and $\hat{y}$ instead of $x^*$ and $y^*$.
 Assume we know $\hat{x}$ and $\hat{y}$ as functions of $x^*$ and $y^*$ only.
 Since
 $$
@@ -988,7 +983,7 @@ To get a sense of the region of overestimation, Fig.~\ref{fig:bl-loose-inconsist
 
 \subsection*{Empirical validation}
 
-We use basin-hopping \cite{Wales1997} implemented in \texttt{scipy} \cite{Jones2001} to obtain the plots in Fig.~\ref{fig:bl-general-inconsistency}.
+We use basin-hopping \cite{Wales1997} implemented in \texttt{scipy} \cite{Jones2001} to obtain the plots in Fig.~\ref{fig:bl-general-inconsistency} and Fig.~\ref{fig:bl-general-marginal}.
 This method randomly perturbs candidate solutions and accepts or rejects them based on the nearby likelihood surface, eventually obtaining an estimate of the ``global'' optimum.
 While it is not guaranteed to always obtain a global optimum---or even always converge---its implementation here leads us to believe that we can estimate $\hat{w}$ as well as any optimization method available.
 
@@ -997,9 +992,23 @@ Since this method involves randomness, we take precautions to not evaluate the l
 As is apparent from Table~\ref{tab:sitepatprob}, if $0 < x^*, y^* < 1$ and we try to evaluate the candidate $\hat{x}=\hat{y}=\hat{w}=1$ we have a likelihood of exactly zero.
 Worse still, in Table~\ref{tab:likelihoods} for the Farris topology, in the cases of $\{2,\}, \{1,2\}, \{2,3\},$ and $\{1,2,3\}$, any attempt to evaluate $\hat{y}=1$ will similarly yield a zero likelihood.
 In these cases of zero likelihood, methods that evaluate many candidate parameter values can fail to converge when near these boundaries.
-We sidestep these computational issues by restricting ourselves to the region $x^*,y^*\in [10^{-3},1-10^{-3}]^2$.
+We sidestep these computational issues by restricting ourselves to the region $x^*,y^*\in [10^{-2},1-10^{-2}]^2$.
 
-We initialize our optimization procedure at the true branch parameter vector $\{x^*,y^*,y^*\}$.
+We initialize our optimization procedure at the true branch parameters $t^*=\{x^*,y^*,x^*,y^*,y^*\}$.
 We posit that $\hat{w}$ is equal to one for regions of $x^*$ and $y^*$ small; methods that use local optimization may never see candidate values for large $x$ and $y$ if our initial value is small, so we perform two maximizations, one with $w$ fixed and one where it is estimated.
 We take the value of $\hat{w}$ with the larger likelihood as our estimate.
+
+\begin{figure}
+\centering
+% obtained by running
+% python joint_inf_plot.py --empirical --general-branch-lengths --delta .01 --plot-name figures/w-hat-empirical-01-marginal.svg --out-pkl-name figures/w-hat-empirical-01-marginal.pkl --n-jobs 16 --marginal
+% or
+% python joint_inf_plot.py --empirical --general-branch-lengths --plot-name figures/w-hat-empirical-01-marginal.svg --in-pkl-name figures/w-hat-empirical-01-marginal.pkl
+% if fit already
+\includegraphics[width=\textwidth]{w-hat-empirical-01-marginal}
+\caption{
+    Estimates for $\hat{w}$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997} optimizing \eqref{eq:marginal_likelihood}.
+}
+\label{fig:bl-general-marginal}
+\end{figure}
 
