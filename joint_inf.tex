@@ -175,16 +175,17 @@ We give $\ell$ explicitly in \eqref{eq:site_pattern_profile_likelihood_mean} in 
 \subsection*{Inconsistency in topology estimation}
 
 \begin{restatable}{theorem}{topoInconsist}
-There exist $L_0(x, y), L_1(x, y)$ and $0 < x', y' < 1$ such that
+Let $t^*=\{x^*, y^*, y^*\}$ and $t=\{x, y, w\}$.
+There exist $L_0(x^*, y^*), L_1(x^*, y^*)$ and $0 < x^*, y^* < 1$ such that
 $$
-\max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t) \le L_0(x, y),
+\max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t) \le L_0(x^*, y^*),
 $$
 $$
-\max_{t} \ \ell_{\tau_1,t^*}(\tau_2, t) \ge L_1(x, y)
+\max_{t} \ \ell_{\tau_1,t^*}(\tau_2, t) \ge L_1(x^*, y^*)
 $$
-and $L_1(x', y') > L_0(x', y')$.
+with $L_1(x^*, y^*) > L_0(x^*, y^*)$.
 \end{restatable}
-Fig.~\ref{fig:inconsistency-farris} shows the values of $x$ and $y$ where $L_1(x, y) > L_0(x, y)$.
+Fig.~\ref{fig:inconsistency-farris} shows the values of $x^*$ and $y^*$ where $L_1(x^*, y^*) > L_0(x^*, y^*)$.
 Intuitively, $\tau_2$ is favored in performing joint maximum likelihood since the likelihood for $\tau_2$ has more ``degrees of freedom''---Table~\ref{tab:likelihoods} shows that $\tau_1$ has only three possible forms for its likelihood while $\tau_2$ has many more.
 This results in more possible maxima for $\tau_2$ even if data are generated from $\tau_1$.
 
@@ -206,43 +207,43 @@ This results in more possible maxima for $\tau_2$ even if data are generated fro
 We now consider the problem of branch fidelity estimation on the correct tree using joint ancestral state and branch fidelity estimation.
 As described above, we will use the equivalent but different notion of branch fidelities.
 We analyze two settings on the Farris topology, corresponding to whether some branch fidelities are fixed at their true values or not.
-As above, assume that data is generated from the ``Farris zone'' with two top branches of fidelity $x$ and all other branches of fidelity $y$.
-We show that, for a nontrivial subset of possible values for $x$ and $y$, the interior branch fidelity parameter $w'$ will be consistently overestimated as exactly equal to one instead of its true value of $y$.
-That is, if we know $x'$ and $y'$, then for
+As above, assume that data is generated from the ``Farris zone'' with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$.
+We show that, for a nontrivial subset of possible values for $x^*$ and $y^*$, the interior branch fidelity parameter $w$ will be consistently overestimated as exactly equal to one instead of its true value of $y^*$.
+That is, if we know $x^*$ and $y^*$, then for
 $$
-\hat{w}' = \arg\max_{w'} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x,y,w'\}),
+\hat{w} = \arg\max_{w} \ \ell_{\tau_1,\{x^*,y^*,y^*\}}(\tau_1, \{x^*,y^*,w\}),
 $$
-we show there are values for $x$ and $y$ where $\hat{w}'\equiv 1$.
+we show there are values for $x^*$ and $y^*$ where $\hat{w}\equiv 1$.
 In the general case, we do the same but with
 $$
-(\hat{x}', \hat{y}', \hat{w}') = \arg\max_{x',y',w'} \ \ell_{\tau_1,\{x,y,y\}}(\tau_1, \{x',y',w'\}).
+(\hat{x}, \hat{y}, \hat{w}) = \arg\max_{x,y,w} \ \ell_{\tau_1,\{x^*,y^*,y^*\}}(\tau_1, \{x,y,w\}).
 $$
-These situations are in contrast to the approach using marginal likelihood where necessarily $\hat{w}'=y$ in the limit of infinite data.
+These situations are in contrast to the approach using marginal likelihood where necessarily $\hat{w}=y^*$ in the limit of infinite data.
 
 \subsubsection*{Restricted case}
 
-Fix $x'=x$ and $y'=y$ to their true, generating values and proceed to estimate the internal branch parameter $w'$.
+Fix $x=x^*$ and $y=y^*$ to their true, generating values and proceed to estimate the internal branch parameter $w$.
 \begin{restatable}{theorem}{restrictedBranchInconsist}
 \label{thm:restricted-bl}
 Let
 $$
-\alpha_1 := \alpha_1(x, y) = \frac{1}{8} \left(1+x^2+y^2+4xy^2+x^2y^2\right),
+\alpha_1 := \alpha_1(x^*, y^*) = \frac{1}{8} \left(1+(x^*)^2+(y^*)^2+4x^*(y^*)^2+(x^*)^2(y^*)^2\right),
 $$
 $$
-\alpha_2 := \alpha_2(x, y) = \frac{1}{8}\left(1+x^2+y^2-4xy^2+x^2y^2\right),
+\alpha_2 := \alpha_2(x^*, y^*) = \frac{1}{8}\left(1+(x^*)^2+(y^*)^2-4x^*(y^*)^2+(x^*)^2(y^*)^2\right),
 $$
 $$
-\beta := \beta(x, y) = 1+x^2+y^2+x^2y^2,
+\beta := \beta(x^*, y^*) = 1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2,
 $$
 $$
-\gamma := \gamma(x, y) = 4xy.
+\gamma := \gamma(x^*, y^*) = 4x^*y^*.
 $$
-The maximum likelihood value $\hat{w}' = 1$ if
+The maximum likelihood value $\hat{w} = 1$ if
 $$
 \beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
 $$
 \end{restatable}
-The inequality in Theorem~\ref{thm:restricted-bl} is a function of the generating parameters $x$ and $y$.
+The inequality in Theorem~\ref{thm:restricted-bl} is a function of the generating parameters $x^*$ and $y^*$.
 This region is shown in Fig.~\ref{fig:bl-inconsistency}.
 Intuitively, since we perform maximization over internal states, branch fidelities will have a tendency to be overestimated.
 Seeing no change along a branch more likely increases the likelihood by introducing a term of $(1+\theta)$ instead of $(1-\theta)$, and branch fidelities will be positively biased due to this.
@@ -252,62 +253,65 @@ Seeing no change along a branch more likely increases the likelihood by introduc
 % obtained by running
 % python joint_inf_plot.py --analytic --restricted-branch-lengths --delta .001 --plot-name figures/branch-length-inconsistency.svg
 \includegraphics[width=.9\textwidth]{branch-length-inconsistency-inkscape}
-\caption{Region of inconsistency with $x$ and $y$ fixed.}
+\caption{Region of inconsistency with $x=x^*$ and $y=y^*$ fixed.}
 \label{fig:bl-inconsistency}
 \end{figure}
 
 \subsubsection*{General case}
 
-In the general case, $\hat{w}'$ is a function of $x$, $y$, $\hat{x}'$, and $\hat{y}'$.
-Looking to the previous section, $\hat{w}'$ is still given by the quadratic formula, only with $\gamma$ and $\beta$ now being functions of $\hat{x}'$ and $\hat{y}'$ instead of $x$ and $y$.
-Assume we know $\hat{x}'$ and $\hat{y}'$ as functions of $x$ and $y$ only.
+In the general case, $\hat{w}$ is a function of $x^*$, $y^*$, $\hat{x}$, and $\hat{y}$.
+Looking to the previous section, $\hat{w}$ is still given by the quadratic formula, only with $\gamma$ and $\beta$ now being functions of $\hat{x}$ and $\hat{y}$ instead of $x^*$ and $y^*$.
+Assume we know $\hat{x}$ and $\hat{y}$ as functions of $x^*$ and $y^*$ only.
 \begin{restatable}{theorem}{generalBranchInconsist}
 \label{thm:general-bl}
 For
 $$
-\beta(x, y) = 1+x^2+y^2+x^2y^2,
+\beta := \beta(x^*, y^*) = 1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2,
 $$
 $$
-\gamma(x, y) = 4xy,
+\gamma := \gamma(x^*, y^*) = 4x^*y^*,
 $$
 and bounds
 $$
-\gamma_{L}(x, y) \le \gamma(\hat{x}', \hat{y}') \le \gamma_{U}(x, y)
+\gamma_L := \gamma_{L}(x^*, y^*) \le \gamma(\hat{x}, \hat{y}),
+$$
+$$
+\gamma_U := \gamma_{U}(x^*, y^*) \ge \gamma(\hat{x}, \hat{y}),
 $$
 and
 $$
-\beta_{L}(x, y) \le \beta(\hat{x}', \hat{y}'),
+\beta_L := \beta_{L}(x^*, y^*) \le \beta(\hat{x}, \hat{y}),
 $$
 the maximum likelihood value $\hat{w}=1$ when
 $$
--\gamma_{U}^2(x, y)\left(1 + \frac{1}{2}\beta(x, y)\right) + 2\gamma_{L}(x, y)\beta_{L}(x, y)xy^2 + \beta_{L}^2(x, y) \ge 0.
+-\gamma_{U}^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma_{L}\beta_{L}x^*(y^*)^2 + \beta_{L}^2 \ge 0.
 $$
 \end{restatable}
-Similar to Theorem~\ref{thm:restricted-bl}, the inequality in Theorem~\ref{thm:general-bl} is also a function of only $x$ and $y$, though general forms for $\gamma_L(x, y)$, $\gamma_U(x, y)$, and $\beta_L(x, y)$ are difficult to obtain.
+Similar to Theorem~\ref{thm:restricted-bl}, the inequality in Theorem~\ref{thm:general-bl} is also a function of only $x^*$ and $y^*$, though general forms for $\gamma_L$, $\gamma_U$, and $\beta_L$ are difficult to obtain.
 The loosest possible bounds are $\gamma_{L} = 0$, $\beta_{L} = 1$ and $\gamma_{U} = 4$, giving
 $$
--16\left(1 + \frac{1}{2}\beta(x, y)\right) + 1 \ge 0,
+-16\left(1 + \frac{1}{2}\beta\right) + 1 \ge 0,
 $$
 which is never true.
-The tightest possible bounds are $\gamma_{L} = \gamma_{U} = \gamma(x, y)$ and $\beta_{L} = \beta(x, y)$, which is the case in Fig.~\ref{fig:bl-inconsistency}.
-For an intermediate bound, define a specified level of error in estimates for $\hat{x}'$ and $\hat{y}'$ so that
+The tightest possible bounds are $\gamma_{L} = \gamma_{U} = \gamma$ and $\beta_{L} = \beta$, which is the case in Fig.~\ref{fig:bl-inconsistency}.
+For an intermediate bound, define a specified level of error in estimates for $\hat{x}$ and $\hat{y}$ so that
 $$
-x-x_{L} \le \hat{x}' \le x+x_{U}
+x^*-x_{L} \le \hat{x} \le x^*+x_{U}
 $$
 and
 $$
-y-y_{L} \le \hat{y}' \le y+y_{U}.
+y^*-y_{L} \le \hat{y} \le y^*+y_{U}.
 $$
-Then $\gamma_L(x, y), \gamma_U(x, y)$ and $\beta_L(x, y)$ are defined directly from the bounds on $\hat{x}'$ and $\hat{y}'$.
+Then $\gamma_L, \gamma_U$ and $\beta_L$ are defined directly from the bounds on $\hat{x}$ and $\hat{y}$.
 As an example, the region to the left side of the curve in Fig.~\ref{fig:bl-loose-inconsistency} shows the case where $x_L=x_U=y_L=y_U=0.1$.
-In this case, we will either estimate $\hat{w}'$ to be one or estimate either $\hat{x}'$ or $\hat{y}'$ to be more than $0.1$ away from its true value.
+In this case, we will either estimate $\hat{w}$ to be one or estimate either $\hat{x}$ or $\hat{y}$ to be more than $0.1$ away from its true value.
 
 \begin{figure}
 \centering
 % obtained by running
 % python joint_inf_plot.py --analytic --general-branch-lengths --delta .001 --plot-name figures/bl-loose-inconsistency.svg
 \includegraphics[width=.9\textwidth]{bl-loose-inconsistency-inkscape}
-\caption{Region of inconsistency with $x-0.1 \le \hat{x}' \le x+0.1$ and $y-0.1 \le \hat{y}' \le y+0.1$.}
+\caption{Region of inconsistency with $x^*-0.1 \le \hat{x} \le x^*+0.1$ and $y^*-0.1 \le \hat{y} \le y^*+0.1$.}
 \label{fig:bl-loose-inconsistency}
 \end{figure}
 
@@ -315,12 +319,12 @@ In this case, we will either estimate $\hat{w}'$ to be one or estimate either $\
 
 The region of inconsistency in Fig.~\ref{fig:bl-loose-inconsistency} is a conservative estimate of where $\hat{w}=1$.
 To determine how conservative, we use the method of basin-hopping \cite{Wales1997} to perform joint maximum likelihood estimation using numerical optimization, described in the Appendix.
-Since empirical estimates can be unstable, we perform two maximizations---one over $0 \le x',y',w' \le 1$ and one over $0 \le x',y' \le 1$ with $w'=1$---and take the value of $\hat{w}'$ with the higher likelihood.
-We compute these maxima over a lattice in steps of $10^{-3}$ for $x$ and $y$ from $10^{-3}$ to $1-10^{-3}$---we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
+Since empirical estimates can be unstable, we perform two maximizations---one over $0 \le x,y,w \le 1$ and one over $0 \le x,y \le 1$ with $w=1$---and take the value of $\hat{w}$ with the higher likelihood.
+We compute these maxima over a lattice in steps of $10^{-3}$ for $x^*$ and $y^*$ from $10^{-3}$ to $1-10^{-3}$---we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
 From this process we obtain the plots in Fig.~\ref{fig:bl-general-inconsistency}.
 
-The case of marginal inference in as expected, where $\hat{w}'$ is equal to $y$ regardless of the value of $x$.
-For joint inference, the estimates for $\hat{w}'$ when $x$ and $y$ are both large look unbiased, with $\hat{w}'$ increasing as $y$ increases, though the region where $\hat{w}'$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
+The case of marginal inference in as expected, where $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$.
+For joint inference, the estimates for $\hat{w}$ when $x^*$ and $y^*$ are both large look unbiased, with $\hat{w}$ increasing as $y^*$ increases, though the region where $\hat{w}$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
 Although the restricted and general case are similar, comparing Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case has a slightly different character, possibly due to potential looseness of the bound in the restricted case.
 This region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have many situations where we will always estimate the interior branch parameter to be one.
 
@@ -348,7 +352,7 @@ This region encompasses the majority of the parameter space; even given the corr
 \end{subfigure}
 \caption{
     %das: note to update caption
-    Estimates for $\hat{w}'$ when computing empirical estimates of $(\hat{x}', \hat{y}', \hat{w}')$ using basin-hopping \cite{Wales1997}.
+    Estimates for $\hat{w}$ when computing empirical estimates of $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997}.
 }
 \label{fig:bl-general-inconsistency}
 \end{figure}
