@@ -405,8 +405,8 @@ def main(args=sys.argv[1:]):
 
         ct = plt.contour(X, Y, region, [0], colors='k', linewidths=1)
         plt.axis('scaled')
-        plt.xlabel(r'$x$', fontsize=FONT_SIZE)
-        plt.ylabel(r'$y$', fontsize=FONT_SIZE)
+        plt.xlabel(r'$x^*$', fontsize=FONT_SIZE)
+        plt.ylabel(r'$y^*$', fontsize=FONT_SIZE)
         ttl = plt.title(plottitle, fontsize=FONT_SIZE+2)
         ttl.set_position([.5, 1.05])
         ct.ax.tick_params(labelsize=FONT_SIZE-2)
@@ -443,8 +443,8 @@ def main(args=sys.argv[1:]):
                     X, Y, Z, args.delta = pickle.load(f)
 
             im = plt.imshow(Z, cmap=plt.cm.gray, origin='lower')
-            plt.xlabel(r'$x$', fontsize=FONT_SIZE)
-            plt.ylabel(r'$y$', fontsize=FONT_SIZE)
+            plt.xlabel(r'$x^*$', fontsize=FONT_SIZE)
+            plt.ylabel(r'$y^*$', fontsize=FONT_SIZE)
             ttl = plt.title(r'Value of $\hat{w}$', fontsize=FONT_SIZE+2)
             ttl.set_position([.5, 1.05])
             ax = plt.gca()
