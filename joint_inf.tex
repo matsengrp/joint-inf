@@ -124,7 +124,8 @@ We show in the Appendix that, in the case of the Farris tree, fixing both the to
 We parameterize the branches of these trees not with the standard notion of branch length in terms of number of substitutions per site, but with a parameter such that the probability of a substitution on a branch with parameter $\theta$ is $p_\theta = (1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$ where $0 \le \theta \le 1$.
 We follow \cite{Matsen2007-jq} in calling this edge ``fidelity'' as it quantifies the fidelity of transmission of the ancestral state along an edge.
 Fidelities have useful algebraic properties, and generating probabilities using the Hadamard transform have an especially simple form (see \eqref{eq:hadamard_probability} in the Appendix).
-For the trees in Fig.~\ref{fig:farris-fels-top}, define the general branch fidelity parameter $t=\{\theta_1,\theta_2,\theta_3,\theta_4,\theta_5\}$ where fidelities are ordered in the order of the taxa with the internal branch last.
+For a four-taxon tree, define the general branch fidelity parameter $t=\{\theta_1,\theta_2,\theta_3,\theta_4,\theta_5\}$ where fidelities are ordered in the order of the taxa with the internal branch last.
+The trees in Fig.~\ref{fig:farris-fels-top} have $\theta_1=\theta_3=x$, $\theta_2=\theta_4=y$, and $\theta_5=w$.
 
 \subsection*{Two paths to maximum likelihood}
 
@@ -322,12 +323,12 @@ Since empirical estimates can be unstable, we perform two maximizations---one ov
 We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*$ and $y^*$ from $10^{-2}$ to $1-10^{-2}$---we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
 From this process we obtain the plots in Fig.~\ref{fig:bl-general-inconsistency} and Fig.~\ref{fig:bl-general-marginal}.
 
-The case of marginal inference in as expected, where $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$.
+The case of marginal inference is as expected, where $\hat{w}$ is equal to $y^*$ in the limit of infinite data regardless of the value of $x^*$.
 For joint inference, the estimates for $\hat{w}$ when $x^*$ and $y^*$ are both large look unbiased, with $\hat{w}$ increasing as $y^*$ increases, though the region where $\hat{w}$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
-Comparing Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case is similar to that of the general case.
-This region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have many situations where we will always estimate the interior branch parameter to be one.
+Comparing Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case is similar to that of the restricted case.
+This region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have many situations where we will estimate the interior branch parameter to be one.
 As a positive control, Fig.~\ref{fig:bl-general-marginal} shows the result of optimizing \eqref{eq:marginal_likelihood} using the same procedure.
-Here we obtain the correct $\hat{w}=y^*$.
+Here we obtain the correct $\hat{w}\rightarrow y^*$.
 
 \begin{figure}
 \centering
@@ -344,6 +345,10 @@ Here we obtain the correct $\hat{w}=y^*$.
 \end{figure}
 
 \section*{Discussion}
+
+We have shown that the method of joint inference when estimating phylogenetic parameters is not consistent in general.
+Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in two types of inconsistency: first, inferring the incorrect topology and, second, estimating severely biased branch lengths even given the correct topology.
+In all cases, these regions of inconsistency arise when the branches of the generating trees are ``long,'' that is, when branch fidelities are closer to zero than to one.
 
 The method of profile likleihood is well-studied \cite{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., \cite{Geman1982}.
