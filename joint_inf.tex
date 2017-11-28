@@ -69,15 +69,15 @@
 \renewcommand{\arraystretch}{1.2} % because otherwise exponents get eaten by \hline
 
 \begin{abstract}
-Maximum-likelihood phylogenetics is an approach to estimate the phylogenetic parameters of topology and branch length given observed character data.
+Maximum likelihood phylogenetics is an approach to estimate the phylogenetic parameters of topology and branch length given observed character data.
 Since a phylogeny has unknown intermediate states, computing a maximum likelihood solution requires dealing with these latent variables.
-Classically, the method of marginal likelihood is employed: the unknown intermediate states typically come from a small set, and so averaging over their finite space allows for consistent estimation of the parameters of interest.
+Classically, the method of marginal likelihood is employed: the unknown intermediate states are averaged over, allowing for consistent estimation of the parameters of interest.
 Recently, a computationally-efficient approach has been proposed to maximize over these unknown states as opposed to averaging over them.
 While this method of maximum likelihood has the potential to obtain estimates more efficiently, its properties are not well-understood.
 We show that, like other methods of profile likelihood where the number of unknowns grows with observations, this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
-There are a number of cases when generating under a four-taxon tree results in a joint estimation procedure converging on the wrong topology.
+There are a number of cases where generating under a four-taxon tree results in a joint estimation procedure converging on the wrong topology.
 If the topology is known a priori, there are similar cases where the branch lengths are consistently overestimated.
-While these results do not show joint inference is always inconsistent, they indicate further study into where care can be taken when using this approach.
+While these results do not imply joint inference is always inconsistent, they indicate care must be taken when using this approach.
 \end{abstract}
 
 \section*{Introduction}
