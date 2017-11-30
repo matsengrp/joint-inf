@@ -87,7 +87,7 @@ We have
             \log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
 \end{split}
 \end{equation*}
-so that, in the limit of infinite data,
+so that, as $\nCols\rightarrow\infty$,
 \begin{equation}
 \begin{split}
 &    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau, t)) \\
@@ -130,7 +130,7 @@ We follow with an expository example computing these probabilities and likelihoo
 \begin{figure}
     \centering
     \includegraphics[width=.45\textwidth]{unrooted_farris_tree}
-    \caption{Four taxon ``Farris zone'' tree.}
+    \caption{Four taxon ``Farris zone'' topology.}
 \label{fig:four-taxa-tree}
 \end{figure}
 
@@ -274,7 +274,7 @@ Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}
      $\{1,2,3\}$   &$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
     \hline
 \end{tabular}
-\caption{Likelihood calculations for all site patterns and internal states of Farris topology.
+\caption{Likelihood calculations for all site patterns and internal states of Farris tree.
 All values multiplied by $1/32$.}
 \label{tab:farris_likelihoods}
 \end{table}
@@ -310,7 +310,7 @@ All values multiplied by $1/32$.}
      $\{1,2,3\}$   &$(1+x)(1-x)(1-w)(1-y)^2$           &$(1-x)^2   (1+w)(1+y)(1-y)$\\
 \hline
 \end{tabular}
-\caption{Likelihood calculations for all site patterns and internal states of Felsenstein topology.
+\caption{Likelihood calculations for all site patterns and internal states of Felsenstein tree.
 All values multiplied by $1/32$.}
 \label{tab:fels_likelihoods}
 \end{table}
@@ -460,8 +460,8 @@ See Appendix for full calculations.}
 \subsection*{Form of the likelihood}
 
 Consider the Farris tree with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$.
-We now show that, in the case of the Farris tree topology, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
-Using the Hadamard transform approach, we calculate the generating probabilities on the Farris tree topology.
+We now show that, in the case of the Farris tree, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
+Using the Hadamard transform approach, we calculate the generating probabilities on the Farris tree.
 For site split $\emptyset$,
 \begin{align*}
     P(\siteSplitRV=\emptyset\mid \tau_1, \tilde{t}) & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  x_1y_1w + x_1y_2w + y_1x_2w + x_2y_2w + x_1y_1x_2y_2) \\
@@ -500,7 +500,7 @@ The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $
 
 Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$, $x_1=x_2$ at the maximum.
 The analogous statement holds for $y_1$ and $y_2$.
-The Felsenstein topology does not admit this property, but, since we are interested in a lower bound for this topology, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
+The Felsenstein tree does not admit this property, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
 \subsection*{Theorems and proofs}
 
@@ -990,7 +990,7 @@ While it is not guaranteed to always obtain a global optimum---or even always co
 We take various safeguards to ensure convergence and stability of the procedure.
 Since this method involves randomness, we take precautions to not evaluate the likelihood near or outside of boundary conditions, i.e., when $x^*$ or $y^*$ are either $0$ or $1$.
 As is apparent from Table~\ref{tab:sitepatprob}, if $0 < x^*, y^* < 1$ and we try to evaluate the candidate $\hat{x}=\hat{y}=\hat{w}=1$ we have a likelihood of exactly zero.
-Worse still, in Table~\ref{tab:likelihoods} for the Farris topology, in the cases of $\{2,\}, \{1,2\}, \{2,3\},$ and $\{1,2,3\}$, any attempt to evaluate $\hat{y}=1$ will similarly yield a zero likelihood.
+Worse still, in Table~\ref{tab:likelihoods} for the Farris tree, in the cases of $\{2,\}, \{1,2\}, \{2,3\},$ and $\{1,2,3\}$, any attempt to evaluate $\hat{y}=1$ will similarly yield a zero likelihood.
 In these cases of zero likelihood, methods that evaluate many candidate parameter values can fail to converge when near these boundaries.
 We sidestep these computational issues by restricting ourselves to the region $x^*,y^*\in [10^{-2},1-10^{-2}]^2$.
 

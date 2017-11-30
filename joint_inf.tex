@@ -69,14 +69,14 @@
 \renewcommand{\arraystretch}{1.2} % because otherwise exponents get eaten by \hline
 
 \begin{abstract}
-Maximum likelihood phylogenetics is an approach to estimate the phylogenetic parameters of topology and branch length given observed character data.
-Since a phylogeny has unknown intermediate states, computing a maximum likelihood solution requires dealing with these latent variables.
-Classically, the method of marginal likelihood is employed: the unknown intermediate states are averaged over, allowing for consistent estimation of the parameters of interest.
-Recently, a computationally-efficient approach has been proposed to maximize over these unknown states as opposed to averaging over them.
-While this method of maximum likelihood has the potential to obtain estimates more efficiently, its properties are not well-understood.
+Maximum likelihood is a widespread and well-understood approach to estimate the phylogenetic parameters of topology and branch length given observed character data.
+Since a phylogeny has unknown ancestral states, computing a maximum likelihood solution becomes a problem involving latent variables.
+Classically, the method of marginal likelihood is employed for this problem: the unknown intermediate states are averaged over, allowing for consistent estimation of the parameters of interest.
+Recently, a computationally-efficient approach has been proposed to jointly maximize over these unknown states and phylogenetic parameters.
+While this method of profile maximum likelihood can obtain estimates more efficiently, it has the potential to result in undesired properties of the estimates.
 We show that, like other methods of profile likelihood where the number of unknowns grows with observations, this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
 There are a number of cases where generating under a four-taxon tree results in a joint estimation procedure converging on the wrong topology.
-If the topology is known a priori, there are similar cases where the branch lengths are consistently overestimated.
+If the topology is known a priori, there are similar cases where the branch lengths are consistently overestimated in the limit of infinite data.
 While these results do not imply joint inference is always inconsistent, they indicate care must be taken when using this approach.
 \end{abstract}
 
@@ -90,7 +90,9 @@ This latter conditional optimization is simpler and more computationally efficie
 Existing consistency proofs for maximum likelihood phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
 These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
-Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$ and limit themselves to optimizing branch lengths using this method, their work motivates understanding when exactly this approximation breaks down, and what happens when optimizing branch lengths and tree topology using this approximation.
+Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$, their work motivates understanding when exactly this approximation breaks down.
+%das: @EM do we need to point out that they limit themselves to BLs? this seems like text that was written before we showed the fixed-topology inconsistency
+Additionally, they limit themselves to optimizing branch lengths holding the topology fixed, a limitation we relax by considering both topology and branch length estimation.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
 To do so, we use a binary symmetric model and imagine data being generated on the four-taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the limit of infinite data.
@@ -105,6 +107,7 @@ The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancest
 
 We parameterize branches on the unique unrooted four-tip phylogenetic tree in ways known as the ``Farris'' and ``Felsenstein'' trees (Fig.~\ref{fig:farris-fels-top}).
 %EM Do you know that "topology" means tree without branch lengths? Therefore I think "tree" is more appropriate in the following sentence and elsewhere.
+%das: I believe all of this terminology is fixed now
 In the classical configuration of each of these trees, the interior branch length parameters are equal to the bottom two parameters.
 We show in the Appendix that, in the case of the Farris tree, fixing both the top two branch parameters to be equal and the bottom two branch parameters to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch parameters.
 
@@ -214,7 +217,7 @@ This results in more possible maxima for $\tau_2$ even if data are generated fro
 
 We now consider the problem of branch fidelity estimation on the correct tree using joint ancestral state and branch fidelity estimation.
 As described above, we will use the equivalent but different notion of branch fidelities.
-We analyze two settings on the Farris topology, corresponding to whether some branch fidelities are fixed at their true values or not.
+We analyze two settings on the Farris tree, corresponding to whether some branch fidelities are fixed at their true values or not.
 As above, assume that data is generated from the ``Farris zone'' with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$.
 We show that, for a nontrivial subset of possible values for $x^*$ and $y^*$, the interior branch fidelity parameter $w$ will be consistently overestimated as exactly equal to one instead of its true value of $y^*$.
 That is, if we know $x^*$ and $y^*$, then for
@@ -226,7 +229,7 @@ In the general case, we do the same but with
 $$
 (\hat{x}, \hat{y}, \hat{w}) = \arg\max_{x,y,w} \ \ell_{\tau_1,t^*}(\tau_1, \{x,y,x,y,w\}).
 $$
-These situations are in contrast to the approach using marginal likelihood where necessarily $\hat{w}=y^*$ in the limit of infinite data.
+These situations are in contrast to the approach using marginal likelihood where necessarily $\hat{w}$ converges to $y^*$ as the number of observations grows.
 
 \subsubsection*{Restricted case}
 
@@ -331,10 +334,10 @@ Since empirical estimates can be unstable, we perform two maximizations---one ov
 We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*$ and $y^*$ from $10^{-2}$ to $1-10^{-2}$---we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
 From this process we obtain the plots in Fig.~\ref{fig:bl-general-inconsistency} and Fig.~\ref{fig:bl-general-marginal}.
 
-The case of marginal inference is as expected, where $\hat{w}$ is equal to $y^*$ in the limit of infinite data regardless of the value of $x^*$.
+The case of marginal inference is as expected, where $\hat{w}$ is equal to $y^*$ in the limit data regardless of the value of $x^*$.
 For joint inference, the estimates for $\hat{w}$ when $x^*$ and $y^*$ are both large look unbiased, with $\hat{w}$ increasing as $y^*$ increases, though the region where $\hat{w}$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
 Comparing Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency} shows that the region of inconsistency in the general case is similar to that of the restricted case.
-This region encompasses the majority of the parameter space; even given the correct Farris topology and performing our best possible optimization, we have many situations where we will estimate the interior branch parameter to be one.
+This region encompasses the majority of the parameter space; even given the correct topology and performing our best possible optimization, we have many situations where we will estimate the interior branch parameter to be one.
 As a positive control, Fig.~\ref{fig:bl-general-marginal} shows the result of optimizing \eqref{eq:marginal_likelihood} using the same procedure.
 Here we obtain the correct $\hat{w}\rightarrow y^*$.
 
@@ -375,9 +378,9 @@ Difficulties in phylogenetic estimation when the ``Farris zone'' generates chara
 
 
 \section*{Acknowledgements}
-We thank Richard Neher for helpful discussions.
+We thank Richard Neher and Vladimir Minin for helpful discussions.
 
-David Shaw, Vladimir Minin, and Frederick Matsen were supported by NIH grants U19-AI117891 and R01-GM113246; David Shaw and Frederick Matsen were also supported by R01-AI12096.
+David Shaw and Frederick Matsen were supported by NIH grants U19-AI117891 and R01-GM113246 and by R01-AI12096.
 The research of Frederick Matsen was supported in part by a Faculty Scholar grant from the Howard Hughes Medical Institute and the Simons Foundation.
 
 \bibliographystyle{plain}
