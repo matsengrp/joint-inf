@@ -741,7 +741,7 @@ and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 All bounds are functions only of $x,y$ through the true generating probabilities $x^*, y^*$.
 Call the upper bound
 $$
-L_0(x^*, y^*) := \max\left(L^{1}_{\tau_1,\tau_1}(x^*, y^*), L^{2}_{\tau_1,\tau_1}(x^*, y^*), L^{3}_{\tau_1,\tau_1}(x^*, y^*)\right).
+C_0(x^*, y^*) := \max\left(L^{1}_{\tau_1,\tau_1}(x^*, y^*), L^{2}_{\tau_1,\tau_1}(x^*, y^*), L^{3}_{\tau_1,\tau_1}(x^*, y^*)\right).
 $$
 
 We construct a similar lower bound on the Felsenstein tree partial likelihood.
@@ -835,9 +835,9 @@ $$
 i.e.\ the maximum is achieved at $\{1,1-b,0\}$.
 Our lower bound is
 $$
-L_1(x^*, y^*) := \shannonDivergence_{\tau_1,t^*}(\tau_2,\{1,1-b,0\}) + 2\cdot\log(2) + (2-b)\cdot\log(2-b) + b\cdot\log(b).
+C_1(x^*, y^*) := \shannonDivergence_{\tau_1,t^*}(\tau_2,\{1,1-b,0\}) + 2\cdot\log(2) + (2-b)\cdot\log(2-b) + b\cdot\log(b).
 $$
-See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < x^*, y^* < 1$ where $L_1(x^*, y^*) > L_0(x^*, y^*)$ and joint inference in inconsistent.
+See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < x^*, y^* < 1$ where $C_1(x^*, y^*) > C_0(x^*, y^*)$ and joint inference in inconsistent.
 \end{proof}
 
 \restrictedBranchInconsist*
