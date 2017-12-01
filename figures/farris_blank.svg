@@ -15,7 +15,7 @@
    viewBox="0 0 549.99999 375"
    id="svg2"
    sodipodi:version="0.32"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="farris_blank.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <metadata
@@ -83,8 +83,8 @@
        sodipodi:type="inkscape:persp3d" />
   </defs>
   <sodipodi:namedview
-     inkscape:window-height="798"
-     inkscape:window-width="1278"
+     inkscape:window-height="1167"
+     inkscape:window-width="960"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      guidetolerance="10.0"
@@ -95,11 +95,11 @@
      pagecolor="#ffffff"
      id="base"
      showgrid="false"
-     inkscape:zoom="0.62605296"
-     inkscape:cx="170.48152"
-     inkscape:cy="339.79766"
-     inkscape:window-x="65"
-     inkscape:window-y="24"
+     inkscape:zoom="2.0125994"
+     inkscape:cx="48.741572"
+     inkscape:cy="129.64464"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:current-layer="g52"
      inkscape:window-maximized="0"
      fit-margin-top="0"
@@ -195,42 +195,42 @@
          style="font-size:4.27107286px">x</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:2.13553643px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="82.639908"
-       y="53.028873"
+       style="font-style:normal;font-weight:normal;font-size:2.13553643px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none"
+       x="83.974632"
+       y="52.761932"
        id="text3040"
        sodipodi:linespacing="125%"
        transform="scale(0.99689209,1.0031176)"><tspan
          sodipodi:role="line"
          id="tspan3042"
-         x="82.639908"
-         y="53.028873"
-         style="font-size:4.27107286px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math">y</tspan></text>
+         x="83.974632"
+         y="52.761932"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.27107286px;line-height:125%;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math;text-align:start;writing-mode:lr-tb;text-anchor:start">y</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:2.13553643px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="93.901115"
-       y="53.028873"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.13553643px;line-height:125%;font-family:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="93.634171"
+       y="52.761932"
        id="text3040-7"
        sodipodi:linespacing="125%"
        transform="scale(0.99689209,1.0031176)"><tspan
          sodipodi:role="line"
          id="tspan3042-5"
-         x="93.901115"
-         y="53.028873"
-         style="font-size:4.27107286px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math">y</tspan></text>
+         x="93.634171"
+         y="52.761932"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.27107286px;line-height:125%;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math;text-align:start;writing-mode:lr-tb;text-anchor:start">y</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4.27107286px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.27107286px;line-height:125%;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
        x="90.791435"
-       y="46.356236"
+       y="47.424"
        id="text3065"
        sodipodi:linespacing="125%"
        transform="scale(0.99689209,1.0031176)"><tspan
          sodipodi:role="line"
          id="tspan3067"
          x="90.791435"
-         y="46.356236">w</tspan></text>
+         y="47.424">w</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4.27107286px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
