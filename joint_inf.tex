@@ -156,7 +156,7 @@ This is known in statistics as a profile likelihood \cite{Murphy2000-ry}, which 
 \label{eq:profile_likelihood}
 L_\nCols'(\tau, t; \fullAlignment) = \max_{\fullAncestralStates\in\alphabet^{\nAncestralStateRows\times\nCols}} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates).
 \end{equation}
-We will use $\hat{\fullAncestralStates}$ to denote an estimate for $\fullAncestralStates$ obtained by maximization of \eqref{eq:profile_likelihood}.
+We will use $\hat{\fullAncestralStates}$ to denote an estimate for $\fullAncestralStates$ obtained by maximizing \eqref{eq:profile_likelihood}.
 One can then estimate a topology and branch fidelities using this profile likelihood:
 \begin{equation}
 \label{eq:profile_likelihood_topology_bl}
@@ -354,6 +354,8 @@ Comparing Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency
 This region encompasses the majority of the parameter space; even given the correct topology and performing our best possible optimization, we have many situations where we will estimate the interior branch parameter to be one.
 As a positive control, Fig.~\ref{fig:bl-general-marginal} shows the result of optimizing \eqref{eq:marginal_likelihood} using the same procedure.
 Here we obtain the correct $\hat{w}\rightarrow y^*$.
+To understand the quality of each fit, we report the range of $\hat{w}-y^*$ where $\hat{w}\neq 1$.
+For joint inference, the errors range from $[-7\times 10^{-3}, 8\times 10^{-2}]$ and for marginal inference, $[-8\times 10^{-8}, 5\times 10^{-7}]$ showing that, even in cases where joint inference does not estimate $\hat{w}$ to be exactly one, it still fails to achieve a low error from truth.
 
 \begin{figure}
 \centering

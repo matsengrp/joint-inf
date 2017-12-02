@@ -462,6 +462,8 @@ def main(args=sys.argv[1:]):
             cbar = plt.colorbar()
             cbar.ax.tick_params(labelsize=FONT_SIZE-2)
             plt.savefig(args.plot_name)
+            errs = [z - y for y_row, z_row in zip(Y, Z) for y, z in zip(y_row, z_row) if z != 1-args.delta]
+            print "Error range [%.0E, %.0E]" % (min(errs), max(errs))
     else:
         print "No plotting argument given!"
 
