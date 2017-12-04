@@ -96,7 +96,7 @@ so that, as $\nCols\rightarrow\infty$,
 \end{equation}
 Define the divergence quantity
 $$
-\shannonDivergence_{\tau^*,t^*}(\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\siteSplitRV=\siteSplit_j \mid \tau, t),
+\shannonDivergence_{\tau^*,t^*}(\tau,t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\siteSplitRV=\siteSplit_j \mid \tau, t)
 $$
 and the partial log-likelihood
 $$
@@ -214,12 +214,12 @@ $$
 \subsection*{Likelihood computations}
 
 Table~\ref{tab:sitepatprob} contains calculations of site pattern frequencies under these two topologies.
-Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed site patterns and topologies that have been maximized over ancestral state patterns.
 Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} contain the values of the likelihood for all possible ancestral states.
+Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed site patterns and topologies that have been maximized over ancestral state patterns.
 
 To compute the likelihood of observing a set of data, we need $P(\ancestralStateColumn=\ancestralSplit_k\mid \alignmentColumn=\siteSplit_j,\tau,t)$ for each $\ancestralSplit_k$ and $\siteSplit_j$.
 The probability of a character change along a branch with fidelity parameter $\theta$ is $(1-\theta)/2$, while the probability of a character remaining the same is $(1+\theta)/2$.
-See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern.
+See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern on the Farris tree in Fig.~\ref{fig:farris-fels-top}.
 Likelihood computations for all site patterns and ancestral states are in Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods}.
 Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}
 
@@ -242,6 +242,27 @@ Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}
 }
 \label{fig:example_likelihoods}
 \end{figure}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l|l|}
+    \hline
+$\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j \mid \tau_1,t)$&$P(\siteSplitRV=\siteSplit_j \mid \tau_2,t)$\\
+    \hline
+    $\emptyset$    &$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
+    $\{1\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
+    $\{2\}$        &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
+    $\{3\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
+    $\{1,2\}$      &$1-x^2-y^2+x^2y^2$&$1+2xy-2xyw-x^2w-y^2w+x^2y^2$\\
+    $\{1,3\}$      &$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
+    $\{2,3\}$      &$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
+    $\{1,2,3\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
+    \hline
+\end{tabular}
+\caption{Site pattern probabilities.
+All values are multiplied by $1/8$.}
+\label{tab:sitepatprob}
+\end{table}
 
 \begin{table}
 \centering
@@ -313,27 +334,6 @@ All values multiplied by $1/32$.}
 \caption{Likelihood calculations for all site patterns and internal states of Felsenstein tree.
 All values multiplied by $1/32$.}
 \label{tab:fels_likelihoods}
-\end{table}
-
-\begin{table}
-\centering
-\begin{tabular}{|l|l|l|}
-    \hline
-$\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j \mid \tau_1,t)$&$P(\siteSplitRV=\siteSplit_j \mid \tau_2,t)$\\
-    \hline
-    $\emptyset$    &$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
-    $\{1\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
-    $\{2\}$        &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
-    $\{3\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
-    $\{1,2\}$      &$1-x^2-y^2+x^2y^2$&$1+2xy-2xyw-x^2w-y^2w+x^2y^2$\\
-    $\{1,3\}$      &$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
-    $\{2,3\}$      &$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
-    $\{1,2,3\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
-    \hline
-\end{tabular}
-\caption{Site pattern probabilities.
-All values are multiplied by $1/8$.}
-\label{tab:sitepatprob}
 \end{table}
 
 \begin{table}
@@ -671,7 +671,7 @@ The upper bound for the likelihood is then maximized at
 + (1-p_{13})\cdot\log(2(1-p_{13}))
 + p_{13}\cdot\log(2p_{13})
 - \log(8) \\
-&\qquad := L^{1}_{\tau_1,\tau_1}(x^*, y^*).
+&\qquad := C^{1}_{\tau_1,\tau_1}(x^*, y^*).
 \end{align*}
 
 The other two possible ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications.
@@ -724,7 +724,7 @@ To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
 + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}}
 + \log(2)
 - \log(8) \\
-&\qquad := L^{2}_{\tau_1,\tau_1}(x^*, y^*),
+&\qquad := C^{2}_{\tau_1,\tau_1}(x^*, y^*),
 \end{align*}
 and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 \begin{align*}
@@ -736,12 +736,12 @@ and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 + a_{4}'\cdot\log\frac{2a_{4}'}{a_{3}'+a_{4}'}
 + \log(2)
 - \log(8) \\
-&\qquad := L^{3}_{\tau_1,\tau_1}(x^*, y^*).
+&\qquad := C^{3}_{\tau_1,\tau_1}(x^*, y^*).
 \end{align*}
 All bounds are functions only of $x,y$ through the true generating probabilities $x^*, y^*$.
 Call the upper bound
 $$
-C_0(x^*, y^*) := \max\left(L^{1}_{\tau_1,\tau_1}(x^*, y^*), L^{2}_{\tau_1,\tau_1}(x^*, y^*), L^{3}_{\tau_1,\tau_1}(x^*, y^*)\right).
+C_0(x^*, y^*) := \max\left(C^{1}_{\tau_1,\tau_1}(x^*, y^*), C^{2}_{\tau_1,\tau_1}(x^*, y^*), C^{3}_{\tau_1,\tau_1}(x^*, y^*)\right).
 $$
 
 We construct a similar lower bound on the Felsenstein tree partial likelihood.
@@ -837,7 +837,7 @@ Our lower bound is
 $$
 C_1(x^*, y^*) := \shannonDivergence_{\tau_1,t^*}(\tau_2,\{1,1-b,0\}) + 2\cdot\log(2) + (2-b)\cdot\log(2-b) + b\cdot\log(b).
 $$
-See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < x^*, y^* < 1$ where $C_1(x^*, y^*) > C_0(x^*, y^*)$ and joint inference in inconsistent.
+See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < x^*, y^* < 1$ where $C_1(x^*, y^*) > C_0(x^*, y^*)$ and joint inference is inconsistent.
 \end{proof}
 
 \restrictedBranchInconsist*
@@ -961,7 +961,7 @@ $$
 simplifying \eqref{eq:restricted-bl-result} further yields
 \begin{equation}
 \label{eq:general-bl-result}
--\gamma^2(\hat{x}, \hat{y})(1 + \frac{1}{2}\beta) + 2\gamma(\hat{x}, \hat{y})\beta(\hat{x}, \hat{y})x^*(y^*)^2 + \beta^2(\hat{x}, \hat{y}) \ge 0.
+-\gamma^2(\hat{x}, \hat{y})\left(1 + \frac{1}{2}\beta\right) + 2\gamma(\hat{x}, \hat{y})\beta(\hat{x}, \hat{y})x^*(y^*)^2 + \beta^2(\hat{x}, \hat{y}) \ge 0.
 \end{equation}
 Given the bounds
 $$
@@ -973,7 +973,7 @@ $$
 $$
 if
 $$
--\gamma_{U}^2(1 + \frac{1}{2}\beta) + 2\gamma_{L}\beta_{L}x^*(y^*)^2 + \beta_{L}^2 \ge 0,
+-\gamma_{U}^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma_{L}\beta_{L}x^*(y^*)^2 + \beta_{L}^2 \ge 0,
 $$
 then \eqref{eq:general-bl-result} holds, and this is an inequality involving only $x^*$ and $y^*$.
 To get a sense of the region of overestimation, Fig.~\ref{fig:bl-loose-inconsistency} plots an intermediate case.
@@ -990,12 +990,12 @@ While it is not guaranteed to always obtain a global optimum---or even always co
 We take various safeguards to ensure convergence and stability of the procedure.
 Since this method involves randomness, we take precautions to not evaluate the likelihood near or outside of boundary conditions, i.e., when $x^*$ or $y^*$ are either $0$ or $1$.
 As is apparent from Table~\ref{tab:sitepatprob}, if $0 < x^*, y^* < 1$ and we try to evaluate the candidate $\hat{x}=\hat{y}=\hat{w}=1$ we have a likelihood of exactly zero.
-Worse still, in Table~\ref{tab:likelihoods} for the Farris tree, in the cases of $\{2,\}, \{1,2\}, \{2,3\},$ and $\{1,2,3\}$, any attempt to evaluate $\hat{y}=1$ will similarly yield a zero likelihood.
+Worse still, in Table~\ref{tab:likelihoods} for the Farris tree, in the cases of $\{2\}, \{1,2\}, \{2,3\},$ and $\{1,2,3\}$, any attempt to evaluate $\hat{y}=1$ will similarly yield a zero likelihood.
 In these cases of zero likelihood, methods that evaluate many candidate parameter values can fail to converge when near these boundaries.
 We sidestep these computational issues by restricting ourselves to the region $x^*,y^*\in [10^{-2},1-10^{-2}]^2$.
 
 We initialize our optimization procedure at the true branch parameters $t^*=\{x^*,y^*,x^*,y^*,y^*\}$.
-We posit that $\hat{w}$ is equal to one for regions of $x^*$ and $y^*$ small; methods that use local optimization may never see candidate values for large $x$ and $y$ if our initial value is small, so we perform two maximizations, one with $w$ fixed and one where it is estimated.
+We posit that $\hat{w}$ is equal to one for regions of $x^*$ and $y^*$ small; methods that use local optimization may never see candidate values for large $x$ and $y$ if our initial guess is small, so we perform two maximizations, one with $w=1$ fixed and one where $w$ is estimated.
 We take the value of $\hat{w}$ with the larger likelihood as our estimate.
 
 \begin{figure}
