@@ -61,6 +61,7 @@
 \allowdisplaybreaks
 
 %EM I think this is punchier. Thoughts?
+%das: <3 <3
 \title{Joint estimation of phylogenies and ancestral states is not consistent}
 %\title{Joint estimation of ancestral states and phylogenetic model parameters is inconsistent}
 \author{David A. Shaw \and Frederick A. Matsen IV}
@@ -93,6 +94,7 @@ Existing consistency proofs for maximum likelihood phylogenetics \cite{RoyChoudh
 These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
 In this case those additional parameters come in the form of the states of ancestral sequences.
+%das: is "perfect" a standard term in phylogenetics? Does it just mean infinite length with independent sites?
 Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$, their work motivates understanding when exactly this approximate technique breaks down, even when sequence data is ``perfect''.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
@@ -340,16 +342,17 @@ The region in which $\hat{w}$ is numerically estimated to be 1 is an unusual sha
 We see that the region of inconsistency in the general case is similar to that of the restricted case (compare Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency}).
 This region encompasses the majority of the parameter space; even given the correct topology and performing our best possible optimization, we have many situations where we will estimate the interior branch parameter to be one.
 
-Marginal inference performs as expected, where $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$ (Fig.~\ref{fig:bl-general-marginal}) when optimizing \eqref{eq:marginal_likelihood} using the same procedure.
-
 %EM This could be considered a little unfair. Optimization of 3 variables is harder than optimizing two, so when there is an optimization problem with the 3-variable case then w=1 has an advantage. I don't have a suggestion to change things.
+%das: I sort of gave a justification for this in the appendix (line 998); I agree it may not be the most fair, but other than also including a plot of just the 3-variable case (which recall doing at some point but not how it looks) then I'm not sure what else we could say either. Maybe I'll just run the 3-variable case now to have it in our pocket just in case?
 We provide a full description of our optimization procedure in the Appendix, but briefly, we perform two maximizations---one over $0 \le x,y,w \le 1$ and one over $0 \le x,y \le 1$ with $w=1$---and take the value of $\hat{w}$ with the higher likelihood.
 We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*$ and $y^*$ from $10^{-2}$ to $1-10^{-2}$.
 We do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
+
 %EM Question: it seems to me that even in the non-white region, the BL inferences aren't correct. Is that true? We should say so if. I don't want to make extra work for you, but a figure in which you take the difference between the correct value and the inferred value might be nice.
 %das: it seemed like the estimates were decent to me, but I can do this super easily (output is pickled). Though are you talking about another plot or just a check that we can add a sentence like "even in cases where \hat{w} is not one w is overestimated/poorly estimated."
 %EM I'm pretty sure I can see that there's bias in the estimates even in the non-white area. A plot of the difference between the two would be cool. Can we zoom into the region with x* and y* greater than 0.6 so that the scale doesn't get thrown off by big differences where x* and y* are zero?
-% For joint inference, the estimates for $\hat{w}$ when $x^*$ and $y^*$ are both large look unbiased, with $\hat{w}$ increasing as $y^*$ increases, though the region where $\hat{w}$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
+Marginal inference performs as expected, where $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$ (Fig.~\ref{fig:bl-general-marginal}) when optimizing \eqref{eq:marginal_likelihood} using the same procedure.
+For joint inference, the estimates for $\hat{w}$ when $x^*$ and $y^*$ are both large look reasonable, with $\hat{w}$ increasing as $y^*$ increases, though Fig.~\ref{fig:bl-general-bias} shows there is a systematic positive bias in this procedure.
 % Here we obtain the correct $\hat{w}\rightarrow y^*$.
 To understand the quality of each fit, we report the range of $\hat{w}-y^*$ where $\hat{w}\neq 1$.
 For joint inference, the errors range from $[-7\times 10^{-3}, 8\times 10^{-2}]$ and for marginal inference, $[-8\times 10^{-8}, 5\times 10^{-7}]$ showing that, even in cases where joint inference does not estimate $\hat{w}$ to be exactly one, it still fails to achieve a low error from truth.
@@ -387,7 +390,7 @@ This is the converse of what we have shown for joint inference, where the Felsen
 Moreover, the inconsistency in \cite{Felsenstein1978-rr} is attributed to long branch attraction, i.e., the fact that there may be multiple long branches where parallel changes are more likely than a single change along a short branch.
 This is not the case here; for our case, the inconsistency generally occurs when all branches are long, and has more to do with the choices of the form of the likelihood than from the interplay of long and short branches.
 %EM Given the above, do you think that the next sentence forms a meaningful comparison? The shapes aren't _so_ similar, really...
-Looking at Fig.~2 of \cite{Felsenstein1978-rr} we see some similarities in curve shape to the region in Fig.~\ref{fig:inconsistency-farris}, though the latter has a smaller region of inconsistency.
+%das: Yah, I think I was just staring at clouds. Removed.
 Difficulties in phylogenetic estimation when generating data on the ``Farris zone'' tree have been found by \cite{Siddall1998-hq}, though \cite{Swofford2001-hr} show that sequence length plays a major role in these issues.
 
 While we have shown inconsistency in both topology and branch parameter estimation, there is substantial scope for future work to make these results more precise and more general.

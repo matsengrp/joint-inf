@@ -462,8 +462,27 @@ def main(args=sys.argv[1:]):
             cbar = plt.colorbar()
             cbar.ax.tick_params(labelsize=FONT_SIZE-2)
             plt.savefig(args.plot_name)
-            errs = [z - y for y_row, z_row in zip(Y, Z) for y, z in zip(y_row, z_row) if z != 1-args.delta]
-            print "Error range [%.0E, %.0E]" % (min(errs), max(errs))
+            plt.close()
+            bias = Z - Y
+            ones_mask = (Z != 1 - args.delta)
+            print "Error range [%.0E, %.0E], Mean: %.2E" % (min(bias[ones_mask]), max(bias[ones_mask]), np.mean(bias[ones_mask]))
+
+            # plot bias
+            bias_to_plot = np.where(ones_mask, bias, .09)
+            im = plt.imshow(bias_to_plot[int(.6/args.delta):, int(.6/args.delta):], cmap=plt.cm.gray, origin='lower')
+            plt.xlabel(r'$x^*$', fontsize=FONT_SIZE)
+            plt.ylabel(r'$y^*$', fontsize=FONT_SIZE)
+            ttl = plt.title(r'Bias: $\hat{w}-y^*$', fontsize=FONT_SIZE+2)
+            ttl.set_position([.5, 1.05])
+            ax = plt.gca()
+            ax.set_xticks(np.arange(0, .4/args.delta, .1/args.delta))
+            ax.set_yticks(np.arange(0, .4/args.delta, .1/args.delta))
+            ax.set_xticklabels([r'$0.6$', r'$0.7$', r'$0.8$', r'$0.9$'], fontsize=FONT_SIZE-2)
+            ax.set_yticklabels([r'$0.6$', r'$0.7$', r'$0.8$', r'$0.9$'], fontsize=FONT_SIZE-2)
+            sns.despine()
+            cbar = plt.colorbar()
+            cbar.ax.tick_params(labelsize=FONT_SIZE-2)
+            plt.savefig(args.plot_name.replace('.svg', '_bias.svg'))
     else:
         print "No plotting argument given!"
 

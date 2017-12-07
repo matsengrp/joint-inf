@@ -983,7 +983,7 @@ To get a sense of the region of overestimation, Fig.~\ref{fig:bl-loose-inconsist
 
 \subsection*{Empirical validation}
 
-We use basin-hopping \cite{Wales1997} implemented in \texttt{scipy} \cite{Jones2001} to obtain the plots in Fig.~\ref{fig:bl-general-inconsistency} and Fig.~\ref{fig:bl-general-marginal}.
+We use basin-hopping \cite{Wales1997} implemented in \texttt{scipy} \cite{Jones2001} to obtain the plots in Figs.~\ref{fig:bl-general-inconsistency}, \ref{fig:bl-general-marginal}, and \ref{fig:bl-general-bias}.
 This method randomly perturbs candidate solutions and accepts or rejects them based on the nearby likelihood surface, eventually obtaining an estimate of the ``global'' optimum.
 While it is not guaranteed to always obtain a global optimum---or even always converge---its implementation here leads us to believe that we can estimate $\hat{w}$ as well as any optimization method available.
 
@@ -1010,5 +1010,14 @@ We take the value of $\hat{w}$ with the larger likelihood as our estimate.
     Estimates for $\hat{w}$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997} optimizing \eqref{eq:marginal_likelihood}.
 }
 \label{fig:bl-general-marginal}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{w-hat-empirical-01-bias}
+\caption{
+    Estimates for $\hat{w}-y^*$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997} optimizing \eqref{eq:marginal_likelihood}.
+}
+\label{fig:bl-general-bias}
 \end{figure}
 
