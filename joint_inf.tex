@@ -69,12 +69,10 @@
 \renewcommand{\arraystretch}{1.2} % because otherwise exponents get eaten by \hline
 
 \begin{abstract}
-%EM This abstract is really nice! :+1:
 Maximum likelihood is a widespread and well-understood approach to estimate the phylogenetic parameters of topology and branch length given observed character data.
 Since a phylogeny has unknown ancestral states, computing a maximum likelihood solution becomes a problem involving latent variables.
 Classically, these unknown intermediate states are averaged out, which leads to consistent estimation of the topology and continuous model parameters.
 Recently, a computationally-efficient approach has been proposed to jointly maximize over these unknown states and phylogenetic parameters.
-%EM I think that should either use "joint" or "profile" just to have a single word to describe things for most of the text, except when we connect it to the stats literature.
 While this method of joint maximum likelihood estimation can obtain estimates more efficiently, it has the potential to result in undesired properties of the estimates.
 We show that, like other methods of maximum likelihood where the number of unknowns grows with observations, this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
 There are a number of cases where generating under a four-taxon tree results in a joint estimation procedure converging on the wrong topology.
@@ -92,11 +90,12 @@ This latter conditional optimization is simpler and more computationally efficie
 Existing consistency proofs for maximum likelihood phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
 These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
+In this case those additional parameters come in the form of the bases at ancestral sequences.
 Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$, their work motivates understanding when exactly this approximate technique breaks down, even in the limit of infinite sequence data.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
 To do so, we use a binary symmetric model and imagine data being generated on the four-taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the limit of infinite data.
-We find similar areas where joint inference consistently overestimates interior branch lengths when the topology is known.
+We find similar areas where joint inference consistently overestimates interior branch lengths when the topology is known and fixed.
 
 \section*{Phylogenetic maximum likelihood}
 
@@ -107,7 +106,7 @@ The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancest
 
 We parameterize branches on the unique unrooted four-tip phylogenetic tree in ways known as the ``Farris'' and ``Felsenstein'' trees (Fig.~\ref{fig:farris-fels-top}).
 In the classical configuration of each of these trees, the interior branch length parameters are equal to the bottom two parameters.
-We show in the Appendix that, in the case of the Farris tree, fixing both the top two branch parameters to be equal and the bottom two branch parameters to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch parameters.
+We show in the Appendix that, in the case of the Farris tree, doing inference fixing both the top two branch parameters to be equal and the bottom two branch parameters to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch parameters.
 
 \begin{figure}
 \centering
@@ -121,17 +120,18 @@ We show in the Appendix that, in the case of the Farris tree, fixing both the to
 \includegraphics[width=\textwidth]{felsenstein_blank}
 \caption[short]{Felsenstein tree $\tau_2$}
 \end{subfigure}
-\caption{Two four-taxon trees}
+\caption{Two four-taxon trees with fidelities as labeled: $\theta_1=\theta_3=x$, $\theta_2=\theta_4=y$, and $\theta_5=w$.
+}
 \label{fig:farris-fels-top}
 \end{figure}
+
 
 We parameterize the branches of these trees not with the standard notion of branch length in terms of number of substitutions per site, but with an alternate formulation called ``fidelity.''
 The probability of a substitution on a branch with fidelity $\theta$ is $p_\theta = (1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$ where $0 \le \theta \le 1$.
 This parameter thus quantifies the fidelity of transmission of the ancestral state across an edge \cite{Matsen2007-jq}.
 
 Fidelities have useful algebraic properties, and generating probabilities using the Hadamard transform have an especially simple form (see \eqref{eq:hadamard_probability} in the Appendix).
-For a four-taxon tree, define the general branch fidelity parameter $t=\{\theta_1,\theta_2,\theta_3,\theta_4,\theta_5\}$ where fidelities are ordered in the order of the taxa with the internal branch last.
-The trees in Fig.~\ref{fig:farris-fels-top} have $\theta_1=\theta_3=x$, $\theta_2=\theta_4=y$, and $\theta_5=w$.
+For a four-taxon tree, define the general branch fidelity parameter $t=\{\theta_1,\theta_2,\theta_3,\theta_4,\theta_5\}$ where fidelities are ordered in the order of the taxa with the internal branch last (Fig.~\ref{fig:farris-fels-top}).
 
 \subsection*{Two paths to maximum likelihood}
 
@@ -143,7 +143,7 @@ L_\nCols(\tau, t; \fullAlignment,\fullAncestralStates) = \prod_{i=1}^{\nCols} \ 
 \end{equation}
 The probability $\Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t)$ is a product of transition probabilities determined by $\fullAlignment$, $\fullAncestralStates$, $\tau$, and $t$ \cite{Felsenstein2004}.
 
-The typical approach to is to maximize the likelihood marginalized across ancestral states
+The classical approach to is to maximize the likelihood marginalized across ancestral states
 \begin{equation}
 \label{eq:marginal_likelihood}
 \tilde{L}_\nCols(\tau, t; \fullAlignment) = \sum_{\fullAncestralStates\in\alphabet^{\nAncestralStateRows\times\nCols}} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates)
@@ -176,33 +176,28 @@ Use $\ell_{\tau^*,t^*}(\tau, t)$ to denote the expected per-site log likelihood,
 $$
 \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) \rightarrow \ell_{\tau^*,t^*}(\tau, t).
 $$
-We give $\ell$ explicitly in \eqref{eq:site_pattern_profile_likelihood_mean} in the Appendix.
+We give $\ell$ explicitly as \eqref{eq:site_pattern_profile_likelihood_mean} in the Appendix.
 
 \subsection*{Inconsistency in topology estimation}
 
 To show an inconsistency in topology estimation, we start with true generating parameters $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ on the Farris topology.
 We show that, as $\nCols\rightarrow\infty$, there exist values for $x^*$ and $y^*$ such that the value of the likelihood after maximizing using joint inference is greater for the Felsenstein topology than for the true, generating Farris topology.
-To do so, we construct an upper bound for the likelihood given the Farris topology as a function of $x^*$ and $y^*$, and, similarly, we construct a lower bound for the likelihood given the Felsenstein topology.
-The values of $x^*$ and $y^*$ where the likelihood in the Felsenstein case is larger than the likelihood in the Farris case indicate an inconsistency (Fig.~\ref{fig:inconsistency-farris}).
+To do so, we construct an upper bound $C_0(x^*, y^*)$ for the likelihood given the Farris topology as a function of $x^*$ and $y^*$, and, similarly, we construct a lower bound $C_1(x^*, y^*)$ for the likelihood given the Felsenstein topology.
+When $C_0(x^*, y^*) < C_1(x^*, y^*)$, the likelihood in the Felsenstein case is larger than the likelihood in the Farris case, demonstrating inconsistency (Fig.~\ref{fig:inconsistency-farris}).
 \begin{restatable}{theorem}{topoInconsist}
-%EM Wow this is hard to parse!
-%EM 1. The main message is that there is a region on which the wrong topology is preferred. This should be stated in words before the theorem, with the link to the figure.
-%EM 2. To see that in the theorem, we have to wind our way through inequalities facing different ways. Can we just say that there is a region? What do these L's tell us?
-%EM 3. L_0 and L_1 are totally different that L_n, but with very similar notation.
-%das: is this better, or did you want to get rid of the upper/lower bound constants entirely? I have them since they are a closed form function of x* and y* so it's clear that all we need is a region where some f(x*, y*) > 0. Are you saying the paragraph I just put before the theorem is a better statement of the theorem?
 Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x, y, x, y, w\}$.
-There exist $C_0(x^*, y^*), C_1(x^*, y^*)$ and $0 < x^*, y^* < 1$ such that
+There exist $C_0(x^*, y^*), C_1(x^*, y^*)$ and a set of $0 < x^*, y^* < 1$ such that
 $$
 \max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t) \le C_0(x^*, y^*),
 $$
 $$
-\max_{t} \ \ell_{\tau_1,t^*}(\tau_2, t) \ge C_1(x^*, y^*)
+C_1(x^*, y^*) \le \max_{t} \ \ell_{\tau_1,t^*}(\tau_2, t)
 $$
-with $C_1(x^*, y^*) > C_0(x^*, y^*)$.
+with $C_0(x^*, y^*) < C_1(x^*, y^*)$.
 \end{restatable}
-Fig.~\ref{fig:inconsistency-farris} shows the values of $x^*$ and $y^*$ where $C_1(x^*, y^*) > C_0(x^*, y^*)$.
-Intuitively, $\tau_2$ is favored in performing joint maximum likelihood since the likelihood for $\tau_2$ has more ``degrees of freedom''---Table~\ref{tab:likelihoods} shows that $\tau_1$ has only three possible forms for its likelihood while $\tau_2$ has many more.
-This results in more possible maxima for $\tau_2$ even if data are generated from $\tau_1$.
+The proof of this theorem is by a detailed examination of inequalities.
+The only intuition we can offer is that $\tau_2$ is favored in performing joint maximum likelihood since the likelihood for $\tau_2$ has more ``degrees of freedom''---Table~\ref{tab:likelihoods} shows that $\tau_1$ has only three possible forms for its likelihood while $\tau_2$ has many more.
+This enables more possible maxima for $\tau_2$ even if data are generated from $\tau_1$.
 
 \begin{figure}
 \centering
@@ -210,7 +205,7 @@ This results in more possible maxima for $\tau_2$ even if data are generated fro
 % python joint_inf_plot.py --analytic --topology --delta .001 --plot-name figures/topology-inconsistency.svg
 \includegraphics[width=\textwidth]{topology-inconsistency-inkscape}
 \caption{
-    Regions of inconsistency.
+    Regions of topological inconsistency in terms of fidelities.
     Due to the looseness of the upper and lower bounds, the parameters in the upper right do not necessarily indicate consistency, though all parameters in the labeled region result in an inconsistency.
 }
 \label{fig:inconsistency-farris}
@@ -222,7 +217,7 @@ We now consider the problem of branch length estimation on the correct tree usin
 As described above, we will use the equivalent but different notion of branch fidelities.
 We analyze two settings on the Farris tree, corresponding to whether some branch fidelities are fixed at their true values or not.
 As above, assume that data is generated from the ``Farris zone'' with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$.
-In the first ``restricted'' case, we show that for a nontrivial subset of possible values for $x^*$ and $y^*$, the interior branch fidelity parameter $w$ will be consistently overestimated as exactly equal to one instead of its true value of $y^*$.
+In the first ``restricted'' case, we show that for a nontrivial subset of possible values for $x^*$ and $y^*$, the interior branch fidelity parameter $w$ will be consistently overestimated as exactly equal to one (zero branch length) instead of its true value of $y^*$.
 That is, if we know $x^*$ and $y^*$, then for
 $$
 \hat{w} = \arg\max_{w} \ \ell_{\tau_1,t^*}(\tau_1, \{x^*,y^*,x^*,y^*,w\}),
@@ -233,11 +228,11 @@ $$
 (\hat{x}, \hat{y}, \hat{w}) = \arg\max_{x,y,w} \ \ell_{\tau_1,t^*}(\tau_1, \{x,y,x,y,w\}).
 $$
 Again, we find a region for which the inferred values do not converge to the generating values.
-These situations are in contrast to the approach using marginal likelihood where necessarily $\hat{w}$ converges to $y^*$ as the number of observations grows.
+These situations are in contrast to the approach using marginal likelihood where $\hat{w}$ necessarily converges to $y^*$ as the number of observations grows.
 
 \subsubsection*{Restricted case}
 
-Fix $x=x^*$ and $y=y^*$ to their true, generating values and proceed to estimate the internal branch parameter $w$.
+Fix estimated fidelities $x=x^*$ and $y=y^*$ to their true, generating values and proceed to estimate the internal branch parameter $w$.
 \begin{restatable}{theorem}{restrictedBranchInconsist}
 \label{thm:restricted-bl}
 Let
@@ -253,7 +248,7 @@ $$
 $$
 \gamma := \gamma(x^*, y^*) = 4x^*y^*.
 $$
-The maximum likelihood value $\hat{w} = 1$ if
+The maximum likelihood value $\hat{w}$ is equal to 1 if
 $$
 \beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
 $$
@@ -268,7 +263,7 @@ Seeing no change along a branch more likely increases the likelihood by introduc
 % obtained by running
 % python joint_inf_plot.py --analytic --restricted-branch-lengths --delta .001 --plot-name figures/branch-length-inconsistency.svg
 \includegraphics[width=\textwidth]{branch-length-inconsistency-inkscape}
-\caption{Region of inconsistency with $x=x^*$ and $y=y^*$ fixed.}
+\caption{Region of branch parameter inconsistency in terms of fidelities $x=x^*$ and $y=y^*$ that are fixed to their correct values.}
 \label{fig:bl-inconsistency}
 \end{figure}
 
@@ -276,23 +271,21 @@ Seeing no change along a branch more likely increases the likelihood by introduc
 
 The general case is more challenging to analyze and so we will get somewhat weaker bounds.
 In the general case, $\hat{w}$ is a function of $x^*$, $y^*$, $\hat{x}$, and $\hat{y}$.
-%EM This is the first we're hearing of the quadratic formula in this version.
 Looking to the previous section, the region where $\hat{w}=1$ will still be given by the inequality in Theorem~\ref{thm:restricted-bl}, only with $\gamma$ and $\beta$ now being functions of $\hat{x}$ and $\hat{y}$ instead of $x^*$ and $y^*$.
 Assume we know $\hat{x}$ and $\hat{y}$ as functions of $x^*$ and $y^*$ only.
-%EM Here would be a good place to introduce the concept that youre going to be saying that either the pendant branch lengths are bad, or what is going to be 1.
-%EM differing notions of "bad" will lead to different theorems.
 We show that there are similar bounds as in the restricted case, though we need to take into account the unknown values of $\hat{x}$ and $\hat{y}$.
-We fix bounds on these estimates and show that, in the general case, we either estimate $\hat{w}$ to be one or fall outside of the specified bounds for $\hat{x}$ or $\hat{y}$, indicating a poor estimate in at least one of the three unknown branch parameters.
+We fix bounds on these estimates and show that, in the general case, we either estimate $\hat{w}$ to be one or fall outside of specified bounds for $\hat{x}$ or $\hat{y}$, indicating a poor estimate in at least one of the three unknown branch parameters.
 \begin{restatable}{theorem}{generalBranchInconsist}
 \label{thm:general-bl}
+Define $\gamma(x, y) = 4xy$.
 For
 $$
 \beta := \beta(x^*, y^*) = 1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2,
 $$
 $$
-\gamma := \gamma(x^*, y^*) = 4x^*y^*,
+\gamma := \gamma(x^*, y^*),
 $$
-and bounds
+bounds
 $$
 \gamma_L := \gamma_{L}(x^*, y^*) \le \gamma(\hat{x}, \hat{y}),
 $$
@@ -308,11 +301,10 @@ $$
 -\gamma_{U}^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma_{L}\beta_{L}x^*(y^*)^2 + \beta_{L}^2 \ge 0.
 $$
 \end{restatable}
-Similar to Theorem~\ref{thm:restricted-bl}, the inequality in Theorem~\ref{thm:general-bl} is also a function of only $x^*$ and $y^*$, though general forms for $\gamma_L$, $\gamma_U$, and $\beta_L$ are difficult to obtain.
-%EM I think you put this loosest bound in for exposition's sake, but I don't think it helps clarify.
-%EM On the other hand, I think that explaining that the restricted case fits in this framework is great.
-The tightest possible bounds are $\gamma_{L} = \gamma_{U} = \gamma$ and $\beta_{L} = \beta$, which is the restricted case of the previous section and given in Fig.~\ref{fig:bl-inconsistency}.
-For an intermediate bound, define a specified level of error in estimates for $\hat{x}$ and $\hat{y}$ so that
+Similar to Theorem~\ref{thm:restricted-bl}, the inequality in Theorem~\ref{thm:general-bl} is also a function of only $x^*$ and $y^*$.
+Although general forms for $\gamma_L$, $\gamma_U$, and $\beta_L$ are difficult to obtain, we can make progress by bounding the error in branch length estimation for the pendant or the central branch.
+If we don't want to allow any error in pendant branches, we can use the tightest possible bounds $\gamma_{L} = \gamma_{U} = \gamma$ and $\beta_{L} = \beta$, which is the restricted case of the previous section and given in Fig.~\ref{fig:bl-inconsistency}.
+For an intermediate bound, define a specified allowable level of error in estimates for $\hat{x}$ and $\hat{y}$ so that
 $$
 x^*-x_{L} \le \hat{x} \le x^*+x_{U}
 $$
@@ -322,16 +314,15 @@ y^*-y_{L} \le \hat{y} \le y^*+y_{U}.
 $$
 Then $\gamma_L, \gamma_U$ and $\beta_L$ are defined directly from the bounds on $\hat{x}$ and $\hat{y}$.
 As an example, the region to the left side of the curve in Fig.~\ref{fig:bl-loose-inconsistency} shows the case where $x_L=x_U=y_L=y_U=0.1$.
-In this case, we will either estimate $\hat{w}$ to be one or estimate either $\hat{x}$ or $\hat{y}$ to be more than $0.1$ away from its true value.
+In this case, joint inference will either estimate $\hat{w}$ to be one or estimate either $\hat{x}$ or $\hat{y}$ to be more than $0.1$ away from its true value.
 
 \begin{figure}
 \centering
 % obtained by running
 % python joint_inf_plot.py --analytic --general-branch-lengths --delta .001 --plot-name figures/bl-loose-inconsistency.svg
 \includegraphics[width=\textwidth]{bl-loose-inconsistency-inkscape}
-%EM If you read this caption without reading the text, would you be able to understand what's going on? I think I'd be confused because in the caption you are stating something that looks good, and then the figure describes xhat and yhat as being poorly estimated.
 \caption{
-    Region of inconsistency.
+    Region of branch parameter inconsistency in terms of fidelities.
     In the marked region, either $\hat{w}=1$ or one of $x^*-0.1 \le \hat{x} \le x^*+0.1$ or $y^*-0.1 \le \hat{y} \le y^*+0.1$ will not be true, resulting in poor estimation of the noninterior branch parameters.
 }
 \label{fig:bl-loose-inconsistency}
@@ -339,14 +330,15 @@ In this case, we will either estimate $\hat{w}$ to be one or estimate either $\h
 
 \subsubsection*{Empirical validation}
 
+Direct numerical optimization confirms our theoretically-derived bounds and provides more detailed picture.
 The region of inconsistency in Fig.~\ref{fig:bl-loose-inconsistency} is a conservative estimate of where $\hat{w}=1$.
-To determine how conservative, we use the method of basin-hopping \cite{Wales1997} to perform joint maximum likelihood estimation using numerical optimization, described in the Appendix.
+To determine how conservative, we use the method of basin-hopping \cite{Wales1997} to perform joint maximum likelihood estimation using numerical optimization, as described in the Appendix.
+%EM This could be considered a little unfair. Optimization of 3 variables is harder than optimizing two, so when there is an optimization problem with the 3-variable case then w=1 has an advantage. I don't have a suggestion to change things.
 Since empirical estimates can be unstable, we perform two maximizations---one over $0 \le x,y,w \le 1$ and one over $0 \le x,y \le 1$ with $w=1$---and take the value of $\hat{w}$ with the higher likelihood.
 We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*$ and $y^*$ from $10^{-2}$ to $1-10^{-2}$ (Fig.~\ref{fig:bl-general-inconsistency}): we do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
-%EM Noo, I need to make a name for this sort of sentence-- the figure announcement sentence? Sentences should read "Here is a statement (Fig. X)."
-%EM There is a big bomb to drop here, which is that what is 1 all over the place!
 %EM Question: it seems to me that even in the non-white region, the BL inferences aren't correct. Is that true? We should say so if. I don't want to make extra work for you, but a figure in which you take the difference between the correct value and the inferred value might be nice.
 %das: it seemed like the estimates were decent to me, but I can do this super easily (output is pickled). Though are you talking about another plot or just a check that we can add a sentence like "even in cases where \hat{w} is not one w is overestimated/poorly estimated."
+%EM I'm pretty sure I can see that there's bias in the estimates even in the non-white area. A plot of the difference between the two would be cool. Can we zoom into the region with x* and y* greater than 0.6 so that the scale doesn't get thrown off by big differences where x* and y* are zero?
 
 Marginal inference performs as expected, where $\hat{w}$ is equal to $y^*$ in the limit data regardless of the value of $x^*$.
 For joint inference, the estimates for $\hat{w}$ when $x^*$ and $y^*$ are both large look unbiased, with $\hat{w}$ increasing as $y^*$ increases, though the region where $\hat{w}$ is estimated to be one---indicating no change along the interior branch---is similar to that in the restricted case.
@@ -373,34 +365,30 @@ For joint inference, the errors range from $[-7\times 10^{-3}, 8\times 10^{-2}]$
 
 \section*{Discussion}
 
-We have shown that the method of joint inference when estimating phylogenetic parameters is not consistent in general.
-Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in two types of inconsistency: first, inferring the incorrect topology and, second, estimating severely biased branch lengths even given the correct topology.
+We have shown that the method of joint inference when estimating phylogenetic parameters \cite{Sagulenko2017-jo} is not consistent in general.
+Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in two types of inconsistency: first, where joint inference infers the incorrect topology and, second, where it estimates severely biased branch lengths even given the correct topology.
 In all cases, these regions of inconsistency arise when the branches of the generating trees are ``long,'' that is, when branch fidelities are closer to zero than to one.
 
-The method of profile likelihood is well-studied \cite{Murphy2000-ry}.
+Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \cite{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., \cite{Geman1982}.
-Joint inference of phylogenetic parameters and ancestral states \cite{Sagulenko2017-jo} is a similar approach to profile likelihood.
-Elsewhere in statistics literature, the failure of maximum likelihood estimates to obtain consistent estimates in the case of infinite parameters have been shown by the Neyman-Scott paradox \cite{Neyman1948-tt}, though parameters tending to infinity is not a necessary condition for inconsistency \cite{LeCam1990}.
+Elsewhere in statistics literature, the failure of maximum likelihood estimates to obtain consistent estimates as the number of parameters goes to infinity have been shown by the Neyman-Scott paradox \cite{Neyman1948-tt}, though parameters tending to infinity is not a necessary condition for inconsistency \cite{LeCam1990}.
 Until recently \cite{RoyChoudhury2015-ta}, results on the properties of standard maximum likelihood estimates of phylogeny as in \eqref{eq:marginal_likelihood} have been difficult to prove, and no results have been obtained for profile likelihood.
 We have furthered progress in understanding the limitations of this joint maximum likelihood approach.
 
 In phylogenetics, counterexamples showing methods of phylogenetic inference are inconsistent have been shown using the same four-taxa topologies used here \cite{Felsenstein1978-rr}.
-%EM Seems like a sentence is missing here-- what's the usual setting?
 In \cite{Felsenstein1978-rr}, when simulating data under the ``Felsenstein zone'' topology $\tau_2$, as the number of observations increases, the ``Farris zone'' topology $\tau_1$ becomes more likely when performing a particular estimation procedure.
 This is the converse of what we have shown for joint inference, where the Felsenstein topology is more likely than the Farris topology.
-Looking at Fig.~2 of \cite{Felsenstein1978-rr} we see similarities in curve shape to the region in Fig.~\ref{fig:inconsistency-farris}, though the latter has a smaller region of inconsistency.
+Looking at Fig.~2 of \cite{Felsenstein1978-rr} we see some similarities in curve shape to the region in Fig.~\ref{fig:inconsistency-farris}, though the latter has a smaller region of inconsistency.
 Moreover, the inconsistency in \cite{Felsenstein1978-rr} is attributed to long branch attraction, i.e., the fact that there may be multiple long branches where parallel changes are more likely than a single change along a short branch.
 This is not the case here; for our case, the inconsistency generally occurs when all branches are long, and has more to do with the choices of the form of the likelihood than from the interplay of long and short branches.
-Difficulties in phylogenetic estimation when the ``Farris zone'' generates characters have been found by \cite{Siddall1998-hq}, though \cite{Swofford2001-hr} show that sequence length plays a major role in these issues.
-
-%EM We need to describe limitations (we weren't able to write out equations getting the region exactly right, and we are using a simple model of subs.
-%EM We should also describe the need for extensive simulations to see the extent of bias.
+Difficulties in phylogenetic estimation when generating data on the ``Farris zone'' tree have been found by \cite{Siddall1998-hq}, though \cite{Swofford2001-hr} show that sequence length plays a major role in these issues.
 
 While we have shown inconsistency in both topology and branch parameter estimation, these results have their limitations.
 The techniques used to obtain upper and lower bounds for the likelihoods in the topology estimation case provide relatively loose bounds, though how loose they are remain unknown without either further analysis or verification through simulation.
 Similarly, for the general case in estimating branch lengths, we were only able to provide a conservative region of overestimation.
 Empirical validation shows that the general case is not unlike the restricted case.
-All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to apply these results to more complicated general cases.
+All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases.
+
 
 \section*{Acknowledgements}
 We thank Richard Neher and Vladimir Minin for helpful discussions.
