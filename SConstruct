@@ -34,6 +34,6 @@ Default([joint_inf])
 Depends(Flatten([joint_inf]),
         Flatten([pdfs, 'joint_inf.bib']))
 
-cont_build = env.Command('.continuous', ['joint_inf.bib', 'joint_inf.tex'],
+cont_build = env.Command('.continuous', ['appendix.tex','joint_inf.bib', 'joint_inf.tex'],
     'while :; do inotifywait -e modify $SOURCES; scons -Q; done')
 Alias('continuous', cont_build)
