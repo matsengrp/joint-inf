@@ -284,9 +284,9 @@ All values are multiplied by $1/8$.}
      $\{2\}$       &$(1+x)^2   (1+w)(1+y)(1-y)$       &$(1+x)^2   (1-w)(1+y)(1-y)$\\
      $\{3\}$       &$(1+x)(1-x)(1+w)(1+y)^2$          &$(1+x)(1-x)(1-w)(1-y)^2$\\
      $\{1,2\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$       &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-     $\{1,3\}$     &$(1+x)^2   (1+w)(1-y)^2$          &$(1+x)^2   (1-w)(1+y)^2$\\
+     $\{1,3\}$     &$(1-x)^2   (1+w)(1+y)^2$          &$(1-x)^2   (1-w)(1-y)^2$\\
      $\{2,3\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$       &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-     $\{1,2,3\}$   &$(1+x)^2   (1+w)(1+y)(1-y)$       &$(1+x)^2   (1-w)(1+y)(1-y)$\\
+     $\{1,2,3\}$   &$(1-x)^2   (1+w)(1+y)(1-y)$       &$(1-x)^2   (1-w)(1+y)(1-y)$\\
     \hline
     \hline
     &$\{1\}$                             &$\{1,2\}$  \\
@@ -298,9 +298,10 @@ All values are multiplied by $1/8$.}
      $\{1,2\}$     &$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
      %EM I was doing some spot-checking here, and this line seems strange.
      %EM I'd think that this left hand entry has everything in the upper half of the tree in the "on" state, which means that it should be (1+x)^2   (1-w)(1+y)^2, no?
-     $\{1,3\}$     &$(1-x)^2   (1-w)(1-y)^2$     &$(1-x)^2   (1+w)(1+y)^2$\\
+     %das: looks like I was silly and was computing {2,4} instead of {1,3}. Luckily it doesn't change anything. Did same with {4} and {1,2,3}...
+     $\{1,3\}$     &$(1+x)^2   (1-w)(1+y)^2$     &$(1+x)^2   (1+w)(1-y)^2$\\
      $\{2,3\}$     &$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
-     $\{1,2,3\}$   &$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
+     $\{1,2,3\}$   &$(1+x)^2   (1-w)(1+y)(1-y)$  &$(1+x)^2   (1+w)(1+y)(1-y)$\\
     \hline
 \end{tabular}
 \caption{Likelihood calculations for all site patterns and internal states of the Farris tree.
@@ -321,10 +322,12 @@ All values multiplied by $1/32$.}
      $\{1\}$       &$(1+x)(1-x)(1+w)(1+y)^2$           &$(1-x)^2   (1-w)(1+y)(1-y)$\\
      $\{2\}$       &$(1+x)^2   (1+w)(1+y)(1-y)$        &$(1+x)(1-x)(1-w)(1-y)^2$\\
      $\{3\}$       &$(1+x)(1-x)(1+w)(1+y)^2$           &$(1+x)^2   (1-w)(1+y)(1-y)$\\
-     $\{1,2\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$        &$(1+x)^2   (1-w)(1+y)^2$\\
-     $\{1,3\}$     &$(1+x)^2   (1+w)(1-y)^2$           &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
-     $\{2,3\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$        &$(1-x)^2   (1-w)(1+y)^2$\\
-     $\{1,2,3\}$   &$(1+x)^2   (1+w)(1+y)(1-y)$        &$(1+x)(1-x)(1-w)(1+y)^2$\\
+     %das: looks also like I did the complement of the ancestral states for {1,2} and {2,3} here by accident. Still doesn't change anything afaik
+     %das: All that happened was entries swapped row-wise, which wouldn't affect taking a maximum or summing.
+     $\{1,2\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$        &$(1-x)^2   (1-w)(1-y)^2$\\
+     $\{1,3\}$     &$(1-x)^2   (1+w)(1+y)^2$           &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
+     $\{2,3\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$        &$(1+x)^2   (1-w)(1-y)^2$\\
+     $\{1,2,3\}$   &$(1-x)^2   (1+w)(1+y)(1-y)$        &$(1+x)(1-x)(1-w)(1-y)^2$\\
     \hline
     \hline
     &$\{1\}$                             &$\{1,2\}$  \\
@@ -333,10 +336,10 @@ All values multiplied by $1/32$.}
      $\{1\}$       &$(1+x)^2   (1-w)(1+y)(1-y)$        &$(1+x)(1-x)(1+w)(1-y)^2$\\
      $\{2\}$       &$(1+x)(1-x)(1-w)(1+y)^2$           &$(1-x)^2   (1+w)(1+y)(1-y)$\\
      $\{3\}$       &$(1-x)^2   (1-w)(1+y)(1-y)$        &$(1+x)(1-x)(1+w)(1-y)^2$\\
-     $\{1,2\}$     &$(1-x)^2   (1-w)(1-y)^2$           &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
-     $\{1,3\}$     &$(1+x)(1-x)(1-w)(1+y)(1-y)$        &$(1-x)^2   (1+w)(1+y)^2$\\
-     $\{2,3\}$     &$(1+x)^2   (1-w)(1-y)^2$           &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
-     $\{1,2,3\}$   &$(1+x)(1-x)(1-w)(1-y)^2$           &$(1-x)^2   (1+w)(1+y)(1-y)$\\
+     $\{1,2\}$     &$(1+x)^2   (1-w)(1+y)^2$           &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+     $\{1,3\}$     &$(1+x)(1-x)(1-w)(1+y)(1-y)$        &$(1+x)^2   (1+w)(1-y)^2$\\
+     $\{2,3\}$     &$(1-x)^2   (1-w)(1+y)^2$           &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
+     $\{1,2,3\}$   &$(1+x)(1-x)(1-w)(1+y)^2$           &$(1+x)^2   (1+w)(1+y)(1-y)$\\
 \hline
 \end{tabular}
 \caption{Likelihood calculations for all site patterns and internal states of Felsenstein tree.
