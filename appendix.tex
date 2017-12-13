@@ -115,8 +115,6 @@ so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
 \subsection*{Hadamard representation}
 
 We follow Section 8.6 of \cite{Semple2003-em} to state the Hadamard representation of site split generating probabilities.
-%das: @EM thoughts on including all of this in full generality? should we just reference using the sentence above and be done with it?
-%EM You already have it in here, and so I don't see a reason to yank it now.
 For each edge $e$ define the edge fidelity for that edge as
 $$
 \theta(e) = 1-2p(e).
@@ -128,17 +126,32 @@ For $n$ taxa, the probability of observing site split $A\in\mathcal{P}(\siteSpli
 p_A = \frac{1}{2^{n-1}} \ \sum_{Y \subseteq \mathcal{S} : |Y| \equiv 0 (\mathrm{mod} \ 2)} \ \left[(-1)^{|Y \cap A|} \ \prod_{e\in P(Y)} \ \theta(e) \right].
 \end{equation}
 By convention, we set $P(\emptyset)=\emptyset$ and $\prod_{e\in\emptyset} \ \theta(e) = 1$.
+Table~\ref{tab:sitepatprob} contains calculations of site pattern frequencies for our two topologies (Fig.~\ref{fig:farris-fels-top}).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|}
+    \hline
+$\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j \mid \tau_1,t)$&$P(\siteSplitRV=\siteSplit_j \mid \tau_2,t)$\\
+    \hline
+    $\emptyset$    &$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
+    $\{1\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
+    $\{2\}$        &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
+    $\{3\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
+    $\{1,2\}$      &$1-x^2-y^2+x^2y^2$&$1+2xy-2xyw-x^2w-y^2w+x^2y^2$\\
+    $\{1,3\}$      &$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
+    $\{2,3\}$      &$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
+    $\{1,2,3\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
+    \hline
+\end{tabular}
+\caption{Site pattern probabilities $\siteSplit_j$ on the Farris tree $\tau_1$ and the Felsenstein tree $\tau_2$ obtained using the Hadamard transform.
+All values multiplied by $1/8$.}
+\label{tab:sitepatprob}
+\end{table}
+
+\subsection*{Example}
 We follow with an expository example computing these probabilities and likelihoods.
-
-\paragraph{Example}
-\begin{figure}
-    \centering
-    \includegraphics[width=.45\textwidth]{unrooted_farris_tree}
-    \caption{Four taxon ``Farris zone'' topology.}
-\label{fig:four-taxa-tree}
-\end{figure}
-
-Consider the fixed, binary four-tip tree $\tau$ in Fig.~\ref{fig:four-taxa-tree}---this is commonly known as the ``Farris zone'' topology.
+Consider the fixed, binary four-tip tree $\tau_1$ in Fig.~\ref{fig:farris-fels-top}(a)---this is commonly known as the ``Farris zone'' topology.
 The set of all possible character assignments is
 \begin{align*}
 \mathcal{P}(\{1,2,3,4\}) &= \{\emptyset, \{1,2,3,4\}, \{1\}, \{2,3,4\}, \{2\}, \{1,3,4\}, \{3\}, \{1,2,4\}, \\
@@ -218,14 +231,9 @@ $$
 
 \subsection*{Likelihood computations}
 
-Table~\ref{tab:sitepatprob} contains calculations of site pattern frequencies under these two topologies.
-Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} contain the values of the likelihood for all possible ancestral states.
-Table~\ref{tab:likelihoods} contains calculations of likelihood values for fixed site patterns and topologies that have been maximized over ancestral state patterns.
-
 To compute the likelihood of observing a set of data, we need $P(\ancestralStateColumn=\ancestralSplit_k\mid \alignmentColumn=\siteSplit_j,\tau,t)$ for each $\ancestralSplit_k$ and $\siteSplit_j$.
 We remind the reader that the probability of a character change along a branch with fidelity parameter $\theta$ is $(1-\theta)/2$, while the probability of a character remaining the same is $(1+\theta)/2$.
-See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern on the Farris tree in Fig.~\ref{fig:farris-fels-top}.
-%EM Isn't some of this redundant with the prev paragraph?
+See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern on the Farris tree.
 Likelihood computations for all site patterns and ancestral states are in Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods}.
 Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}.
 
@@ -242,33 +250,13 @@ Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}.
 \caption[short]{}
 \end{subfigure}
 \caption{
-    Example likelihood computations given fidelities $x$, $y$, and $w$.
+    Example likelihood computations on the Farris tree $\tau_1$ for fidelities $x$, $y$, and $w$.
+    Edges labeled by the probability of substitution along that edge.
     In (a), we compute the product to obtain $P(\ancestralStateColumn=\emptyset\mid \alignmentColumn=\{2,3\},\tau_1,t) = (1+x)(1-x)(1+y)(1-y)(1+w)/32$.
     In (b), the same process yields $P(\ancestralStateColumn=\{1\}\mid \alignmentColumn=\{2,3\},\tau_1,t) = (1+x)(1-x)(1+y)(1-y)(1-w)/32$.
 }
 \label{fig:example_likelihoods}
 \end{figure}
-
-\begin{table}
-\centering
-\begin{tabular}{|l|l|l|}
-    \hline
-$\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j \mid \tau_1,t)$&$P(\siteSplitRV=\siteSplit_j \mid \tau_2,t)$\\
-    \hline
-    $\emptyset$    &$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
-    $\{1\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
-    $\{2\}$        &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
-    $\{3\}$        &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
-    $\{1,2\}$      &$1-x^2-y^2+x^2y^2$&$1+2xy-2xyw-x^2w-y^2w+x^2y^2$\\
-    $\{1,3\}$      &$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
-    $\{2,3\}$      &$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
-    $\{1,2,3\}$    &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
-    \hline
-\end{tabular}
-\caption{Site pattern probabilities.
-All values are multiplied by $1/8$.}
-\label{tab:sitepatprob}
-\end{table}
 
 \begin{table}
 \centering
@@ -296,15 +284,12 @@ All values are multiplied by $1/8$.}
      $\{2\}$       &$(1-x)^2   (1-w)(1+y)(1-y)$  &$(1-x)^2   (1+w)(1+y)(1-y)$\\
      $\{3\}$       &$(1+x)(1-x)(1-w)(1+y)^2$     &$(1+x)(1-x)(1+w)(1-y)^2$\\
      $\{1,2\}$     &$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
-     %EM I was doing some spot-checking here, and this line seems strange.
-     %EM I'd think that this left hand entry has everything in the upper half of the tree in the "on" state, which means that it should be (1+x)^2   (1-w)(1+y)^2, no?
-     %das: looks like I was silly and was computing {2,4} instead of {1,3}. Luckily it doesn't change anything. Did same with {4} and {1,2,3}...
      $\{1,3\}$     &$(1+x)^2   (1-w)(1+y)^2$     &$(1+x)^2   (1+w)(1-y)^2$\\
      $\{2,3\}$     &$(1+x)(1-x)(1-w)(1+y)(1-y)$  &$(1+x)(1-x)(1+w)(1+y)(1-y)$\\
      $\{1,2,3\}$   &$(1+x)^2   (1-w)(1+y)(1-y)$  &$(1+x)^2   (1+w)(1+y)(1-y)$\\
     \hline
 \end{tabular}
-\caption{Likelihood calculations for all site patterns and internal states of the Farris tree.
+\caption{Likelihood calculations for all site patterns $\siteSplit_j$ and internal states $\ancestralSplit_k$ of the Farris tree.
 All values multiplied by $1/32$.}
 \label{tab:farris_likelihoods}
 \end{table}
@@ -322,8 +307,6 @@ All values multiplied by $1/32$.}
      $\{1\}$       &$(1+x)(1-x)(1+w)(1+y)^2$           &$(1-x)^2   (1-w)(1+y)(1-y)$\\
      $\{2\}$       &$(1+x)^2   (1+w)(1+y)(1-y)$        &$(1+x)(1-x)(1-w)(1-y)^2$\\
      $\{3\}$       &$(1+x)(1-x)(1+w)(1+y)^2$           &$(1+x)^2   (1-w)(1+y)(1-y)$\\
-     %das: looks also like I did the complement of the ancestral states for {1,2} and {2,3} here by accident. Still doesn't change anything afaik
-     %das: All that happened was entries swapped row-wise, which wouldn't affect taking a maximum or summing.
      $\{1,2\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$        &$(1-x)^2   (1-w)(1-y)^2$\\
      $\{1,3\}$     &$(1-x)^2   (1+w)(1+y)^2$           &$(1+x)(1-x)(1-w)(1+y)(1-y)$\\
      $\{2,3\}$     &$(1+x)(1-x)(1+w)(1+y)(1-y)$        &$(1+x)^2   (1-w)(1-y)^2$\\
@@ -342,7 +325,7 @@ All values multiplied by $1/32$.}
      $\{1,2,3\}$   &$(1+x)(1-x)(1-w)(1+y)^2$           &$(1+x)^2   (1+w)(1+y)(1-y)$\\
 \hline
 \end{tabular}
-\caption{Likelihood calculations for all site patterns and internal states of Felsenstein tree.
+\caption{Likelihood calculations for all site patterns $\siteSplit_j$ and internal states $\ancestralSplit_k$ of the Felsenstein tree.
 All values multiplied by $1/32$.}
 \label{tab:fels_likelihoods}
 \end{table}
@@ -461,7 +444,7 @@ All values multiplied by $1/32$.}
                     \end{array}$\\
     \hline
 \end{tabular}
-\caption{Likelihood calculations for all site patterns and ancestral state partitions.
+\caption{Likelihood calculations for all site patterns $\siteSplit_j$ and ancestral state partitions $\ancestralSplitPartition_j$.
 All values multiplied by $1/32$.
 Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
 See Appendix for full calculations.}
@@ -470,8 +453,8 @@ See Appendix for full calculations.}
 
 \subsection*{Form of the likelihood}
 
-Consider the Farris tree with arbitrary branch lengths, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$.
-We now show that, in the case of the Farris tree, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that fixing both the top two branch lengths to be equal and the bottom two branch lengths to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
+Consider the Farris tree with arbitrary fidelities, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$.
+We now show that, in the case of the Farris tree, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that constraining both the top two branch lengths to be equal and the bottom two branch lengths to be equal during inference will obtain the same maximum likelihood estimate as in the case of arbitrary branch lengths.
 Using the Hadamard transform approach, we calculate the generating probabilities on the Farris tree.
 For site split $\emptyset$,
 \begin{align*}
@@ -509,13 +492,13 @@ for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exc
 The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
 
+%EM I think this following statement could use a little more justification. If we write out a symmetric function f in two variables and take the derivative of f(x+delta, x) = f(x, x+delta) with respect to delta and set it to zero we can see that this must be a stationary point of f. Do we need to say more to ensure that this is a maximum?
 Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$, $x_1=x_2$ at the maximum.
 The analogous statement holds for $y_1$ and $y_2$.
 The Felsenstein tree does not admit this property, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
 \subsection*{Theorems and proofs}
 
-%EM Here we are restating.
 \topoInconsist*
 
 \begin{proof}
@@ -855,8 +838,6 @@ See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < x^*, y^* < 1$ whe
 
 \begin{proof}
 Recalling Table~\ref{tab:likelihoods}, the likelihood can take one of three forms corresponding to which ancestral state for $\siteSplit_j=\{1,3\}$ maximizes the likelihood over $(x,y,w)$.
-%EM You are talking about a log likelihood here, right? So a likelihood being proportional to means that there is some additive constant. Makes things a little confusing.
-%das: updated
 If $x=x^*$ and $y=y^*$ are fixed, by collapsing like terms and ignoring terms with only $x^*$ and $y^*$, the log-likelihood in \eqref{eq:farris_likelihood} as a function of $w$ is
 \begin{align*}
     \ell_{\tau_1,t^*}(\tau_1, w; \fullAncestralSplitPartitions(\tau_1,w))
@@ -906,7 +887,6 @@ $$
 \beta > \gamma.
 $$
 % Not sure if I need to show this, but if x and y aren't 1 it's 1+x^2+y^2+x^2y^2 > 4xy => (1+x^2)(1+y^2) > 4xy and 1+x^2 > 2x, 1+y^2 > 2y qed
-%EM Rather confusing to be using ' for two things here. What about using a dot over the l? In retrospect something other than ' would have been good because of the proliferation of w^{'2} etc. Prob not worth changing now though.
 The derivative of the log-likelihood with respect to $w$ is
 $$
 \ell'(w) := \frac{d}{dw} \ell(w) = \frac{\alpha_1 \gamma}{\beta+\gamma w} - \frac{\alpha_2 \gamma}{\beta-\gamma w} + \frac{1}{1+w}.
