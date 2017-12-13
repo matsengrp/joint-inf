@@ -530,9 +530,11 @@ $$
 p_{\emptyset} := p_{\emptyset}(x^*, y^*) = P(\siteSplitRV=\emptyset \mid \tau=\tau_1,t=t^*),
 $$
 with similar definitions for the remaining generating probabilities.
-The full Farris tree log-likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see Table~\ref{tab:likelihoods} for $\tau = \tau_1$).
+The full Farris tree log-likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see Table~\ref{tab:likelihoods}).
 We begin by writing out the case for the ancestral state split $\{1\}$.
-Directly substituting in \eqref{eq:site_pattern_likelihood}, the log-likelihood is
+%EM Is eq:site_pattern_likelihood the best ref? It still has counts. It would be nice to have something that's exactly this before plugging in the values from the tables.
+Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\ref{tab:likelihoods} where $\tau = \tau_1$ in \eqref{eq:site_pattern_likelihood}, the log-likelihood is
+%EM This is the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1\}$. You address the other cases later, but at this point it's not clear that you're going to. Can you introduce with this in mind?
 \begin{align}
     \label{eq:farris_likelihood}
     \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t))
@@ -556,12 +558,13 @@ Directly substituting in \eqref{eq:site_pattern_likelihood}, the log-likelihood 
 \end{align}
 We use the facts that, for $x,y\in[0,1]$,
 \begin{align*}
+1-x^2-y^2-x^2y^2 & = (1+x)(1-x)(1+y)(1-y) \\
 1-x^2+y^2-x^2y^2 & = (1+x)(1-x)(1+y^2) \le (1+x)(1-x)(1+y) \\
 1+x^2-y^2-x^2y^2 & = (1+x^2)(1+y)(1-y) \le (1+x)(1+y)(1-y) \\
 1+x^2+y^2+x^2y^2 & = (1+x^2)(1+y^2) \le (1+x)(1+y) \\
 4xy & = 2x \cdot 2y \le (1+x^2)(1+y^2) \le (1+x)(1+y).
 \end{align*}
-The term $p_{\emptyset}$ is bounded as
+The $p_{\emptyset}$ term is bounded as
 \begin{align*}
     p_{\emptyset} & = \log(1+x^2+y^2+4xyw+x^2y^2) \\
                   & \le \log(1+x^2+y^2+4xy+x^2y^2) \\
@@ -670,6 +673,7 @@ The upper bound for the likelihood is then maximized at
 
 The other two possible ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications.
 Call
+%EM It would seem helful for the below check to express these a_1' etc in terms of tilde{p}.
 \begin{equation}
     \begin{aligned}
         a_{1}' &= a_{1}-2p_{13}, \\
@@ -679,6 +683,8 @@ Call
     \end{aligned}
     \label{eq:a_const_prime}
 \end{equation}
+%EM This check would make a lot more sense if you put the C^{2}_{\tau_1,\tau_1}(x^*, y^*)  and the other analogous definition first.
+%EM It would also be nice to do one of the calculations to get us from a_1 world to a_1' world. Just staring at table S4 doesn't make this obvious.
 We also now need to check that
 $$
 \hat{x} = \frac{a_{1}'-a_{2}'}{a_{1}'+a_{2}'}, \ \hat{y} = \frac{a_{3}'-a_{4}'}{a_{3}'+a_{4}'}
@@ -698,14 +704,15 @@ $$
 p_{13} = \frac{1}{8}\left(1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2\right).
 $$
 We see that
+\begin{equation}
+1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2 \le 2 \iff (y^*)^2\left(1 - 4x^* + (x^*)^2\right) \le 1 - (x^*)^2.
+\label{eq:lenny}
+\end{equation}
+Note
 $$
-1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2 \le 2 \iff (y^*)^2\left(1 - 4x^* + (x^*)^2\right) \le 1 - (x^*)^2
+(y^*)^2\left(1 - 4x^* + (x^*)^2\right) \le 1 - 4x^* + (x^*)^2;
 $$
-and
-$$
-(y^*)^2\left(1 - 4x^* + (x^*)^2\right) \le 1 - 4x^* + (x^*)^2 \le 1 - (x^*)^2,
-$$
-the last inequality holding if $x^* \le 2$.
+showing that \eqref{eq:lenny} holds if $x^* \le 2$, which is satisfied by definition.
 Thus, $p_{13} \le 2/8 = 1/4$ and our $\hat{x}$ and $\hat{y}$ are valid.
 
 To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
@@ -739,7 +746,7 @@ C_0(x^*, y^*) := \max\left(C^{1}_{\tau_1,\tau_1}(x^*, y^*), C^{2}_{\tau_1,\tau_1
 $$
 
 We construct a similar lower bound on the Felsenstein tree partial likelihood.
-In the Felsenstein case, there are various optimal internal states depending on branch lengths (Table~\ref{tab:likelihoods}; $\tau = \tau_2$).
+In the Felsenstein case, there are quite a few optimal internal states depending on branch lengths (Table~\ref{tab:likelihoods}; $\tau = \tau_2$).
 We can bound these below replacing $1+w$ with $1-w$ as follows.
 For the site split $\{1,2\}$, we would like to find a lower bound for
 $$
@@ -749,6 +756,7 @@ We observe that
 $$
 (1+x)^2 (1-w)(1+y)^2 > (1+x)(1-x)(1-w)(1+y)(1-y)
 $$
+%EM Hm, the following doesn't look right to me.
 always, and thus the maximum can be bounded below by $(1+x)^2 (1-w)(1+y)^2$.
 For the other site splits we consider two cases.
 If $(1+x)(1-y) > (1-x)(1+y)$, then
@@ -970,8 +978,6 @@ then \eqref{eq:general-bl-result} holds, and this is an inequality involving onl
 To get a sense of the region of overestimation, Fig.~\ref{fig:bl-loose-inconsistency} plots an intermediate case.
 \end{proof}
 
-%EM Wanna add a short section about numerical optimization? You've seen that it's not entirely trivial.
-
 \subsection*{Empirical validation}
 
 We use basin-hopping \cite{Wales1997} implemented in \texttt{scipy} \cite{Jones2001} to obtain the plots in Figs.~\ref{fig:bl-general-inconsistency}, \ref{fig:bl-general-marginal}, and \ref{fig:bl-general-bias}.
@@ -986,7 +992,7 @@ In these cases of zero likelihood, methods that evaluate many candidate paramete
 We sidestep these computational issues by restricting ourselves to the region $x^*,y^*\in [10^{-2},1-10^{-2}]^2$.
 
 We initialize our optimization procedure at the true branch parameters $t^*=\{x^*,y^*,x^*,y^*,y^*\}$.
-We posit that $\hat{w}$ is equal to one for regions of $x^*$ and $y^*$ small; methods that use local optimization may never see candidate values for large $x$ and $y$ if our initial guess is small, so we perform two maximizations, one with $w=1$ fixed and one where $w$ is estimated.
+We posit that $\hat{w}$ is equal to 1 for when $x^*$ and $y^*$ are small; methods that use local optimization may never see candidate values for large $x$ and $y$ if our initial guess is small, so we perform two maximizations, one with $w=1$ fixed and one where $w$ is estimated.
 We take the value of $\hat{w}$ with the larger likelihood as our estimate.
 
 \begin{figure}
