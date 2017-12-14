@@ -8,6 +8,7 @@ For likelihood calculation under the binary symmetric model, we describe a given
 We start by including those tip labels in $\siteSplit$ that are assigned a 1 in the $\alignmentColumn_i$.
 Then, because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model, we take the complement if needed to exclude label $\nSiteRows$ from $\siteSplit$.
 %EM is there a logic to what gets bolded or no? siteSplit isn't, but a site pattern is.
+%das: I was thinking bold for matrices/vectors (here of character data) then a vector of character data maps to a set (site split), and so I didn't bold the set.
 
 For topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization of $\ancestralStateColumn_i$.
 In this case the entire set of internal nodes must be enumerated: the probability of observing an ancestral state split, conditional on a site split, is not invariant to taking its complement.
@@ -44,6 +45,7 @@ P(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralState
 $$
 As a consequence of assuming a binary symmetric model, taking complements yields
 %EM continuing to nitpick, is there anything that is just s_j? Seems funny to only have the tilde s_j form.
+%das: I think s_j used to be the site pattern and then \tilde{s}_j became the split? It's still the case for h (no tilde is ancestral state pattern, tilde is ancestral state split). I changed to \tilde{y} to be consistent with this, but mabye we can think of something better?
 \begin{align*}
     2\cdot P(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t) &= P(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \\
                                                                  &= P(\siteSplitRV=\siteSplit_j \mid \tau, t)
@@ -78,6 +80,7 @@ where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ wh
 Let
 $$
 %EM It seems a little strange that eta appears here as an argument when it didn't appear in eq:site_pattern_likelihood. In fact it's not really an argument, right? Everything is determined by t and tau it seems to me.
+%das: We added it to clarify that the likelihood now depends on \xi, which is an element of \eta. It seems dirty to ignore it. At the risk of adding more notation, we could add \hat{H} to the original likelihood? Or just axe the etas...
 L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau, t)) = \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t) \cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)}
 $$
 be the final product in \eqref{eq:site_pattern_likelihood}.
@@ -189,7 +192,7 @@ in general.
 
 For each site split $\siteSplit\in\mathcal{P}(\siteSplitSet)$, we maximize the likelihood over all $\ancestralSplit\in\mathcal{P}(\ancestralSplitSet)$.
 A maximum occurs at one of possibly several ancestral splits in $\mathcal{P}(\ancestralSplitSet)$, defined via $\ancestralSplitPartition_j(\tau, t)$ for the $j$th site split.
-As a simple example, say all branch lengths correspond to a probability $p$ ($< 1/2$) of changing character along that branch.
+As a simple example, say all branch lengths correspond to a probability $p$ ($< 1/2$) of changing character along that branch, with $t=\{p,p,p,p,p\}$.
 The probabilities of observing ancestral splits for $\siteSplit_1=\emptyset$ are
 $$
 P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\emptyset, \tau, t) =
@@ -205,8 +208,9 @@ P(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\emptyset, \tau, t) =
 p^4(1-p).
 $$
 %EM Nitpick-- eta takes a tau and a t as arguments. Here we give it a p.
-The set of most likely ancestral states contains a single element, here $\ancestralSplitPartition_1(\tau, p)=\{\emptyset\}$.
-Then, taking $\xi_1\in\ancestralSplitPartition_1(\tau, p)$ we have
+%das: nit unpicked
+The set of most likely ancestral states contains a single element, here $\ancestralSplitPartition_1(\tau, t)=\{\emptyset\}$.
+Then, taking $\xi_1\in\ancestralSplitPartition_1(\tau, t)$ we have
 $$
 P(\ancestralSplitRV=\xi_1 \mid \siteSplitRV=\emptyset, \tau, t) =
 P(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\emptyset, \tau, t) =
@@ -223,7 +227,7 @@ P(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1,2\}, \tau, t) =
 P(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1,2\}, \tau, t) =
 p^3(1-p)^2.
 $$
-Here, the set of most likely ancestral states is $\ancestralSplitPartition_5(\tau, p)=\{\emptyset,\{1,2\}\}$, and, for $\xi_5\in\ancestralSplitPartition_5(\tau, p)$,
+Here, the set of most likely ancestral states is $\ancestralSplitPartition_5(\tau, t)=\{\emptyset,\{1,2\}\}$, and, for $\xi_5\in\ancestralSplitPartition_5(\tau, t)$,
 $$
 P(\ancestralSplitRV=\xi_5 \mid \siteSplitRV=\{1,2\}, \tau, t) =
 p^2(1-p)^3.
@@ -493,6 +497,8 @@ The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ 
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
 
 %EM I think this following statement could use a little more justification. If we write out a symmetric function f in two variables and take the derivative of f(x+delta, x) = f(x, x+delta) with respect to delta and set it to zero we can see that this must be a stationary point of f. Do we need to say more to ensure that this is a maximum?
+%das: I wasn't even thinking derivatives. Let f(x, y) be symmetric so that f(x, y) = f(y, x). If f is maximized at some (x_0, y_0) then f(x_0, y_0) > f(x, y) for all x, y. But then by symmetry f(y_0, x_0) is also a maximum. Now *if* a unique maximum exists, x_0 = y_0 should necessarily be this maximum by the properties defined above, otherwise, f(x_0, y_0) would not be equal to f(y_0, x_0). I think there are probably counterexamples where there is not a unique maximum where this statement isn't necessarily true (trivially, because you'd just say x_0 = y_1 if y_1 is also a maximum and voila) but I don't think this discounts the fact that x_0 = y_0 will still be *a* maximum in this case. In that case, it's reasonable to assume so, in my opinion, especially for the topological inconsistency (we don't use the branch length values), but even for the branch length inconsistency because the case of no unique solution is just as bad if not worse than inconsistency.
+%das: Should some or all of that be in the text? Can you see anything wrong with it?
 Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$, $x_1=x_2$ at the maximum.
 The analogous statement holds for $y_1$ and $y_2$.
 The Felsenstein tree does not admit this property, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
@@ -531,10 +537,12 @@ p_{\emptyset} := p_{\emptyset}(x^*, y^*) = P(\siteSplitRV=\emptyset \mid \tau=\t
 $$
 with similar definitions for the remaining generating probabilities.
 The full Farris tree log-likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see Table~\ref{tab:likelihoods}).
-We begin by writing out the case for the ancestral state split $\{1\}$.
+We begin by writing out the case for the ancestral state split $\{1\}$, and show the other two cases follow a similar argument.
 %EM Is eq:site_pattern_likelihood the best ref? It still has counts. It would be nice to have something that's exactly this before plugging in the values from the tables.
-Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\ref{tab:likelihoods} where $\tau = \tau_1$ in \eqref{eq:site_pattern_likelihood}, the log-likelihood is
+%das: gah, you're right
+Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\ref{tab:likelihoods} where $\tau = \tau_1$ in \eqref{eq:site_pattern_profile_likelihood_mean}, the log-likelihood is
 %EM This is the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1\}$. You address the other cases later, but at this point it's not clear that you're going to. Can you introduce with this in mind?
+%das: done
 \begin{align}
     \label{eq:farris_likelihood}
     \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t))
@@ -685,6 +693,7 @@ Call
 \end{equation}
 %EM This check would make a lot more sense if you put the C^{2}_{\tau_1,\tau_1}(x^*, y^*)  and the other analogous definition first.
 %EM It would also be nice to do one of the calculations to get us from a_1 world to a_1' world. Just staring at table S4 doesn't make this obvious.
+%das:todo
 We also now need to check that
 $$
 \hat{x} = \frac{a_{1}'-a_{2}'}{a_{1}'+a_{2}'}, \ \hat{y} = \frac{a_{3}'-a_{4}'}{a_{3}'+a_{4}'}
@@ -752,12 +761,18 @@ For the site split $\{1,2\}$, we would like to find a lower bound for
 $$
 \max\left((1+x)^2 (1-w)(1+y)^2, (1+x)(1-x)(1+w)(1+y)(1-y)\right).
 $$
-We observe that
+Replacing all $1+w$ with $1-w$ in Table~\ref{tab:likelihoods} for $\tau = \tau_2$ will result in a lower bound on the maximum, so we proceed with that first.
+Then, for site split $\{1,2\}$ we have
+$$
+\max\left((1+x)^2 (1-w)(1+y)^2, (1+x)(1-x)(1-w)(1+y)(1-y)\right)
+$$
+where since
 $$
 (1+x)^2 (1-w)(1+y)^2 > (1+x)(1-x)(1-w)(1+y)(1-y)
 $$
 %EM Hm, the following doesn't look right to me.
-always, and thus the maximum can be bounded below by $(1+x)^2 (1-w)(1+y)^2$.
+%das: Okay, think I missed the point about 1+w for 1-w that I added back.
+always, the maximum can be bounded below by $(1+x)^2 (1-w)(1+y)^2$.
 For the other site splits we consider two cases.
 If $(1+x)(1-y) > (1-x)(1+y)$, then
 $$
@@ -834,6 +849,7 @@ $$
 %
 %Unfortunately, I realized the above does not work for us since 2p - 1 is not guaranteed to be between 0 and 1, as x should be (see the stuff I added justifying this above).
 %Rather than do a constrained optimization, I just bounded the p_{\emptyset}\log(1+w) term below by p_{\emptyset}\log(1-w).
+%das: This is old and I believe the text has been updated to fix it. Can you verify?
 i.e.\ the maximum is achieved at $\{1,1-b,0\}$.
 Our lower bound is
 $$
@@ -936,10 +952,19 @@ is equivalent to
 $$
 a + b + c \ge 0,
 $$
-which, simplifying as functions of $\alpha_1, \alpha_2, \gamma$ and $\beta$ yields
+which, using
+$$
+\alpha_1 + \alpha_2 = \frac{1}{2}\beta
+$$
+and
+$$
+\alpha_1 - \alpha_2 = x^*(y^*)^2,
+$$
+and simplifying as functions of $\gamma$ and $\beta$ yields
 \begin{equation}
 \label{eq:restricted-bl-result}
-\beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
+%\beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
+-\gamma^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma\beta x^*(y^*)^2 + \beta^2 \ge 0.
 \end{equation}
 \end{proof}
 
