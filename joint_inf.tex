@@ -268,8 +268,6 @@ Here again, the shaded region is guaranteed to give inconsistent estimation, whi
 
 The general case is more challenging to analyze and so we will get somewhat weaker bounds.
 In the general case, $\hat{w}$ is a function of $x^*$, $y^*$, $\hat{x}$, and $\hat{y}$.
-%EM This doesn't look like the same inequality to me.
-%das: updated
 Looking to the previous section, the region where $\hat{w}=1$ will still be given by the inequality in Theorem~\ref{thm:restricted-bl}, only with $\gamma$ and $\beta$ now being functions of $\hat{x}$ and $\hat{y}$ instead of $x^*$ and $y^*$.
 Assume we know $\hat{x}$ and $\hat{y}$ as functions of $x^*$ and $y^*$ only.
 We show that there are similar bounds as in the restricted case, though we need to take into account the unknown values of $\hat{x}$ and $\hat{y}$.
@@ -337,8 +335,8 @@ This region encompasses the majority of the branch fidelity space; even given th
 
 We provide a full description of our optimization procedure in the Appendix, but briefly, we perform two maximizations---one over $0 \le x,y,w \le 1$ and one over $0 \le x,y \le 1$ with $w=1$---and take the value of $\hat{w}$ with the higher likelihood.
 We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*$ and $y^*$ from $10^{-2}$ to $1-10^{-2}$.
-We do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies\footnote{\url{https://github.com/matsengrp/joint-inf/blob/master/joint_inf_plot.py}}.
-%EM Need GH link here.
+We do not include zero or one in our lattice to further stabilize the fits, as these cases can result in pathologies.
+Our optimization code can be found at \url{https://github.com/matsengrp/joint-inf/}.
 
 Marginal inference performs as expected, where $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$ (Fig.~\ref{fig:bl-general-marginal}) when optimizing \eqref{eq:marginal_likelihood} using the same procedure.
 For joint inference, the estimates for $\hat{w}$ when $x^*$ and $y^*$ are both large look reasonable, with $\hat{w}$ increasing as $y^*$ increases, though Fig.~\ref{fig:bl-general-bias} shows there is a systematic positive bias in this procedure even when $\hat{w}$ is not estimated to be 1.
@@ -386,9 +384,6 @@ Similarly, for the general case in estimating branch lengths, we were only able 
 Empirical validation shows that the general case is not unlike the restricted case.
 All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases.
 %EM Any intuition of if the effect will go away on larger trees? What about more complex models?
-%EM Also, is there any hope that an alternate profile likelihood formulation could lead to more consistent estimation? It'd be nice to end with something like that.
-%das: wow, that would be an undertaking. The only thing I know off the top of my head are things like sieves, which I recall Paul Edlefsen being jazzed about but don't know if he uses them in this way. I can think more but it might just be a vague throwaway line.
-%das: Was just reading more on this and it's not obvious to me if sieves would even apply here. I'll think about it more but pass everything else off to you for now.
 
 
 \section*{Acknowledgements}
