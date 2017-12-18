@@ -83,14 +83,14 @@ $$
 %EM The likelihood doesn't belong on the specific choice of \xi. Besides, \xi already appears in eq:site_pattern_likelihood.
 %EM Eta is a deterministic function of t and tau, so isn't having it redundant?
 %das: The likelihood doesn't depend on the specific choice of \xi, but it does depend on \eta. I don't know, I guess redundancy isn't always the worst thing? I just see it as a tradeoff between how explicit we want to be and how clean. Like, in the first line of eq:site_pattern_likelihood we could have as an argument \hat{H} instead of suppressing it, even though it's totally determined by the inputs as-is. Anyway, that was my justification for including \eta. I'm fine with removing it though if you think it's weird.
-L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau, t)) = \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t) \cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)}
+L_\nCols''(\tau, t; \fullAlignment) = \prod_{j=1}^{\nSiteSplits} \ \left[P(\siteSplitRV=\siteSplit_j \mid \tau, t) \cdot P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)}
 $$
 be the final product in \eqref{eq:site_pattern_likelihood}.
 Assume $\nCols$ observations are generated from a model with parameters $(\tau^*, t^*)$.
 We have
 \begin{equation*}
 \begin{split}
-&    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau,t)) \\
+&    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) \\
 &\qquad = \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log P(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t) \\
 &\qquad = \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) +
             \log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
@@ -99,7 +99,7 @@ We have
 so that, in the $\nCols\rightarrow\infty$ limit,
 \begin{equation}
 \begin{split}
-&    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment, \fullAncestralSplitPartitions(\tau, t)) \\
+&    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) \\
 &\qquad \rightarrow \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log P(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
 \end{split}
 \end{equation}
@@ -109,12 +109,12 @@ $$
 $$
 and the partial log-likelihood
 $$
-\tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, t)
+\tilde{\ell}_{\tau^*,t^*}(\tau, t) = \sum_{j=1}^\nSiteSplits P(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log P(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, t)
 $$
 so that \eqref{eq:site_pattern_profile_likelihood_mean} becomes
 \begin{equation}
     \label{eq:log_likelihood_simplified}
-    \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
+    \ell_{\tau^*,t^*}(\tau, t) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\tau, t).
 \end{equation}
 
 \subsection*{Hadamard representation}
@@ -501,7 +501,7 @@ The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $
 %das: Should some or all of that be in the text? Can you see anything wrong with it?
 %EM I don't see why this works. In fact, imagine that x=y is a ridge of minima, and that we have maxima at (1,2) and at (2,1). My argument shows that we must have a stationary point at x=y, but that doesn't mean that it has to be a maximum!
 %das: Wouldn't the assumption of there existing a unique maximum preclude your case? My argument is that if there is a unique maximum, it necessarily has to have x=y. If there is not a unique maximum then the ML problem is ill-posed. I now don't see why we have to have a unique maximum other than to say we hope the problem is well-posed, but it may not be. Do you have any thoughts on where to take this?
-Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t}; \fullAncestralSplitPartitions(\tau_1,\tilde{t}))$, $x_1=x_2$ at the maximum.
+Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t})$, $x_1=x_2$ at the maximum.
 The analogous statement holds for $y_1$ and $y_2$.
 The Felsenstein tree does not admit this property, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
@@ -512,9 +512,9 @@ The Felsenstein tree does not admit this property, but, since we are interested 
 \begin{proof}
 In general,
 $$
-\max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \le
+\max_{t} \ \ell_{\tau^*,t^*}(\tau, t) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \fullAncestralSplitPartitions(\tau, \hat{t}))
+    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t})
 $$
 is an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} using Gibbs's inequality
 $$
@@ -522,13 +522,13 @@ $$
 $$
 and
 $$
-\hat{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)).
+\hat{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t).
 $$
 Similarly,
 $$
-\max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \fullAncestralSplitPartitions(\tau,t)) \ge
+\max_{t} \ \ell_{\tau^*,t^*}(\tau, t) \ge
     \shannonDivergence_{\tau^*,t^*}(\tau,\hat{t})
-    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t}; \fullAncestralSplitPartitions(\tau, \hat{t}))
+    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t})
 $$
 is a lower bound.
 
@@ -543,7 +543,7 @@ We begin by writing out the case for the ancestral state split $\{1\}$, and show
 Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\ref{tab:likelihoods} where $\tau = \tau_1$ in \eqref{eq:site_pattern_profile_likelihood_mean}, the log-likelihood is
 \begin{align}
     \label{eq:farris_likelihood}
-    \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t))
+    \ell_{\tau_1,t^*}(\tau_1, t)
     &=        p_{\emptyset}  \cdot\log(1+x^2+y^2+4xyw+x^2y^2) \nonumber \\
     &\qquad + p_{1}          \cdot\log(1-x^2+y^2-x^2y^2) \nonumber \\
     &\qquad + p_{2}          \cdot\log(1+x^2-y^2-x^2y^2) \nonumber \\
@@ -584,7 +584,7 @@ and $p_{13}$ is bounded as
 \end{align*}
 Factoring and making these substitutions results in
 \begin{align*}
-&    \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t)) \\
+&    \ell_{\tau_1,t^*}(\tau_1, t) \\
 &\qquad \le      p_{\emptyset}  \cdot\log(2(1+x)(1+y))
 + p_{1}          \cdot\log((1+x)(1-x)(1+y)) \\
     &\qquad\qquad + p_{2}          \cdot\log((1+x)(1+y)(1-y))
@@ -636,7 +636,7 @@ To simplify, let
 so that
 \begin{equation*}
 \begin{split}
-&    \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t)) \\
+&    \ell_{\tau_1,t^*}(\tau_1, t) \\
 &\qquad \le      p_{\emptyset}  \cdot\log(2)
 + a_{1}\cdot\log(1+x)
 + a_{2}\cdot\log(1-x)
@@ -666,7 +666,7 @@ The same approach works for $\hat{y}$.
 The upper bound for the likelihood is then maximized at
 \begin{align}
 \begin{split}
-&    \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t)) \\
+&    \ell_{\tau_1,t^*}(\tau_1, t) \\
 &\qquad\le      p_{\emptyset}  \cdot\log(2)
 + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}}
 + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}}
@@ -709,7 +709,7 @@ for site split $\{1,2\}$.
 %das: is this a better explanation or did you want it written out explicitly?
 To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
 \begin{align*}
-&    \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t)) \\
+&    \ell_{\tau_1,t^*}(\tau_1, t) \\
 &\qquad\le      p_{\emptyset}  \cdot\log(2)
 + a_{1}'\cdot\log\frac{2a_{1}'}{a_{1}'+a_{2}'}
 + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
@@ -721,7 +721,7 @@ To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
 \end{align*}
 and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 \begin{align*}
-&    \ell_{\tau_1,t^*}(\tau_1, t; \fullAncestralSplitPartitions(\tau_1,t)) \\
+&    \ell_{\tau_1,t^*}(\tau_1, t) \\
 &\qquad\le      p_{\emptyset}  \cdot\log(2)
 + a_{1}\cdot\log\frac{2a_{1}}{a_{1}+a_{2}}
 + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
@@ -770,12 +770,7 @@ $$
 
 We construct a similar lower bound on the Felsenstein tree partial likelihood.
 In the Felsenstein case, there are quite a few optimal internal states depending on branch lengths (Table~\ref{tab:likelihoods}; $\tau = \tau_2$).
-We can bound these below replacing $1+w$ with $1-w$ as follows.
-For the site split $\{1,2\}$, we would like to find a lower bound for
-$$
-\max\left((1+x)^2 (1-w)(1+y)^2, (1+x)(1-x)(1+w)(1+y)(1-y)\right).
-$$
-Replacing all $1+w$ with $1-w$ in Table~\ref{tab:likelihoods} for $\tau = \tau_2$ will result in a lower bound on the maximum, so we proceed with that first.
+We can bound these below replacing $1+w$ with $1-w$ in Table~\ref{tab:likelihoods} for $\tau = \tau_2$, as this will result in a lower bound on the maximum, so we proceed with that first.
 Then, for site split $\{1,2\}$ we have
 $$
 \max\left((1+x)^2 (1-w)(1+y)^2, (1+x)(1-x)(1-w)(1+y)(1-y)\right)
@@ -813,7 +808,7 @@ $$
 in these cases.
 The full likelihood in this case is then bounded below by
 \begin{align*}
-    \tilde{\ell}_{\tau_1,t^*}(\tau_2, t; \fullAncestralSplitPartitions(\tau_2,t))
+    \tilde{\ell}_{\tau_1,t^*}(\tau_2, t)
     &\ge      p_{\emptyset}  \cdot\log((1+x)^2   (1-w)(1+y)^2) \\
     &\qquad + p_{1}          \cdot\log((1+x)^2   (1-w)(1+y)(1-y)) \\
     &\qquad + p_{2}          \cdot\log((1+x)^2   (1-w)(1+y)(1-y)) \\
@@ -825,7 +820,7 @@ The full likelihood in this case is then bounded below by
 \end{align*}
 When $(1+x)(1-y) < (1-x)(1+y)$, similar arguments yield the lower bound
 \begin{align*}
-    \tilde{\ell}_{\tau_1,t^*}(\tau_2, t; \fullAncestralSplitPartitions(\tau_2,t))
+    \tilde{\ell}_{\tau_1,t^*}(\tau_2, t)
     &\ge      p_{\emptyset}  \cdot\log((1+x)^2    (1-w)(1+y)^2) \\
     &\qquad + p_{1}          \cdot\log((1+x)(1-x)(1-w)(1+y)^2) \\
     &\qquad + p_{2}          \cdot\log((1+x)(1-x)(1-w)(1+y)^2) \\
@@ -842,7 +837,7 @@ b = p_{1}+p_{2}+p_{3}+p_{123}
 $$
 yields
 $$
-    \tilde{\ell}_{\tau_1,t^*}(\tau_2, t; \fullAncestralSplitPartitions(\tau_2,t))
+    \tilde{\ell}_{\tau_1,t^*}(\tau_2, t)
     \ge      2\cdot\log(1+x)
     + (2-b)  \cdot\log(1+y)
     + b      \cdot\log(1-y)
@@ -851,7 +846,7 @@ $$
 for the first lower bound, and we get the equivalent expression for the second lower bound by exchanging $x$ and $y$.
 Maximizing either lower bound over $t$, we obtain
 $$
-\tilde{\ell}_{\tau_1,t^*}(\tau_2, t; \fullAncestralSplitPartitions(\tau_2,t))
+\tilde{\ell}_{\tau_1,t^*}(\tau_2, t)
 \ge      2\cdot\log(2)
 + (2-b)  \cdot\log(2-b)
 + b      \cdot\log(b)
@@ -870,7 +865,7 @@ See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < x^*, y^* < 1$ whe
 Recalling Table~\ref{tab:likelihoods}, the likelihood can take one of three forms corresponding to which ancestral state for $\siteSplit_j=\{1,3\}$ maximizes the likelihood over $(x,y,w)$.
 If $x=x^*$ and $y=y^*$ are fixed, by collapsing like terms and ignoring terms with only $x^*$ and $y^*$, the log-likelihood in \eqref{eq:farris_likelihood} as a function of $w$ is
 \begin{align*}
-    \ell_{\tau_1,t^*}(\tau_1, w; \fullAncestralSplitPartitions(\tau_1,w))
+    \ell_{\tau_1,t^*}(\tau_1, w)
     &\sim     p_{\emptyset}  \cdot\log(1+(x^*)^2+(y^*)^2+4x^*y^*w+(x^*)^2(y^*)^2) \\
     &\qquad + p_{13}         \cdot\log(1+(x^*)^2+(y^*)^2-4x^*y^*w+(x^*)^2(y^*)^2) \\
     &\qquad + (1 - p_{13})\cdot\log(1+w) \\
@@ -879,7 +874,7 @@ If $x=x^*$ and $y=y^*$ are fixed, by collapsing like terms and ignoring terms wi
 where $\sim$ denotes equality up to an additive constant.
 Similarly, the other two possibilities for the likelihood both satisfy
 \begin{align*}
-    \ell_{\tau_1,t^*}(\tau_1, w; \fullAncestralSplitPartitions(\tau_1,w))
+    \ell_{\tau_1,t^*}(\tau_1, w)
     &\sim     p_{\emptyset}  \cdot\log(1+(x^*)^2+(y^*)^2+4x^*y^*w+(x^*)^2(y^*)^2) \\
     &\qquad + p_{13}         \cdot\log(1+(x^*)^2+(y^*)^2-4x^*y^*w+(x^*)^2(y^*)^2) \\
     &\qquad + \log(1+w).
