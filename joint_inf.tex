@@ -102,7 +102,6 @@ We find similar areas where joint inference consistently overestimates interior 
 
 Assume the binary symmetric model, namely with a character alphabet $\alphabet=\{0,1\}$ and a uniform stationary distribution \cite{Semple2003-em}.
 Let $\nSiteRows$ be the number of tips of the tree, and $\nAncestralStateRows = \nSiteRows-2$ the number of internal nodes.
-%das: @EM I added iid here but maybe it sounds redundant? I feel it's important and we don't bring up independence until the next section, and only implicitly assume i.d. through \alignmentColumnRV
 We observe $\nCols$ independent and identically distributed samples of character data, i.e., an alignment with $\nCols$ columns, $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$ distributed as the random variable $\alignmentColumnRV$.
 The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$ and distributed as $\ancestralStateColumnRV$.
 
@@ -368,7 +367,7 @@ In all cases, these regions of inconsistency arise when the branches of the gene
 
 Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \cite{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., \cite{Geman1982}.
-A potential solution in this case using the method of sieves could be to project the column-wise ancestral state patterns into a lower-dimensional space by requiring certain columns to be equal to one another, allowing the degrees of freedom in the ancestral state columns to grow with $\nCols$, albeit more slowly than $O(\nCols)$.
+A potential solution in this case using the method of sieves could be to project the column-wise ancestral state patterns into a lower-dimensional space, allowing the degrees of freedom in the ancestral state columns to grow with $\nCols$, albeit more slowly than $O(\nCols)$.
 Elsewhere in statistics literature, the failure of maximum likelihood estimates to obtain consistent estimates as the number of parameters goes to infinity have been shown by the Neyman-Scott paradox \cite{Neyman1948-tt}, though parameters tending to infinity is not a necessary condition for inconsistency \cite{LeCam1990}.
 Consistency proofs of standard maximum likelihood estimates of phylogeny \eqref{eq:marginal_likelihood} are in fact quite recent \cite{RoyChoudhury2015-ta}, and no results have been obtained for profile likelihood.
 We have furthered progress in understanding the limitations of this joint maximum likelihood approach.
@@ -386,8 +385,7 @@ Similarly, for the general case in estimating branch lengths, we were only able 
 Empirical validation shows that the general case is not unlike the restricted case.
 All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases.
 Given that many of the bounds presented here are in the form of level sets of multivariate polynomials, a more formal approach using algebraic geometric techniques may reveal more stable or interesting patterns of inconsistency; see \cite{Sturmfels2002} for a thorough treatment of solving systems of polynomial equations.
-%EM Any intuition of if the effect will go away on larger trees? What about more complex models?
-%das: my brash intution is that it could potentially be much worse in more complex cases because we have a larger number of degrees of freedom, which is my intuition for why we have inconsistency now. I'm not sure I can justify this though.
+
 
 \section*{Acknowledgements}
 We thank Richard Neher and Vladimir Minin for helpful discussions.
