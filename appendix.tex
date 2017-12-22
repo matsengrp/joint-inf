@@ -504,21 +504,16 @@ The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $
 %das: Wouldn't the assumption of there existing a unique maximum preclude your case? My argument is that if there is a unique maximum, it necessarily has to have x=y. If there is not a unique maximum then the ML problem is ill-posed. I now don't see why we have to have a unique maximum other than to say we hope the problem is well-posed, but it may not be. Do you have any thoughts on where to take this?
 %das: So there are references for identifiability, but I'm a little nervous using them because they're for the usual marginal ML problem. How cagey does it sound to say (as I do below) "here are references for identifiability in the usual case, so either joint inf will be not identifiable (bad) or it (likely?) will be and we can use this (which turns out to be inconsistent later)?" Can you think of a better approach?
 %das: some other references I found for identifiability are Rogers 1997, RoyChoudhury 2014...
-%das: Okay, how about this: assume we've found a maximum of f(x, y) at (x_0, y_0) where f(x, y) = f(y, x) and we want to show that x_0 = y_0
-% We know f(y_0, x_0) = f(x_0, y_0) > f(x, y) for all x, y but we don't know yet if x_0 = y_0.
-% We can say that x_0 = y_0 if we know f has a unique maximum, which we can argue for if f has a unique maximum in one of its arguments, i.e., f(x, y) is bounded above and concave in its first argument, for example.
-% For the joint inf case, f is clearly bounded above, so it remains to show that f is concave.
-% Okay, so the partial likelihood term is of the form a*log(1+x) + b*log(1-x) for a >= b >= 0.
-% This is concave for x in [0,1] by the second derivative test:
-% f' = a/(1+x) - b/(1-x), f'' = -a/(1+x)^2 - b/(1-x)^2 < 0 for all x in [0,1], dope.
-% Now, for the term involving generating probabilities, we know there is a unique maximum by Gibbs inequality, meaning this term is also concave.
-% And, don't quote me on this yet, but I *believe* the sum of two concave functions will also be concave (how is it not?).
-% QED?
-The maximum likelihood procedure in phylogenetics results in identifiable parameter estimation under mild conditions \cite{Chang1996}.
-The joint inference procedure may not necessarily result in the same identifiability properties, but we claim the following.
-If joint inference obtains unique parameter estimates, then, since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t})$, $x_1=x_2$ at the maximum, with the analogous statement holding for $y_1$ and $y_2$.
-The case in which we do not obtain unique parameter estimates results in an ill-posed likelihood problem, and thus by design an inconsistency since multiple maxima exist that will not equal the true, generating parameters.
-Given this, we let $x_1=x_2=x$ and $y_1=y_2=y$.
+Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t})$, $x_1=x_2$ at the maximum provided a unique maximum exists.
+An analogous statement holds for $y_1$ and $y_2$.
+It remains to show that the joint inference procedure maximizing \eqref{eq:profile_likelihood} results in a unique estimate of $t$.
+Without loss of generality, we focus on the single parameter $x_1$ and show we obtain a unique maximum when performing joint inference, similar arguments holding for the remaining parameters.
+We decompose the likelihood into the entropy and partial likelihood terms as in \eqref{eq:log_likelihood_simplified}.
+By Gibbs's inequality, the entropy term $\shannonDivergence_{\tau^*,t^*}(\tau^*,t)$ has a unique maximum over $t$---namely $t^*$.
+For the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$, we can compute the partial likelihood $\tilde{\ell}_{\tau^*,t^*}(\tau^*, t)$ as in Table~\ref{tab:farris_likelihoods}.
+Clearly this partial likelihood will be of the form $g(x_1) = p\log(1+x_1) + (1-p)\log(1-x_1)$ with $1/2 \le p \le 1$, which, by the second derivative test, is concave for $x_1\in[0,1]$ and thus has a unique maximum.
+Since both summands of the likelihood are concave on $x_1\in[0,1]$, the likelihood is as well, and there exists a single $x_1\in[0,1]$ maximizing the likelihood.
+Given this and the symmetry of the likelihood, we let $x_1=x_2=x$ and $y_1=y_2=y$.
 The Felsenstein tree does not admit this property of symmetry of function inputs, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
 \subsection*{Theorems and proofs}
@@ -1059,6 +1054,7 @@ We take the value of $\hat{w}$ with the larger likelihood as our estimate.
 \caption{
     Estimates for $\hat{w}-y^*$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997} optimizing \eqref{eq:marginal_likelihood}.
     Plot focuses on $0.6 < x^*, y^* < 1$ where $\hat{w}$ is estimated to be a value different from 1.
+    We do not compute the bias for the white region where $\hat{w}=1$.
 }
 \label{fig:bl-general-bias}
 \end{figure}
