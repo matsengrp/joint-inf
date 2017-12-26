@@ -449,10 +449,10 @@ All values multiplied by $1/32$.}
                     \end{array}$\\
     \hline
 \end{tabular}
-\caption{Likelihood calculations for all site patterns $\siteSplit_j$ and ancestral state partitions $\ancestralSplitPartition_j$.
+\caption{Likelihood calculations for all site patterns $\siteSplit_j$ and ancestral state partitions $\ancestralSplitPartition_j$ after maximizing over ancestral states.
 All values multiplied by $1/32$.
 Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
-See Appendix for full calculations.}
+See Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} for full calculations.}
 \label{tab:likelihoods}
 \end{table}
 
@@ -551,7 +551,7 @@ $$
 with similar definitions for the remaining generating probabilities.
 The full Farris tree log-likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see Table~\ref{tab:likelihoods}).
 We begin by writing out the case for the ancestral state split $\{1\}$, and show the other two cases follow a similar argument.
-Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\ref{tab:likelihoods} where $\tau = \tau_1$ in \eqref{eq:site_pattern_profile_likelihood_mean}, the log-likelihood is
+Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\ref{tab:likelihoods} where $\tau = \tau_1$ in \eqref{eq:site_pattern_profile_likelihood_mean}, the log-likelihood is, suppressing normalizing constants $-\log 8$ and $-\log 32$,
 \begin{align}
     \label{eq:farris_likelihood}
     \ell_{\tau_1,t^*}(\tau_1, t)
@@ -563,7 +563,6 @@ Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\r
     &\qquad + p_{13}         \cdot\log(1+x^2+y^2-4xyw+x^2y^2) \nonumber \\
     &\qquad + p_{23}         \cdot\log(1-x^2-y^2+x^2y^2) \nonumber \\
     &\qquad + p_{123}        \cdot\log(1+x^2-y^2-x^2y^2) \nonumber \\
-    &\qquad - \log(8) \nonumber \\
     &\qquad + p_{\emptyset}  \cdot\log((1+x)^2   (1+w)(1+y)^2) \nonumber \\
     &\qquad + p_{1}          \cdot\log((1+x)(1-x)(1+w)(1+y)^2) \nonumber \\
     &\qquad + p_{2}          \cdot\log((1+x)^2   (1+w)(1+y)(1-y)) \nonumber \\
@@ -573,15 +572,19 @@ Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\r
     &\qquad + p_{23}         \cdot\log((1+x)(1-x)(1+w)(1+y)(1-y)) \nonumber \\
     &\qquad + p_{123}        \cdot\log((1+x)^2   (1+w)(1+y)(1-y)).
 \end{align}
-We use the facts that, for $x,y\in[0,1]$,
+Our plan is to simplify the likelihood to remove log-of-quadratic terms of $x,y,$ and $w$, obtaining a likelihood that has a closed-form maximum in each variable.
+To bound the generating probabilities, we use the facts that, for $x,y\in[0,1]$,
 \begin{align*}
-1-x^2-y^2-x^2y^2 & = (1+x)(1-x)(1+y)(1-y) \\
-1-x^2+y^2-x^2y^2 & = (1+x)(1-x)(1+y^2) \le (1+x)(1-x)(1+y) \\
-1+x^2-y^2-x^2y^2 & = (1+x^2)(1+y)(1-y) \le (1+x)(1+y)(1-y) \\
-1+x^2+y^2+x^2y^2 & = (1+x^2)(1+y^2) \le (1+x)(1+y) \\
-4xy & = 2x \cdot 2y \le (1+x^2)(1+y^2) \le (1+x)(1+y).
+p_{12} = p_{23} = 1-x^2-y^2+x^2y^2 & = (1+x)(1-x)(1+y)(1-y) \\
+p_{1} = p_{3} = 1-x^2+y^2-x^2y^2 & = (1+x)(1-x)(1+y^2) \le (1+x)(1-x)(1+y) \\
+p_{2} = p_{123} = 1+x^2-y^2-x^2y^2 & = (1+x^2)(1+y)(1-y) \le (1+x)(1+y)(1-y).
 \end{align*}
-The $p_{\emptyset}$ term is bounded as
+To bound the remaining $p_{\emptyset}$ and $p_{13}$, we use
+\begin{align*}
+1+x^2+y^2+x^2y^2 & = (1+x^2)(1+y^2) \le (1+x)(1+y) \\
+4xy & = 2x \cdot 2y \le (1+x^2)(1+y^2) \le (1+x)(1+y)
+\end{align*}
+so that the $p_{\emptyset}$ term is bounded as
 \begin{align*}
     p_{\emptyset} & = \log(1+x^2+y^2+4xyw+x^2y^2) \\
                   & \le \log(1+x^2+y^2+4xy+x^2y^2) \\
@@ -603,8 +606,7 @@ Factoring and making these substitutions results in
     &\qquad\qquad + p_{12}         \cdot\log((1+x)(1-x)(1+y)(1-y))
 + p_{13}         \cdot\log((1+x)(1+y)) \\
     &\qquad\qquad + p_{23}         \cdot\log((1+x)(1-x)(1+y)(1-y))
-+ p_{123}        \cdot\log((1+x)(1+y)(1-y))
-- \log(8) \\
++ p_{123}        \cdot\log((1+x)(1+y)(1-y)) \\
     &\qquad\qquad + p_{\emptyset}  \cdot\log((1+x)^2   (1+w)(1+y)^2)
 + p_{1}          \cdot\log((1+x)(1-x)(1+w)(1+y)^2) \\
     &\qquad\qquad + p_{2}          \cdot\log((1+x)^2   (1+w)(1+y)(1-y))
@@ -623,16 +625,14 @@ Factoring and making these substitutions results in
 &\qquad\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y)
 + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y) \\
 &\qquad\qquad + (1-p_{13})\cdot\log(1+w)
-+ p_{13}\cdot\log(1-w)
-- \log(8) \\
++ p_{13}\cdot\log(1-w) \\
 &\qquad =      p_{\emptyset}  \cdot\log(2)
 + (3-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x)
 + 2(p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x) \\
 &\qquad\qquad + (3-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y)
 + 2(p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y) \\
 &\qquad\qquad + (1-p_{13})\cdot\log(1+w)
-+ p_{13}\cdot\log(1-w)
-- \log(8).
++ p_{13}\cdot\log(1-w).
 \end{align*}
 To simplify, let
 \begin{equation}
@@ -654,25 +654,20 @@ so that
 + a_{3}\cdot\log(1+y) \\
 &\qquad\qquad + a_{4}\cdot\log(1-y)
 + (1-p_{13})\cdot\log(1+w)
-+ p_{13}\cdot\log(1-w)
-- \log(8).
++ p_{13}\cdot\log(1-w).
 \end{split}
 \end{equation*}
 Maximizing over the unknown terms yields
 $$
 \hat{x} = \frac{a_{1}-a_{2}}{a_{1}+a_{2}}, \ \hat{y} = \frac{a_{3}-a_{4}}{a_{3}+a_{4}}, \ \hat{w} = 1-2p_{13}.
 $$
-Trivially $0 \le \hat{w} \le 1$.
-We check that $0 \le \hat{x} \le 1$ and $0 \le \hat{y} \le 1$ so these maximizers are valid.
-Letting
+Trivially $0 \le \hat{w} \le 1$ and $\hat{x}, \hat{y} \le 1$.
+We check that $\hat{x}, \hat{y} \ge 0$ so these maximizers are valid.
+For $\hat{x} \ge 0$ we need $a_1 \ge a_2$; letting
 $$
 \tilde{p} = p_{1}+p_{3}+p_{12}+p_{23}
 $$
-we have
-$$
-\hat{x} = \frac{3-\tilde{p} - 2\tilde{p}}{3-\tilde{p}+2\tilde{p}} = \frac{3-3\tilde{p}}{3+\tilde{p}},
-$$
-and, since $0 \le \tilde{p} \le 1/2$, $0 \le \hat{x} \le 1$.
+we have from \eqref{eq:a_const} that $a_1 \ge a_2$ only if $3 \ge 3\tilde{p}$, and, since $0 \le \tilde{p} \le 1/2$, $\hat{x} \ge 0$.
 The same approach works for $\hat{y}$.
 The upper bound for the likelihood is then maximized at
 \begin{align}
@@ -684,8 +679,7 @@ The upper bound for the likelihood is then maximized at
 + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}} \\
 &\qquad\qquad + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}}
 + (1-p_{13})\cdot\log(2(1-p_{13}))
-+ p_{13}\cdot\log(2p_{13})
-- \log(8) \\
++ p_{13}\cdot\log(2p_{13}) \\
 &\qquad := C^{1}_{\tau_1,\tau_1}(x^*, y^*).
 \end{split}
 \label{eq:farris-upper-bound}
@@ -694,7 +688,7 @@ The upper bound for the likelihood is then maximized at
 The other two possible ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications.
 The upper bound in \eqref{eq:farris-upper-bound} is for the ancestral state split $\{1\}$.
 %EM Yay! Would be even better if you specified which upper bound (eqref) you want us to be looking at... there are many.
-For the ancestral state split $\emptyset$ we see the upper bound will be the same except we lose a $(1+x)^2$ term, gain a $(1-x)^2$ term, lose a $(1-w)$ term and gain a $(1+w)$ term.
+For the ancestral state split $\emptyset$ we see the upper bound will be the same except we lose a $(1+x)^2$ term, gain a $(1-x)^2$ term, lose a $(1-w)$ term, and gain a $(1+w)$ term.
 In this case, all terms involving $w$ simplify to $\log(1+w)$, maximized at $\hat{w}=1$.
 For the constants above, $a_{1}$ is the multiplier for the $\log(1+x)$ term and $a_{2}$ for the $\log(1-x)$ term meaning that exchanging the above quadratic $x$ terms yields new constants
 %EM It would seem helful for the below check to express these a_1' etc in terms of tilde{p}.
@@ -726,8 +720,7 @@ To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
 + a_{2}'\cdot\log\frac{2a_{2}'}{a_{1}'+a_{2}'} \\
 &\qquad\qquad + a_{3}\cdot\log\frac{2a_{3}}{a_{3}+a_{4}}
 + a_{4}\cdot\log\frac{2a_{4}}{a_{3}+a_{4}}
-+ \log(2)
-- \log(8) \\
++ \log(2) \\
 &\qquad := C^{2}_{\tau_1,\tau_1}(x^*, y^*),
 \end{align*}
 and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
@@ -738,8 +731,7 @@ and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 + a_{2}\cdot\log\frac{2a_{2}}{a_{1}+a_{2}} \\
 &\qquad\qquad+ a_{3}'\cdot\log\frac{2a_{3}'}{a_{3}'+a_{4}'}
 + a_{4}'\cdot\log\frac{2a_{4}'}{a_{3}'+a_{4}'}
-+ \log(2)
-- \log(8) \\
++ \log(2) \\
 &\qquad := C^{3}_{\tau_1,\tau_1}(x^*, y^*).
 \end{align*}
 
@@ -748,30 +740,31 @@ $$
 \hat{x} = \frac{a_{1}'-a_{2}'}{a_{1}'+a_{2}'}, \ \hat{y} = \frac{a_{3}'-a_{4}'}{a_{3}'+a_{4}'}
 $$
 are both between zero and one.
-It will suffice to show
-$$
-0 \le \tilde{p} - 2p_{13} \le 1
-$$
-and
-$$
-0 \le \tilde{p} + 2p_{13} \le 1
-$$
-for $\tilde{p}$ defined above, which is equivalent to showing $p_{13} \le 1/4$.
+Using a similar argument as that where $\ancestralSplitPartition_j(\tau_1, t) = \{1,3\}$, we only need to show $a_1' \ge a_2'$, which is true if $3-2p_{13} \ge 3\tilde{p}+2p_{13}$.
+Some rearranging and the fact that $0 \le \tilde{p} \le 1/2$ shows this is equivalent to showing $p_{13} \le 3/8$.
 Using Table~\ref{tab:sitepatprob} and $t^*$,
 $$
-p_{13} = \frac{1}{8}\left(1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2\right).
+p_{13} = \frac{1}{8}\left(1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2\right),
 $$
+meaning we are interested in whether
+\begin{equation}
+1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2 \le 3.
+\label{eq:generating_ineq}
+\end{equation}
 We see that
 \begin{equation}
-1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2 \le 2 \iff (y^*)^2\left(1 - 4x^* + (x^*)^2\right) \le 1 - (x^*)^2.
+1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2 \le 3 \iff (y^*)^2\left(1 - 4x^* + (x^*)^2\right) \le 2 - (x^*)^2.
 \label{eq:lenny}
 \end{equation}
-Note
-$$
-(y^*)^2\left(1 - 4x^* + (x^*)^2\right) \le 1 - 4x^* + (x^*)^2;
-$$
-showing that \eqref{eq:lenny} holds if $x^* \le 2$, which is satisfied by definition.
-Thus, $p_{13} \le 2/8 = 1/4$ and our $\hat{x}$ and $\hat{y}$ are valid.
+and that
+\begin{align*}
+(y^*)^2\left(1 - 4x^* + (x^*)^2\right) &\le (y^*)^2\left(1 - 2x^* + (x^*)^2\right) \\
+                                       &=   (y^*)^2\left(1 - x^*\right)^2 \\
+                                       &\le        \left(1 - x^*\right)^2 \\
+                                       &\le              2 - (x^*)^2,
+\end{align*}
+with the last inequality holding if $0 \le x^* \le 1$, showing that \eqref{eq:lenny} holds.
+Thus, $p_{13} \le 3/8$ and our $\hat{x}$ and $\hat{y}$ are valid.
 
 All bounds are functions only of $x,y$ through the true generating probabilities $x^*, y^*$.
 Call the upper bound
@@ -819,7 +812,7 @@ $$
 (1+x)^2(1-w)(1-y)^2
 $$
 in these cases.
-The full likelihood in this case is then bounded below by
+The partial likelihood in this case is then bounded below by
 \begin{align*}
     \tilde{\ell}_{\tau_1,t^*}(\tau_2, t)
     &\ge      p_{\emptyset}  \cdot\log((1+x)^2   (1-w)(1+y)^2) \\
@@ -862,9 +855,9 @@ $$
 \tilde{\ell}_{\tau_1,t^*}(\tau_2, t)
 \ge      2\cdot\log(2)
 + (2-b)  \cdot\log(2-b)
-+ b      \cdot\log(b)
++ b      \cdot\log(b),
 $$
-i.e.\ the maximum is achieved at $\{1,1-b,0\}$.
+i.e., the maximum is achieved at $\{1,1-b,0\}$.
 Our lower bound is
 $$
 C_1(x^*, y^*) := \shannonDivergence_{\tau_1,t^*}(\tau_2,\{1,1-b,0\}) + 2\cdot\log(2) + (2-b)\cdot\log(2-b) + b\cdot\log(b).
@@ -954,13 +947,13 @@ $$
 \hat{w} = \frac{-b - \sqrt{b^2 - 4ac}}{2a},
 $$
 which is a function of the generating parameters $x^*$ and $y^*$.
-We see that
+We see that $a \le 0$ and
 $$
 \hat{w} \ge 1
 $$
 is equivalent to
 %-b - \sqrt{b^2 - 4ac} \le 2a,
-%-b - 2a \le \sqrt{b^2 - 4ac},
+%0 \ge -b - 2a \le \sqrt{b^2 - 4ac},
 %b^2 + 4ab + 4a^2 \le b^2 - 4ac,
 %a^2 + ab + ac \le 0,
 $$
