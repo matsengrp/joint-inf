@@ -362,11 +362,11 @@ For joint inference, the errors range from $[-7\times 10^{-3}, 8\times 10^{-2}]$
 
 \section*{Discussion}
 
-We have shown that the method of joint inference when estimating phylogenetic parameters \cite{Sagulenko2017-jo} is not consistent in general.
+We have shown that maximum-likelihood joint inference when estimating phylogenetic parameters \cite{Sagulenko2017-jo} is not consistent in general.
 Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in two types of inconsistency: first, where joint inference infers the incorrect topology and, second, where it estimates severely biased branch lengths even given the correct topology.
 In all cases, these regions of inconsistency arise when the branches of the generating trees are ``long,'' that is, when branch fidelities tend to be small.
 
-Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \cite{Murphy2000-ry}.
+Joint maximum-likelihood inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \cite{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., \cite{Geman1982}.
 A potential solution in this case using the method of sieves could be to project the column-wise ancestral state patterns into a lower-dimensional space, allowing the degrees of freedom in the ancestral state columns to grow with $\nCols$, albeit more slowly than $O(\nCols)$.
 Elsewhere in statistics literature, the failure of maximum likelihood estimates to obtain consistent estimates as the number of parameters goes to infinity have been shown by the Neyman-Scott paradox \cite{Neyman1948-tt}, though parameters tending to infinity is not a necessary condition for inconsistency \cite{LeCam1990}.
@@ -386,6 +386,8 @@ Similarly, for the general case in estimating branch lengths, we were only able 
 Empirical validation shows that the general case is not unlike the restricted case.
 All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases.
 Given that many of the bounds presented here are in the form of level sets of multivariate polynomials, a more formal approach using algebraic geometric techniques may reveal more stable or interesting patterns of inconsistency; see \cite{Sturmfels2002} for a thorough treatment of solving systems of polynomial equations.
+
+As a final reminder, we note that all of the material presented here concerns joint estimation under maximum likelihood, and does not pose any problem for other settings, such as joint sampling of trees and ancestral sequences in a Bayesian framework.
 
 
 \section*{Acknowledgements}
