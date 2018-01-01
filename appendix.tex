@@ -932,19 +932,18 @@ $$
 \hat{w} = \frac{-b - \sqrt{b^2 - 4ac}}{2a},
 $$
 which is a function of the generating parameters $x^*$ and $y^*$.
-We see that $a \le 0$ and
+We see that $a \le 0$ and, by a small calculation, $2a+b \leq 0$.
+With this we have,
 $$
-\hat{w} \ge 1
-$$
-is equivalent to
+\hat{w} \ge 1 \iff
+|2a + b| \leq \sqrt{b^2 - 4ac} \iff
 %-b - \sqrt{b^2 - 4ac} \le 2a,
 %0 \ge -b - 2a \le \sqrt{b^2 - 4ac},
 %b^2 + 4ab + 4a^2 \le b^2 - 4ac,
 %a^2 + ab + ac \le 0,
+a + b + c \ge 0.
 $$
-a + b + c \ge 0,
-$$
-which, using
+Using
 $$
 \alpha_1 + \alpha_2 = \frac{1}{2}\beta
 $$
@@ -952,10 +951,12 @@ and
 $$
 \alpha_1 - \alpha_2 = x^*(y^*)^2,
 $$
-and simplifying as functions of $\gamma$ and $\beta$ yields
+and simplifying as functions of $\gamma$ and $\beta$ shows that $a + b + c \ge 0$ is equivalent to
 \begin{equation}
 \label{eq:restricted-bl-result}
 %\beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
+%EM Something's not quite right here. If we take the previous comment as truth we should get a
+%EM -\gamma^2(1 + \beta) term which is what I get via independent calculation.
 -\gamma^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma\beta x^*(y^*)^2 + \beta^2 \ge 0.
 \end{equation}
 \end{proof}
@@ -966,15 +967,7 @@ and simplifying as functions of $\gamma$ and $\beta$ yields
 In the general case, $\hat{w}$ is a function of $x^*$, $y^*$, $\hat{x}$, and $\hat{y}$.
 From the previous section, $\hat{w}$ is given by the quadratic formula, though now with $\gamma$ and $\beta$ as functions of $\hat{x}$ and $\hat{y}$ instead of $x^*$ and $y^*$.
 Assume we know $\hat{x}$ and $\hat{y}$ as functions of $x^*$ and $y^*$ only.
-Since
-$$
-\alpha_1 + \alpha_2 = \frac{1}{2}\beta
-$$
-and
-$$
-\alpha_1 - \alpha_2 = x^*(y^*)^2,
-$$
-simplifying \eqref{eq:restricted-bl-result} further yields
+The same derivation as for \eqref{eq:restricted-bl-result} further yields
 \begin{equation}
 \label{eq:general-bl-result}
 -\gamma^2(\hat{x}, \hat{y})\left(1 + \frac{1}{2}\beta\right) + 2\gamma(\hat{x}, \hat{y})\beta(\hat{x}, \hat{y})x^*(y^*)^2 + \beta^2(\hat{x}, \hat{y}) \ge 0.
@@ -992,9 +985,8 @@ $$
 -\gamma_{U}^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma_{L}\beta_{L}x^*(y^*)^2 + \beta_{L}^2 \ge 0,
 $$
 then \eqref{eq:general-bl-result} holds, and this is an inequality involving only $x^*$ and $y^*$.
-To get a sense of the region of overestimation, Fig.~\ref{fig:bl-loose-inconsistency} plots an intermediate case.
 \end{proof}
-
+To get a sense of the region of overestimation, Fig.~\ref{fig:bl-loose-inconsistency} plots an intermediate case.
 \subsection*{Empirical validation}
 
 We use basin-hopping \cite{Wales1997} implemented in \texttt{scipy} \cite{Jones2001} to obtain the plots in Figs.~\ref{fig:bl-general-inconsistency}, \ref{fig:bl-general-marginal}, and \ref{fig:bl-general-bias}.
