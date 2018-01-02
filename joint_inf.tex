@@ -367,14 +367,14 @@ Specifically, in the case of four-taxon trees with infinite data, we have obtain
 In all cases, these regions of inconsistency arise when the branches of the generating trees are ``long,'' that is, when branch fidelities tend to be small.
 
 Joint maximum-likelihood inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \cite{Murphy2000-ry}.
-Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties \cite{Geman1982}.
+Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., the method of sieves \cite{Geman1982}.
 A potential solution in this case using the method of sieves could be to project the column-wise ancestral state patterns into a lower-dimensional space, allowing the degrees of freedom in the ancestral state columns to grow with $\nCols$, albeit more slowly than $O(\nCols)$.
 Elsewhere in statistics literature, the failure of maximum likelihood estimates to obtain consistent estimates as the number of parameters goes to infinity have been shown by the Neyman-Scott paradox \cite{Neyman1948-tt}, though parameters tending to infinity is not a necessary condition for inconsistency \cite{LeCam1990}.
 Consistency proofs of standard maximum likelihood estimates of phylogeny \eqref{eq:marginal_likelihood} are in fact quite recent \cite{RoyChoudhury2015-ta}, and no results have been obtained for profile likelihood.
 We have furthered progress in understanding the limitations of this joint maximum likelihood approach.
 
 Previous work in phylogenetics has developed consistency counterexamples using the same four-taxon topologies used here \cite{Felsenstein1978-rr}.
-In this previous work, when simulating data under the ``Felsenstein zone'' topology $\tau_2$, as the number of observations increases, the ``Farris zone'' topology $\tau_1$ becomes more optimal when performing a particular estimation procedure.
+In this previous work, when simulating data under the ``Felsenstein zone'' topology $\tau_2$, as the number of observations increases, the ``Farris zone'' topology $\tau_1$ becomes more likely when performing a particular estimation procedure.
 This is the converse of what we have shown for joint inference, where the Felsenstein topology is more likely than the Farris topology.
 Moreover, the inconsistency in \cite{Felsenstein1978-rr} is attributed to long branch attraction, i.e., the fact that there may be multiple long branches where parallel changes are more likely than a single change along a short branch.
 This is not the case here; for our case, the inconsistency generally occurs when all branches are long, and has more to do with the choices of the form of the likelihood than from the interplay of long and short branches.
