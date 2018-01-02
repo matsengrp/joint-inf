@@ -144,6 +144,7 @@ $\siteSplit_j$   &$P(\siteSplitRV=\siteSplit_j \mid \tau_1,t)$&$P(\siteSplitRV=\
     \hline
 \end{tabular}
 %EM When I came back to this after the break I found it confusing that we refer to these as p_A below (eg in proof of Theorem 1) but that notation doesn't appear in this table. Can we use it here?
+%das: Does L540 not help with this? Are you thinking we should add another column with "Notation" or something?
 \caption{Site pattern probabilities $\siteSplit_j$ on the Farris tree $\tau_1$ and the Felsenstein tree $\tau_2$ obtained using the Hadamard transform.
 All values multiplied by $1/8$.}
 \label{tab:sitepatprob}
@@ -499,7 +500,8 @@ We decompose the likelihood into the entropy and partial likelihood terms as in 
 By Gibbs's inequality, the entropy term $\shannonDivergence_{\tau^*,t^*}(\tau^*,t)$ has a unique maximum over $t$---namely $t^*$.
 For the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$, we can compute the partial likelihood $\tilde{\ell}_{\tau^*,t^*}(\tau^*, t)$ as in Table~\ref{tab:farris_likelihoods}.
 %EM why is 1/2 \le p obvious?
-Clearly this partial likelihood will be of the form $g(x_1) = p\log(1+x_1) + (1-p)\log(1-x_1)$ with $1/2 \le p \le 1$, which, by the second derivative test, is concave for $x_1\in[0,1]$ and thus has a unique maximum.
+%das: I think it's true, but might take some annoying exposition to show. However, p is clearly between zero and one, which still passes the second derivative test.
+Clearly this partial likelihood will be of the form $g(x_1) = p\log(1+x_1) + (1-p)\log(1-x_1)$ with $0 \le p \le 1$, which, by the second derivative test, is concave for $x_1\in[0,1]$ and thus has a unique maximum.
 Since both summands of the likelihood are concave on $x_1\in[0,1]$, the likelihood is as well, and there exists a single $x_1\in[0,1]$ maximizing the likelihood.
 Given this and the symmetry of the likelihood, we let $x_1=x_2=x$ and $y_1=y_2=y$.
 The Felsenstein tree does not admit this property of symmetry of function inputs, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
@@ -658,7 +660,9 @@ $$
 \tilde{p} = p_{1}+p_{3}+p_{12}+p_{23}
 $$
 %EM Do we get $0 \le \tilde{p} \le 1/2$ by just adding together terms in Table 1?
-we have from \eqref{eq:a_const} that $a_1 \ge a_2$ only if $3 \ge 3\tilde{p}$, and, since $0 \le \tilde{p} \le 1/2$, $\hat{x} \ge 0$.
+%das: Yah, if you add them it's 1/8 (4-4x^2) for 0<x<1.
+we have from \eqref{eq:a_const} that $a_1 \ge a_2$ only if $3 \ge 3\tilde{p}$.
+Since $\tilde{p} = 1/8\cdot(4-4(x^*)^2)$, $0 \le \tilde{p} \le 1/2$ implying $\hat{x} \ge 0$.
 The same approach works for $\hat{y}$.
 The upper bound for the likelihood is then maximized at
 \begin{align}
@@ -945,7 +949,7 @@ a + b + c \ge 0.
 $$
 Using
 $$
-\alpha_1 + \alpha_2 = \frac{1}{2}\beta
+\alpha_1 + \alpha_2 = \frac{1}{4}\beta
 $$
 and
 $$
@@ -957,6 +961,7 @@ and simplifying as functions of $\gamma$ and $\beta$ shows that $a + b + c \ge 0
 %\beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
 %EM Something's not quite right here. If we take the previous comment as truth we should get a
 %EM -\gamma^2(1 + \beta) term which is what I get via independent calculation.
+%das: I missed a factor of 1/2 in the \alpha_1+\alpha_2 term. Oops. I think below is right given that.
 -\gamma^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma\beta x^*(y^*)^2 + \beta^2 \ge 0.
 \end{equation}
 \end{proof}
@@ -970,8 +975,9 @@ Assume we know $\hat{x}$ and $\hat{y}$ as functions of $x^*$ and $y^*$ only.
 The same derivation as for \eqref{eq:restricted-bl-result} further yields
 \begin{equation}
 \label{eq:general-bl-result}
--\gamma^2(\hat{x}, \hat{y})\left(1 + \frac{1}{2}\beta\right) + 2\gamma(\hat{x}, \hat{y})\beta(\hat{x}, \hat{y})x^*(y^*)^2 + \beta^2(\hat{x}, \hat{y}) \ge 0.
+-\gamma^2(\hat{x}, \hat{y})\left(1 + \frac{1}{2}\beta\right) + 2\gamma(\hat{x}, \hat{y})\beta(\hat{x}, \hat{y})x^*(y^*)^2 + \beta^2(\hat{x}, \hat{y}) \ge 0
 \end{equation}
+where, since $\alpha_1$ and $\alpha_2$ are still functions of $x^*$ and $y^*$, $\left(1+1/2\cdot\beta\right)$ and $x^*(y^*)^2$ from \eqref{eq:restricted-bl-result} remain unchanged.
 Given the bounds
 $$
 \gamma_{L} \le \gamma(\hat{x}, \hat{y}) \le \gamma_{U}
@@ -1023,7 +1029,8 @@ We take the value of $\hat{w}$ with the larger likelihood as our estimate.
 \includegraphics[width=\textwidth]{w-hat-empirical-01-bias}
 \caption{
     %EM I don't think you mean eq:marginal_likelihood here.
-    Estimates for $\hat{w}-y^*$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997} optimizing \eqref{eq:marginal_likelihood}.
+    %das: Ha, you're right.
+    Estimates for $\hat{w}-y^*$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997} optimizing \eqref{eq:profile_likelihood}.
     Plot focuses on $0.6 < x^*, y^* < 1$ where $\hat{w}$ is estimated to be a value different from 1.
     We do not compute the bias for the white region where $\hat{w}=1$ to preserve a useful scale for the rest of the plot.
 }
