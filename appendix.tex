@@ -127,9 +127,9 @@ p_A = \frac{1}{2^{n-1}} \ \sum_{Y \subseteq \mathcal{S} : |Y| \equiv 0 (\mathrm{
 By convention, we set $P(\emptyset)=\emptyset$ and $\prod_{e\in\emptyset} \ \theta(e) = 1$.
 For notational convenience, let
 $$
-p_{\emptyset} := \Pr(\siteSplitRV=\emptyset \mid \tau_1,t),
+p_{\siteSplit_j} := \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,t),
 $$
-with similar definitions for the remaining generating probabilities.
+for any site split $\siteSplit_j$.
 Table~\ref{tab:sitepatprob} contains calculations of site pattern frequencies for our two topologies (Fig.~\ref{fig:farris-fels-top}).
 
 \begin{table}[ht]
@@ -148,7 +148,6 @@ $\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1
     $\{1,2,3\}$ & $p_{123}$   &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
     \hline
 \end{tabular}
-%EM When I came back to this after the break I found it confusing that we refer to these as p_A below (eg in proof of Theorem 1) but that notation doesn't appear in this table. Can we use it here?
 \caption{Site pattern probabilities $p_{\siteSplit_j}$ on the Farris tree $\tau_1$ and the Felsenstein tree $\tau_2$ obtained using the Hadamard transform.
 All values multiplied by $1/8$.}
 \label{tab:sitepatprob}
@@ -503,13 +502,10 @@ Without loss of generality, we focus on the single parameter $x_1$ and show we o
 We decompose the likelihood into the entropy and partial likelihood terms as in \eqref{eq:log_likelihood_simplified}.
 By Gibbs's inequality, the entropy term $\shannonDivergence_{\tau^*,t^*}(\tau^*,t)$ has a unique maximum over $t$---namely $t^*$.
 For the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$, we can compute the partial likelihood $\tilde{\ell}_{\tau^*,t^*}(\tau^*, t)$ as in Table~\ref{tab:farris_likelihoods}.
-%EM why is 1/2 \le p obvious?
-%das: I think it's true, but might take some annoying exposition to show. However, p is clearly between zero and one, which still passes the second derivative test.
 Clearly this partial likelihood will be of the form $g(x_1) = p\log(1+x_1) + (1-p)\log(1-x_1)$ with $0 \le p \le 1$, which, by the second derivative test, is concave for $x_1\in[0,1]$ and thus has a unique maximum.
 Since both summands of the likelihood are concave on $x_1\in[0,1]$, the likelihood is as well, and there exists a single $x_1\in[0,1]$ maximizing the likelihood.
 Given this and the symmetry of the likelihood, we let $x_1=x_2=x$ and $y_1=y_2=y$.
 The Felsenstein tree does not admit this property of symmetry of function inputs, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
-%EM WOOT
 
 \subsection*{Theorems and proofs}
 
@@ -658,10 +654,8 @@ For $\hat{x} \ge 0$ we need $a_1 \ge a_2$; letting
 $$
 \tilde{p} = p_{1}+p_{3}+p_{12}+p_{23}
 $$
-%EM Do we get $0 \le \tilde{p} \le 1/2$ by just adding together terms in Table 1?
-%das: Yah, if you add them it's 1/8 (4-4x^2) for 0<x<1.
 we have from \eqref{eq:a_const} that $a_1 \ge a_2$ only if $3 \ge 3\tilde{p}$.
-Since $\tilde{p} = 1/8\cdot(4-4(x^*)^2)$, $0 \le \tilde{p} \le 1/2$ implying $\hat{x} \ge 0$.
+Since $\tilde{p} = 1/8\cdot(4-4(x^*)^2)$, we have $0 \le \tilde{p} \le 1/2$ implying $\hat{x} \ge 0$.
 The same approach works for $\hat{y}$.
 The upper bound for the likelihood is then maximized at
 \begin{align}
@@ -684,8 +678,6 @@ The upper bound in \eqref{eq:farris-upper-bound} is for the ancestral state spli
 For the ancestral state split $\emptyset$ we see the upper bound will be the same except we lose a $(1+x)^2$ term, gain a $(1-x)^2$ term, lose a $(1-w)$ term, and gain a $(1+w)$ term.
 In this case, all terms involving $w$ simplify to $\log(1+w)$, maximized at $\hat{w}=1$.
 For the constants above, $a_{1}$ is the multiplier for the $\log(1+x)$ term and $a_{2}$ for the $\log(1-x)$ term meaning that exchanging the above quadratic $x$ terms yields new constants
-%EM It would seem helful for the below check to express these a_1' etc in terms of tilde{p}.
-%das: not quite sure what this comment means actually.
 \begin{equation}
     \begin{aligned}
         a_{1}' &= a_{1}-2p_{13}, \\
@@ -702,9 +694,6 @@ for site split $\emptyset$ and
     \label{eq:a_const_prime_y}
 \end{equation}
 for site split $\{1,2\}$.
-%EM This check would make a lot more sense if you put the C^{2}_{\tau_1,\tau_1}(x^*, y^*)  and the other analogous definition first.
-%EM It would also be nice to do one of the calculations to get us from a_1 world to a_1' world. Just staring at table S4 doesn't make this obvious.
-%das: is this a better explanation or did you want it written out explicitly?
 To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
 \begin{align*}
 &    \ell_{\tau_1,t^*}(\tau_1, t) \\
@@ -958,9 +947,6 @@ and simplifying as functions of $\gamma$ and $\beta$ shows that $a + b + c \ge 0
 \begin{equation}
 \label{eq:restricted-bl-result}
 %\beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
-%EM Something's not quite right here. If we take the previous comment as truth we should get a
-%EM -\gamma^2(1 + \beta) term which is what I get via independent calculation.
-%das: I missed a factor of 1/2 in the \alpha_1+\alpha_2 term. Oops. I think below is right given that.
 -\gamma^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma\beta x^*(y^*)^2 + \beta^2 \ge 0.
 \end{equation}
 \end{proof}
@@ -1027,8 +1013,6 @@ We take the value of $\hat{w}$ with the larger likelihood as our estimate.
 \centering
 \includegraphics[width=\textwidth]{w-hat-empirical-01-bias}
 \caption{
-    %EM I don't think you mean eq:marginal_likelihood here.
-    %das: Ha, you're right.
     Estimates for $\hat{w}-y^*$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997} optimizing \eqref{eq:profile_likelihood}.
     Plot focuses on $0.6 < x^*, y^* < 1$ where $\hat{w}$ is estimated to be a value different from 1.
     We do not compute the bias for the white region where $\hat{w}=1$ to preserve a useful scale for the rest of the plot.
