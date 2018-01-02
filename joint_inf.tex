@@ -69,15 +69,15 @@
 \renewcommand{\arraystretch}{1.2} % because otherwise exponents get eaten by \hline
 
 \begin{abstract}
-Maximum likelihood is a widely used and well understood approach to estimate the phylogenetic topology and branch length given observed character data.
+Maximum likelihood is a widely used and well understood approach to estimate phylogenetic topology and branch length given observed character data.
 Any phylogenetic maximum likelihood solution must propose a means of handling unknown ancestral states.
 Classically, these unknown intermediate states are averaged out, which leads to consistent estimation of the topology and continuous model parameters.
 Recently, a computationally-efficient approach has been proposed to jointly maximize over these unknown states and phylogenetic parameters.
-While this method of joint maximum likelihood estimation can obtain estimates more efficiently, it has the potential to result in undesired properties of the estimates.
+While this method of joint maximum likelihood estimation can obtain estimates more efficiently, its properties as an estimator are not yet clear.
 In this paper, we show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
-We derive a region where generating data under a four-taxon tree results in a joint estimation procedure converging on the wrong topology.
-If the topology is known a priori, there are similar cases where the branch lengths are consistently overestimated in the case of infinite-length sequences.
-Although joint maximum likelihood may turn out to be a useful tool in practice, care should be taken when using this approach.
+We derive a region where generating data under a four-taxon tree results in a joint estimation procedure that gives incorrect topological inferences in the limit of infinite-length sequences.
+For branch length estimation on a correct topology, there are similar cases where the branch lengths are consistently overestimated in the case of infinite-length sequences.
+Thus although joint maximum likelihood may turn out to be a useful tool in practice, care should be taken when using this approach.
 \end{abstract}
 
 \section*{Introduction}
@@ -88,14 +88,14 @@ This is attractive from a computational perspective: such joint ML inference can
 This latter conditional optimization is simpler and more computationally efficient than marginalizing over ancestral sequences and then performing optimization.
 But is it statistically consistent?
 
-Existing consistency proofs for maximum likelihood phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
+Statistical consistency means that an estimator gives the generating model with probability 1 in the large-data limit; existing consistency proofs for maximum likelihood phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
 These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from including a large number of additional parameters \cite{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
 In this case those additional parameters come in the form of the states of ancestral sequences.
 Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case of branch lengths $\ll 1$, their work motivates understanding when exactly this approximate technique breaks down, even when sequence data is generated without sampling error according to the exact model used for inference.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
-To do so, we use a binary symmetric model and imagine data being generated on the four-taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the case of perfect sequence data with an infinite number of sites.
+To do so, we use a binary symmetric model with data being generated on the four-taxon ``Farris zone'' \cite{Siddall1998-hq} tree, and we construct bounds on the joint likelihood to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the case of perfect sequence data with an infinite number of sites.
 We find similar areas where joint inference consistently overestimates interior branch lengths when the topology is known and fixed.
 
 \section*{Phylogenetic maximum likelihood}
@@ -181,7 +181,7 @@ We give $\ell$ explicitly as \eqref{eq:site_pattern_profile_likelihood_mean} in 
 
 \subsection*{Inconsistency in topology estimation}
 
-To show an inconsistency in topology estimation, we start with true generating parameters $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ on the Farris topology.
+To show an inconsistency in topology estimation, we start with true generating parameters $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ on the Farris topology (Fig.~\ref{fig:farris-fels-top}a).
 We show that, as $\nCols\rightarrow\infty$, there exist values for $x^*$ and $y^*$ such that the value of the likelihood after maximizing using joint inference is greater for the Felsenstein topology than for the true, generating Farris topology.
 To do so, we construct an upper bound $C_0(x^*, y^*)$ for the likelihood given the Farris topology as a function of $x^*$ and $y^*$, and, similarly, we construct a lower bound $C_1(x^*, y^*)$ for the likelihood given the Felsenstein topology.
 When $C_0(x^*, y^*) < C_1(x^*, y^*)$, the likelihood in the Felsenstein case is larger than the likelihood in the Farris case, demonstrating inconsistency (Fig.~\ref{fig:inconsistency-farris}).
@@ -373,7 +373,7 @@ Elsewhere in statistics literature, the failure of maximum likelihood estimates 
 Consistency proofs of standard maximum likelihood estimates of phylogeny \eqref{eq:marginal_likelihood} are in fact quite recent \cite{RoyChoudhury2015-ta}, and no results have been obtained for profile likelihood.
 We have furthered progress in understanding the limitations of this joint maximum likelihood approach.
 
-Previous work in phylogenetics has developed consistency counterexamples using the same four-taxa topologies used here \cite{Felsenstein1978-rr}.
+Previous work in phylogenetics has developed consistency counterexamples using the same four-taxon topologies used here \cite{Felsenstein1978-rr}.
 In this previous work, when simulating data under the ``Felsenstein zone'' topology $\tau_2$, as the number of observations increases, the ``Farris zone'' topology $\tau_1$ becomes more optimal when performing a particular estimation procedure.
 This is the converse of what we have shown for joint inference, where the Felsenstein topology is more likely than the Farris topology.
 Moreover, the inconsistency in \cite{Felsenstein1978-rr} is attributed to long branch attraction, i.e., the fact that there may be multiple long branches where parallel changes are more likely than a single change along a short branch.
