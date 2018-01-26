@@ -69,15 +69,12 @@
 \renewcommand{\arraystretch}{1.2} % because otherwise exponents get eaten by \hline
 
 \begin{abstract}
-Maximum likelihood is a widely used and well understood approach to estimate phylogenetic topology and branch lengths given observed character data.
-Any phylogenetic maximum likelihood solution must propose a means of handling unknown ancestral states.
-Classically, these unknown intermediate states are averaged out, which leads to consistent estimation of the topology and continuous model parameters.
-Recently, a computationally-efficient approach has been proposed to jointly maximize over these unknown states and phylogenetic parameters.
-While this method of joint maximum likelihood estimation can obtain estimates more efficiently, its properties as an estimator are not yet clear.
+Maximum likelihood estimation of phylogeny requires a means of handling unknown ancestral states.
+Classical maximum likelihood averages over these unknown intermediate states, leading to consistent estimation of the topology and continuous model parameters.
+Recently, a computationally-efficient approach was proposed to jointly maximize over these unknown states and phylogenetic parameters.
 In this paper, we show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
-We derive a region where generating data under a four-taxon tree results in a joint estimation procedure that gives incorrect topological inferences in the limit of infinite-length sequences.
-For branch length estimation on a correct topology, there are similar cases where the branch lengths are consistently overestimated in the case of infinite-length sequences.
-Thus although joint maximum likelihood may turn out to be a useful tool in practice, care should be taken when using this approach.
+We derive a set of parameters that generate data under a four-taxon tree and result in this method estimating an incorrect topology in the limit of infinite-length sequences.
+For branch length estimation on the correct topology, we outline similar cases where branch lengths are consistently and heavily biased.
 \end{abstract}
 
 \section*{Introduction}
