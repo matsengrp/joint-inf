@@ -1,7 +1,7 @@
 \section*{Appendix}
 
 \subsection*{Site split formulation}
-We begin by introducing ``site splits,'' formalizing the notion that a given site pattern is equally probable to its complement under the binary symmetric model.
+We begin by introducing ``site splits,'' which formalize the notion that a given site pattern is equally probable to its complement under the binary symmetric model.
 This is a standard step in the description of the Hadamard transform (Section 8.6 of \cite{Semple2003-em}), although our approach is complicated slightly by the inclusion of ancestral states.
 
 Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$; this results in a simplification of likelihood calculation.
@@ -583,7 +583,8 @@ and $p_{13}$ is bounded as
                   & \le \log(1+x^2+y^2+x^2y^2) \\
                   & \le \log((1+x)(1+y)).
 \end{align*}
-Factoring and making these substitutions results in
+%EM You dropped the below parenthetical reminder. Did you think that it was clear?
+Factoring and making these substitutions (again, under the assumption that the ancestral state split is $\{1\}$) results in
 \begin{align*}
 &    \ell_{\tau_1,t^*}(\tau_1, t) \\
 &\qquad \le      p_{\emptyset}  \cdot\log(2(1+x)(1+y))

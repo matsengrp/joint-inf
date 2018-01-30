@@ -72,23 +72,25 @@
 Maximum likelihood estimation in phylogenetics requires a means of handling unknown ancestral states.
 Classical maximum likelihood averages over these unknown intermediate states, leading to consistent estimation of the topology and continuous model parameters.
 Recently, a computationally-efficient approach was proposed to jointly maximize over these unknown states and phylogenetic parameters.
+Although this method of joint maximum likelihood estimation can obtain estimates more quickly, its properties as an estimator are not yet clear.
 In this paper, we show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
-We derive a set of parameters that generate data under a four-taxon tree and result in this method estimating an incorrect topology in the limit of infinite-length sequences.
-For branch length estimation on the correct topology, we outline similar cases where branch lengths are consistently and heavily biased.
+We find a set of parameters that generate data under a four-taxon tree for which this joint method estimates an incorrect topology in the limit of infinite-length sequences.
+For branch length estimation on the correct topology, we outline similar cases where branch length estimates are consistently and heavily biased.
 \end{abstract}
 
 \section*{Introduction}
 
 Classical maximum likelihood (ML) estimation in phylogenetics operates by integrating out latent ancestral states at the internal nodes of the tree.
-In a recent proposal, \cite{Sagulenko2017-jo} suggest using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences on a fixed topology.
+In a recent paper, \cite{Sagulenko2017-jo} suggest using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences on a fixed topology.
 This is attractive from a computational perspective: such joint inference can proceed according to an iterative procedure in which ancestral sequences are first estimated and model parameters are optimized conditional on these estimates.
 This latter conditional optimization is simpler and more computationally efficient than optimizing the marginal likelihood.
 But is it statistically consistent?
 
-An estimator is statistically consistent if it converges to the generating model with probability 1 in the large-data limit; existing consistency proofs for maximum likelihood phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
+An estimator is said to be statistically consistent if it converges to the generating model with probability 1 in the large-data limit; existing consistency proofs for maximum likelihood phylogenetics \cite{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
 These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from problems where the number of parameters increases with the amount of data \cite{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
 In this case those additional parameters come in the form of the states of ancestral sequences.
+%EM I don't see this sentence in the most recent version of the paper via search. Can you point me to a section?
 Although \cite{Sagulenko2017-jo} explicitly warn that their approximation is for the case where ``branch lengths are short and only a minority of sites change on a give branch,'' their work motivates understanding when exactly this approximate technique breaks down, even when sequence data is ``perfect,'' i.e., is generated without sampling error according to the exact model used for inference.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
@@ -214,7 +216,7 @@ As described above, we use the equivalent but different notion of branch fidelit
 We analyze two settings on the Farris tree, corresponding to whether some branch fidelities are fixed at their true values or not.
 As above, assume that data is generated from the Farris tree with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$ (Fig.~\ref{fig:farris-fels-top}).
 In the first ``restricted'' case, we show that for a nontrivial subset of possible values for $x^*$ and $y^*$, the interior branch fidelity parameter $w$ will be consistently overestimated as exactly equal to one (zero branch length) instead of its true value of $y^*$.
-That is, if we know $x$ and $y$ and estimate them to be the truth, then, for
+That is, if we estimate $x$ and $y$ correctly, then, for
 $$
 \hat{w} = \arg\max_{w} \ \ell_{\tau_1,t^*}(\tau_1, \{x^*,y^*,x^*,y^*,w\}),
 $$
@@ -248,7 +250,7 @@ and there exists a set of $0 < x^*, y^* < 1$ satisfying this.
 This theorem allows us to demarcate a region of biased internal branch length estimation by plotting where the inequality in Theorem~\ref{thm:restricted-bl} is satisfied (Fig.~\ref{fig:bl-inconsistency}).
 Intuitively, this happens when estimated ancestral sequences at internal nodes are identical across a branch with this branch length estimated to be zero (i.e., has fidelity $\hat{w} = 1$).
 As an intuition for the theoretical development, seeing no change along a branch more likely increases the likelihood by introducing a term of $(1+\theta)$ instead of $(1-\theta)$, and branch fidelities will be positively biased due to this.
-%das: @EM Joe pointed out that this is in effect another instance of converging to the wrong topology since once the branch length goes to zero we are no longer in a bifurcating tree case. I don't recall if he had more intuition than the above sentence but he seemed to think it made sense. Not sure if you have any thoughts.
+If we allow multifurcating trees in our inference, then we can think of this as another instance of converging to the wrong topology.
 
 \begin{figure}
 \centering
@@ -384,7 +386,7 @@ Finally, all of the material presented here concerns joint estimation under maxi
 
 
 \section*{Acknowledgements}
-We thank Richard Neher and Vladimir Minin for helpful discussions.
+We thank Richard Neher, Vladimir Minin and Joe Felsenstein for helpful discussions.
 
 This work was supported by National Institutes of Health grants R01-AI12096, U19-AI117891, and U54-GM111274 as well as National Science Foundation grants CISE-1561334 and CISE-1564137.
 The research of Frederick Matsen was supported in part by a Faculty Scholar grant from the Howard Hughes Medical Institute and the Simons Foundation.
