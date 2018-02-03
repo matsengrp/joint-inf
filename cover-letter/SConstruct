@@ -1,0 +1,38 @@
+from SCons.Script import VariantDir, Environment, \
+        Builder, Depends, Flatten
+import os
+
+VariantDir('_build', src_dir='.')
+
+
+env = Environment(ENV=os.environ)
+inkscape = Builder(action = 'inkscape --without-gui --export-pdf=$TARGET $SOURCE')
+env['BUILDERS']['Inkscape'] = inkscape
+env['BUILDERS']['Latexdiff'] = Builder(action = 'latexdiff $SOURCES > $TARGET')
+
+raw_figures = [ ]
+
+study_figure_inputs = {
+                        }
+
+study_pdfs = [env.Command('_build/{0}_{1}'.format(study, os.path.basename(f)),
+                             f, 'cp $SOURCE $TARGET')[0]
+                 for study, files in study_figure_inputs.iteritems()
+                 for f in files]
+
+pdfs = [env.Command('_build/' + os.path.basename(pdf), pdf, 'cp $SOURCE $TARGET')[0]
+        for pdf in raw_figures] + study_pdfs
+
+supervisor, = env.PDF(target='_build/supervisor.pdf',source='supervisor.tex')
+
+Depends(Flatten([supervisor]),
+        Flatten([pdfs, 'supervisor.bib']))
+
+env.Latexdiff(target='_build/diff.tex',source=['previous.tex','supervisor.tex'])
+env.PDF(target='_build/diff.pdf',source='_build/diff.tex')
+
+cont_build = env.Command('.continuous', ['supervisor.bib', 'supervisor.tex', 'FHletterdefs.tex'],
+    'while :; do inotifywait -e modify $SOURCES; scons -Q; done')
+Alias('continuous', cont_build)
+
+Default(supervisor)

@@ -1,0 +1,105 @@
+
+% Define FH official colors
+\usepackage[dvinames]{xcolor}
+% \definecolor{FHgray}{HTML}{5e6a71} % a gray that seems a little light
+\definecolor{FHgray}{HTML}{213861} % actually the blue from the logo
+
+% Measurements are taken directly from the guide
+\usepackage[top=2in,left=1.5in,bottom=0.5in,right=0.625in]{geometry}
+\usepackage{graphicx}
+\usepackage[colorlinks=false,
+            pdfborder={0 0 0},
+            ]{hyperref}
+\usepackage[absolute]{textpos}
+\usepackage{ifthen}
+\usepackage{soul}
+
+% \usepackage[sc,osf]{mathpazo}
+\linespread{1.05}
+
+\usepackage{baskervald} % http://www.ctan.org/pkg/baskervaldadf (see http://www.tug.org/fonts/fontinstall.html)
+%\usepackage{classico} % http://www.ctan.org/pkg/classico
+\usepackage{gillius2}
+
+% Remove paragraph indentation
+\parindent0pt
+\setlength{\parskip}{0.8\baselineskip}
+% \raggedright
+\pagestyle{empty}
+% Ensure consistency in the footer
+\urlstyle{sf}
+
+
+\providecommand\FHfromname{Frederick ``Erick'' A Matsen IV}
+\providecommand\FHfromtitle{Associate Member}
+\providecommand\FHfromdegree{Ph.D.}
+\providecommand\FHfromdept{Computational Biology Program}
+\providecommand\FHfromaddress{Fred Hutchinson Cancer Research Center \hfill 1100 Fairview Ave N, Mail stop M1-B514, Seattle WA 98109-1024}
+\providecommand\FHfromtel{+1 206 667 7318}
+\providecommand\FHfromfax{+1 206 667 2437}
+\providecommand\FHfromemail{\href{mailto:matsen@fredhutch.org}{matsen@fredhutch.org}}
+\providecommand\FHfromweb{\url{http://matsen.fredhutch.org/}}
+\providecommand\FHtoname{Dr.~Wiseman}
+\providecommand\FHtoaddress{Department of Wisemen\\
+                            Wise State University \\
+                            Wisetown, Wise\ \ 12345-6789\\
+                            USA}
+\providecommand\FHdate{\today}
+\providecommand\FHopening{Dear \FHtoname,}
+\providecommand\FHclosing{Sincerely}
+% Update this and the next line to the correct path
+\providecommand\FHsignaturefile{sig}
+\providecommand\FHlogofile{fredhutch-logo}
+\providecommand\FHenclosure{}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot{}
+\fancyfoot[L]{%
+    {\footnotesize\color{FHgray}\sffamily
+    \FHfromweb \hfill \FHfromemail\ \ \FHfromtel\\[-0.1\baselineskip]
+    \FHfromaddress}\color{black}}
+
+\fancyhead{}
+\fancyhead[L]{%
+    \begin{textblock*}{2in}[0.3066,0.39](1.8in,0.83in) % (x, y) pos
+        \includegraphics[width=2in]{\FHlogofile}
+    \end{textblock*}
+    \begin{textblock*}{6.375in}(1.25in,0.7in)   % 6.375=8.5 - 1.5 - 0.625
+        \sffamily
+        \hfill \color{FHgray} \FHfromdept
+        \\ \hfill \FHfromname, \FHfromdegree
+    \end{textblock*}
+\renewcommand{\headrulewidth}{0pt}
+}
+
+\AtBeginDocument{
+    % Text lines should be less than 6in long
+    \newgeometry{top=1.5in,left=1.25in,bottom=1.2in,right=1.25in}
+
+    \bigskip
+    \FHdate
+    \bigskip
+
+    \FHtoname\ifthenelse{\equal{\FHtoname}{}}{}{\\}
+    \FHtoaddress
+    \bigskip
+
+    \FHopening\par
+    }
+
+\AtEndDocument{
+    \par\vspace{2ex}
+    \FHclosing,
+    \par\vspace{2ex}
+    \ifthenelse{\equal{\FHsignaturefile}{}}{\bigskip\bigskip}{\includegraphics[width=2.0in]{\FHsignaturefile}\\[-0.9\baselineskip]}
+
+    \FHfromname, \FHfromdegree\\
+    \FHfromtitle, \FHfromdept\\
+    Affiliate Associate Professor, University of Washington Depts of Statistics and Genome Sciences \\
+    HHMI/Simons Faculty Scholar
+    \\
+    \FHenclosure
+}
