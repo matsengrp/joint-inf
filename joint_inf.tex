@@ -151,7 +151,7 @@ The classical approach is to maximize the likelihood marginalized across ancestr
 \end{equation}
 to estimate the tree $\tau$ and branch fidelities $t$.
 
-The alternative approach \cite{Sagulenko2017-jo} does away with the marginalization and directly estimates the maximum likelihood parameters of the fully-observed likelihood in \eqref{eq:full_likelihood}.
+The alternative approach \cite{Sagulenko2017-jo} does away with the marginalization and directly estimates the maximum likelihood parameters of the fully-observed likelihood in \eqref{eq:full_likelihood}, though only branch lengths are estimated as the topology is fixed in advance.
 This is known in statistics as a profile likelihood \cite{Murphy2000-ry}, which exists here because $\alphabet$ is a finite set:
 \begin{equation}
 \label{eq:profile_likelihood}
@@ -363,6 +363,7 @@ For joint inference, the errors range from $[-7\times 10^{-3}, 8\times 10^{-2}]$
 We have shown that jointly inferring ancestral states and phylogenetic parameters \cite{Sagulenko2017-jo} is not consistent in general.
 Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in two types of inconsistency: first, where joint inference converges on the incorrect topology and, second, where it estimates severely biased branch lengths even given the correct topology.
 In all cases, these regions of inconsistency arise when the branches of the generating trees are ``long,'' that is, when branch fidelities tend to be small.
+This inconsistency in the case of long branches concurs with some empirical findings in \cite{Sagulenko2017-jo}, namely their Figures 2 and 3.
 
 Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \cite{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., the method of sieves \cite{Geman1982}.
