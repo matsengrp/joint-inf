@@ -2,7 +2,7 @@
 
 \subsection*{Site split formulation}
 We begin by introducing ``site splits,'' which formalize the notion that a given site pattern is equally probable to its complement under the binary symmetric model.
-This is a standard step in the description of the Hadamard transform (Section 8.6 of \cite{Semple2003-em}), although our approach is complicated slightly by the inclusion of ancestral states.
+This is a standard step in the description of the Hadamard transform (Section 8.6 of \citet{Semple2003-em}), although our approach is complicated slightly by the inclusion of ancestral states.
 
 Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$; this results in a simplification of likelihood calculation.
 Take the tip labels of $\tau$ to be $\{1,\ldots,\nSiteRows\}$.
@@ -113,7 +113,7 @@ so that \eqref{eq:site_pattern_profile_likelihood_mean} is
 
 \subsection*{Hadamard representation}
 
-We state the Hadamard representation of site split generating probabilities, following Section 8.6 of \cite{Semple2003-em}.
+We state the Hadamard representation of site split generating probabilities, following Section 8.6 of \citet{Semple2003-em}.
 For each edge $e$ define the edge ``fidelity'' for that edge as
 $$
 \theta(e) = 1-2p(e).
@@ -980,7 +980,7 @@ then \eqref{eq:general-bl-result} holds, and this is an inequality involving onl
 To get a sense of the region of overestimation, Fig.~\ref{fig:bl-loose-inconsistency} plots an intermediate case.
 \subsection*{Empirical validation}
 
-We use basin-hopping \cite{Wales1997} implemented in \texttt{scipy} \cite{Jones2001} to obtain the plots in Figs.~\ref{fig:bl-general-inconsistency}, \ref{fig:bl-general-marginal}, and \ref{fig:bl-general-bias}.
+We use basin-hopping \citep{Wales1997} implemented in \texttt{scipy} \citep{Jones2001} to obtain the plots in Figs.~\ref{fig:bl-general-inconsistency}, \ref{fig:bl-general-marginal}, and \ref{fig:bl-general-bias}.
 This method randomly perturbs candidate solutions and accepts or rejects them based on the nearby likelihood surface, eventually obtaining an estimate of the ``global'' optimum.
 While it is not guaranteed to always obtain a global optimum---or even always converge---its implementation here leads us to believe that we can estimate $\hat{w}$ as well as any optimization method available.
 
@@ -1004,7 +1004,7 @@ We take the value of $\hat{w}$ with the larger objective function as our estimat
 % if fit already
 \includegraphics[width=\textwidth]{w-hat-empirical-01-marginal}
 \caption{
-    Estimates for $\hat{w}$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997} optimizing the classical marginal likelihood \eqref{eq:marginal_likelihood} (rather than a joint optimization procedure).
+    Estimates for $\hat{w}$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \citep{Wales1997} optimizing the classical marginal likelihood \eqref{eq:marginal_likelihood} (rather than a joint optimization procedure).
 }
 \label{fig:bl-general-marginal}
 \end{figure}
@@ -1013,7 +1013,7 @@ We take the value of $\hat{w}$ with the larger objective function as our estimat
 \centering
 \includegraphics[width=\textwidth]{w-hat-empirical-01-bias}
 \caption{
-    Estimates for $\hat{w}-y^*$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \cite{Wales1997} optimizing \eqref{eq:profile_likelihood}.
+    Estimates for $\hat{w}-y^*$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \citep{Wales1997} optimizing \eqref{eq:profile_likelihood}.
     Plot focuses on $0.6 < x^*, y^* < 1$ where $\hat{w}$ is estimated to be a value different from 1.
     We do not compute the bias for the white region where $\hat{w}=1$ to preserve a useful scale for the rest of the plot.
 }
