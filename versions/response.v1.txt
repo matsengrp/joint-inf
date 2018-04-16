@@ -1,0 +1,327 @@
+> Associate Editor
+> Editors’ comments to the author:
+> All four reviewers agreed that the work is worth publishing and
+> provides an important insight into the behavior of the joint
+> ML/ancestral states estimation method. However, all reviewers asked
+> for what amounts to major revisions to the text and presentation. You
+> should especially focus on clarity and accessibility, provide the
+> requested examples, and address suggestions on how the results could
+> be even further improved.
+
+> Finally, please pay VERY careful attention to improving your
+> literature review (reviewer 4) and making a very clear case about how
+> your work IMPROVES and EXTENDS previous results. And, please, do get
+> rid of the Farris zone. The name "Farris" should not be attached to
+> results that have to do with ML estimation, given the long and
+> torturous efforts of cladists to undermine the entire line of inquiry.
+
+Felsenstein's book has a subsection entitled "The Farris zone" spanning two pages (pp 120-121), a figure entitled "A tree in the Farris zone.", and a table with a caption "Properties of the Felsenstein and Farris zones..."
+The term "Farris zone" has almost 7 times as many citations as the term "inverse Felsenstein zone" on Google Scholar.
+Thus, although we realize that the term causes offense, it is standard.
+
+
+> Reviewer: 1
+
+> Comments to the Author
+> The authors show that when ancestral states are considered as
+> parameters, there are zones where topologies and edge-lengths are
+> inconsistently estimated. As is evidenced by any ML package, it is
+> widely accepted that ancestral states should not be parameters; the
+> large number of parameters suggests the approach will be problematic.
+> Still, to the best of my knowledge, it has not been shown that
+> treating ancestral states as parameters actually leads to poor
+> performance, or how poor. Moreover, the authors point to Sagulenko et
+> al (2018) - now published in Virus Evolution - as an example
+> implementation. I found the paper interesting and I believe a more
+> succinct presentation will be of interest.
+
+> A main concern with the paper is that the shaded regions of
+> topological inconsistency or poor estimation in Figs 2-4, are only
+> subsets of the actual regions where topological inconsistency or poor
+> estimation occur; and yet determining the actual regions seems
+> feasible. The contrast between Fig 5 and 4 illustrates how far off the
+> subsets are in giving the actual regions where estimation is
+> problematic. The white region in Fig 5 is the actual region where hat
+> w=1 whereas the shaded region of Fig 3 is the subset of the actual
+> region that the authors were able to determine through analytical
+> arguments. For most readers, out of Fig 3 and Fig 5, only Fig 5 is of
+> interest.
+
+> Getting exact regions is what I think the authors should do. The
+> approach used to obtain Fig 5 is generally applicable. Explicit,
+> relatively simple, expressions are given in the appendix for long-run
+> lnls, l_{tau_1,t*}(tau_2,w,x,y). For any given (x*,y*) on a fine grid
+> in Figs 2-4, l_{tau_1,t*}(tau_j,w,x,y), can be maximized using
+> numerical algorithms over the three parameters w,x,y. Doing so for
+> tau_j=tau_1, tau_2 would determine the actual regions of problematic
+> estimation corresponding to Figs 2-4. The only potential difficulty
+> that I can see is that numerical algorithms might not converge. This
+> can either be avoided by considering a cubic grid of starting (w,x,y),
+> or through something like the following. For any given set of
+> ancestral character state assignments for the distinct set of 8
+> patterns 1111, 1110,... (0000 can treated as the same as 1111), the
+> long-run lnl is of the form
+
+> l(x,y,w)=a log(1-x) + b log(1+x) + c log(1-y) + d log(1+y) + e log(1-w) + f log(1+w)
+
+> where a,..f>=0 are constants determined by (x*,y*) and what ancestral
+> states have been assigned. The function l(x,y,w) has an explicit
+> simple maximizer. Thus the overall maximizer is determined as the
+> largest maximized l(x,y,w) over all 4^8 possible ancestral state
+> assignments: a finite number of comparisons. The actual number of
+> possible ancestral state assignments is quite a bit smaller than 4^8
+> (for instance 11 is always the ancestral reconstruction for 1111) and
+> the authors have a lot of familiarity with what the ancestral
+> reconstructions are. I believe Fig 2 can be replaced with an exact (up
+> to grid approximation) region of topological inconsistency and Figs
+> 3-5 with heat maps of limiting (x,y,w) for tau_1.
+
+Theory leads to generalization.
+
+> The other main concern that I have is with the restriction that
+> t=(x,y,x,y,w) in estimation rather than t=(t_1,...,t_5). On the one
+> hand, usually one expects that incorporating knowledge about the true
+> underlying tree (t_1=t_3 & t_2=t_4 in the present case) should be
+> helpful for a good estimation procedure. Thus the fact that treating
+> ancestral states as parameters gives inconsistent topological
+> estimation in this setting demonstrates that the approach is
+> problematic. On the other hand, allowing t=(t_1,...,t_5) is what would
+> be done in any practical implementation and it seems quite possible to
+> me that results would be radically different in this case. For
+> instance, from Fig 2, the generating tree with all equal edge-lengths
+> (y*=x*=0.2) provides a case where topology tau_2 is inconsistently
+> estimated with the restriction that estimated t=(x,y,x,y,w). Because
+> of the symmetry of the problem, I am doubtful y*=x*=0.2 would be a
+> point of inconsistency if t=(t_1,...,t_5) were unrestricted in
+> estimation. The issue deserves discussion because I don't think it is
+> transparent.
+
+> I don't think the restricted case of p8-9 will be of interest to
+> readers. Only the general case.
+
+> Minor Comments:
+
+> -l78-88: Calculations are more natural with `fidelities' and this
+> might remain in the appendix but it is much more conventional in the
+> literature for x,y,w to be edge-lengths or probabilities of a
+> different character states at the tips of the edge. It takes quite a
+> bit of getting used to realize that (0,0) corresponds to infinite
+> edge-lengths and it seems unnecessary with a little work on the part
+> of the authors to do the conversions that will make the figs more
+> natural for readers.
+
+
+> Reviewer: 2
+
+> Comments to the Author
+> In this manuscript  the authors show that joint inference of phylogeny
+> and ancestral characters is not consistent in general by providing a
+> counter-example, in which as the number of sites grows, they show that
+> the wrong tree topology can have a higher likelihood than the correct
+> topology under the joint inference model.
+> The result is important for the community to understand, in particular
+> because TreeTime (the joint inference method) is used in high-profile
+> analyses on Ebola, influenza and other viruses on the nextflu /
+> nextstrain websites. These are beautiful and accessible sites aiming
+> to make analyses on viruses open to exploration by the community, but
+> this comes at the cost of suppressing the details of the analysis. If
+> indeed there are deep statistical issues or limitations it is
+> important that the community knows what these are and what their
+> implications are.
+
+> Accordingly my comments are focussed on where I think the manuscript
+> could be more clear (and where I did not quite follow the logic). My
+> major suggestion would be to go even further towards demonstrating in
+> a simple example how the joint inference can be wrong – for example,
+> providing a toy multiple sequence alignment or even one of some
+> influenza HA sequences – you could find 2 sets of 4 closely-related
+> sequences that have the Farris and Felsenstein topologies, maybe? And
+> demonstrate that the inference gives the wrong result by explicitly
+> computing the likelihood.
+
+> Also, laying out the theory a little bit more step-by-step so that a
+> general quantitative reader doesn't struggle too much to follow would
+> help (suggestions below).
+
+> I know that it's not feasible to explicitly compute (analytically)
+> these likelihoods for bigger trees. But one of the main motivations
+> and applications for tools like TreeTime is surely that the number of
+> sequences grows (not the number of sites, which is fixed by the viral
+> sequence length in the case of viruses). What happens when the number
+> of tips grows? Are there more opportunities for the kind of issue that
+> gives the wrong value for w? Many influenza trees have many 0 (or near
+> 0) internal branch lengths, and it would be interesting to understand
+> the implications for the ancestral state reconstructions (which in
+> turn are used to infer spatial spread, transmission etc).
+
+
+> Some detailed comments and questions:
+> – line 85 some cut/paste or sentence issue
+> - line 97 below (2) define A^p
+> - l106: why is the functional form of (3) determined by inequalites;
+> what are they?
+> - l 118-124: clarify are tau1 and tau2 Farris and Felsenstein?
+> L 132 clarify “equivalent but different notion” – different from what?
+> - line 146 “seeing no change along a branch more likely increases the
+> likelihood by introducing a term of (1 + θ) instead of (1 − θ)” – I
+> don't understand this
+> line 185++ and figure5: true value of w?
+
+> L 334 missing “the”
+
+> L332++ I got confused about the complements and factors of 2, though I
+> see the point that the site split has symmetry. As it's fundamental to
+> the rest of the work, a more clear statement of where the 2 comes from
+> in the second eq below 358 would be very helpful.
+
+> L354 why does psi take the complement of site patterns? Just above it
+> is defined as a random variable psi (Y) where Y is a site pattern
+
+> What are the elements of the sets eta(tau, t)?
+
+> Why is xi surjective? I don't understand the equation before line 359,
+> and then I don't understand what “such a choice” is in line 359
+> line 364 define p(e)
+
+> line 366  I don't understand (8) but perhaps that's just background I
+> don't have – a quick explanation or reference would be handy
+> What's a 'generating probability' ? Is that the fidelity? Or a
+> generator?
+
+
+> Reviewer: 3
+
+> Comments to the Author
+> Shaw and Matsen show that a joint maximum-likelihood inference of
+> phylogenies and ancestral states is not consistent when branch lengths
+> are long. We have recently proposed such a joint estimation for
+> sequences that recently diverged and are hence similar (Sagulenko et
+> al). The results presented here are anticipated in Sagulenko et al
+> "For more divergent sequences, however, subleading states of internal
+> nodes make a substantial contribution and the iterative optimization
+> will underestimate the branch lengths."
+> and
+> "The iterative optimization procedures are not expected to be accurate
+> for trees were many sites are saturated. In scenarios with extensive
+> uncertainty of ancestral states and tree topology, convergence of the
+> iterative steps cannot be guaranteed."
+
+> In this light, it should be pointed out that joint estimation
+> procedure was explicitly suggested as an approximation and hence never
+> expected to be consistent in a strict sense. Furthermore, it was
+> suggested as an approximation when branch lengths are short -- the
+> opposite of the problematic regions identified here.
+> But systematic analysis of the behavior of this approximation is
+> useful and I believe the work is correct (but haven't checked the
+> proofs). The work by Shaw and Matsen suggests the radius of
+> convergence of this procedure is somewhere around branch length of
+> order 10-20%, which is consistent with results reported by Sagulenko
+> et al.
+
+> At the same time, these results are not particularly surprising.
+> Assigning ML ancestral states will always result in shorter branches.
+> For short branches, this correction is linear in branch length, for
+> longer branches higher order effects start to contribute. If the
+> typical branch length around a bifurcating node is x<<1, a fraction ~x
+> of the sites mutated along one of the three adjacent branches, while a
+> fraction ~x^2 mutated on two branches and not the third. The latter
+> case is ignored in this joint inference procedure. Not having to sum
+> over these subleading states is what makes joint inference faster, but
+> such truncation will first lead to inaccuracies and at longer
+> distances to qualitatively different solutions (like Taylor expanding
+> 1/(1-x) ).
+
+> There are other obvious cases where joint inference will fail. For
+> sequences with a heavily biased in nucleotide composition (say biased
+> towards A). For sufficiently long terminal branches, all ancestral
+> states will be estimated as all 'A' and subsequent branch length
+> estimate will shrink all internal branches to zero. This happens for
+> the very same reason that the most likely outcome of multiple flips of
+> a biased coin is all heads -- a very atypical yet most likely outcome.
+
+> Currently, the work largely shows that areas of inconsistencies exist.
+> It would be useful if the authors could present Taylor expansions for
+> the ML branch length estimates around x=y=w=1. This would more
+> explicitly show the inaccuracies accumulate with increasing branch
+> length and how the inaccuracies depend on asymmetries in the tree. To
+> me, this would be much more useful than to know that joint inference
+> will fail if branches are long.
+
+
+> Specific comments:
+>  - when y=x=w, the two topologies are indistinguishable other than for
+>  the labeling of the leaves. What happens in Fig 2 on the diagonal?
+>  Does it degenerate into a star?
+
+>  - line 50: overestimates branch lengths? It overestimates fidelity ->
+>  underestimates branch length.  As expected.  Again line 249. Please
+>  check. The back and forth between fidelity and branch length can be
+>  confusing.
+
+>  - Fig 5: it is surprising that \hat{w} seems completely flat as a
+>  function of x* until it jumps discontinuously to 0. Why not include
+>  the analytical bound in Fig 5?
+
+>  - It would be nice if the abstract pointed out that these
+>  inconsistencies arise when branch lengths are long and that the
+>  approximate joint maximization procedure was suggested for precisely
+>  the opposite limit. Similar at the beginning of the discussion, I
+>  think it would be more appropriate if this would say smth along the
+>  lines "Sagulenko et al suggested an approximation for short
+>  branches... we show that this doesn't work for long branches..."
+
+> Richard Neher
+
+
+> Reviewer: 4
+
+> Comments to the Author
+> Review of Shaw, D. and Matsen, F.  "Joint maximum-likelihood of
+> phylogenies and ancestral states is not consistent"
+
+> Shaw and Matsen demonstrate that the approach of jointly estimating
+> ancestral states and tree topologies (or branch lengths on a fixed
+> topology) is not statistically consistent.  I believe that their
+> results are correct, and that their result is important to
+> disseminate.  The paper is clearly written, given the complexity of
+> the material, and I have no reservation about recommending publication
+> virtually as is.
+
+> However, although my original intent was to carefully work through the
+> math (including the derivations and proofs in the appendix), I have
+> not found the time to do so, and because of the lateness of my review
+> at this point, I will provide just a few comments in the hope that
+> they will be useful.  Hopefully, other reviewers were able to check
+> the correctness of the mathematical results more carefully.
+
+> The only real criticism I have of the paper is that the authors could
+> have done a better job in connecting their new work to previous
+> results.  For example, Goldman (1990, Syst. Biol. 39:345-361) showed
+> that joint estimation of topology and ancestral states by maximum
+> likelihood was equivalent to maximum parsimony analysis for the same
+> 2-state model considered by Shaw and Matsen when all branches are
+> forced to have the same length.  They noted the statistical
+> inconsistency of this approach, which was necessarily true because
+> parsimony was already known to be inconsistent (the famous result of
+> Felsenstein 1978).  Shaw and Matsen extend this result to the case of
+> unequal branch lengths, which while not particularly surprising, is
+> nonetheless an important extension.  The authors should also cite key
+> relevant earlier work on the identifiability ot the tree topology with
+> "classical" maximum likelihood phylogenetic estimation (Allman et al
+> 2008, Adv Appl Prob 40:229–249; Chai and Housworth 2011, Syst Biol
+> 60:713–718) in addition to crediting Roychoudhury 2015 for
+> establishing ML consistency.
+
+%EM Can you chat me links to these refs when you find them? I can get
+%the pdfs for you as needed.
+
+> Finally, let me just add that I hate the term "Farris Zone".  The
+> "Felsenstein Zone" was a name applied to Felsenstein's important
+> demonstration of a tree and branch-length configuration where
+> parsimony would be an inconsistent estimator of the phylogeny.  On the
+> contrary, Farris had nothing to do with the "Farris zone"; it was
+> simply a name given by Mark Siddall to a different configuration in
+> which parsimony outperforms likelihood, thinking incorrectly that
+> likelihood was inconsistent in this zone.  Swofford et al. (2001,
+> cited by the authors) referred to this zone as the "inverse
+> Felsenstein zone", which I think is a better name for it.
