@@ -1,17 +1,18 @@
 \section*{Appendix}
 
 \subsection*{Site split formulation}
-We begin by introducing ``site splits,'' which formalize the notion that a given site pattern is equally probable to its complement under the binary symmetric model.
+We begin by introducing ``site splits.''
+One application of site splits is to formalize the notion that a given site pattern is equally probable to its complement under the binary symmetric model.
 This is a standard step in the description of the Hadamard transform (Section 8.6 of \citet{Semple2003-em}), although our approach is complicated slightly by the inclusion of ancestral states.
 
-Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$; this results in a simpler likelihood calculation.
+Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$.
 Take the tip labels of $\tau$ to be $\{1,\ldots,\nSiteRows\}$.
 For likelihood calculation under the binary symmetric model, we describe a given $\alignmentColumn_i$ as a subset of indices $\siteSplit\subseteq\siteSplitSet:=\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
 We define the site split $\siteSplit$ for a $\alignmentColumn_i$ as simply $\alignmentColumn_i$ if the label $\nSiteRows$ is not in $\alignmentColumn_i$, and as its complement otherwise.
 Taking such a complement simplifies but does not change the result of likelihood computation because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model.
 
-For topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization $\ancestralStateColumn_i$.
-In this case the entire set of internal nodes must be enumerated: the probability of observing an ancestral state split conditional on a site split is not invariant to taking its complement.
+For a fixed topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization $\ancestralStateColumn_i$.
+In this case we cannot use the same complement trick as before: the probability of observing an ancestral state split conditional on a site split is not invariant to taking its complement.
 
 We enumerate the site splits $\siteSplit_j$ of which there are $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ in total where $\mathcal{P}$ denotes the power set.
 Similarly we enumerate ancestral splits $\ancestralSplit_k$ of which there are $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$ in total.
@@ -71,27 +72,29 @@ As a consequence of assuming a binary symmetric model, for some $\siteSplit_j\in
     &= \Pr(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t) + \Pr(\overline{\alignmentColumnRV}=\alignmentColumn_i \mid \tau, t)\\
     &= 2\cdot\Pr(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t)
 \end{align*}
-where $\overline{Y}$ is the complement of the site-patterned random variable $Y$ and $\overline{Y}\sim Y$.
-For ancestral states and for some $\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)$
+where $\overline{Y}$ is the complement of the site-patterned random variable $Y$ and so has the same distribution as $Y$.
+Note
 \begin{align*}
     \Pr(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t) &= \Pr(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t).
 \end{align*}
-Given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t)$ such that $\xi_j\in\ancestralSplitPartition_j(\tau, t)$ satisfies
+Thus given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t)$ such that $\xi_j\in\ancestralSplitPartition_j(\tau, t)$ satisfies
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t) &= \Pr(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t).
 \end{align*}
 In other words, for the $j$th site split, $\ancestralSplitPartition_j(\tau, t)\subset\mathcal{P}(\ancestralSplitSet)$ is the set of most likely ancestral splits for that particular site split, topology and set of branch lengths, and $\xi_j$ is one of possibly many equiprobable ancestral state splits in $\ancestralSplitPartition_j(\tau, t)$.
+%EM Wait, does this establish surjectivity? We need to be able to get all values of P(H).
 For each $\alignmentColumn_i$, $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective as it maps all possible values from $\alphabet^\nAncestralStateRows$ to an element in $\mathcal{P}(\ancestralSplitSet)$, and from this we have
 \begin{align*}
     \max_{\ancestralStateColumn_i} \ \Pr(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t) &= \max_{\ancestralStateColumn_i} \ \Pr(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t)\\
     &= \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t)\\
-    &= \Pr(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t).
+    &= \Pr(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)
 \end{align*}
+for some $j$ depending on $i$.
 Thus, each term in the likelihood can be collapsed into terms relating only to site splits, indexed by $j$,  as opposed to each individual observation, indexed by $i$.
 
 \subsection*{Site split likelihood}
 
-The likelihood in \eqref{eq:profile_likelihood} written as a product over site patterns as opposed to sites is
+Thus the likelihood in \eqref{eq:profile_likelihood} can be written as a product over site patterns as opposed to sites:
 \begin{align}
 L_\nCols'(\tau, t; \fullAlignment) &= \max_{\fullAncestralStates} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates) \nonumber \\
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \nonumber \\
@@ -145,7 +148,7 @@ $$
 \theta(e) = 1-2p(e)
 $$
 where $p(e)$ is the probability of a character change along edge $e$.
-For an even-sized subset of $Y\subseteq\mathcal{S}$, we define the path set $P(Y)$ as the set of edges in the path connecting both elements of $Y$.
+For an even-sized subset of $Y\subseteq\mathcal{S}$, let the path set $P(Y)$ be the set of edges in the path connecting both elements of $Y$.
 For $n$ taxa, the probability of observing site split $A\in\mathcal{P}(\siteSplitSet)$ is
 \begin{equation}
 \label{eq:hadamard_probability}
@@ -208,7 +211,7 @@ This tree has two internal nodes with $\ancestralSplitSet=\{1,2\}$ and unique an
 $$
 \mathcal{P}(\ancestralSplitSet) = \{\emptyset, \{1\}, \{2\}, \{1,2\}\}.
 $$
-Internal node $\{1\}$ is the node connected to leaves $\{1\}$ and $\{3\}$ and internal node $\{2\}$ connected to leaves $\{2\}$ and $\{4\}$.
+Internal node $1$ is the node connected to leaves $1$ and $3$ while internal node $2$ is connected to leaves $2$ and $4$.
 The mapping from characters to splits in this case will depend on the characters at the tips and the ancestral states.
 For example, we take both $\patternToSplit(0000)=\emptyset$ and $\patternToSplit(1111)=\emptyset$.
 Similarly, we have $\ancestralToSplit(0000, 00) = \emptyset$ and $\ancestralToSplit(1111, 11)=\emptyset$, needing to take the complement of all the characters present on the tree to identify splits.
@@ -264,7 +267,7 @@ $$
 To compute the likelihood of observing a set of data, we need $\Pr(\ancestralStateColumn=\ancestralSplit_k\mid \alignmentColumn=\siteSplit_j,\tau,t)$ for each $\ancestralSplit_k$ and $\siteSplit_j$.
 Using branch fidelities, the probability of a character change along a branch with fidelity parameter $\theta$ is $(1-\theta)/2$, while the probability of a character remaining the same is $(1+\theta)/2$.
 See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern on the Farris tree.
-Likelihood computations for all site patterns and ancestral states are in Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods}.
+Likelihood computations for all site patterns and ancestral states are in Tables~\ref{tab:farris_likelihoods} (for the Farris tree) and~\ref{tab:fels_likelihoods} (for the Felsenstein tree).
 Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}.
 
 \begin{figure}
@@ -526,10 +529,12 @@ Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood
 An analogous statement holds for $y_1$ and $y_2$.
 It remains to show that the joint inference procedure maximizing \eqref{eq:profile_likelihood} results in a unique estimate of $t$.
 Without loss of generality, we focus on the single parameter $x_1$ and show we obtain a unique maximum when performing joint inference; similar arguments hold for the remaining parameters.
-We decompose the likelihood into the entropy and partial likelihood terms as in \eqref{eq:log_likelihood_simplified}.
+We decompose the likelihood into the entropy and partial log-likelihood terms as in \eqref{eq:log_likelihood_simplified}.
+%EM I'm thinking about this wrong for some reason: the sum of two things, each of which has a unique maximum, does not necessarily have a unique maximum.
 By Gibbs's inequality, the entropy term $\shannonDivergence_{\tau^*,t^*}(\tau^*,t)$ has a unique maximum over $t$---namely $t^*$.
-For the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$, we can compute the partial likelihood $\tilde{\ell}_{\tau^*,t^*}(\tau^*, t)$ as in Table~\ref{tab:farris_likelihoods}.
-Clearly this partial likelihood will be of the form $g(x_1) = p\log(1+x_1) + (1-p)\log(1-x_1)$ with $0 \le p \le 1$, which, by the second derivative test, is concave for $x_1\in[0,1]$ and thus has a unique maximum.
+%EM There's not good notational overlap between Table S2 and the definition of partial log-likelihood. Could you fix that?
+For the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$, we can compute the partial log-likelihood $\tilde{\ell}_{\tau^*,t^*}(\tau^*, t)$ as in Table~\ref{tab:farris_likelihoods}.
+Clearly this partial log-likelihood will be of the form $g(x_1) = p\log(1+x_1) + (1-p)\log(1-x_1)$ with $0 \le p \le 1$, which, by the second derivative test, is concave for $x_1\in[0,1]$ and thus has a unique maximum.
 Since both summands of the likelihood are concave on $x_1\in[0,1]$, the likelihood is as well, and there exists a single $x_1\in[0,1]$ maximizing the likelihood.
 Given this and the symmetry of the likelihood, we let $x_1=x_2=x$ and $y_1=y_2=y$.
 The Felsenstein tree does not admit this property, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
@@ -586,6 +591,7 @@ Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\r
     &\qquad + p_{23}         \cdot\log((1+x)(1-x)(1+w)(1+y)(1-y)) \nonumber \\
     &\qquad + p_{123}        \cdot\log((1+x)^2   (1+w)(1+y)(1-y)).
 \end{align}
+%EM Shouldn't this read "obtaining an upper bound"?
 Our plan is to simplify the likelihood to remove log-of-quadratic terms of $x,y,$ and $w$, obtaining a likelihood that has a closed-form maximum in each variable.
 To bound the generating probabilities, we use the facts that, for $x,y\in[0,1]$,
 \begin{align*}
@@ -636,7 +642,11 @@ Factoring and making these substitutions (again, under the assumption that the a
 + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y) \\
 &\qquad\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x)
 + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x) \\
+%EM Shouldn't this be
+%&\qquad\qquad + (3-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y)
 &\qquad\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y)
+%EM And this be
+%+ 2(p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y) \\
 + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y) \\
 &\qquad\qquad + (1-p_{13})\cdot\log(1+w)
 + p_{13}\cdot\log(1-w) \\
@@ -702,6 +712,7 @@ The upper bound for the likelihood is then maximized at
 
 The other two possible ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications.
 The upper bound in \eqref{eq:farris-upper-bound} is for the ancestral state split $\{1\}$.
+%EM Let's be more specific, giving an equation number, rather than just saying "the upper bound" here.
 For the ancestral state split $\emptyset$ we see the upper bound will be the same except we lose a $(1+x)^2$ term, gain a $(1-x)^2$ term, lose a $(1-w)$ term, and gain a $(1+w)$ term.
 In this case, all terms involving $w$ simplify to $\log(1+w)$, maximized at $\hat{w}=1$.
 For the constants above, $a_{1}$ is the multiplier for the $\log(1+x)$ term and $a_{2}$ for the $\log(1-x)$ term meaning that exchanging the above quadratic $x$ terms yields new constants
