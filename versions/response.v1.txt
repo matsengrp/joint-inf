@@ -157,36 +157,75 @@ Theory leads to generalization.
 
 > Some detailed comments and questions:
 > – line 85 some cut/paste or sentence issue
+
+TODO: not sure what this is?
+
 > - line 97 below (2) define A^p
+
+We have clarified this with an explicit definition of A^p where we introduce A, at the beginning of the section on Phylogenetic maximum likelihood.
+
 > - l106: why is the functional form of (3) determined by inequalites;
 > what are they?
+
+We have made this more precise and directly referenced the inequalities.
+
 > - l 118-124: clarify are tau1 and tau2 Farris and Felsenstein?
+
+That is correct, and we've added parenthetical notes to reminde the reader, thanks.
+
 > L 132 clarify “equivalent but different notion” – different from what?
+
+We have reformulated this sentence to avoid the comparison.
+
 > - line 146 “seeing no change along a branch more likely increases the
 > likelihood by introducing a term of (1 + θ) instead of (1 − θ)” – I
 > don't understand this
+
+TODO: this is changed, but I don't see this being a lot clearer.
+
 > line 185++ and figure5: true value of w?
 
+We have added clarifying sentence:
+"As data were generated with parameters $\{x^*, y^*, x^*, y^*, y^*\}$, the true value for $w$ is $y^*$."
+
+
 > L 334 missing “the”
+
+Fixed via simpler language.
 
 > L332++ I got confused about the complements and factors of 2, though I
 > see the point that the site split has symmetry. As it's fundamental to
 > the rest of the work, a more clear statement of where the 2 comes from
 > in the second eq below 358 would be very helpful.
 
+We have now made this much more explicit with three additional display equations spelling out the intermediate steps.
+
 > L354 why does psi take the complement of site patterns? Just above it
 > is defined as a random variable psi (Y) where Y is a site pattern
 
+This wasn't as clear as it should have been. We have revised to:
+"The mapping $\patternToSplit$ operates by returning the complement of a site pattern to obtain a site split in $\mathcal{P}(\siteSplitSet)$ if it is not in $\mathcal{P}(\siteSplitSet)$."
+
+
 > What are the elements of the sets eta(tau, t)?
+
+TODO: fill in
 
 > Why is xi surjective? I don't understand the equation before line 359,
 > and then I don't understand what “such a choice” is in line 359
+
+We have made this explicit now, with two additional intermediate steps and an explicit explanation in terms of collapsing terms.
+
 > line 364 define p(e)
+
+Thanks for reminding us to define p(e), which is now described as "where $p(e)$ is the probability of a character change along edge $e$."
 
 > line 366  I don't understand (8) but perhaps that's just background I
 > don't have – a quick explanation or reference would be handy
 > What's a 'generating probability' ? Is that the fidelity? Or a
 > generator?
+
+TODO: just say tough nuts?
 
 
 > Reviewer: 3
