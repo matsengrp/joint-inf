@@ -18,7 +18,11 @@
 \usepackage{setspace}
 \onehalfspacing
 \usepackage{authblk}
-\usepackage{fancyhdr}
+
+% commented for arXiv submission
+%\usepackage{fancyhdr}
+% \fancyhead[R]{ submission intended as Article in Discoveries section of \emph{MBE} }
+
 
 \graphicspath{ {figures/} }
 
@@ -67,12 +71,10 @@
 
 \allowdisplaybreaks
 
-\fancyhead[R]{ submission intended as Article in Discoveries section of \emph{MBE} }
-
 \title{Joint maximum-likelihood of phylogenies and ancestral states is not consistent}
 
 \author[1]{David A. Shaw}
-\author[1]{Frederick A. Matsen IV\thanks{Corresponding author, email: \url{matsen@fredhutch.org}}}
+\author[1]{Frederick A. Matsen IV\thanks{Corresponding author. Email: \url{matsen@fredhutch.org}}}
 \affil[1]{Computational Biology Program, Fred Hutchinson Cancer Research Center\\ Seattle, WA, USA}
 \date{}
 
@@ -230,6 +232,7 @@ This enables more possible maxima for $\tau_2$ even if data are generated from $
 
 \subsection*{Inconsistency in branch length estimation}
 
+%EM Line numbering has a huge gap here. Could you look around and see if you see anything about this on the web?
 We now consider the problem of branch length estimation on the correct tree using joint estimation.
 As described above, we use the notion of fidelities to analyze what happens as changes occur along each branch as opposed to the standard branch length formulation.
 We analyze two settings on the Farris tree, corresponding to whether some branch fidelities are fixed at their true values or not.

@@ -8,6 +8,20 @@
 > requested examples, and address suggestions on how the results could
 > be even further improved.
 
+Outline of revisions:
+1.
+2.
+
+Some of the reviewers have expressed their opinion that we reduce our emphasis on mathematical development in exchange for a more numerical-optimization-based approach.
+Our primary goal was to mathematically prove inconsistency of joint inference, which is what we have done.
+As pointed out by reviewer 4, this answers an open question, which has special relevance given the recent work of Sagulenko et al.
+We provide some numerical results to confirm our derivations and to provide a comparison.
+
+As we now emphasize (TODO XXX) this work is not the final word on the joint inference question from an applied perspective.
+Even if we were to greatly expand the sections doing numerical optimization, these results would only be for the binary symmetric model, which is never applied in practice.
+An investigation of these aspects deserves another paper.
+
+
 > Finally, please pay VERY careful attention to improving your
 > literature review (reviewer 4) and making a very clear case about how
 > your work IMPROVES and EXTENDS previous results. And, please, do get
@@ -15,9 +29,12 @@
 > results that have to do with ML estimation, given the long and
 > torturous efforts of cladists to undermine the entire line of inquiry.
 
-Felsenstein's book has a subsection entitled "The Farris zone" spanning two pages (pp 120-121), a figure entitled "A tree in the Farris zone.", and a table with a caption "Properties of the Felsenstein and Farris zones..."
+We are grateful to reviewer 4 for pointing us to literature of which we were not aware.
+We have greatly expanded ...
+
+We have complied with this request regarding terminology, despite it going against current practice.
+Indeed, Felsenstein's book has a subsection entitled "The Farris zone" spanning two pages (pp 120-121), a figure entitled "A tree in the Farris zone.", and a table with a caption "Properties of the Felsenstein and Farris zones...".
 The term "Farris zone" has almost 7 times as many citations as the term "inverse Felsenstein zone" on Google Scholar.
-Thus, although we realize that the term causes offense, it is standard.
 
 
 > Reviewer: 1
@@ -46,6 +63,12 @@ Thus, although we realize that the term causes offense, it is standard.
 > region that the authors were able to determine through analytical
 > arguments. For most readers, out of Fig 3 and Fig 5, only Fig 5 is of
 > interest.
+
+As described above, our intent is to mathematically establish inconsistency and poor estimation.
+This must be done with analytic arguments rather than optimization.
+We could have only shown this bad behavior in a very small area to establish that it happens.
+In contrast to this reviewer, we believe that Fig 5 is optional to this line of argument, and we provide it just for interest.
+A true investigation into the practical implications of our work will require another paper.
 
 > Getting exact regions is what I think the authors should do. The
 > approach used to obtain Fig 5 is generally applicable. Explicit,
@@ -76,7 +99,7 @@ Thus, although we realize that the term causes offense, it is standard.
 > to grid approximation) region of topological inconsistency and Figs
 > 3-5 with heat maps of limiting (x,y,w) for tau_1.
 
-Theory leads to generalization.
+Please see above for our response.
 
 > The other main concern that I have is with the restriction that
 > t=(x,y,x,y,w) in estimation rather than t=(t_1,...,t_5). On the one
@@ -96,8 +119,12 @@ Theory leads to generalization.
 > estimation. The issue deserves discussion because I don't think it is
 > transparent.
 
+TODO: make the argument more clear in the main text.
+
 > I don't think the restricted case of p8-9 will be of interest to
 > readers. Only the general case.
+
+%EM I think we could move this to the appendix to throw this reviewer a bone.
 
 > Minor Comments:
 
@@ -139,9 +166,15 @@ Theory leads to generalization.
 > demonstrate that the inference gives the wrong result by explicitly
 > computing the likelihood.
 
+We agree that understanding the implications of our derivation is a very interesting avenue for future work.
+However, to do such a project justice would require a separate paper.
+We are sure that once our paper demonstrates this inconsistency, others will quickly follow to write such a paper.
+
 > Also, laying out the theory a little bit more step-by-step so that a
 > general quantitative reader doesn't struggle too much to follow would
 > help (suggestions below).
+
+Thank you very much for reading the derivations and for your suggestions. As noted inline we have revised the text accordingly.
 
 > I know that it's not feasible to explicitly compute (analytically)
 > these likelihoods for bigger trees. But one of the main motivations
@@ -154,6 +187,7 @@ Theory leads to generalization.
 > the implications for the ancestral state reconstructions (which in
 > turn are used to infer spatial spread, transmission etc).
 
+%EM David-- does it seem like we could extend these results to bigger trees containing a 4 taxon tree?
 
 > Some detailed comments and questions:
 > – line 85 some cut/paste or sentence issue
@@ -257,6 +291,12 @@ TODO: just say tough nuts?
 > order 10-20%, which is consistent with results reported by Sagulenko
 > et al.
 
+Thank you for your thoughts, and we have worked hard to not oversell our results.
+TODO we should make some changes to at least say that we've further clarified the implications of our results.
+The TreeTime paper does present joint optimization as an approximate approach, and described that it is for short branch lengths.
+However, in our assessment the word "approximate" doesn't completely describe a situation in which there is significant bias.
+The TreeTime paper says that its use is appropriate when "ancestral sequence inference has little ambiguity" but even in these cases the bias in branch lengths persists.
+
 > At the same time, these results are not particularly surprising.
 > Assigning ML ancestral states will always result in shorter branches.
 > For short branches, this correction is linear in branch length, for
@@ -269,7 +309,7 @@ TODO: just say tough nuts?
 > such truncation will first lead to inaccuracies and at longer
 > distances to qualitatively different solutions (like Taylor expanding
 > 1/(1-x) ).
-
+>
 > There are other obvious cases where joint inference will fail. For
 > sequences with a heavily biased in nucleotide composition (say biased
 > towards A). For sufficiently long terminal branches, all ancestral
@@ -277,7 +317,7 @@ TODO: just say tough nuts?
 > estimate will shrink all internal branches to zero. This happens for
 > the very same reason that the most likely outcome of multiple flips of
 > a biased coin is all heads -- a very atypical yet most likely outcome.
-
+>
 > Currently, the work largely shows that areas of inconsistencies exist.
 > It would be useful if the authors could present Taylor expansions for
 > the ML branch length estimates around x=y=w=1. This would more
@@ -286,6 +326,9 @@ TODO: just say tough nuts?
 > me, this would be much more useful than to know that joint inference
 > will fail if branches are long.
 
+This is an interesting suggestion but is different than our goal, which was to establish inconsistency.
+TODO describe why Taylor isn't a straightforward thing.
+TODO refer to idea of applied paper again?
 
 > Specific comments:
 >  - when y=x=w, the two topologies are indistinguishable other than for
@@ -308,6 +351,8 @@ TODO: just say tough nuts?
 >  think it would be more appropriate if this would say smth along the
 >  lines "Sagulenko et al suggested an approximation for short
 >  branches... we show that this doesn't work for long branches..."
+
+TODO we should do some change, but make it clear that it's consistently biased even for short branches.
 
 > Richard Neher
 
@@ -333,6 +378,9 @@ TODO: just say tough nuts?
 > they will be useful.  Hopefully, other reviewers were able to check
 > the correctness of the mathematical results more carefully.
 
+Thank you for your assessment.
+We have worked hard in our initial submission and in our revision to write out the argument in great (indeed, excruciating) detail, and we would appreciate it if you could take a look at the revision.
+
 > The only real criticism I have of the paper is that the authors could
 > have done a better job in connecting their new work to previous
 > results.  For example, Goldman (1990, Syst. Biol. 39:345-361) showed
@@ -351,8 +399,12 @@ TODO: just say tough nuts?
 > 60:713–718) in addition to crediting Roychoudhury 2015 for
 > establishing ML consistency.
 
-%EM Can you chat me links to these refs when you find them? I can get
-%the pdfs for you as needed.
+We are very grateful to this reviewer for pointing out the Goldman paper.
+We were not aware of this paper and now have a paragraph describing it and comparing to our work.
+It's also a good idea to cite additional papers about identifiability, and we have done so.
+
+%EM David, heh, can you point me to the place where the equal branch length result was done?
+%EM Also, I think you said that he says that the varying branch length thing is an open question-- it would be great to quote that.
 
 > Finally, let me just add that I hate the term "Farris Zone".  The
 > "Felsenstein Zone" was a name applied to Felsenstein's important
@@ -364,3 +416,5 @@ TODO: just say tough nuts?
 > likelihood was inconsistent in this zone.  Swofford et al. (2001,
 > cited by the authors) referred to this zone as the "inverse
 > Felsenstein zone", which I think is a better name for it.
+
+As described at the beginning, we have made this change, thanks.

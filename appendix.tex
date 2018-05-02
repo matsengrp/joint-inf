@@ -10,11 +10,13 @@ Take the tip labels of $\tau$ to be $\{1,\ldots,\nSiteRows\}$.
 For likelihood calculation under the binary symmetric model, we describe a given $\alignmentColumn_i$ as a subset of indices $\siteSplit\subseteq\siteSplitSet:=\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
 We define the site split $\siteSplit$ for a $\alignmentColumn_i$ as simply $\alignmentColumn_i$ if the label $\nSiteRows$ is not in $\alignmentColumn_i$, and as its complement otherwise.
 Taking such a complement simplifies but does not change the result of likelihood computation because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model.
+%EM "ancestral state splits" are an important item in the development but don't get the same level of definition as "site splits". Let's define them here.
 
 For a fixed topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization $\ancestralStateColumn_i$.
 In this case we cannot use the same complement trick as before: the probability of observing an ancestral state split conditional on a site split is not invariant to taking its complement.
 
 We enumerate the site splits $\siteSplit_j$ of which there are $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ in total where $\mathcal{P}$ denotes the power set.
+%EM I think that we should either use "ancestral splits" everywhere, or "ancestral state splits."
 Similarly we enumerate ancestral splits $\ancestralSplit_k$ of which there are $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$ in total.
 
 We first fix notation.
@@ -633,8 +635,8 @@ Factoring and making these substitutions (again, under the assumption that the a
 + p_{3}          \cdot\log((1+x)(1-x)(1+w)(1+y)^2) \\
     &\qquad\qquad + p_{12}         \cdot\log((1+x)(1-x)(1+w)(1+y)(1-y))
 + p_{13}         \cdot\log((1+x)^2   (1-w)(1+y)^2) \\
-    &\qquad\qquad + p_{23}         \cdot\log((1+x)(1-x)(1+w)(1+y)(1-y))
-+ p_{123}        \cdot\log((1+x)^2   (1+w)(1+y)(1-y)) \\
+    &\qquad\qquad + p_{23}         \cdot\log((1+x)(1-x)(1+w)(1+y)(1-y)) \\
+    &\qquad\qquad + p_{123}        \cdot\log((1+x)^2   (1+w)(1+y)(1-y)) \\
 &\qquad =      p_{\emptyset}  \cdot\log(2)
 + \log(1+x)
 + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x) \\
@@ -710,11 +712,11 @@ The upper bound for the likelihood is then maximized at
 \label{eq:farris-upper-bound}
 \end{align}
 
-The other two possible ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications.
+The other two possible ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications, as we now describe.
 The upper bound in \eqref{eq:farris-upper-bound} is for the ancestral state split $\{1\}$.
 %EM Let's be more specific, giving an equation number, rather than just saying "the upper bound" here.
 For the ancestral state split $\emptyset$ we see the upper bound will be the same except we lose a $(1+x)^2$ term, gain a $(1-x)^2$ term, lose a $(1-w)$ term, and gain a $(1+w)$ term.
-In this case, all terms involving $w$ simplify to $\log(1+w)$, maximized at $\hat{w}=1$.
+In this case, all terms involving $w$ simplify to $\log(1+w)$, which is maximized at $\hat{w}=1$.
 For the constants above, $a_{1}$ is the multiplier for the $\log(1+x)$ term and $a_{2}$ for the $\log(1-x)$ term meaning that exchanging the above quadratic $x$ terms yields new constants
 \begin{equation}
     \begin{aligned}
@@ -732,7 +734,7 @@ for site split $\emptyset$ and
     \label{eq:a_const_prime_y}
 \end{equation}
 for site split $\{1,2\}$.
-To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
+To bound the case of ancestral state split $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
 \begin{align*}
 &    \ell_{\tau_1,t^*}(\tau_1, t) \\
 &\qquad\le      p_{\emptyset}  \cdot\log(2)
@@ -743,7 +745,7 @@ To bound the case of $\ancestralSplitPartition_j(\tau_1, t) = \emptyset$,
 + \log(2) \\
 &\qquad := C^{2}_{\tau_1,\tau_1}(x^*, y^*),
 \end{align*}
-and, for the case of $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
+and, for the case of ancestral state split $\ancestralSplitPartition_j(\tau_1, t) = \{1,2\}$,
 \begin{align*}
 &    \ell_{\tau_1,t^*}(\tau_1, t) \\
 &\qquad\le      p_{\emptyset}  \cdot\log(2)
@@ -762,6 +764,7 @@ $$
 are both between zero and one.
 Using a similar argument as that where $\ancestralSplitPartition_j(\tau_1, t) = \{1,3\}$, we only need to show $a_1' \ge a_2'$, which is true if $3-2p_{13} \ge 3\tilde{p}+2p_{13}$.
 Some rearranging and the fact that $0 \le \tilde{p} \le 1/2$ shows this is equivalent to showing $p_{13} \le 3/8$.
+%EM Using what about t^*?
 Using Table~\ref{tab:sitepatprob} and $t^*$,
 $$
 p_{13} = \frac{1}{8}\left(1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2\right),
@@ -773,7 +776,10 @@ meaning we are interested in whether
 \end{equation}
 We see that
 \begin{equation}
-1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2 \le 3 \iff (y^*)^2\left(1 - 4x^* + (x^*)^2\right) \le 2 - (x^*)^2
+\begin{split}
+& 1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2 \le 3 \\
+& \qquad \qquad \qquad \qquad \iff (y^*)^2\left(1 - 4x^* + (x^*)^2\right) \le 2 - (x^*)^2
+\end{split}
 \label{eq:lenny}
 \end{equation}
 and that
@@ -792,7 +798,7 @@ $$
 C_0(x^*, y^*) := \max\left(C^{1}_{\tau_1,\tau_1}(x^*, y^*), C^{2}_{\tau_1,\tau_1}(x^*, y^*), C^{3}_{\tau_1,\tau_1}(x^*, y^*)\right).
 $$
 
-We construct a similar lower bound on the Felsenstein tree partial likelihood.
+We next construct a lower bound on the Felsenstein tree partial likelihood.
 In the Felsenstein case, there are many more optimal internal states depending on branch lengths than in the Farris case (see the lower table of Table~\ref{tab:likelihoods}).
 We first bound the entire likelihood below and then proceed with joint inference.
 To obtain a lower bound for the likelihood we replace $1+w$ with $1-w$ in Table~\ref{tab:likelihoods} for $\tau = \tau_2$; in this case, we resolve many of the ambiguous likelihood terms.
