@@ -180,14 +180,14 @@ $\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1
     $\{1,2,3\}$ & $p_{123}$   &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
     \hline
 \end{tabular}
-\caption{Site pattern probabilities $p_{\siteSplit_j}$ on the Farris tree $\tau_1$ and the Felsenstein tree $\tau_2$ obtained using the Hadamard transform.
+\caption{Site pattern probabilities $p_{\siteSplit_j}$ on the InvFels tree $\tau_1$ and the Felsenstein tree $\tau_2$ obtained using the Hadamard transform.
 All values multiplied by $1/8$.}
 \label{tab:sitepatprob}
 \end{table}
 
 \subsection*{Example}
 We follow with an expository example computing these probabilities and likelihoods.
-Consider the fixed, binary four-taxon tree $\tau_1$ in Fig.~\ref{fig:farris-fels-top}a---this is commonly known as the ``Farris zone'' topology.
+Consider the fixed, binary four-taxon tree $\tau_1$ in Fig.~\ref{fig:farris-fels-top}a.
 The set of all possible character assignments is
 \begin{align*}
 \mathcal{P}(\{1,2,3,4\}) &= \{\emptyset, \{1,2,3,4\}, \{1\}, \{2,3,4\}, \{2\}, \{1,3,4\}, \{3\}, \{1,2,4\}, \\
@@ -268,8 +268,8 @@ p^2(1-p)^3.
 
 To compute the likelihood of observing a set of data, we need $\Pr(\ancestralStateColumn=\ancestralSplit_k\mid \alignmentColumn=\siteSplit_j,\tau,t)$ for each $\ancestralSplit_k$ and $\siteSplit_j$.
 Using branch fidelities, the probability of a character change along a branch with fidelity parameter $\theta$ is $(1-\theta)/2$, while the probability of a character remaining the same is $(1+\theta)/2$.
-See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern on the Farris tree.
-Likelihood computations for all site patterns and ancestral states are in Tables~\ref{tab:farris_likelihoods} (for the Farris tree) and~\ref{tab:fels_likelihoods} (for the Felsenstein tree).
+See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern on the InvFels tree.
+Likelihood computations for all site patterns and ancestral states are in Tables~\ref{tab:farris_likelihoods} (for the InvFels tree) and~\ref{tab:fels_likelihoods} (for the Felsenstein tree).
 Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}.
 
 \begin{figure}
@@ -285,7 +285,7 @@ Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}.
 \caption[short]{}
 \end{subfigure}
 \caption{
-    Example likelihood computations on the Farris tree $\tau_1$ for fidelities $x$, $y$, and $w$.
+    Example likelihood computations on the InvFels tree $\tau_1$ for fidelities $x$, $y$, and $w$.
     Edges labeled by the probability of substitution along that edge.
     In (a), we compute the product to obtain $\Pr(\ancestralStateColumn=\emptyset\mid \alignmentColumn=\{2,3\},\tau_1,t) = (1+x)(1-x)(1+y)(1-y)(1+w)/32$.
     In (b), the same process yields $\Pr(\ancestralStateColumn=\{1\}\mid \alignmentColumn=\{2,3\},\tau_1,t) = (1+x)(1-x)(1+y)(1-y)(1-w)/32$.
@@ -324,7 +324,7 @@ Taking maxima row-wise of each table results in Table~\ref{tab:likelihoods}.
      $\{1,2,3\}$   &$(1+x)^2   (1-w)(1+y)(1-y)$  &$(1+x)^2   (1+w)(1+y)(1-y)$\\
     \hline
 \end{tabular}
-\caption{Likelihood calculations for all site patterns $\siteSplit_j$ and internal states $\ancestralSplit_k$ of the Farris tree $\tau_1$.
+\caption{Likelihood calculations for all site patterns $\siteSplit_j$ and internal states $\ancestralSplit_k$ of the InvFels tree $\tau_1$.
 All values multiplied by $1/32$.}
 \label{tab:farris_likelihoods}
 \end{table}
@@ -368,7 +368,7 @@ All values multiplied by $1/32$.}
 \begin{table}
 \centering
 \begin{tabular}{|l|ll|}
-    \multicolumn{3}{c}{Farris tree ($\tau=\tau_1$)}\\
+    \multicolumn{3}{c}{InvFels tree ($\tau=\tau_1$)}\\
     \hline
     $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau, t)$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
     \hline
@@ -479,7 +479,7 @@ All values multiplied by $1/32$.}
                     \end{array}$\\
     \hline
 \end{tabular}
-\caption{Likelihood calculations for all site patterns $\siteSplit_j$ and ancestral state partitions $\ancestralSplitPartition_j$ after maximizing over ancestral states on the Farris tree $\tau_1$ and the Felsenstein tree $\tau_2$.
+\caption{Likelihood calculations for all site patterns $\siteSplit_j$ and ancestral state partitions $\ancestralSplitPartition_j$ after maximizing over ancestral states on the InvFels tree $\tau_1$ and the Felsenstein tree $\tau_2$.
 All values multiplied by $1/32$.
 Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
 See Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} for full calculations.}
@@ -488,9 +488,9 @@ See Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} for full 
 
 \subsection*{Form of the likelihood}
 
-Consider the Farris tree with arbitrary fidelities, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$.
-We now show that, in the case of the Farris tree, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that constraining both the top two branch parameters to be equal and the bottom two branch parameters to be equal during inference obtains the same maximum likelihood estimate as in the case of arbitrary branch parameters.
-Using the Hadamard transform, we calculate the generating probabilities on the Farris tree.
+Consider the InvFels tree with arbitrary fidelities, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$.
+We now show that, in the case of the InvFels tree, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that constraining both the top two branch parameters to be equal and the bottom two branch parameters to be equal during inference obtains the same maximum likelihood estimate as in the case of arbitrary branch parameters.
+Using the Hadamard transform, we calculate the generating probabilities on the InvFels tree.
 For site split $\emptyset$,
 \begin{align*}
     \Pr(\siteSplitRV=\emptyset\mid \tau_1, \tilde{t}) & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  x_1y_1w + x_1y_2w + y_1x_2w + x_2y_2w + x_1y_1x_2y_2) \\
@@ -569,7 +569,7 @@ Similarly,
 is a lower bound.
 
 Assume $\tau^*=\tau_1$.
-The Farris tree log-likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see the upper table of Table~\ref{tab:likelihoods}).
+The InvFels tree log-likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see the upper table of Table~\ref{tab:likelihoods}).
 
 We write out the case for the ancestral state split $\{1\}$, and show the other two cases follow a similar argument.
 Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\ref{tab:likelihoods} where $\tau = \tau_1$ in \eqref{eq:site_pattern_profile_likelihood_mean}, the log-likelihood is, suppressing normalizing constants $-\log 8$ (from the first additive term of \eqref{eq:site_pattern_profile_likelihood_mean}) and $-\log 32$ (from the second),
@@ -799,7 +799,7 @@ C_0(x^*, y^*) := \max\left(C^{1}_{\tau_1,\tau_1}(x^*, y^*), C^{2}_{\tau_1,\tau_1
 \]
 
 We next construct a lower bound on the Felsenstein tree partial likelihood.
-In the Felsenstein case, there are many more optimal internal states depending on branch lengths than in the Farris case (see the lower table of Table~\ref{tab:likelihoods}).
+In the Felsenstein case, there are many more optimal internal states depending on branch lengths than in the InvFels case (see the lower table of Table~\ref{tab:likelihoods}).
 We first bound the entire likelihood below and then proceed with joint inference.
 To obtain a lower bound for the likelihood we replace $1+w$ with $1-w$ in Table~\ref{tab:likelihoods} for $\tau = \tau_2$; in this case, we resolve many of the ambiguous likelihood terms.
 For example, for site split $\{1,2\}$, after we replace the $1+w$ term for $\ancestralSplitPartition_j(\tau, t)=\{\emptyset, \{1,2\}\}$ with $1-w$, we have
@@ -889,7 +889,7 @@ See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < x^*, y^* < 1$ whe
 \restrictedBranchInconsist*
 
 \begin{proof}
-Recalling Table~\ref{tab:likelihoods} for the Farris tree $\tau = \tau_1$, the likelihood can take one of three forms corresponding to which ancestral state for $\siteSplit_j=\{1,3\}$ maximizes the likelihood over $(x,y,w)$.
+Recalling Table~\ref{tab:likelihoods} for the InvFels tree $\tau = \tau_1$, the likelihood can take one of three forms corresponding to which ancestral state for $\siteSplit_j=\{1,3\}$ maximizes the likelihood over $(x,y,w)$.
 If $x=x^*$ and $y=y^*$ are fixed, by collapsing like terms and ignoring terms with only $x^*$ and $y^*$, the log-likelihood in \eqref{eq:farris_likelihood} as a function of $w$ is
 \begin{align*}
     \ell_{\tau_1,t^*}(\tau_1, w)
@@ -1031,7 +1031,7 @@ While it is not guaranteed to always obtain a global optimum---or even always co
 We take various safeguards to ensure convergence and stability of the procedure.
 Since this method involves randomness, we take precautions to not evaluate the likelihood near or outside of boundary conditions, i.e., when $x^*$ or $y^*$ are either $0$ or $1$.
 As is apparent from Table~\ref{tab:sitepatprob}, if $0 < x^*, y^* < 1$ and we try to evaluate the candidate $\hat{x}=\hat{y}=\hat{w}=1$ we have a likelihood of exactly zero.
-Worse still, in Table~\ref{tab:likelihoods} for the Farris tree, in the cases of $\{2\}, \{1,2\}, \{2,3\},$ and $\{1,2,3\}$, any attempt to evaluate $\hat{y}=1$ will similarly yield a zero likelihood.
+Worse still, in Table~\ref{tab:likelihoods} for the InvFels tree, in the cases of $\{2\}, \{1,2\}, \{2,3\},$ and $\{1,2,3\}$, any attempt to evaluate $\hat{y}=1$ will similarly yield a zero likelihood.
 In these cases of zero likelihood, methods that evaluate many candidate parameter values can fail to converge when near these boundaries.
 We sidestep these computational issues by restricting ourselves to the region $x^*,y^*\in [10^{-2},1-10^{-2}]^2$.
 

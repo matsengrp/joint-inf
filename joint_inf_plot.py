@@ -132,9 +132,9 @@ def parse_args():
 # ~~~~~~~~~
 # global functions for exact likelihood computation
 
-def P_FARRIS(theta0, site_pattern):
+def P_INVFELS(theta0, site_pattern):
     """
-    Site pattern frequencies for Farris tree
+    Site pattern frequencies for inverse Felsenstein tree
     """
     # fifth branch will always be positive
     theta = [-t if s=='1' else t \
@@ -148,9 +148,9 @@ def P_FARRIS(theta0, site_pattern):
          theta[2]*theta[3]*theta[4] + \
          theta[0]*theta[1]*theta[2]*theta[3])
 
-def L_FARRIS(theta, site_pattern, joint=True):
+def L_INVFELS(theta, site_pattern, joint=True):
     """
-    Likelihood for Farris zone topology
+    Likelihood for inverse Felsenstein topology
     """
     s1 = reduce(
         mul,
@@ -179,7 +179,7 @@ def L_FARRIS(theta, site_pattern, joint=True):
     else:
         return 0.03125 * sum([s1, s2, s3, s4])
 
-def FARRIS_LIKELIHOOD(x, y, xp, yp, wp, joint=True):
+def INVFELS_LIKELIHOOD(x, y, xp, yp, wp, joint=True):
     """
     Total likelihood as function of marginal likelihood
     """
@@ -187,14 +187,14 @@ def FARRIS_LIKELIHOOD(x, y, xp, yp, wp, joint=True):
     theta0 = [x, y, x, y, y]
     theta1 = [xp, yp, xp, yp, wp]
     for site_pattern in ALL_PATTERNS:
-        if not np.isclose(P_FARRIS(theta0, site_pattern), 0):
-            if np.isclose(P_FARRIS(theta1, site_pattern), 0) or np.isclose(L_FARRIS(theta1, site_pattern, joint=joint), 0):
+        if not np.isclose(P_INVFELS(theta0, site_pattern), 0):
+            if np.isclose(P_INVFELS(theta1, site_pattern), 0) or np.isclose(L_INVFELS(theta1, site_pattern, joint=joint), 0):
                 likelihood = -np.inf
                 break
 
-            likelihood += P_FARRIS(theta0, site_pattern) * \
-                (np.log(L_FARRIS(theta1, site_pattern, joint=joint)) + \
-                np.log(P_FARRIS(theta1, site_pattern)))
+            likelihood += P_INVFELS(theta0, site_pattern) * \
+                (np.log(L_INVFELS(theta1, site_pattern, joint=joint)) + \
+                np.log(P_INVFELS(theta1, site_pattern)))
 
     return likelihood
 
@@ -221,11 +221,11 @@ def P_FELSENSTEIN(theta0, site_pattern):
 # Left column of tab:sitepatprob
 def gen_prob(site_char, x, y, no_split=False):
     if no_split:
-        return P_FARRIS([x, y, x, y, y], site_char)
+        return P_INVFELS([x, y, x, y, y], site_char)
     else:
-        return P_FARRIS([x, y, x, y, y], SPLIT_TO_PATTERN_DICT[site_char])
+        return P_INVFELS([x, y, x, y, y], SPLIT_TO_PATTERN_DICT[site_char])
 
-# Upper bound for Farris tree topology
+# Upper bound for inverse Felsenstein tree topology
 # Constants from eq:a_const
 def sum_of_four(split_list, x, y):
     return sum([gen_prob(split, x, y) for split in split_list])
@@ -263,7 +263,7 @@ def max_of_logs(a1, a2):
     return a1 * np.log((2*a1/(a1+a2))) + a2 * np.log((2*a2/(a1+a2)))
 
 # L^{1}_{\tau_1,\tau_1}(\mathbf{p}_{xy})
-def farris_upper_bound_1(x, y):
+def invfels_upper_bound_1(x, y):
     return gen_prob('0', x, y)*np.log(2.) \
             + max_of_logs(a_const_1(x, y), a_const_2(x, y)) \
             + max_of_logs(a_const_3(x, y), a_const_4(x, y)) \
@@ -272,7 +272,7 @@ def farris_upper_bound_1(x, y):
             - np.log(8.)
 
 # L^{2}_{\tau_1,\tau_1}(\mathbf{p}_{xy})
-def farris_upper_bound_2(x, y):
+def invfels_upper_bound_2(x, y):
     return gen_prob('0', x, y)*np.log(2.) \
             + max_of_logs(a_const_1_prime(x, y), a_const_2_prime(x, y)) \
             + max_of_logs(a_const_3(x, y), a_const_4(x, y)) \
@@ -280,18 +280,18 @@ def farris_upper_bound_2(x, y):
             - np.log(8.)
 
 # L^{3}_{\tau_1,\tau_1}(\mathbf{p}_{xy})
-def farris_upper_bound_3(x, y):
+def invfels_upper_bound_3(x, y):
     return gen_prob('0', x, y)*np.log(2.) \
             + max_of_logs(a_const_1(x, y), a_const_2(x, y)) \
             + max_of_logs(a_const_3_prime(x, y), a_const_4_prime(x, y)) \
             + np.log(2.) \
             - np.log(8.)
 
-def farris_upper_bound(x, y):
+def invfels_upper_bound(x, y):
     return np.maximum(
-        farris_upper_bound_1(x, y),
-        farris_upper_bound_2(x, y),
-        farris_upper_bound_3(x, y)
+        invfels_upper_bound_1(x, y),
+        invfels_upper_bound_2(x, y),
+        invfels_upper_bound_3(x, y)
     )
 
 # Lower bound for the Felsenstein tree topology
@@ -346,12 +346,12 @@ def max_likelihood(xy, delta, joint=True):
     """
 
     minimizer_kwargs = dict(method="L-BFGS-B", bounds=[(delta,1-delta)]*3)
-    what_gen = basinhopping(lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2], joint=joint),
+    what_gen = basinhopping(lambda z: -INVFELS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], z[2], joint=joint),
         x0=[xy[0], xy[1], xy[1]],
         minimizer_kwargs=minimizer_kwargs
     )
     minimizer_kwargs = dict(method="L-BFGS-B", bounds=[(delta,1-delta)]*2)
-    what_res = basinhopping(lambda z: -FARRIS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], 1.-delta, joint=joint),
+    what_res = basinhopping(lambda z: -INVFELS_LIKELIHOOD(xy[0], xy[1], z[0], z[1], 1.-delta, joint=joint),
         x0=[xy[0], xy[1]],
         minimizer_kwargs=minimizer_kwargs
     )
@@ -392,8 +392,8 @@ def main(args=sys.argv[1:]):
 
     if args.analytic:
         if args.topology:
-            region = farris_upper_bound(X, Y) - felsenstein_lower_bound(X, Y)
-            plottitle = r'Region of inconsistency for Farris-generating topology'
+            region = invfels_upper_bound(X, Y) - felsenstein_lower_bound(X, Y)
+            plottitle = r'Region of inconsistency for InvFels--generating topology'
             legendtext = r'joint inference inconsistent'
         elif args.restricted_branch_lengths:
             region = what_lower_minus_one(X, Y)
