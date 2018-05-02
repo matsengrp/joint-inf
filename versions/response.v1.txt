@@ -125,6 +125,9 @@ TODO: make the argument more clear in the main text.
 > readers. Only the general case.
 
 %EM I think we could move this to the appendix to throw this reviewer a bone.
+%das: does this reviewer mean both the general case and the empirical case or just the empirical case?
+%Their review makes me think they take the empirical case the be the "general" case.
+%You think we should move both analytic cases to the appendix or just the one?
 
 > Minor Comments:
 
@@ -188,11 +191,24 @@ Thank you very much for reading the derivations and for your suggestions. As not
 > turn are used to infer spatial spread, transmission etc).
 
 %EM David-- does it seem like we could extend these results to bigger trees containing a 4 taxon tree?
+%das: I don't see why not, though I haven't thought it through very much.
+%It could take a lot of work or not much work at all.
+%Do you know of any other mathematical phylogenetics papers that do something like this?
+%Like induction on trees?
+%I can think a bit and get back to you...
 
 > Some detailed comments and questions:
 > – line 85 some cut/paste or sentence issue
 
 TODO: not sure what this is?
+%das: this reviewer was confused about the phrase "generating probabilities," thinking we were generating the probabilities and not that they were the probabilities of generating a particular data configuration.
+%I changed:
+%Fidelities have useful algebraic properties, and generating probabilities using the Hadamard transform have an especially simple form (see \eqref{eq:hadamard_probability} in the Appendix).
+%to:
+%Fidelities have useful algebraic properties.
+%As data becomes plentiful, we use the Hadamard transform (see \eqref{eq:hadamard_probability} in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form.
+
+We have added the definition of a "generating probability" to ease confusion in this sentence.
 
 > - line 97 below (2) define A^p
 
@@ -244,6 +260,11 @@ This wasn't as clear as it should have been. We have revised to:
 > What are the elements of the sets eta(tau, t)?
 
 TODO: fill in
+%das: This reviewer was confused about the bold eta, which was an ordered list of sets eta_1, eta_2, ...
+%I noticed we never actually used this ordered list so got rid of it and wrote:
+%Thus given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t)$ such that $\xi_j\in\ancestralSplitPartition_j(\tau, t)$ satisfies...
+
+We removed the ordered list of sets as it did not add to any understanding of the concept and now refer to each of these sets and their relevance directly.
 
 > Why is xi surjective? I don't understand the equation before line 359,
 > and then I don't understand what “such a choice” is in line 359
@@ -260,7 +281,10 @@ Thanks for reminding us to define p(e), which is now described as "where $p(e)$ 
 > generator?
 
 TODO: just say tough nuts?
+%das: I defined "generating probability" earlier, but, I mean, come on, a reference? We give a section of a chapter! I'd vote for tough nuts:
+%We state the Hadamard representation of site split generating probabilities---that is, probabilities of obtaining particular site splits given a tree---following Section 8.6 of \citet{Semple2003-em}.
 
+We have updated the text to explicitly define "generating probability." Background for equation (8) can be found in Section 8.6 in the Semple and Steel text. This is referenced at the beginning of the section.
 
 > Reviewer: 3
 
@@ -293,6 +317,8 @@ TODO: just say tough nuts?
 
 Thank you for your thoughts, and we have worked hard to not oversell our results.
 TODO we should make some changes to at least say that we've further clarified the implications of our results.
+%das: can you clarify this TODO?
+%Do you mean we should add more text about the bias in Fig. S3, or we should quote Richard more and show how we think things might still be bad?
 The TreeTime paper does present joint optimization as an approximate approach, and described that it is for short branch lengths.
 However, in our assessment the word "approximate" doesn't completely describe a situation in which there is significant bias.
 The TreeTime paper says that its use is appropriate when "ancestral sequence inference has little ambiguity" but even in these cases the bias in branch lengths persists.
@@ -405,6 +431,28 @@ It's also a good idea to cite additional papers about identifiability, and we ha
 
 %EM David, heh, can you point me to the place where the equal branch length result was done?
 %EM Also, I think you said that he says that the varying branch length thing is an open question-- it would be great to quote that.
+%das: below are some notes and quotes. I will work on paring these down and adding some to the text, maybe with a little more diplomacy.
+%The equal branch length example occurs in Example 2, starting halfway down the second column of page 352 in Goldman (1990) and continuing until the top of the second column on page 354.
+%Here he only talks about how parsimony is inconsistent because it may result in equally parsimonious trees (this is the last paragraph of the example section).
+%It's not until the bottom of page 356 that he punts the inconsistency to Felsenstein and Hendy/Penny, and the bottom of page 357 where he wonders how small branch lengths have to be for parsimony to be consistent in general.
+
+---
+
+Goldman (1990) concerns estimating both structural (e.g., topology, branch lengths) and incidental (e.g., ancestral states) parameters simultaneously, though the only worked example is in the case of a topology with equal branch lengths.
+Goldman shows that for certain special cases, "maximum relative likelihood," i.e., performing maximum likelihood over both topology and ancestral states, is equivalent to parsimony, and thus inconsistent.
+He says
+"Consistent estimates of incidental parameters are unobtainable, as it is not possible to increase indefinitely the number of observations (data) pertinent to each."
+However, he also says "results may be unpredictable" and "estimates of the structural parameters (e.g., the tree T) may also be inconsistent."
+He does not discuss the inconsistency of maximum relative likelihood in general, and proceeds to show that parsimony analysis is a specific instance of maximum relative likelihood, implying maximum relative likelihood of topology given equal branch lengths cannot be consistent in general, but stops there.
+We show cases where the estimates of the topology will be inconsistent if we are estimating both topology and branch lengths, and, moreover, even if we know the correct topology, we show cases where branch lengths will be inconsistent.
+Finally, just prior to his conclusion, he discusses when parsimony will give the same answer as ML, concluding that the question is ill-posed since parsimony estimates different parameters than ML, i.e., it assumes equal branch lengths.
+He states that if the expected amount of change along a branch is "very small" then parsimony will recover the same tree as ML (under a Poisson process model).
+We are able to quantify how small is "very small" in the case of general joint ML---estimating topology and branch lengths together---and not just parsimony in particular.
+
+quote:
+"The second approach is to estimate the random variables as though they were parameters of the model. However, in this case they will be incidental parameters: as the amount of data (i.e., the number of characters) increases, the number of parameters also increases. For each additional character (labeled a, for instance), there are additional data xa, consisting of the states for all n species, and additional parameters Ya, consisting of the states for all the internal nodes {NI: I = 1,2, . . , m}. Although this method is the only one possible if we wish to estimate the internal node character states, the results may be unpredictable. As noted above, these estimates cannot be consistent. Further, the estimates of the structural parameters (e.g., the tree T) may also be inconsistent. Indeed, under certain models, this approach renders inferences virtually impossible (Cavalli-Sforza et al., 1964; Cavalli-Sforza and Edwards, 1966; Kendall and Stuart, 1979). Examples of both approaches are investigated below."
+
+---
 
 > Finally, let me just add that I hate the term "Farris Zone".  The
 > "Felsenstein Zone" was a name applied to Felsenstein's important
