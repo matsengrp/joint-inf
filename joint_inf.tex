@@ -12,12 +12,31 @@
 \usepackage{palatino}
 \usepackage{hyphenat}
 \usepackage{thm-restate}
-\usepackage{lineno}
-\linenumbers
 \usepackage{natbib}
 \usepackage{setspace}
 \onehalfspacing
 \usepackage{authblk}
+
+% Line numbers and some weirdness
+\usepackage{lineno}
+\linenumbers
+\newcommand*\patchAmsMathEnvironmentForLineno[1]{%
+  \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
+  \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
+  \renewenvironment{#1}%
+     {\linenomath\csname old#1\endcsname}%
+     {\csname oldend#1\endcsname\endlinenomath}}% 
+\newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
+  \patchAmsMathEnvironmentForLineno{#1}%
+  \patchAmsMathEnvironmentForLineno{#1*}}%
+\AtBeginDocument{%
+\patchBothAmsMathEnvironmentsForLineno{equation}%
+\patchBothAmsMathEnvironmentsForLineno{align}%
+\patchBothAmsMathEnvironmentsForLineno{flalign}%
+\patchBothAmsMathEnvironmentsForLineno{alignat}%
+\patchBothAmsMathEnvironmentsForLineno{gather}%
+\patchBothAmsMathEnvironmentsForLineno{multline}%
+}
 
 % commented for arXiv submission
 %\usepackage{fancyhdr}
@@ -83,7 +102,8 @@
 \renewcommand{\arraystretch}{1.2} % because otherwise exponents get eaten by \hline
 
 \maketitle
-\thispagestyle{fancy}
+% commented for arXiv submission
+%\thispagestyle{fancy}
 
 \begin{abstract}
 Maximum likelihood estimation in phylogenetics requires a means of handling unknown ancestral states.
@@ -192,9 +212,9 @@ All proofs are deferred to the Appendix.
 
 Assume $\fullAlignment$ is generated from topology $\tau^*$ and branch fidelities $t^*$.
 Use $\ell_{\tau^*,t^*}(\tau, t)$ to denote the expected per-site log-likelihood, which can be thought of as the infinite-length sequence case
-$$
+\[
 \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) \rightarrow \ell_{\tau^*,t^*}(\tau, t).
-$$
+\]
 We give $\ell$ explicitly as \eqref{eq:site_pattern_profile_likelihood_mean} in the Appendix.
 
 \subsection*{Inconsistency in topology estimation}
@@ -206,12 +226,12 @@ When $C_0(x^*, y^*) < C_1(x^*, y^*)$, the likelihood in the Felsenstein case is 
 \begin{restatable}{theorem}{topoInconsist}
 Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x, y, x, y, w\}$.
 There exist $C_0(x^*, y^*), C_1(x^*, y^*),$ and a set of $0 < x^*, y^* < 1$ such that
-$$
+\[
 \max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t) \le C_0(x^*, y^*),
-$$
-$$
+\]
+\[
 C_1(x^*, y^*) \le \max_{t} \ \ell_{\tau_1,t^*}(\tau_2, t)
-$$
+\]
 with $C_0(x^*, y^*) < C_1(x^*, y^*)$.
 \end{restatable}
 The proof of this theorem is by a detailed examination of inequalities.
@@ -239,14 +259,14 @@ We analyze two settings on the Farris tree, corresponding to whether some branch
 As above, assume that data is generated from the Farris tree with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$ (Fig.~\ref{fig:farris-fels-top}).
 In the first ``restricted'' case, we show that for a nontrivial subset of possible values for $x^*$ and $y^*$, the interior branch fidelity parameter $w$ will be consistently overestimated as exactly equal to one (zero branch length) instead of its true value of $y^*$.
 That is, if we estimate $x$ and $y$ correctly, then, for
-$$
+\[
 \hat{w} = \arg\max_{w} \ \ell_{\tau_1,t^*}(\tau_1, \{x^*,y^*,x^*,y^*,w\}),
-$$
+\]
 there is a set of values for $x^*$ and $y^*$ where $\hat{w}\equiv 1$.
 In the general case, we do the same but with
-$$
+\[
 (\hat{x}, \hat{y}, \hat{w}) = \arg\max_{x,y,w} \ \ell_{\tau_1,t^*}(\tau_1, \{x,y,x,y,w\})
-$$
+\]
 to find a region where the inferred values do not converge to the generating values.
 These situations are in contrast to the approach using marginal likelihood where $\hat{w}$ necessarily converges to $y^*$ as the number of observations grows \citep{RoyChoudhury2015-ta}.
 
@@ -256,17 +276,17 @@ Fix estimated fidelities $x=x^*$ and $y=y^*$ to their true, generating values an
 \begin{restatable}{theorem}{restrictedBranchInconsist}
 \label{thm:restricted-bl}
 Let
-$$
+\[
 \beta := \beta(x^*, y^*) = 1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2,
-$$
-$$
+\]
+\[
 \gamma := \gamma(x^*, y^*) = 4x^*y^*.
-$$
+\]
 The maximum likelihood value $\hat{w}$ is equal to 1 if
-$$
+\[
 %\beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
 -\gamma^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma\beta x^*(y^*)^2 + \beta^2 \ge 0
-$$
+\]
 and there exists a set of $0 < x^*, y^* < 1$ satisfying this.
 \end{restatable}
 This theorem allows us to demarcate a region of biased internal branch length estimation by plotting where the inequality in Theorem~\ref{thm:restricted-bl} is satisfied (Fig.~\ref{fig:bl-inconsistency}).
@@ -297,38 +317,38 @@ We fix bounds on these estimates and show that, in the general case, joint estim
 \label{thm:general-bl}
 Define $\gamma(x, y) = 4xy$.
 For
-$$
+\[
 \beta := \beta(x^*, y^*) = 1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2,
-$$
-$$
+\]
+\[
 \gamma := \gamma(x^*, y^*),
-$$
+\]
 bounds
-$$
+\[
 \gamma_L := \gamma_{L}(x^*, y^*) \le \gamma(\hat{x}, \hat{y}),
-$$
-$$
+\]
+\[
 \gamma_U := \gamma_{U}(x^*, y^*) \ge \gamma(\hat{x}, \hat{y}),
-$$
+\]
 and
-$$
+\[
 \beta_L := \beta_{L}(x^*, y^*) \le \beta(\hat{x}, \hat{y}),
-$$
+\]
 the maximum likelihood value $\hat{w}=1$ when
-$$
+\[
 -\gamma_{U}^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma_{L}\beta_{L}x^*(y^*)^2 + \beta_{L}^2 \ge 0.
-$$
+\]
 \end{restatable}
 We use this theorem to show incorrect branch parameter estimates as follows.
 If we do not tolerate any error in pendant branches, we use the tightest possible bounds $\gamma_{L} = \gamma_{U} = \gamma$ and $\beta_{L} = \beta$, which is the restricted case of the previous section (Fig.~\ref{fig:bl-inconsistency}).
 For an intermediate bound, define a specified allowable level of error in estimates for $\hat{x}$ and $\hat{y}$ so that
-$$
+\[
 x^*-x_{L} \le \hat{x} \le x^*+x_{U}
-$$
+\]
 and
-$$
+\[
 y^*-y_{L} \le \hat{y} \le y^*+y_{U}.
-$$
+\]
 Then $\gamma_L, \gamma_U$ and $\beta_L$ can be derived directly from the bounds on $\hat{x}$ and $\hat{y}$.
 As an example, the region to the left side of the curve in Fig.~\ref{fig:bl-loose-inconsistency} shows the case where $x_L=x_U=y_L=y_U=0.1$.
 In this case, joint inference will either estimate $\hat{w}$ to have fidelity one or estimate either $\hat{x}$ or $\hat{y}$ to be more than $0.1$ away from its true fidelity.
