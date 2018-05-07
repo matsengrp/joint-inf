@@ -171,25 +171,46 @@ For notational convenience, let
 p_{\siteSplit_j} := \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,t),
 \]
 for any site split $\siteSplit_j$.
-Table~\ref{tab:sitepatprob} contains calculations of site pattern probabilities for our two topologies (Fig.~\ref{fig:farris-fels-top}).
+Table~\ref{tab:gen-sitepatprob} contains calculations of site pattern probabilities for the InvFels topology with arbitrary branch lengths and Table~\ref{tab:sitepatprob} site pattern probabilities for the InvFels topology in Fig.~\ref{fig:farris-fels-top}a.
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{|l|l|l|l|}
+\begin{tabular}{|l|l|l|}
     \hline
-$\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,t)$&$\Pr(\siteSplitRV=\siteSplit_j \mid \tau_2,t)$\\
+$\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\})$\\
     \hline
-    $\emptyset$ & $p_{\emptyset}$   &$1+x^2+y^2+4xyw+x^2y^2$&$1+2xy+2xyw+x^2w+y^2w+x^2y^2$\\
-    $\{1\}$     & $p_{1}$   &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
-    $\{2\}$     & $p_{2}$   &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
-    $\{3\}$     & $p_{3}$   &$1-x^2+y^2-x^2y^2$&$1-x^2w+y^2w-x^2y^2$\\
-    $\{1,2\}$   & $p_{12}$   &$1-x^2-y^2+x^2y^2$&$1+2xy-2xyw-x^2w-y^2w+x^2y^2$\\
-    $\{1,3\}$   & $p_{13}$   &$1+x^2+y^2-4xyw+x^2y^2$&$1-2xy-2xyw+x^2w+y^2w+x^2y^2$\\
-    $\{2,3\}$   & $p_{23}$   &$1-x^2-y^2+x^2y^2$&$1-2xy+2xyw-x^2w-y^2w+x^2y^2$\\
-    $\{1,2,3\}$ & $p_{123}$   &$1+x^2-y^2-x^2y^2$&$1+x^2w-y^2w-x^2y^2$\\
+    $\emptyset$ & $p_{\emptyset}$   &$1 + x_1x_2 +  y_1y_2 +  w[  x_1 + x_2][  y_1 + y_2] + x_1y_1x_2y_2$\\
+    $\{1\}$     & $p_{\{1\}}$       &$1 - x_1x_2 +  y_1y_2 +  w[- x_1 + x_2][  y_1 + y_2] - x_1y_1x_2y_2$\\
+    $\{2\}$     & $p_{\{2\}}$       &$1 + x_1x_2 -  y_1y_2 +  w[  x_1 + x_2][- y_1 + y_2] - x_1y_1x_2y_2$\\
+    $\{3\}$     & $p_{\{3\}}$       &$1 - x_1x_2 +  y_1y_2 +  w[  x_1 - x_2][  y_1 + y_2] - x_1y_1x_2y_2$\\
+    $\{1,2\}$   & $p_{\{1,2\}}$     &$1 - x_1x_2 -  y_1y_2 +  w[- x_1 + x_2][- y_1 + y_2] + x_1y_1x_2y_2$\\
+    $\{1,3\}$   & $p_{\{1,3\}}$     &$1 + x_1x_2 +  y_1y_2 +  w[- x_1 - x_2][  y_1 + y_2] + x_1y_1x_2y_2$\\
+    $\{2,3\}$   & $p_{\{2,3\}}$     &$1 - x_1x_2 -  y_1y_2 +  w[  x_1 - x_2][- y_1 + y_2] + x_1y_1x_2y_2$\\
+    $\{1,2,3\}$ & $p_{\{1,2,3\}}$   &$1 + x_1x_2 -  y_1y_2 +  w[  x_1 + x_2][  y_1 - y_2] - x_1y_1x_2y_2$\\
     \hline
 \end{tabular}
-\caption{Site pattern probabilities $p_{\siteSplit_j}$ on the InvFels tree $\tau_1$ and the Felsenstein tree $\tau_2$ obtained using the Hadamard transform.
+\caption{Site pattern probabilities $p_{\siteSplit_j}$ on the InvFels tree $\tau_1$ with $t=\{x_1,y_1,x_2,y_2,w\}$ obtained using the Hadamard transform.
+All values multiplied by $1/8$.}
+\label{tab:gen-sitepatprob}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|}
+    \hline
+$\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x,y,x,y,w\})$\\
+    \hline
+    $\emptyset$ & $p_{\emptyset}$   &$1+x^2+y^2+4xyw+x^2y^2$\\
+    $\{1\}$     & $p_{1}$   &$1-x^2+y^2-x^2y^2$\\
+    $\{2\}$     & $p_{2}$   &$1+x^2-y^2-x^2y^2$\\
+    $\{3\}$     & $p_{3}$   &$1-x^2+y^2-x^2y^2$\\
+    $\{1,2\}$   & $p_{12}$   &$1-x^2-y^2+x^2y^2$\\
+    $\{1,3\}$   & $p_{13}$   &$1+x^2+y^2-4xyw+x^2y^2$\\
+    $\{2,3\}$   & $p_{23}$   &$1-x^2-y^2+x^2y^2$\\
+    $\{1,2,3\}$ & $p_{123}$   &$1+x^2-y^2-x^2y^2$\\
+    \hline
+\end{tabular}
+\caption{Site pattern probabilities $p_{\siteSplit_j}$ on the InvFels tree $\tau_1$ with $t=\{x,y,x,y,w\}$ obtained using the Hadamard transform.
 All values multiplied by $1/8$.}
 \label{tab:sitepatprob}
 \end{table}
@@ -543,12 +564,23 @@ It remains to show that the joint inference procedure maximizing \eqref{eq:profi
 Without loss of generality, we focus on the single parameter $x_1$ and show we obtain a unique maximum when performing joint inference; similar arguments hold for the remaining parameters.
 We decompose the likelihood into the entropy and partial log-likelihood terms as in \eqref{eq:log_likelihood_simplified}.
 %EM I'm thinking about this wrong for some reason: the sum of two things, each of which has a unique maximum, does not necessarily have a unique maximum.
-By Gibbs's inequality, the entropy term $\shannonDivergence_{\tau^*,t^*}(\tau^*,t)$ has a unique maximum over $t$---namely $t^*$.
+%das: I added the table of general generating probabilities, but it's pretty straightforward I think to see below the second derivative of the likelihood will be negative on the whole interval, implying we have a unique maximum.
+%I think we're good.
+%Let me know if I should say anything about the continuity of the likelihood, but I think it's obvious this gets us to where we need to be?
+Consider the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$, and the map $g(x_1) \mapsto -g(x_1)\log g(x_1)$.
+We restrict our attention to $x_1,y_1,x_2,y_2,w\in(0,1)$, i.e., cases where $0<p_{\siteSplit_j}<1$ for all $\siteSplit_j$.
+By straightforward calculus, the second derivative of this map is
+\[
+-g''(x_1)(1+\log g(x_1)) - \frac{g'(x_1)^2}{g(x_1)}.
+\]
+Using each functional form in Table~\ref{tab:gen-sitepatprob} we see in all cases $g''(x_1)=0$ and $g(x_1) > 0$ for $x_1\in(0,1).$
+This implies the above second derivative is negative for each component of $\shannonDivergence_{\tau^*,t^*}(\tau^*,\tilde{t})$, and the second derivative of $\shannonDivergence_{\tau^*,t^*}(\tau^*,\tilde{t})$ itself is negative.
 %EM There's not good notational overlap between Table S2 and the definition of partial log-likelihood. Could you fix that?
 %das: I think fixed, or did you mean something in addition to changing h-->\Xi and y-->\Psi?
-For the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$, we can compute the partial log-likelihood $\tilde{\ell}_{\tau^*,t^*}(\tau^*, t)$ as in Table~\ref{tab:farris_likelihoods}.
-Clearly this partial log-likelihood will be of the form $g(x_1) = p\log(1+x_1) + (1-p)\log(1-x_1)$ with $0 \le p \le 1$, which, by the second derivative test, is concave for $x_1\in[0,1]$ and thus has a unique maximum.
-Since both summands of the likelihood are concave on $x_1\in[0,1]$, the likelihood is as well, and there exists a single $x_1\in[0,1]$ maximizing the likelihood.
+
+We can compute the partial log-likelihood $\tilde{\ell}_{\tau^*,t^*}(\tau^*, t)$ as in Table~\ref{tab:farris_likelihoods}.
+Clearly this partial log-likelihood will be of the form $g(x_1) = p\log(1+x_1) + (1-p)\log(1-x_1)$ with $0 \le p \le 1$, which, by the second derivative test, is concave for $x_1\in(0,1)$ and thus has a unique maximum.
+Since both summands of the likelihood are concave on $x_1\in(0,1)$, the likelihood is as well, and there exists a single $x_1\in(0,1)$ maximizing the likelihood.
 Given this and the symmetry of the likelihood, we let $x_1=x_2=x$ and $y_1=y_2=y$.
 The Felsenstein tree does not admit this property, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
@@ -557,28 +589,6 @@ The Felsenstein tree does not admit this property, but, since we are interested 
 \topoInconsist*
 
 \begin{proof}
-In general,
-\[
-\max_{t} \ \ell_{\tau^*,t^*}(\tau, t) \le
-    \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t})
-\]
-is an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} using Gibbs's inequality
-\[
-\shannonDivergence_{\tau^*,t^*}(\tau,t) \le \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-\]
-and
-\[
-\hat{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t).
-\]
-Similarly,
-\[
-\max_{t} \ \ell_{\tau^*,t^*}(\tau, t) \ge
-    \shannonDivergence_{\tau^*,t^*}(\tau,\hat{t})
-    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t})
-\]
-is a lower bound.
-
 Assume $\tau^*=\tau_1$.
 The InvFels tree log-likelihood takes one of three values depending on branch lengths, which is due to site split $\{1,3\}$ (see the upper table of Table~\ref{tab:likelihoods}).
 
@@ -822,6 +832,18 @@ C_0(x^*, y^*) := \max\left(C^{\{1\}}_{\tau_1,\tau_1}(x^*, y^*), C^{\emptyset}_{\
 \]
 
 We next construct a lower bound on the Felsenstein tree partial likelihood.
+%das: we never actually use the Gibbs inequality trick for the upper bound---just some log-of-polynomial bounds
+In general, taking
+\[
+\hat{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t).
+\]
+we see
+\[
+\max_{t} \ \ell_{\tau^*,t^*}(\tau, t) \ge
+    \shannonDivergence_{\tau^*,t^*}(\tau,\hat{t})
+    + \tilde{\ell}_{\tau^*,t^*}(\tau, \hat{t})
+\]
+is a lower bound for the joint maximum of \eqref{eq:log_likelihood_simplified}.
 In the Felsenstein case, there are many more optimal internal states depending on branch lengths than in the InvFels case (see the lower table of Table~\ref{tab:likelihoods}).
 We first bound the entire likelihood below and then proceed with joint inference.
 To obtain a lower bound for the likelihood we replace $1+w$ with $1-w$ in Table~\ref{tab:likelihoods} for $\tau = \tau_2$; in this case, we resolve many of the ambiguous likelihood terms.
