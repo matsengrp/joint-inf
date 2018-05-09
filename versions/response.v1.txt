@@ -100,6 +100,14 @@ A true investigation into the practical implications of our work will require an
 > 3-5 with heat maps of limiting (x,y,w) for tau_1.
 
 Please see above for our response.
+%das: I added some stuff below to maybe alleviate some confusion and to show why what this reviewer thinks we should do won't work, but not sure how much is necessary.
+%Maybe it adds to why we didn't do this.
+It is true that the form given above for l(x,y,w) has an explicit and simple maximizer.
+However, the long-run log-likelihood is slightly more complicated than this function, as seen in equation (9).
+For both topologies, we have a number of equations of this form that we would need to maximize in a grid search.
+The function of the form in l(x,y,w) above was our approximation to the upper and lower bounds of the log-likelihood, and was our choice for these bounds precisely because it has an explicit and simple maximizer.
+Doing a grid search over all ancestral states would not be trivial, and we would need to perform numerical optimization for all possible ancestral states to compute the maximum.
+
 
 > The other main concern that I have is with the restriction that
 > t=(x,y,x,y,w) in estimation rather than t=(t_1,...,t_5). On the one
@@ -120,6 +128,7 @@ Please see above for our response.
 > transparent.
 
 TODO: make the argument more clear in the main text.
+%das: Added sentence at L92. Do you think it needs more?
 
 > I don't think the restricted case of p8-9 will be of interest to
 > readers. Only the general case.
@@ -140,6 +149,7 @@ TODO: make the argument more clear in the main text.
 > of the authors to do the conversions that will make the figs more
 > natural for readers.
 
+%das: @EM how do you feel about just plotting 1-x and 1-y and explaining that this is intuitively more like branch lengths?
 
 > Reviewer: 2
 
@@ -232,6 +242,7 @@ We have reformulated this sentence to avoid the comparison.
 > don't understand this
 
 TODO: this is changed, but I don't see this being a lot clearer.
+%das: changed, is it better?
 
 > line 185++ and figure5: true value of w?
 

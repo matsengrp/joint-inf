@@ -172,6 +172,7 @@ This parameter quantifies the fidelity of transmission of the ancestral state ac
 Fidelities have useful algebraic properties.
 As data becomes plentiful, we use the Hadamard transform (see \eqref{eq:hadamard_probability} in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form.
 For a four-taxon tree, define the general branch fidelity parameter $t=\{\theta_1,\theta_2,\theta_3,\theta_4,\theta_5\}$ where fidelities are ordered in the order of the taxa with the internal branch last (Fig.~\ref{fig:farris-fels-top}).
+We show in the Appendix that, for the InvFels tree, the maximum likelihood fidelities require $\theta_1=\theta_3$ and $\theta_2=\theta_4$, so we subsequently fix fidelity parameters to $t=\{x,y,x,y,w\}$.
 
 \subsection*{Two paths to maximum likelihood}
 
@@ -292,7 +293,11 @@ and there exists a set of $0 < x^*, y^* < 1$ satisfying this.
 \end{restatable}
 This theorem allows us to demarcate a region of biased internal branch length estimation by plotting where the inequality in Theorem~\ref{thm:restricted-bl} is satisfied (Fig.~\ref{fig:bl-inconsistency}).
 Intuitively, this happens when estimated ancestral sequences at internal nodes are identical across a branch with this branch length estimated to be zero (i.e., has fidelity $\hat{w} = 1$).
-As an intuition for the theoretical development, if there is no change along a branch with fidelity $\theta$, the likelihood will more likely include a term of $(1+\theta)$ instead of $(1-\theta)$ for this event, resulting in positive bias of branch fidelities.
+We provide the following as an intuition for the theoretical development.
+For a particular site pattern, in obtaining the joint maximum likelihood function we maximize over ancestral states.
+For the internal branch---the branch between the two internal nodes---we have a choice of $(1+w)$ or $(1-w)$ in each of our likelihood terms depending on which ancestral state split corresponds to the highest partial likelihood term.
+A maximization procedure will more likely introduce a $(1+w)$ term than a $(1-w)$ term, though this will not be guaranteed as the maximum depends on the values of $x$ and $y$.
+This tendency to more likley include $(1+w)$ terms in the likelihood results in a positive bias of branch fidelities.
 If we allow multifurcating trees in our inference, then we can think of this as another instance of converging to the wrong topology.
 
 \begin{figure}
