@@ -931,15 +931,17 @@ C_1(x^*, y^*) := \shannonDivergence_{\tau_1,t^*}(\tau_2,\{1,1-b,0\}) + 2\cdot\lo
 See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < x^*, y^* < 1$ where $C_1(x^*, y^*) > C_0(x^*, y^*)$ and joint inference is inconsistent.
 \end{proof}
 
-\restrictedBranchInconsist*
+\generalBranchInconsist*
 
 \begin{proof}
 Recalling Table~\ref{tab:likelihoods} for the InvFels tree $\tau = \tau_1$, the likelihood can take one of three forms corresponding to which ancestral state for $\siteSplit_j=\{1,3\}$ maximizes the likelihood over $(x,y,w)$.
-If $x=x^*$ and $y=y^*$ are fixed, by collapsing like terms and ignoring terms with only $x^*$ and $y^*$, the log-likelihood in \eqref{eq:farris_likelihood} as a function of $w$ is
+In general, $\hat{w}$ is a function of $x^*$, $y^*$, $\hat{x}$, and $\hat{y}$.
+Assume we know $\hat{x}$ and $\hat{y}$ as functions of $x^*$ and $y^*$ only.
+By collapsing like terms and ignoring terms without $w$, the log-likelihood in \eqref{eq:farris_likelihood} as a function of $w$ is
 \begin{align*}
     \ell_{\tau_1,t^*}(\tau_1, w)
-    &\sim     p_{\emptyset}  \cdot\log(1+(x^*)^2+(y^*)^2+4x^*y^*w+(x^*)^2(y^*)^2) \\
-    &\qquad + p_{13}         \cdot\log(1+(x^*)^2+(y^*)^2-4x^*y^*w+(x^*)^2(y^*)^2) \\
+    &\sim     p_{\emptyset}  \cdot\log(1+(\hat{x})^2+(\hat{y})^2+4\hat{x}\hat{y}w+(\hat{x})^2(\hat{y})^2) \\
+    &\qquad + p_{13}         \cdot\log(1+(\hat{x})^2+(\hat{y})^2-4\hat{x}\hat{y}w+(\hat{x})^2(\hat{y})^2) \\
     &\qquad + (1 - p_{13})\cdot\log(1+w) \\
     &\qquad + p_{13}\cdot\log(1-w)
 \end{align*}
@@ -947,8 +949,8 @@ where $\sim$ denotes equality up to an additive constant.
 Similarly, the other two possibilities for the likelihood both satisfy
 \begin{align*}
     \ell_{\tau_1,t^*}(\tau_1, w)
-    &\sim     p_{\emptyset}  \cdot\log(1+(x^*)^2+(y^*)^2+4x^*y^*w+(x^*)^2(y^*)^2) \\
-    &\qquad + p_{13}         \cdot\log(1+(x^*)^2+(y^*)^2-4x^*y^*w+(x^*)^2(y^*)^2) \\
+    &\sim     p_{\emptyset}  \cdot\log(1+(\hat{x})^2+(\hat{y})^2+4\hat{x}\hat{y}w+(\hat{x})^2(\hat{y})^2) \\
+    &\qquad + p_{13}         \cdot\log(1+(\hat{x})^2+(\hat{y})^2-4\hat{x}\hat{y}w+(\hat{x})^2(\hat{y})^2) \\
     &\qquad + \log(1+w).
 \end{align*}
 Since
@@ -970,12 +972,13 @@ where
 \alpha_2 := \alpha_2(x^*, y^*) = \frac{1}{8}\left(1+(x^*)^2+(y^*)^2-4x^*(y^*)^2+(x^*)^2(y^*)^2\right),
 \]
 \[
-\beta := \beta(x^*, y^*) = 1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2,
+\beta := \beta(\hat{x}, \hat{y}) = 1+(\hat{x})^2+(\hat{y})^2+(\hat{x})^2(\hat{y})^2,
 \]
 \[
-\gamma := \gamma(x^*, y^*) = 4x^*y^*.
+\gamma := \gamma(\hat{x}, \hat{y}) = 4\hat{x}\hat{y}.
 \]
-Since $x^*$ and $y^*$ fall between zero and one, we make use of the inequalities (excepting the cases of $x^*=y^*=0$ and $x^*=y^*=1$)
+%das: TODO double check restrictions on \hat{x} and \hat{y} are reasonable
+Since $x^*,y^*,\hat{x},$ and $\hat{y}$ all fall between zero and one, we make use of the inequalities (excepting the cases of $x^*=y^*=0$ and $x^*=y^*=1$)
 \[
 \alpha_1 > \alpha_2
 \]
@@ -1026,32 +1029,21 @@ a + b + c \ge 0.
 \]
 Using
 \[
-\alpha_1 + \alpha_2 = \frac{1}{4}\beta
+\alpha_1 + \alpha_2 = \frac{1}{4}\left(1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2\right)
 \]
 and
 \[
 \alpha_1 - \alpha_2 = x^*(y^*)^2,
 \]
 and simplifying as functions of $\gamma$ and $\beta$ shows that $a + b + c \ge 0$ is equivalent to
-\begin{equation}
-\label{eq:restricted-bl-result}
-%\beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
--\gamma^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma\beta x^*(y^*)^2 + \beta^2 \ge 0.
-\end{equation}
-\end{proof}
-
-\generalBranchInconsist*
-
-\begin{proof}
-In the general case, $\hat{w}$ is a function of $x^*$, $y^*$, $\hat{x}$, and $\hat{y}$.
-From the previous section, $\hat{w}$ is given by the quadratic formula, though now with $\gamma$ and $\beta$ as functions of $\hat{x}$ and $\hat{y}$ instead of $x^*$ and $y^*$.
-Assume we know $\hat{x}$ and $\hat{y}$ as functions of $x^*$ and $y^*$ only.
-The same derivation as for \eqref{eq:restricted-bl-result} further yields
+\[
+-\gamma^2\left(1 + \frac{1}{2}\left(1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2\right)\right) + 2\gamma\beta x^*(y^*)^2 + \beta^2 \ge 0,
+\]
+which, writing out $\gamma$ and $\beta$ explicitly yields
 \begin{equation}
 \label{eq:general-bl-result}
--\gamma^2(\hat{x}, \hat{y})\left(1 + \frac{1}{2}\beta\right) + 2\gamma(\hat{x}, \hat{y})\beta(\hat{x}, \hat{y})x^*(y^*)^2 + \beta^2(\hat{x}, \hat{y}) \ge 0
+-\gamma^2(\hat{x}, \hat{y})\left(1 + \frac{1}{2}\left(1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2\right)\right) + 2\gamma(\hat{x}, \hat{y})\beta(\hat{x}, \hat{y})x^*(y^*)^2 + \beta^2(\hat{x}, \hat{y}) \ge 0.
 \end{equation}
-where, since $\alpha_1$ and $\alpha_2$ are still functions of $x^*$ and $y^*$, $\left(1+1/2\cdot\beta\right)$ and $x^*(y^*)^2$ from \eqref{eq:restricted-bl-result} remain unchanged.
 Given the bounds
 \[
 \gamma_{L} \le \gamma(\hat{x}, \hat{y}) \le \gamma_{U}
@@ -1062,11 +1054,47 @@ and
 \]
 if
 \[
--\gamma_{U}^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma_{L}\beta_{L}x^*(y^*)^2 + \beta_{L}^2 \ge 0,
+-\gamma_{U}^2\left(1 + \frac{1}{2}\left(1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2\right)\right) + 2\gamma_{L}\beta_{L}x^*(y^*)^2 + \beta_{L}^2 \ge 0,
 \]
 then \eqref{eq:general-bl-result} holds, and this is an inequality involving only $x^*$ and $y^*$.
 \end{proof}
 To get a sense of the region of overestimation, Fig.~\ref{fig:bl-loose-inconsistency} plots an intermediate case.
+
+\subsubsection*{Restricted case}
+
+Theorem~\ref{thm:general-bl} allows us to see where inconsistency in branch length estimation arises when performing general joint maximization over all of the branch parameters, though its conclusion is a statement about both the inconsistency of the internal branch estimate as well as about poor estimation of the other branch parameter estimates.
+To obtain an analytic result indicating where only the internal branch parameter is inconsistently estimated, we consider a restricted case of Theorem~\ref{thm:general-bl}.
+Fix estimated fidelities $x=x^*$ and $y=y^*$ to their true, generating values and estimate the internal branch parameter $w$.
+%das: @EM I made this not a theorem since it's now a special case. Should it stay a theorem?
+Let
+\[
+\beta := \beta(x^*, y^*) = 1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2,
+\]
+\[
+\gamma := \gamma(x^*, y^*) = 4x^*y^*.
+\]
+The maximum likelihood value $\hat{w}$ is equal to 1 if
+\begin{equation}
+\label{eq:restricted-bl-result}
+%\beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
+-\gamma^2\left(1 + \frac{1}{2}\left(1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2\right)\right) + 2\gamma\beta x^*(y^*)^2 + \beta^2 \ge 0,
+\end{equation}
+and there exists a set of $0 < x^*, y^* < 1$ satisfying this.
+This follows in a straightforward manner from \eqref{eq:general-bl-result}.
+If $\hat{x}=x^*$ and $\hat{y}=y^*$, then $\gamma_{L} = \gamma_{U} = \gamma$ and $\beta_{L} = \beta$ and \eqref{eq:general-bl-result} becomes \eqref{eq:restricted-bl-result}.
+This allows us to demarcate a region of biased internal branch length estimation by plotting where the inequality in \eqref{eq:restricted-bl-result} is satisfied (Fig.~\ref{fig:bl-inconsistency}).
+
+\begin{figure}
+\centering
+% obtained by running
+% python joint_inf_plot.py --analytic --restricted-branch-lengths --delta .001 --plot-name figures/branch-length-inconsistency.svg
+\includegraphics[width=\textwidth]{branch-length-inconsistency-inkscape}
+\caption{Analytically-derived region of branch parameter inconsistency in terms of fidelities $x=x^*$ and $y=y^*$ that are fixed to their correct values with the same data-generating setup as Fig.~\ref{fig:inconsistency-farris}.
+The shaded region shows the area in which the internal branch length is estimated to be 0, i.e.\ the estimated fidelity $\hat{w} = 1$, even though the generating fidelity is $y^*$.
+Here again, the shaded region is guaranteed to give inconsistent estimation, while the white region may or may not do so.}
+\label{fig:bl-inconsistency}
+\end{figure}
+
 \subsection*{Empirical validation}
 
 We use basin-hopping \citep{Wales1997} implemented in \texttt{scipy} \citep{Jones2001} to obtain the plots in Figs.~\ref{fig:bl-general-inconsistency}, \ref{fig:bl-general-marginal}, and \ref{fig:bl-general-bias}.

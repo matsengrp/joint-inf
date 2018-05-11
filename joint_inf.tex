@@ -259,77 +259,36 @@ We now consider the problem of branch length estimation on the correct tree usin
 As described above, we use the notion of fidelities to analyze what happens as changes occur along each branch as opposed to the standard branch length formulation.
 We analyze two settings on the InvFels tree, corresponding to whether some branch fidelities are fixed at their true values or not.
 As above, assume that data is generated from the InvFels tree with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$ (Fig.~\ref{fig:farris-fels-top}).
-In the first ``restricted'' case, we show that for a nontrivial subset of possible values for $x^*$ and $y^*$, the interior branch fidelity parameter $w$ will be consistently overestimated as exactly equal to one (zero branch length) instead of its true value of $y^*$.
+
+In the general case, we do the same but with
+\begin{equation}
+\label{eq:general-bl-opt}
+(\hat{x}, \hat{y}, \hat{w}) = \arg\max_{x,y,w} \ \ell_{\tau_1,t^*}(\tau_1, \{x,y,x,y,w\})
+\end{equation}
+to find a region where the inferred values do not converge to the generating values.
+In the Appendix we consider a ``restricted'' case where we show that, for a nontrivial subset of possible values for $x^*$ and $y^*$, the interior branch fidelity parameter $w$ will be consistently overestimated as exactly equal to one (zero branch length) instead of its true value of $y^*$.
 That is, if we estimate $x$ and $y$ correctly, then, for
 \[
 \hat{w} = \arg\max_{w} \ \ell_{\tau_1,t^*}(\tau_1, \{x^*,y^*,x^*,y^*,w\}),
 \]
 there is a set of values for $x^*$ and $y^*$ where $\hat{w}\equiv 1$.
-In the general case, we do the same but with
-\[
-(\hat{x}, \hat{y}, \hat{w}) = \arg\max_{x,y,w} \ \ell_{\tau_1,t^*}(\tau_1, \{x,y,x,y,w\})
-\]
-to find a region where the inferred values do not converge to the generating values.
 These situations are in contrast to the approach using marginal likelihood where $\hat{w}$ necessarily converges to $y^*$ as the number of observations grows \citep{RoyChoudhury2015-ta}.
 
-\subsubsection*{Restricted case}
-
-Fix estimated fidelities $x=x^*$ and $y=y^*$ to their true, generating values and estimate the internal branch parameter $w$.
-\begin{restatable}{theorem}{restrictedBranchInconsist}
-\label{thm:restricted-bl}
-Let
-\[
-\beta := \beta(x^*, y^*) = 1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2,
-\]
-\[
-\gamma := \gamma(x^*, y^*) = 4x^*y^*.
-\]
-The maximum likelihood value $\hat{w}$ is equal to 1 if
-\[
-%\beta^2-\gamma^2-2\gamma^2\alpha_1-2\gamma^2\alpha_2+2\gamma\alpha_1\beta-2\gamma\alpha_2\beta \ge 0.
--\gamma^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma\beta x^*(y^*)^2 + \beta^2 \ge 0
-\]
-and there exists a set of $0 < x^*, y^* < 1$ satisfying this.
-\end{restatable}
-This theorem allows us to demarcate a region of biased internal branch length estimation by plotting where the inequality in Theorem~\ref{thm:restricted-bl} is satisfied (Fig.~\ref{fig:bl-inconsistency}).
-Intuitively, this happens when estimated ancestral sequences at internal nodes are identical across a branch with this branch length estimated to be zero (i.e., has fidelity $\hat{w} = 1$).
-We provide the following as an intuition for the theoretical development.
-For a particular site pattern, in obtaining the joint maximum likelihood function we maximize over ancestral states.
-For the internal branch---the branch between the two internal nodes---we have a choice of $(1+w)$ or $(1-w)$ in each of our likelihood terms depending on which ancestral state split corresponds to the highest partial likelihood term.
-A maximization procedure will more likely introduce a $(1+w)$ term than a $(1-w)$ term, though this will not be guaranteed as the maximum depends on the values of $x$ and $y$.
-This tendency to more likley include $(1+w)$ terms in the likelihood results in a positive bias of branch fidelities.
-If we allow multifurcating trees in our inference, then we can think of this as another instance of converging to the wrong topology.
-
-\begin{figure}
-\centering
-% obtained by running
-% python joint_inf_plot.py --analytic --restricted-branch-lengths --delta .001 --plot-name figures/branch-length-inconsistency.svg
-\includegraphics[width=\textwidth]{branch-length-inconsistency-inkscape}
-\caption{Analytically-derived region of branch parameter inconsistency in terms of fidelities $x=x^*$ and $y=y^*$ that are fixed to their correct values with the same data-generating setup as Fig.~\ref{fig:inconsistency-farris}.
-The shaded region shows the area in which the internal branch length is estimated to be 0, i.e.\ the estimated fidelity $\hat{w} = 1$, even though the generating fidelity is $y^*$.
-Here again, the shaded region is guaranteed to give inconsistent estimation, while the white region may or may not do so.}
-\label{fig:bl-inconsistency}
-\end{figure}
-
-\subsubsection*{General case}
-
-The general case is more challenging to analyze and so we obtain weaker bounds.
-Here, $\hat{w}$ is a function of $x^*$, $y^*$, $\hat{x}$, and $\hat{y}$.
-Looking to the previous section, the region where $\hat{w}=1$ will still be given by the inequality in Theorem~\ref{thm:restricted-bl}, only with $\gamma$ and $\beta$ now being functions of $\hat{x}$ and $\hat{y}$ instead of $x^*$ and $y^*$.
+%Looking to the previous section, the region where $\hat{w}=1$ will still be given by the inequality in Theorem~\ref{thm:restricted-bl}, only with $\gamma$ and $\beta$ now being functions of $\hat{x}$ and $\hat{y}$ instead of $x^*$ and $y^*$.
+%We show there are similar bounds as in the restricted case, though we need to take into account the unknown values of $\hat{x}$ and $\hat{y}$.
+The estimate $\hat{w}$ in \eqref{eq:general-bl-opt} is a function of $x^*$, $y^*$, $\hat{x}$, and $\hat{y}$.
 Assume we know $\hat{x}$ and $\hat{y}$ as functions of $x^*$ and $y^*$.
-We show there are similar bounds as in the restricted case, though we need to take into account the unknown values of $\hat{x}$ and $\hat{y}$.
-We fix bounds on these estimates and show that, in the general case, joint estimation either estimates $\hat{w}$ to be one or estimates $\hat{x}$ or $\hat{y}$ to fall outside of specified bounds, indicating a poor estimate in at least one of the three unknown branch parameters.
+We fix bounds on these estimates and show that, in optimizing \eqref{eq:general-bl-opt}, joint estimation either estimates $\hat{w}$ to be one or estimates $\hat{x}$ or $\hat{y}$ to fall outside of specified bounds, indicating a poor estimate in at least one of the three unknown branch parameters.
 \begin{restatable}{theorem}{generalBranchInconsist}
 \label{thm:general-bl}
-Define $\gamma(x, y) = 4xy$.
-For
+Define
 \[
-\beta := \beta(x^*, y^*) = 1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2,
+\gamma(x, y) = 4xy,
 \]
 \[
-\gamma := \gamma(x^*, y^*),
+\beta(x, y) = 1+x^2+y^2+x^2y^2,
 \]
-bounds
+and bounds
 \[
 \gamma_L := \gamma_{L}(x^*, y^*) \le \gamma(\hat{x}, \hat{y}),
 \]
@@ -338,15 +297,15 @@ bounds
 \]
 and
 \[
-\beta_L := \beta_{L}(x^*, y^*) \le \beta(\hat{x}, \hat{y}),
+\beta_L := \beta_{L}(x^*, y^*) \le \beta(\hat{x}, \hat{y}).
 \]
-the maximum likelihood value $\hat{w}=1$ when
+The maximum likelihood value $\hat{w}=1$ when
 \[
--\gamma_{U}^2\left(1 + \frac{1}{2}\beta\right) + 2\gamma_{L}\beta_{L}x^*(y^*)^2 + \beta_{L}^2 \ge 0.
+-\gamma_{U}^2\left(1 + \frac{1}{2}\left(1+(x^*)^2+(y^*)^2+(x^*)^2(y^*)^2\right)\right) + 2\gamma_{L}\beta_{L}x^*(y^*)^2 + \beta_{L}^2 \ge 0.
 \]
 \end{restatable}
 We use this theorem to show incorrect branch parameter estimates as follows.
-If we do not tolerate any error in pendant branches, we use the tightest possible bounds $\gamma_{L} = \gamma_{U} = \gamma$ and $\beta_{L} = \beta$, which is the restricted case of the previous section (Fig.~\ref{fig:bl-inconsistency}).
+If we do not tolerate any error in pendant branches, we use the tightest possible bounds $\gamma_{L} = \gamma_{U} = \gamma$ and $\beta_{L} = \beta$; this corresponds to the restricted case, analyzed in the Appendix (Fig.~\ref{fig:bl-inconsistency}).
 For an intermediate bound, define a specified allowable level of error in estimates for $\hat{x}$ and $\hat{y}$ so that
 \[
 x^*-x_{L} \le \hat{x} \le x^*+x_{U}
@@ -358,6 +317,15 @@ y^*-y_{L} \le \hat{y} \le y^*+y_{U}.
 Then $\gamma_L, \gamma_U$ and $\beta_L$ can be derived directly from the bounds on $\hat{x}$ and $\hat{y}$.
 As an example, the region to the left side of the curve in Fig.~\ref{fig:bl-loose-inconsistency} shows the case where $x_L=x_U=y_L=y_U=0.1$.
 In this case, joint inference will either estimate $\hat{w}$ to have fidelity one or estimate either $\hat{x}$ or $\hat{y}$ to be more than $0.1$ away from its true fidelity.
+
+%das: TODO update this intuition
+Intuitively, this happens when estimated ancestral sequences at internal nodes are identical across a branch with this branch length estimated to be zero (i.e., has fidelity $\hat{w} = 1$).
+We provide the following as an intuition for the theoretical development.
+For a particular site pattern, in obtaining the joint maximum likelihood function we maximize over ancestral states.
+For the internal branch---the branch between the two internal nodes---we have a choice of $(1+w)$ or $(1-w)$ in each of our likelihood terms depending on which ancestral state split corresponds to the highest partial likelihood term.
+A maximization procedure will more likely introduce a $(1+w)$ term than a $(1-w)$ term, though this will not be guaranteed as the maximum depends on the values of $x$ and $y$.
+This tendency to more likley include $(1+w)$ terms in the likelihood results in a positive bias of branch fidelities.
+If we allow multifurcating trees in our inference, then we can think of this as another instance of converging to the wrong topology.
 
 \begin{figure}
 \centering
