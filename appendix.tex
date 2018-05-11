@@ -928,7 +928,7 @@ Our lower bound is
 \[
 C_1(x^*, y^*) := \shannonDivergence_{\tau_1,t^*}(\tau_2,\{1,1-b,0\}) + 2\cdot\log(2) + (2-b)\cdot\log(2-b) + b\cdot\log(b).
 \]
-See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < x^*, y^* < 1$ where $C_1(x^*, y^*) > C_0(x^*, y^*)$ and joint inference is inconsistent.
+See Fig.~\ref{fig:inconsistency-farris} for the values of $0 < p_{x^*}, p_{y^*} < 1$ with $p_{x^*}=(1-x^*)/2$ and $p_{y^*}=(1-y^*)/2$ where $C_1(x^*, y^*) > C_0(x^*, y^*)$ and joint inference is inconsistent.
 \end{proof}
 
 \generalBranchInconsist*
@@ -1089,8 +1089,8 @@ This allows us to demarcate a region of biased internal branch length estimation
 % obtained by running
 % python joint_inf_plot.py --analytic --restricted-branch-lengths --delta .001 --plot-name figures/branch-length-inconsistency.svg
 \includegraphics[width=\textwidth]{branch-length-inconsistency-inkscape}
-\caption{Analytically-derived region of branch parameter inconsistency in terms of fidelities $x=x^*$ and $y=y^*$ that are fixed to their correct values with the same data-generating setup as Fig.~\ref{fig:inconsistency-farris}.
-The shaded region shows the area in which the internal branch length is estimated to be 0, i.e.\ the estimated fidelity $\hat{w} = 1$, even though the generating fidelity is $y^*$.
+\caption{Analytically-derived region of branch parameter inconsistency where $p_x=p_{x^*}$ and $p_y=p_{y^*}$ are fixed to their correct values with the same data-generating setup as Fig.~\ref{fig:inconsistency-farris}.
+The shaded region shows the area in which the internal branch length $\hat{p}_w$ is estimated to be 0, i.e.\ the estimated fidelity $\hat{w} = 1$, even though the generating fidelity is $y^*$.
 Here again, the shaded region is guaranteed to give inconsistent estimation, while the white region may or may not do so.}
 \label{fig:bl-inconsistency}
 \end{figure}

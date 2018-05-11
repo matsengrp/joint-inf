@@ -245,7 +245,7 @@ This enables more possible maxima for $\tau_2$ even if data are generated from $
 % python joint_inf_plot.py --analytic --topology --delta .001 --plot-name figures/topology-inconsistency.svg
 \includegraphics[width=\textwidth]{topology-inconsistency-inkscape}
 \caption{
-    An analytically-derived region of topological inconsistency in terms of fidelities for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $w^* = y^*$.
+    An analytically-derived region of topological inconsistency in terms of fidelities for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $w^* = y^*$ ($p_{w^*}=p_{y^*}$).
     Due to the looseness of the upper and lower bounds, the parameters in the white region do not necessarily indicate consistency, though all parameters in the shaded region result in an inconsistency.
 }
 \label{fig:inconsistency-farris}
@@ -318,8 +318,6 @@ Then $\gamma_L, \gamma_U$ and $\beta_L$ can be derived directly from the bounds 
 As an example, the region to the left side of the curve in Fig.~\ref{fig:bl-loose-inconsistency} shows the case where $x_L=x_U=y_L=y_U=0.1$.
 In this case, joint inference will either estimate $\hat{w}$ to have fidelity one or estimate either $\hat{x}$ or $\hat{y}$ to be more than $0.1$ away from its true fidelity.
 
-%das: TODO update this intuition
-Intuitively, this happens when estimated ancestral sequences at internal nodes are identical across a branch with this branch length estimated to be zero (i.e., has fidelity $\hat{w} = 1$).
 We provide the following as an intuition for the theoretical development.
 For a particular site pattern, in obtaining the joint maximum likelihood function we maximize over ancestral states.
 For the internal branch---the branch between the two internal nodes---we have a choice of $(1+w)$ or $(1-w)$ in each of our likelihood terms depending on which ancestral state split corresponds to the highest partial likelihood term.
@@ -334,7 +332,7 @@ If we allow multifurcating trees in our inference, then we can think of this as 
 \includegraphics[width=\textwidth]{bl-loose-inconsistency-inkscape}
 \caption{
     Analytically-derived region of branch parameter inconsistency in terms of fidelities with the same data-generating setup as Fig.~\ref{fig:inconsistency-farris}.
-    In the marked region, either $\hat{w}=1$ or one of $x^*-0.1 \le \hat{x} \le x^*+0.1$ or $y^*-0.1 \le \hat{y} \le y^*+0.1$ will not be true, resulting in poor estimation of the pendant branch parameters.
+    In the marked region, either $\hat{p}_w=0$ or, for $p_{x^*}=(1-x^*)/2$ and $p_{y^*}=(1-y^*)/2$, one of $x^*-0.1 \le \hat{x} \le x^*+0.1$ or $y^*-0.1 \le \hat{y} \le y^*+0.1$ will not be true, resulting in poor estimation of the pendant branch parameters.
     As in previous plots, the shaded and white regions are loose indications of inconsistency.
 }
 \label{fig:bl-loose-inconsistency}
@@ -363,11 +361,11 @@ For joint inference, the errors range from $[-7\times 10^{-3}, 8\times 10^{-2}]$
 % obtained by running
 % python joint_inf_plot.py --empirical --general-branch-lengths --delta .01 --plot-name figures/w-hat-empirical-01.svg --out-pkl-name figures/w-hat-empirical-01.pkl --n-jobs 16
 % or
-% python joint_inf_plot.py --empirical --general-branch-lengths --plot-name figures/w-hat-empirical-01.svg --in-pkl-name figures/w-hat-empirical-01.pkl
+% python joint_inf_plot.py --empirical --general-branch-lengths --plot-name figures/w-hat-empirical-01.svg --in-pkl-name ../intermed/w-hat-empirical-01.pkl
 % if fit already
 \includegraphics[width=\textwidth]{w-hat-empirical-01}
 \caption{
-    Numerical estimates for $\hat{w}$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \citep{Wales1997} optimizing \eqref{eq:profile_likelihood}.
+    Numerical estimates for $\hat{p}_w=(1-\hat{w})/2$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using basin-hopping \citep{Wales1997} optimizing \eqref{eq:profile_likelihood}.
     Data generated as in Fig.~\ref{fig:inconsistency-farris}.
 }
 \label{fig:bl-general-inconsistency}

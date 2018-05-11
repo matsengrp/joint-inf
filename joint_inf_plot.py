@@ -386,9 +386,12 @@ def main(args=sys.argv[1:]):
     args = parse_args()
 
     st_time = time.time()
-    x_range = np.arange(args.delta, 1.0, args.delta)
-    y_range = np.arange(args.delta, 1.0, args.delta)
-    X, Y = np.meshgrid(x_range,y_range)
+    # plot probabilities of substitution, not fidelities
+    px_range = np.arange(args.delta, 0.5, args.delta)
+    py_range = np.arange(args.delta, 0.5, args.delta)
+    PX, PY = np.meshgrid(px_range,py_range)
+    X = 1-2*PX
+    Y = 1-2*PY
 
     if args.analytic:
         if args.topology:
@@ -398,23 +401,28 @@ def main(args=sys.argv[1:]):
         elif args.restricted_branch_lengths:
             region = what_lower_minus_one(X, Y)
             plottitle = r'Region of inconsistent branch parameter estimation''\n'r'(restricted case)'
-            legendtext = r'$\hat{w}=1$'
+            legendtext = r'$\hat{p}_w=0$'
         elif args.general_branch_lengths:
             region = what_lower_general(X, Y)
             plottitle = r'Region of inconsistent branch parameter estimation''\n'r'(general case)'
-            legendtext = r'$\hat{w}=1$ or $\hat{x}$ or $\hat{y}$''\n'r'poorly estimated'
+            legendtext = r'$\hat{p}_w=0$ or $\hat{p}_x$ or $\hat{p}_y$''\n'r'poorly estimated'
 
-        ct = plt.contour(X, Y, region, [0], colors='k', linewidths=1)
+        ct = plt.contour(PX, PY, region, [0], colors='k', linewidths=1)
         plt.axis('scaled')
-        plt.xlabel(r'$x^*$', fontsize=FONT_SIZE)
-        plt.ylabel(r'$y^*$', fontsize=FONT_SIZE)
+        plt.xlabel(r'$p_{x^*}$', fontsize=FONT_SIZE-4)
+        plt.ylabel(r'$p_{y^*}$', fontsize=FONT_SIZE-4)
         ttl = plt.title(plottitle, fontsize=FONT_SIZE+2)
         ttl.set_position([.5, 1.05])
         ct.ax.tick_params(labelsize=FONT_SIZE-2)
-        if not args.topology:
+        if args.topology:
             vec = ct.collections[0].get_paths()[0].vertices
-            x = np.concatenate(([1-args.delta], vec[:,0], [args.delta]))
-            y = np.concatenate(([args.delta], vec[:,1], [1-args.delta]))
+            x = np.concatenate(([vec[0,0]], [.5-args.delta], [vec[-1,0]]))
+            y = np.concatenate(([vec[0,1]], [.5-args.delta], [vec[-1,1]]))
+            plt.plot(x, y, '-', alpha=.15, lw=.5)
+        else:
+            vec = ct.collections[0].get_paths()[0].vertices
+            x = np.concatenate(([args.delta], [.5-args.delta], [.5-args.delta]))
+            y = np.concatenate(([.5-args.delta], [.5-args.delta], [args.delta]))
             plt.plot(x, y, '-', alpha=.15, lw=.5)
 
         if args.restricted_branch_lengths:
@@ -422,14 +430,14 @@ def main(args=sys.argv[1:]):
                 handler_map={Legend: LegendHandler()},
                 bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=FONT_SIZE-4)
         else:
-            plt.legend([Legend()], [legendtext],
+            plt.legend([Legend()], [legendtext], loc=3,
                 handler_map={Legend: LegendHandler()}, fontsize=FONT_SIZE-4)
 
         ax = plt.gca()
-        ax.set_xticks(np.arange(0, 1.1, .2))
-        ax.set_yticks(np.arange(0, 1.1, .2))
-        ax.set_xticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$', r'$1.0$'], fontsize=FONT_SIZE-2)
-        ax.set_yticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$', r'$1.0$'], fontsize=FONT_SIZE-2)
+        ax.set_xticks(np.arange(0, 0.6, .1))
+        ax.set_yticks(np.arange(0, 0.6, .1))
+        ax.set_xticklabels([r'$0.0$', r'$0.1$', r'$0.2$', r'$0.3$', r'$0.4$', r'$0.5$'], fontsize=FONT_SIZE-2)
+        ax.set_yticklabels([r'$0.0$', r'$0.1$', r'$0.2$', r'$0.3$', r'$0.4$', r'$0.5$'], fontsize=FONT_SIZE-2)
         sns.despine()
         plt.savefig(args.plot_name)
     elif args.empirical:
@@ -448,26 +456,26 @@ def main(args=sys.argv[1:]):
                 with open(args.in_pkl_name, 'r') as f:
                     X, Y, Z, args.delta = pickle.load(f)
 
-            im = plt.imshow(Z, cmap=plt.cm.gray, origin='lower')
-            plt.xlabel(r'$x^*$', fontsize=FONT_SIZE)
-            plt.ylabel(r'$y^*$', fontsize=FONT_SIZE)
-            ttl = plt.title(r'Value of $\hat{w}$', fontsize=FONT_SIZE+2)
+            im = plt.imshow(np.flipud(np.fliplr((1-Z)/2)), cmap=plt.cm.gray_r, origin='lower')
+            plt.xlabel(r'$p_{x^*}$', fontsize=FONT_SIZE)
+            plt.ylabel(r'$p_{y^*}$', fontsize=FONT_SIZE)
+            ttl = plt.title(r'Value of $\hat{p}_{w}$', fontsize=FONT_SIZE+2)
             ttl.set_position([.5, 1.05])
             ax = plt.gca()
             ax.set_xticks(np.arange(0, 1/args.delta, .2/args.delta))
             ax.set_yticks(np.arange(0, 1/args.delta, .2/args.delta))
-            ax.set_xticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$'], fontsize=FONT_SIZE-2)
-            ax.set_yticklabels([r'$0.0$', r'$0.2$', r'$0.4$', r'$0.6$', r'$0.8$'], fontsize=FONT_SIZE-2)
+            ax.set_xticklabels([r'$0.0$', r'$0.1$', r'$0.2$', r'$0.3$', r'$0.4$'], fontsize=FONT_SIZE-2)
+            ax.set_yticklabels([r'$0.0$', r'$0.1$', r'$0.2$', r'$0.3$', r'$0.4$'], fontsize=FONT_SIZE-2)
             sns.despine()
             cbar = plt.colorbar()
             cbar.ax.tick_params(labelsize=FONT_SIZE-2)
             plt.savefig(args.plot_name)
             plt.close()
+
+            # plot bias
             bias = Z - Y
             ones_mask = (Z != 1 - args.delta)
             print "Error range [%.0E, %.0E], Mean: %.2E" % (min(bias[ones_mask]), max(bias[ones_mask]), np.mean(bias[ones_mask]))
-
-            # plot bias
             bias_to_plot = np.where(ones_mask, bias, .09)
             im = plt.imshow(bias_to_plot[int(.6/args.delta):, int(.6/args.delta):], cmap=plt.cm.gray, origin='lower')
             plt.xlabel(r'$x^*$', fontsize=FONT_SIZE)
@@ -482,7 +490,7 @@ def main(args=sys.argv[1:]):
             sns.despine()
             cbar = plt.colorbar()
             cbar.ax.tick_params(labelsize=FONT_SIZE-2)
-            plt.savefig(args.plot_name.replace('.svg', '_bias.svg'))
+            plt.savefig(args.plot_name.replace('.svg', '-bias.svg'))
     else:
         print "No plotting argument given!"
 
