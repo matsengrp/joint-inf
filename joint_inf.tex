@@ -377,6 +377,7 @@ We have shown that jointly inferring ancestral states and phylogenetic parameter
 Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in two types of inconsistency: first, where joint inference converges on the incorrect topology and, second, where it estimates severely biased branch lengths even given the correct topology.
 In all cases, these regions of inconsistency arise when the branches of the generating trees are ``long,'' that is, when branch fidelities tend to be small.
 This inconsistency in the case of long branches concurs with some empirical findings in \citet{Sagulenko2017-jo}, namely their Figures~2 and 3.
+\citet{Sagulenko2017-jo} explicitly warn their approximation is only valid for ``short'' branches, though Fig.~\ref{fig:bl-general-bias} shows even when branches are short there is a consistent bias.
 
 Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \citep{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., the method of sieves \citep{Geman1982}.
