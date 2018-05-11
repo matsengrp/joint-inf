@@ -977,15 +977,16 @@ where
 \[
 \gamma := \gamma(\hat{x}, \hat{y}) = 4\hat{x}\hat{y}.
 \]
-%das: TODO double check restrictions on \hat{x} and \hat{y} are reasonable
-Since $x^*,y^*,\hat{x},$ and $\hat{y}$ all fall between zero and one, we make use of the inequalities (excepting the cases of $x^*=y^*=0$ and $x^*=y^*=1$)
+%das: added as assumption to theorem
+Since $x^*,y^*,\hat{x},$ and $\hat{y}$ all fall between zero and one, we make use of the inequalities
 \[
 \alpha_1 > \alpha_2
 \]
 and
 \[
-\beta > \gamma.
+\beta > \gamma
 \]
+using the assumptions that $x^*=y^*=0$, $\hat{x}=\hat{y}=0$, and $\hat{x}=\hat{y}=1$.
 % Not sure if I need to show this, but if x and y aren't 1 it's 1+x^2+y^2+x^2y^2 > 4xy => (1+x^2)(1+y^2) > 4xy and 1+x^2 > 2x, 1+y^2 > 2y qed
 The derivative of the log-likelihood with respect to $w$ is
 \[
@@ -998,7 +999,7 @@ f(w) &= (w)^2\cdot(-\gamma^2\alpha_1-\gamma^2\alpha_2-\gamma^2) \\
       &\qquad + (\gamma\alpha_1\beta-\gamma\alpha_2\beta+\beta^2).
 \end{align*}
 % Note from das: b^2 - 4ac is always \ge 0 by \alpha_1 > \alpha_2, so b^2 - 4ac can only be zero if b is zero and a or c is zero. c is never zero, so this means a must be zero for this to happen, which only occurs if \gamma = 0, i.e., if x or y is zero.
-Excepting all the cases where $x^*=0$ or where $y^*=0$, this implies $\ell'$ has two zeros according to the quadratic formula.
+Using the assumption that $\hat{x}\neq 0$ and $\hat{y}\neq 0$, this implies $\ell'$ has two zeros according to the quadratic formula.
 Because $\alpha_1 > \alpha_2$ we have $\ell'(0) > 0$, and thus $\ell$ is increasing at $w=0$.
 This implies that if the smaller of the zeros of $f(w)$ is greater than one, then $\hat{w} \equiv 1$.
 Using the quadratic formula with
