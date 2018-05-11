@@ -134,9 +134,7 @@ TODO: make the argument more clear in the main text.
 > readers. Only the general case.
 
 %EM I think we could move this to the appendix to throw this reviewer a bone.
-%das: does this reviewer mean both the general case and the empirical case or just the empirical case?
-%Their review makes me think they take the empirical case the be the "general" case.
-%You think we should move both analytic cases to the appendix or just the one?
+%das: bone thrown
 
 > Minor Comments:
 
@@ -201,11 +199,7 @@ Thank you very much for reading the derivations and for your suggestions. As not
 > turn are used to infer spatial spread, transmission etc).
 
 %EM David-- does it seem like we could extend these results to bigger trees containing a 4 taxon tree?
-%das: I don't see why not, though I haven't thought it through very much.
-%It could take a lot of work or not much work at all.
-%Do you know of any other mathematical phylogenetics papers that do something like this?
-%Like induction on trees?
-%I can think a bit and get back to you...
+%das: I wasn't able to come up with anything interesting for this.
 
 > Some detailed comments and questions:
 > – line 85 some cut/paste or sentence issue
@@ -328,8 +322,11 @@ We have updated the text to explicitly define "generating probability." Backgrou
 
 Thank you for your thoughts, and we have worked hard to not oversell our results.
 TODO we should make some changes to at least say that we've further clarified the implications of our results.
-%das: can you clarify this TODO?
-%Do you mean we should add more text about the bias in Fig. S3, or we should quote Richard more and show how we think things might still be bad?
+%das: how much more should we say than this sentence (which we already say)? We already quote them as saying they should only use it when branches are short.
+%Although the software described in \citet{Sagulenko2017-jo} fits on a user-supplied topology and the authors explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference.
+%and
+%In all cases, these regions of inconsistency arise when the branches of the generating trees are ``long,'' that is, when branch fidelities tend to be small.
+%This inconsistency in the case of long branches concurs with some empirical findings in \citet{Sagulenko2017-jo}, namely their Figures~2 and 3.
 The TreeTime paper does present joint optimization as an approximate approach, and described that it is for short branch lengths.
 However, in our assessment the word "approximate" doesn't completely describe a situation in which there is significant bias.
 The TreeTime paper says that its use is appropriate when "ancestral sequence inference has little ambiguity" but even in these cases the bias in branch lengths persists.
@@ -390,6 +387,8 @@ TODO refer to idea of applied paper again?
 >  branches... we show that this doesn't work for long branches..."
 
 TODO we should do some change, but make it clear that it's consistently biased even for short branches.
+%das: I added this line:
+%\citet{Sagulenko2017-jo} explicitly warn their approximation is only valid for ``short'' branches, though Fig.~\ref{fig:bl-general-bias} shows even when branches are short there is a consistent bias.
 
 > Richard Neher
 
@@ -442,10 +441,13 @@ It's also a good idea to cite additional papers about identifiability, and we ha
 
 %EM David, heh, can you point me to the place where the equal branch length result was done?
 %EM Also, I think you said that he says that the varying branch length thing is an open question-- it would be great to quote that.
+%das: update I added some of the below. Let me know what you think. And re: Allman/Chai, I just added them in with RoyChoudhury; is that ok? They are all just examples of conditions where phylogenetics is consistent it seems.
+
 %das: below are some notes and quotes. I will work on paring these down and adding some to the text, maybe with a little more diplomacy.
 %The equal branch length example occurs in Example 2, starting halfway down the second column of page 352 in Goldman (1990) and continuing until the top of the second column on page 354.
 %Here he only talks about how parsimony is inconsistent because it may result in equally parsimonious trees (this is the last paragraph of the example section).
 %It's not until the bottom of page 356 that he punts the inconsistency to Felsenstein and Hendy/Penny, and the bottom of page 357 where he wonders how small branch lengths have to be for parsimony to be consistent in general.
+
 
 ---
 
