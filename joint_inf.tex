@@ -125,7 +125,7 @@ This is attractive from a computational perspective: such joint inference can pr
 This latter conditional optimization is simpler and more computationally efficient than optimizing the marginal likelihood.
 But is it statistically consistent?
 
-An estimator is said to be statistically consistent if it converges to the generating model with probability 1 in the large-data limit; existing consistency proofs for maximum likelihood phylogenetics \citep{RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
+An estimator is said to be statistically consistent if it converges to the generating model with probability 1 in the large-data limit; existing consistency proofs for maximum likelihood phylogenetics \citep{Allman2008-wd,Chai2011-ff,RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
 These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from problems where the number of parameters increases with the amount of data \citep{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
 In this case those additional parameters come in the form of the states of ancestral sequences.
@@ -382,7 +382,7 @@ Joint inference of tree parameters and ancestral sequences is a type of profile 
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., the method of sieves \citep{Geman1982}.
 A potential solution in this case using the method of sieves could be to project the column-wise ancestral state patterns into a lower-dimensional space, allowing the degrees of freedom in the ancestral state columns to grow with $\nCols$, albeit more slowly than $O(\nCols)$.
 Elsewhere in statistics literature, the failure of maximum likelihood estimates to obtain consistent estimates as the number of parameters goes to infinity have been shown by the Neyman-Scott paradox \citep{Neyman1948-tt}, though parameters tending to infinity is not a necessary condition for inconsistency \citep{LeCam1990}.
-Consistency proofs of standard maximum likelihood estimates of phylogeny \eqref{eq:marginal_likelihood} are recent \citep{RoyChoudhury2015-ta}, and no results have been obtained for profile likelihood.
+Consistency proofs of standard maximum likelihood estimates of phylogeny \eqref{eq:marginal_likelihood} are recent \citep{Allman2004-wd,Chai2011-ff,RoyChoudhury2015-ta}, and no results have been obtained for profile likelihood.
 We have furthered progress in understanding the limitations of this joint optimization procedure.
 
 Previous work in phylogenetics has developed consistency counterexamples using the same four-taxon topologies used here \citep{Felsenstein1978-rr}.
@@ -391,6 +391,13 @@ This is the converse of what we have shown for joint inference, where the Felsen
 Moreover, the inconsistency demonstrated by \citet{Felsenstein1978-rr} is attributed to long branch attraction, i.e., the fact that there may be multiple long branches where parallel changes are more likely than a single change along a short branch.
 This is not the case here; for our case, the inconsistency generally occurs when all branches are long, and has more to do with the choices of the form of the likelihood than from the interplay of long and short branches.
 Difficulties in phylogenetic estimation when generating data on the InvFels tree have been found by \citet{Siddall1998-hq}, though \citet{Swofford2001-hr} show that sequence length plays a major role in these issues.
+
+The case of joint inference of a phylogenetic likelihood was discussed in \citet{Goldman1990-dk}.
+In it, Goldman provides a worked example in which estimating a topology with fixed branch lengths is equivalent to parsimony and thus not guaranteed to be consistent, though he does not discuss the inconsistency of joint inference in general.
+We show cases where the estimates of the topology will be inconsistent if we are estimating both topology and branch lengths, and, moreover, even if we know the correct topology, we show cases where branch lengths will also be inconsistent.
+Finally, just prior to his conclusion, he discusses when parsimony will give the same answer as maximum likelihood, concluding that the question is ill-posed since parsimony estimates different parameters than maximum likelihood, i.e., it assumes equal branch lengths.
+The joint inference procedure outlined here estimates the same parameters as classical maximum likelihood, rendering the question well-posed.
+Finally, we are able to provide much more detail on how large branch lengths must be for general joint inference---estimating topology and branch lengths together---to fail to be consistent.
 
 While we have shown inconsistency in both topology and branch parameter estimation, there is substantial scope for future work to make these results more precise and more general.
 The techniques used to obtain upper and lower bounds for the likelihoods in the topology estimation case provide relatively loose bounds, though how loose they are remain unknown without either further analysis or verification through simulation.
