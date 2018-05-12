@@ -8,7 +8,7 @@
 \usepackage{subcaption}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
-\usepackage{showlabels}
+% \usepackage{showlabels}
 \usepackage{palatino}
 \usepackage{hyphenat}
 \usepackage{thm-restate}
@@ -25,7 +25,7 @@
   \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
   \renewenvironment{#1}%
      {\linenomath\csname old#1\endcsname}%
-     {\csname oldend#1\endcsname\endlinenomath}}% 
+     {\csname oldend#1\endcsname\endlinenomath}}%
 \newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
   \patchAmsMathEnvironmentForLineno{#1}%
   \patchAmsMathEnvironmentForLineno{#1*}}%
@@ -134,7 +134,7 @@ Although the software described in \citet{Sagulenko2017-jo} fits on a user-suppl
 In particular, one would like to know when this approximate technique breaks down for both topology and branch length inference, even when sequence data is ``perfect,'' i.e., is generated without sampling error according to the exact model used for inference.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
-To do so, we use a binary symmetric model with data being generated on the four-taxon ``inverse Felsenstein (InvFels)'' tree---also called the ``Farris'' tree \citep{Siddall1998-hq, Felsenstein2004}---and we construct bounds on the joint objective function to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the case of perfect sequence data with an infinite number of sites.
+To do so, we use a binary symmetric model with data being generated on the four-taxon ``inverse Felsenstein'' tree (a.k.a.\ the ``Farris'' tree) and we construct bounds on the joint objective function to demarcate a sizeable area of long branch lengths in which joint inference is guaranteed to give the wrong tree in the case of perfect sequence data with an infinite number of sites.
 We find similar areas where joint inference consistently overestimates interior branch lengths when the topology is known and fixed.
 
 \section*{Phylogenetic maximum likelihood}
@@ -144,7 +144,8 @@ Let $\nSiteRows$ be the number of tips of the tree, and $\nAncestralStateRows = 
 We observe $\nCols$ independent and identically distributed samples of character data, i.e., an alignment with $\nCols$ columns, $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$ distributed as the random variable $\alignmentColumnRV$.
 The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$ and distributed as $\ancestralStateColumnRV$ with each $\ancestralStateColumn_i\in\alphabet^\nAncestralStateRows$.
 
-We parameterize branches on the unique unrooted four-tip phylogenetic tree in ways known as the ``InvFels'' and ``Felsenstein'' trees (Fig.~\ref{fig:farris-fels-top}).
+We parameterize branches on the unique unrooted four-tip phylogenetic tree in ways known as the ``Inverse Felsenstein (InvFels)'' tree and the ``Felsenstein'' tree (Fig.~\ref{fig:farris-fels-top}).
+The ``inverse Felsenstein'' terminology comes from \citet{Swofford2001-hr}, although it is also called the ``Farris'' tree \citep{Siddall1998-hq, Felsenstein2004}.
 In the standard configuration of each of these trees, the interior branch length parameters are equal to the bottom two parameters.
 We show in the Appendix that, in the case of the InvFels tree, performing inference fixing both the top two branch parameters to be equal and the bottom two branch parameters to be equal will obtain the same maximum likelihood estimate as in the case of arbitrary branch parameters.
 
@@ -253,8 +254,6 @@ This enables more possible maxima for $\tau_2$ even if data are generated from $
 
 \subsection*{Inconsistency in branch length estimation}
 
-%EM Line numbering has a huge gap here. Could you look around and see if you see anything about this on the web?
-%das: fixed
 We now consider the problem of branch length estimation on the correct tree using joint estimation.
 As described above, we use the notion of fidelities to analyze what happens as changes occur along each branch as opposed to the standard branch length formulation.
 We analyze two settings on the InvFels tree, corresponding to whether some branch fidelities are fixed at their true values or not.
@@ -323,7 +322,7 @@ We provide the following as an intuition for the theoretical development.
 For a particular site pattern, in obtaining the joint maximum likelihood function we maximize over ancestral states.
 For the internal branch---the branch between the two internal nodes---we have a choice of $(1+w)$ or $(1-w)$ in each of our likelihood terms depending on which ancestral state split corresponds to the highest partial likelihood term.
 A maximization procedure will more likely introduce a $(1+w)$ term than a $(1-w)$ term, though this will not be guaranteed as the maximum depends on the values of $x$ and $y$.
-This tendency to more likley include $(1+w)$ terms in the likelihood results in a positive bias of branch fidelities.
+This tendency to include $(1+w)$ terms in the likelihood results in a positive bias of branch fidelities.
 If we allow multifurcating trees in our inference, then we can think of this as another instance of converging to the wrong topology.
 
 \begin{figure}
@@ -394,6 +393,7 @@ Moreover, the inconsistency demonstrated by \citet{Felsenstein1978-rr} is attrib
 This is not the case here; for our case, the inconsistency generally occurs when all branches are long, and has more to do with the choices of the form of the likelihood than from the interplay of long and short branches.
 Difficulties in phylogenetic estimation when generating data on the InvFels tree have been found by \citet{Siddall1998-hq}, though \citet{Swofford2001-hr} show that sequence length plays a major role in these issues.
 
+%EM Let's set a time in the first half of this week for you to walk me through the Goldman paper and this paragraph. Thanks!
 The case of joint inference of a phylogenetic likelihood was discussed in \citet{Goldman1990-dk}.
 In it, Goldman provides a worked example in which estimating a topology with fixed branch lengths is equivalent to parsimony and thus not guaranteed to be consistent, though he does not discuss the inconsistency of joint inference in general.
 We show cases where the estimates of the topology will be inconsistent if we are estimating both topology and branch lengths, and, moreover, even if we know the correct topology, we show cases where branch lengths will also be inconsistent.

@@ -6,23 +6,19 @@ One application of site splits is to formalize the notion that a given site patt
 This is a standard step in the description of the Hadamard transform (Section 8.6 of \citet{Semple2003-em}), although our approach is complicated slightly by the inclusion of ancestral states.
 
 Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$.
+For the binary symmetric model, the alphabet $\alphabet$ is $\{0,1\}$.
 Take the tip labels of $\tau$ to be $\{1,\ldots,\nSiteRows\}$.
-For likelihood calculation under the binary symmetric model, we describe a given $\alignmentColumn_i$ as a subset of indices $\siteSplit\subseteq\siteSplitSet:=\{1,\ldots,\nSiteRows-1\}$ with equivalent characters, commonly called a ``site split.''
-For the binary symmetric model $\alphabet=\{0,1\}$.
-Define the complement of $\alignmentColumn$ as $\overline{\alignmentColumn}$, and let $\alignmentColumn_{i,i'}$ be the label of the $i'$th tip in the $i$th alignment column.
+For likelihood calculation under the binary symmetric model, we describe a given $\alignmentColumn_i$ as a subset of indices $\siteSplit\subseteq\siteSplitSet:=\{1,\ldots,\nSiteRows-1\}$, commonly called a ``site split.''
+Define the complement of $\alignmentColumn$ as $\overline{\alignmentColumn}$, and let $\alignmentColumn_{i,k}$ be the label of the $k$th tip in the $i$th alignment column.
 We define the site split $\siteSplit$ for a $\alignmentColumn_i$ as the set of tips labeled with $1$ in $\alignmentColumn_i$ if the $\nSiteRows$th tip is not labeled with $1$, and as the set of tips labeled with $1$ in $\overline{\alignmentColumn}_i$ if the $\nSiteRows$th tip is labeled with $1$.
 Taking such a complement simplifies but does not change the result of likelihood computation because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model.
 
 For a fixed topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization $\ancestralStateColumn_i$.
 In this case we cannot use the same complement trick as before: the probability of observing an ancestral state split conditional on a site split is not invariant to taking its complement.
-We define an ``ancestral state split'' in a similar way to a site split, where the ancestral state split $\ancestralSplit$ for an internal node $\ancestralStateColumn_i$ is the set of internal nodes labeled with $1$ if the $\nSiteRows$th tip---\emph{not} internal node---is not labeled with $1$, and as the set of internal nodes labeled with $1$ in $\overline{\ancestralStateColumn}_i$ if the $\nSiteRows$th tip is labeled with $1$.
-In other words, both site splits and ancestral state splits are defined by whether the $\nSiteRows$th element of $\alignmentColumn_i$ is labeled as $1$.
-%EM "ancestral state splits" are an important item in the development but don't get the same level of definition as "site splits". Let's define them here.
-%das: done
+We thus define an ``ancestral state split'' $\ancestralSplit$ for an internal node $\ancestralStateColumn_i$ to be the set of internal nodes labeled with $1$ if the $\nSiteRows$th tip is not labeled with $1$, and as the set of internal nodes labeled with $1$ in $\overline{\ancestralStateColumn}_i$ if the $\nSiteRows$th tip is labeled with $1$.
+We emphasize that the ancestral state split complementing procedure depends on tip states, not ancestral states: both site splits and ancestral state splits are defined by whether the $\nSiteRows$th element of $\alignmentColumn_i$ is labeled as $1$.
 
 We enumerate the site splits $\siteSplit_j$ of which there are $\nSiteSplits=|\mathcal{P}(\siteSplitSet)|$ in total where $\mathcal{P}$ denotes the power set.
-%EM I think that we should either use "ancestral splits" everywhere, or "ancestral state splits."
-%das: yah, agreed
 Similarly we enumerate ancestral state splits $\ancestralSplit_k$ of which there are $\nAncestralSplits=|\mathcal{P}(\ancestralSplitSet)|$ in total.
 
 We first fix notation.
@@ -89,8 +85,6 @@ Thus given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\l
 \end{align*}
 In other words, for the $j$th site split, $\ancestralSplitPartition_j(\tau, t)\subseteq\mathcal{P}(\ancestralSplitSet)$ is the set of most likely ancestral state splits for that particular site split, topology and set of branch lengths, i.e., $\ancestralSplitPartition_j(\tau, t)$ is a set of sets of most likely internal node labels.
 Here, $\xi_j$ is one of possibly many equiprobable ancestral state splits in $\ancestralSplitPartition_j(\tau, t)$.
-%EM Wait, does this establish surjectivity? We need to be able to get all values of P(H).
-%das: ah crap, I don't know why I wrote the above. I changed a bit of the notation (sorry!) but I hope this will be more clear?
 For each $\alignmentColumn_i$, $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective as it can map values from $\alphabet^\nAncestralStateRows$ to all elements in $\mathcal{P}(\ancestralSplitSet)$.
 This can be seen by using the definition of $\ancestralToSplit(\alignmentColumn_i, \cdot)$ and assuming $\alignmentColumn_{i,\nSiteRows}\neq 1$, where in this case each of the $2^\nAncestralStateRows$ values of $\ancestralStateColumn$ correspond to each of the $2^\nAncestralStateRows$ elements of $\mathcal{P}(\{1,\ldots,\nAncestralStateRows\})$.
 The same can be done for the case of $\alignmentColumn_{i,\nSiteRows}=1$, implying $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective.
@@ -516,6 +510,7 @@ See Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} for full 
 \label{tab:likelihoods}
 \end{table}
 %TODO: the caption of this overlaps with the page number---will this be a problem or will MBE handle it?
+%EM There is a latex package for that, which I tried out and then removed for some reason. It's no bigs.
 
 \subsection*{Form of the likelihood}
 
@@ -562,23 +557,19 @@ Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood
 An analogous statement holds for $y_1$ and $y_2$.
 It remains to show that the joint inference procedure maximizing \eqref{eq:profile_likelihood} results in a unique estimate of $t$.
 Without loss of generality, we focus on the single parameter $x_1$ and show we obtain a unique maximum when performing joint inference; similar arguments hold for the remaining parameters.
-We decompose the likelihood into the entropy and partial log-likelihood terms as in \eqref{eq:log_likelihood_simplified}.
-%EM I'm thinking about this wrong for some reason: the sum of two things, each of which has a unique maximum, does not necessarily have a unique maximum.
-%das: I added the table of general generating probabilities, but it's pretty straightforward I think to see below the second derivative of the likelihood will be negative on the whole interval, implying we have a unique maximum.
-%I think we're good.
-%Let me know if I should say anything about the continuity of the likelihood, but I think it's obvious this gets us to where we need to be?
-Consider the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$, and the map $g(x_1) \mapsto -g(x_1)\log g(x_1)$.
-We restrict our attention to $x_1,y_1,x_2,y_2,w\in(0,1)$, i.e., cases where $0<p_{\siteSplit_j}<1$ for all $\siteSplit_j$.
-By straightforward calculus, the second derivative of this map is
+We decompose the likelihood into the divergence and partial log-likelihood terms as in \eqref{eq:log_likelihood_simplified}.
+Consider the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$; we restrict our attention to $x_1,y_1,x_2,y_2,w\in(0,1)$, i.e., cases where $0<p_{\siteSplit_j}<1$ for all $\siteSplit_j$.
+%EM It seems to me that this only works if we know that \tilde{t} = t^*$. Otherwise the divergence won't have this form.
+%EM Also, I tried to make the connection between the divergence and g a little more explicit.
+The second derivative of the divergence term $\shannonDivergence_{\tau^*,t^*}(\tau^*,\tilde{t}) = -g(x_1)\log g(x_1)$ is
 \[
 -g''(x_1)(1+\log g(x_1)) - \frac{g'(x_1)^2}{g(x_1)}.
 \]
 Using each functional form in Table~\ref{tab:gen-sitepatprob} we see in all cases $g''(x_1)=0$ and $g(x_1) > 0$ for $x_1\in(0,1).$
 This implies the above second derivative is negative for each component of $\shannonDivergence_{\tau^*,t^*}(\tau^*,\tilde{t})$.
-%EM There's not good notational overlap between Table S2 and the definition of partial log-likelihood. Could you fix that?
-%das: I think fixed, or did you mean something in addition to changing h-->\Xi and y-->\Psi?
 
 We can compute the partial log-likelihood $\tilde{\ell}_{\tau^*,t^*}(\tau^*, t)$ using Table~\ref{tab:farris_likelihoods}.
+%EM This falls short of being "clearly"--- I can easily see that we get some log(1+x_1) terms and some log(1-x_1) terms, and that the below follows if the sum of the coefficients for the two terms is < 1. Perhaps add a sentence here?
 Clearly this partial log-likelihood will be of the form $g(x_1) = p\log(1+x_1) + (1-p)\log(1-x_1)$ with $0 \le p \le 1$, which, by the second derivative test, is concave for $x_1\in(0,1)$ and thus has a unique maximum.
 Since both summands of the likelihood are concave on $x_1\in(0,1)$, the likelihood is as well, and there exists a single $x_1\in(0,1)$ maximizing the likelihood.
 Given this and the symmetry of the likelihood, we let $x_1=x_2=x$ and $y_1=y_2=y$.
@@ -614,8 +605,6 @@ Directly substituting calculations from Table~\ref{tab:sitepatprob} and Table~\r
     &\qquad + p_{23}         \cdot\log((1+x)(1-x)(1+w)(1+y)(1-y)) \nonumber \\
     &\qquad + p_{123}        \cdot\log((1+x)^2   (1+w)(1+y)(1-y)).
 \end{align}
-%EM Shouldn't this read "obtaining an upper bound"?
-%das: yes
 Our plan is to simplify the likelihood to remove log-of-quadratic terms of $x,y,$ and $w$, obtaining an upper bound on the likelihood that has a closed-form maximum in each variable.
 To bound the generating probabilities, we use the facts that, for $x,y\in[0,1]$,
 \begin{align*}
@@ -666,14 +655,7 @@ Factoring and making these substitutions (again, under the assumption that the a
 + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y) \\
 &\qquad\qquad + (2-p_{1}-p_{3}-p_{12}-p_{23})\cdot\log(1+x)
 + (p_{1}+p_{3}+p_{12}+p_{23})\cdot\log(1-x) \\
-%EM Shouldn't this be
-%&\qquad\qquad + (3-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y)
 &\qquad\qquad + (2-p_{2}-p_{12}-p_{23}-p_{123})\cdot\log(1+y)
-%EM And this be
-%+ 2(p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y) \\
-%das: I don't think so---the first two lines starting at the equals sign are bringing together the first four lines starting above at the <= sign.
-%Should I remove this intermediate equation?
-%I thought it would help clarify but maybe not?
 + (p_{2}+p_{12}+p_{23}+p_{123})\cdot\log(1-y) \\
 &\qquad\qquad + (1-p_{13})\cdot\log(1+w)
 + p_{13}\cdot\log(1-w) \\
@@ -739,8 +721,6 @@ The upper bound for the likelihood is then maximized at
 
 The other two possible ancestral state splits for the likelihood of the site split $\{1,3\}$ admit similar simplifications, as we now describe.
 The upper bound $C^{\{1\}}_{\tau_1,\tau_1}(x^*, y^*)$ in \eqref{eq:farris-upper-bound-1} is for the ancestral state split $\{1\}$.
-%EM Let's be more specific, giving an equation number, rather than just saying "the upper bound" here.
-%das: is this better? there were a few other typos, so I changed "site split" to "ancestral state split" where needed and updated the constant definitions
 For the ancestral state split $\emptyset$ we can derive an upper bound $C^{\emptyset}_{\tau_1,\tau_1}(x^*, y^*)$ in \eqref{eq:farris-upper-bound-empty} in a similar fashion, and $C^{\emptyset}_{\tau_1,\tau_1}(x^*, y^*)$ will be the same as $C^{\{1\}}_{\tau_1,\tau_1}(x^*, y^*)$ except we lose a $(1+x)^2$ term, gain a $(1-x)^2$ term, lose a $(1-w)$ term, and gain a $(1+w)$ term.
 In this case, all terms involving $w$ simplify to $\log(1+w)$, which is maximized at $\hat{w}=1$.
 For the constants above, $a_{1}$ is the multiplier for the $\log(1+x)$ term and $a_{2}$ for the $\log(1-x)$ term meaning that exchanging the above quadratic $x$ terms yields new constants
@@ -796,8 +776,6 @@ We now need to check that
 are both between zero and one.
 Using a similar argument as that where $\ancestralSplitPartition_j(\tau_1, t) = \{1\}$, we only need to show $a_1' \ge a_2'$, which is true if $3-2p_{13} \ge 3\tilde{p}+2p_{13}$.
 Some rearranging and the fact that $0 \le \tilde{p} \le 1/2$ shows this is equivalent to showing $p_{13} \le 3/8$.
-%EM Using what about t^*?
-%das: updated
 Using Table~\ref{tab:sitepatprob} while setting $t=t^*=\{x^*,y^*,x^*,y^*,y^*\}$,
 \[
 p_{13} = \frac{1}{8}\left(1 + (x^*)^2 + (y^*)^2 - 4x^*(y^*)^2 + (x^*)^2(y^*)^2\right),
@@ -832,7 +810,6 @@ C_0(x^*, y^*) := \max\left(C^{\{1\}}_{\tau_1,\tau_1}(x^*, y^*), C^{\emptyset}_{\
 \]
 
 We next construct a lower bound on the Felsenstein tree partial likelihood.
-%das: we never actually use the Gibbs inequality trick for the upper bound---just some log-of-polynomial bounds
 In general, taking
 \[
 \hat{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t).
