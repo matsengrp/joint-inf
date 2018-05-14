@@ -558,20 +558,80 @@ An analogous statement holds for $y_1$ and $y_2$.
 It remains to show that the joint inference procedure maximizing \eqref{eq:profile_likelihood} results in a unique estimate of $t$.
 Without loss of generality, we focus on the single parameter $x_1$ and show we obtain a unique maximum when performing joint inference; similar arguments hold for the remaining parameters.
 We decompose the likelihood into the divergence and partial log-likelihood terms as in \eqref{eq:log_likelihood_simplified}.
-Consider the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$; we restrict our attention to $x_1,y_1,x_2,y_2,w\in(0,1)$, i.e., cases where $0<p_{\siteSplit_j}<1$ for all $\siteSplit_j$.
+Consider the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$; we restrict our attention to $x_1,y_1,x_2,y_2\in(0,1)$, i.e., cases where $0<p_{\siteSplit_j}<1$ for all $\siteSplit_j$.
 %EM It seems to me that this only works if we know that \tilde{t} = t^*$. Otherwise the divergence won't have this form.
+%das: Heh, yeah oops, that was super sloppy.
+%Should be fixed, and a lot more explicit now; thanks for keeping me honest!
+%Also there's no restriction on w being not equal to zero or one since we're only interested in x and y, so that was removed, too.
 %EM Also, I tried to make the connection between the divergence and g a little more explicit.
-The second derivative of the divergence term $\shannonDivergence_{\tau^*,t^*}(\tau^*,\tilde{t}) = -g(x_1)\log g(x_1)$ is
+Define
 \[
--g''(x_1)(1+\log g(x_1)) - \frac{g'(x_1)^2}{g(x_1)}.
+g_j(x_1) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\}),
 \]
-Using each functional form in Table~\ref{tab:gen-sitepatprob} we see in all cases $g''(x_1)=0$ and $g(x_1) > 0$ for $x_1\in(0,1).$
-This implies the above second derivative is negative for each component of $\shannonDivergence_{\tau^*,t^*}(\tau^*,\tilde{t})$.
+i.e., the generating probability of the $j$th site split as a function of $x_1$.
+Recall the divergence
+\[
+\shannonDivergence_{\tau^*,t^*}(\tau,\tilde{t}) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \tilde{t}),
+\]
+which, suppressing notation for clarity, we define as a function of $x_1$ as
+\[
+D(x_1) = \sum_{j=1}^\nSiteSplits c_j \cdot \log g_j(x_1)
+\]
+where $c_j \ge 0$ for $j=1,\ldots,\nSiteSplits$.
+It remains to show $D''(x_1) < 0$ for $x_1,y_1,x_2,y_2\in(0,1)$.
+By straightforward calculus,
+\[
+D''(x_1) = \sum_{j=1}^\nSiteSplits c_j \cdot \left(\frac{g_j(x_1)g_j''(x_1) - g_j'(x_1)^2}{g_j(x_1)^2}\right).
+\]
+Using each functional form in Table~\ref{tab:gen-sitepatprob} we see $g_j''(x_1)=0$ and $g_j(x_1)>0$ for $x_1,y_1,x_2,y_2\in(0,1)$ and $j=1,\ldots,\nSiteSplits$ so that
+\[
+D''(x_1) = -\sum_{j=1}^\nSiteSplits c_j \cdot \left(\frac{g_j'(x_1)}{g_j(x_1)}\right)^2.
+\]
+Finally, we require at least one $j$ where $c_j \neq 0$ and $g_j'(x_1) \neq 0$ so that $D''(x_1) \not\equiv 0$.
+Consider the case $j=1$ where $\siteSplit_1=\emptyset$ so that, ignoring the $1/8$ constant in each term,
+\[
+g_1(x_1) \propto 1 + x_1x_2 +  y_1y_2 +  w[  x_1 + x_2][  y_1 + y_2] + x_1y_1x_2y_2,
+\]
+\[
+g_1'(x_1) \propto x_2 + y_1w + y_2w + y_1x_2y_2,
+\]
+and
+\[
+c_1 \propto 1+(x^*)^2+(y^*)^2+4x^*(y^*)^2+(x^*)^2(y^*)^2.
+\]
+We have $c_1 > 0$ by $x^*,y^*\in[0,1]$ and, by assumption, $g_1'(x_1) > 0$ for $x_1,y_1,x_2,y_2\in(0,1)$.
+This implies the above second derivative is negative.
 
-We can compute the partial log-likelihood $\tilde{\ell}_{\tau^*,t^*}(\tau^*, t)$ using Table~\ref{tab:farris_likelihoods}.
 %EM This falls short of being "clearly"--- I can easily see that we get some log(1+x_1) terms and some log(1-x_1) terms, and that the below follows if the sum of the coefficients for the two terms is < 1. Perhaps add a sentence here?
-Clearly this partial log-likelihood will be of the form $g(x_1) = p\log(1+x_1) + (1-p)\log(1-x_1)$ with $0 \le p \le 1$, which, by the second derivative test, is concave for $x_1\in(0,1)$ and thus has a unique maximum.
-Since both summands of the likelihood are concave on $x_1\in(0,1)$, the likelihood is as well, and there exists a single $x_1\in(0,1)$ maximizing the likelihood.
+%das: you're right, I missed a factor of two; hope it's more clear now.
+We now focus on the partial log-likelihood term.
+Recall the partial log-likelihood takes the form
+\[
+\tilde{\ell}_{\tau^*,t^*}(\tau, \tilde{t}) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, \tilde{t}).
+\]
+As above, define the partial log-likelihood as a function of $x_1$ as
+\[
+\tilde{\ell}(x_1) = \sum_{j=1}^\nSiteSplits c_j\cdot\log h_j(x_1)
+\]
+where
+\[
+h_j(x_1) = \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, \{x_1,y_1,x_2,y_2,w\}).
+\]
+Using the procedure in Figure~\ref{fig:example_likelihoods} with $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$, we see each functional form, suppressing constants with respect to $x_1$ and the initial $1/32$ constant, will be
+\[
+h_j(x_1) \propto (1+x_1)^{e_j}(1-x_1)^{1-e_j}
+\]
+for $e_j\in\{0,1\}$, which, simplifying, results in
+\begin{align}
+\tilde{\ell}(x_1) &\propto \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(\sum_{j=1}^\nSiteSplits c_j(1-e_j)\right) \log (1-x_1)\\
+                  &= \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits c_je_j\right) \log (1-x_1).
+\end{align}
+This has a second derivative
+\[
+\tilde{\ell}''(x_1) = -\left(\frac{\sum_j c_je_j}{(1+x_1)^2}+\frac{1-\sum_j c_je_j}{(1-x_1)^2}\right).
+\]
+Again, by assumption $x_1,y_1,x_2,y_2\in(0,1)$, and we need only $0 \le \sum_j c_je_j \le 1$ so that, by the second derivative test, the sum of $D(x_1)$ and $\tilde{\ell}(x_1)$ has a unique maximum.
+Since $\sum_j c_j = 1$ and $e_j\in\{0,1\}$, then $0 \le \sum_j c_je_j \le 1$, thus, $D(x_1) + \tilde{\ell}(x_1)$ is concave as a function of $x_1\in(0,1)$, and there exists a single $x_1\in(0,1)$ maximizing the likelihood.
 Given this and the symmetry of the likelihood, we let $x_1=x_2=x$ and $y_1=y_2=y$.
 The Felsenstein tree does not admit this property, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 
