@@ -175,6 +175,8 @@ As data becomes plentiful, we use the Hadamard transform (see \eqref{eq:hadamard
 For a four-taxon tree, define the general branch fidelity parameter $t=\{\theta_1,\theta_2,\theta_3,\theta_4,\theta_5\}$ where fidelities are ordered in the order of the taxa with the internal branch last (Fig.~\ref{fig:farris-fels-top}).
 We show in the Appendix that, for the InvFels tree, the maximum likelihood fidelities require $\theta_1=\theta_3$ and $\theta_2=\theta_4$, so we subsequently fix fidelity parameters to $t=\{x,y,x,y,w\}$.
 
+Although we use fidelities exclusively for our theoretical development, we have made our figures in terms of probabilities of substitution $p_{\theta} = (1-\theta)/2$ as they are easier to interpret.
+
 \subsection*{Two paths to maximum likelihood}
 
 The standard phylogenetic likelihood approach on unrooted trees under the usual assumption of independence between sites is as follows.
@@ -246,8 +248,6 @@ This enables more possible maxima for $\tau_2$ even if data are generated from $
 % python joint_inf_plot.py --analytic --topology --delta .001 --plot-name figures/topology-inconsistency.svg
 \includegraphics[width=\textwidth]{topology-inconsistency-inkscape}
 \caption{
-%EM I'm sure you're getting to this, but we need to change around wording to compensate for the use of probabilities vs. fidelities now.
-%das: You just mean for the figure captions, right? I changed it in the figures and a few places in the text, but maybe you meant we should change around the whole text to be in terms of branch lengths? Should we change the InvFels/Fels tree figure, too?
     An analytically-derived region of topological inconsistency in terms of probabilities of a character change along a branch for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $p_{w^*} = p_{y^*}$ (in terms of fidelities, $w^*=y^*$).
     Due to the looseness of the upper and lower bounds, the parameters in the white region do not necessarily indicate consistency, though all parameters in the shaded region result in an inconsistency.
 }
@@ -396,7 +396,6 @@ Moreover, the inconsistency demonstrated by \citet{Felsenstein1978-rr} is attrib
 This is not the case here; for our case, the inconsistency generally occurs when all branches are long, and has more to do with the choices of the form of the likelihood than from the interplay of long and short branches.
 Difficulties in phylogenetic estimation when generating data on the InvFels tree have been found by \citet{Siddall1998-hq}, though \citet{Swofford2001-hr} show that sequence length plays a major role in these issues.
 
-%EM Let's set a time in the first half of this week for you to walk me through the Goldman paper and this paragraph. Thanks!
 The case of joint inference of a phylogenetic likelihood was discussed in \citet{Goldman1990-dk}.
 In it, Goldman provides a worked example in which estimating a topology with fixed branch lengths is equivalent to parsimony and thus not guaranteed to be consistent, though he does not discuss the inconsistency of joint inference in general.
 We show cases where the estimates of the topology will be inconsistent if we are estimating both topology and branch lengths, and, moreover, even if we know the correct topology, we show cases where branch lengths will also be inconsistent.
