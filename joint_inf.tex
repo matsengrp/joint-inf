@@ -120,7 +120,7 @@ For branch length estimation on the correct topology, we outline similar cases w
 \section*{Introduction}
 
 Classical maximum likelihood (ML) estimation in phylogenetics operates by integrating out latent ancestral states at the internal nodes of the tree.
-In a recent paper, \citet{Sagulenko2017-jo} suggest using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences on a fixed topology.
+In a recent paper, \citet{Sagulenko2018-xl} suggest using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences on a fixed topology.
 This is attractive from a computational perspective: such joint inference can proceed according to an iterative procedure in which ancestral sequences are first estimated and model parameters are optimized conditional on these estimates.
 This latter conditional optimization is simpler and more computationally efficient than optimizing the marginal likelihood.
 But is it statistically consistent?
@@ -130,7 +130,7 @@ These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from problems where the number of parameters increases with the amount of data \citep{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
 In this case those additional parameters come in the form of the states of ancestral sequences.
 %page 2 section 2.1 at the top of the second column first paragraph second sentence
-Although the software described in \citet{Sagulenko2017-jo} fits on a user-supplied topology and the authors explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference.
+Although the software described in \citet{Sagulenko2018-xl} fits on a user-supplied topology and the authors explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference.
 In particular, one would like to know when this approximate technique breaks down for both topology and branch length inference, even when sequence data is ``perfect,'' i.e., is generated without sampling error according to the exact model used for inference.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
@@ -192,7 +192,7 @@ The classical approach is to maximize the likelihood marginalized across ancestr
 \end{equation}
 to estimate the tree $\tau$ and branch fidelities $t$.
 
-The alternative approach \citep{Sagulenko2017-jo} does away with the marginalization and directly estimates the maximum likelihood parameters of the fully-observed likelihood in \eqref{eq:full_likelihood}.
+The alternative approach \citep{Sagulenko2018-xl} does away with the marginalization and directly estimates the maximum likelihood parameters of the fully-observed likelihood in \eqref{eq:full_likelihood}.
 This is known in statistics as a profile likelihood \citep{Murphy2000-ry}, which exists here because $\alphabet$ is a finite set:
 \begin{equation}
 \label{eq:profile_likelihood}
@@ -204,7 +204,7 @@ We use $\hat{\fullAncestralStates}$ to denote an estimate for $\fullAncestralSta
 (\hat{\tau}, \hat{t}) = \argmax_{\tau, t} \ L_\nCols'(\tau, t; \fullAlignment).
 \end{equation}
 In general, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities arising from taking maxima row-wise in Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} to obtain the likelihood term for each most likely ancestral state, these terms depending on the unknown $(\tau, t)$.
-For this reason, in practice, the joint inference strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence \citep{Sagulenko2017-jo}.
+For this reason, in practice, the joint inference strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence \citep{Sagulenko2018-xl}.
 
 
 \section*{Inconsistency of joint inference}
@@ -246,6 +246,7 @@ This enables more possible maxima for $\tau_2$ even if data are generated from $
 % python joint_inf_plot.py --analytic --topology --delta .001 --plot-name figures/topology-inconsistency.svg
 \includegraphics[width=\textwidth]{topology-inconsistency-inkscape}
 \caption{
+%EM I'm sure you're getting to this, but we need to change around wording to compensate for the use of probabilities vs. fidelities now.
     An analytically-derived region of topological inconsistency in terms of fidelities for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $w^* = y^*$ ($p_{w^*}=p_{y^*}$).
     Due to the looseness of the upper and lower bounds, the parameters in the white region do not necessarily indicate consistency, though all parameters in the shaded region result in an inconsistency.
 }
@@ -373,11 +374,11 @@ For joint inference, the errors range from $[-7\times 10^{-3}, 8\times 10^{-2}]$
 
 \section*{Discussion}
 
-We have shown that jointly inferring ancestral states and phylogenetic parameters \citep{Sagulenko2017-jo} is not consistent in general.
+We have shown that jointly inferring ancestral states and phylogenetic parameters \citep{Sagulenko2018-xl} is not consistent in general.
 Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in two types of inconsistency: first, where joint inference converges on the incorrect topology and, second, where it estimates severely biased branch lengths even given the correct topology.
 In all cases, these regions of inconsistency arise when the branches of the generating trees are ``long,'' that is, when branch fidelities tend to be small.
-This inconsistency in the case of long branches concurs with some empirical findings in \citet{Sagulenko2017-jo}, namely their Figures~2 and 3.
-\citet{Sagulenko2017-jo} explicitly warn their approximation is only valid for ``short'' branches, though Fig.~\ref{fig:bl-general-bias} shows even when branches are short there is a consistent bias.
+This inconsistency in the case of long branches concurs with some empirical findings in \citet{Sagulenko2018-xl}, namely their Figures~2 and 3.
+\citet{Sagulenko2018-xl} explicitly warn their approximation is only valid for ``short'' branches, though Fig.~\ref{fig:bl-general-bias} shows even when branches are short there is a consistent bias.
 
 Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \citep{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., the method of sieves \citep{Geman1982}.
