@@ -514,7 +514,7 @@ See Tables~\ref{tab:farris_likelihoods} and~\ref{tab:fels_likelihoods} for full 
 
 \subsection*{Form of the likelihood}
 
-Consider the InvFels tree with arbitrary fidelities, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$.
+Consider the InvFels tree $\tau_1$ with arbitrary fidelities, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$.
 We now show that, in the case of the InvFels tree, exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the likelihood, and that constraining both the top two branch parameters to be equal and the bottom two branch parameters to be equal during inference obtains the same maximum likelihood estimate as in the case of arbitrary branch parameters.
 Using the Hadamard transform, we calculate the generating probabilities on the InvFels tree.
 For site split $\emptyset$,
@@ -560,14 +560,15 @@ Without loss of generality, we focus on the single parameter $x_1$ and show we o
 We decompose the likelihood into the divergence and partial log-likelihood terms as in \eqref{eq:log_likelihood_simplified}.
 Consider the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$; we restrict our attention to $x_1,y_1,x_2,y_2\in(0,1)$, i.e., cases where $0<p_{\siteSplit_j}<1$ for all $\siteSplit_j$.
 %EM This looks much better now. Can we get a subscript on tau for these calculations?
+%das: I changed all of them that were already subscripts, but did you also want subscripts on ones that didn't have them, e.g., D'' and g_1, etc.?
 Define
 \[
-g_j(x_1) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\}),
+g_j(x_1) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, \{x_1,y_1,x_2,y_2,w\}),
 \]
 i.e., the generating probability of the $j$th site split as a function of $x_1$.
 Recall the divergence
 \[
-\shannonDivergence_{\tau^*,t^*}(\tau,\tilde{t}) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \tilde{t}),
+\shannonDivergence_{\tau_1,t^*}(\tau_1,\tilde{t}) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t^*)\cdot\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, \tilde{t}),
 \]
 which, simplifying notation for clarity, we define as a function of $x_1$ as
 \[
@@ -601,7 +602,7 @@ This implies the above second derivative is negative.
 We now focus on the partial log-likelihood term.
 Recall the partial log-likelihood takes the form
 \[
-\tilde{\ell}_{\tau^*,t^*}(\tau, \tilde{t}) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, \tilde{t}).
+\tilde{\ell}_{\tau_1,t^*}(\tau_1, \tilde{t}) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau_1, \tilde{t}).
 \]
 As above, define the partial log-likelihood as a function of $x_1$ as
 \[
@@ -609,7 +610,7 @@ As above, define the partial log-likelihood as a function of $x_1$ as
 \]
 where
 \[
-h_j(x_1) = \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, \{x_1,y_1,x_2,y_2,w\}).
+h_j(x_1) = \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau_1, \{x_1,y_1,x_2,y_2,w\}).
 \]
 Doing calculation as in Figure~\ref{fig:example_likelihoods} with $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$, we see each functional form, suppressing constants with respect to $x_1$ and the initial $1/32$ constant, will be
 \[
@@ -626,7 +627,9 @@ This has a second derivative
 \]
 Again, by assumption $x_1,y_1,x_2,y_2\in(0,1)$, and we need only $0 \le \sum_j c_je_j \le 1$ so that, by the second derivative test, the sum of $D(x_1)$ and $\tilde{\ell}(x_1)$ has a unique maximum.
 %EM Shouldn't you at least mention that the second deriv isn't exactly zero as you did before?
-Since $\sum_j c_j = 1$ and $e_j\in\{0,1\}$, then $0 \le \sum_j c_je_j \le 1$, thus, $D(x_1) + \tilde{\ell}(x_1)$ is concave as a function of $x_1\in(0,1)$, and there exists a single $x_1\in(0,1)$ maximizing the likelihood.
+%das: added a sentence
+Since $\sum_j c_j = 1$ and $e_j\in\{0,1\}$, then $0 \le \sum_j c_je_j \le 1$ and $\tilde{\ell}''(x_1) \le 0$.
+Thus, with $D''(x_1) < 0$, the sum $D''(x_1) + \tilde{\ell}''(x_1) < 0$, implying $D(x_1) + \tilde{\ell}(x_1)$ is concave as a function of $x_1\in(0,1)$, and there exists a single $x_1\in(0,1)$ maximizing the likelihood.
 Given this and the symmetry of the likelihood, we let $x_1=x_2=x$ and $y_1=y_2=y$.
 The Felsenstein tree does not admit this property, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
 

@@ -247,7 +247,8 @@ This enables more possible maxima for $\tau_2$ even if data are generated from $
 \includegraphics[width=\textwidth]{topology-inconsistency-inkscape}
 \caption{
 %EM I'm sure you're getting to this, but we need to change around wording to compensate for the use of probabilities vs. fidelities now.
-    An analytically-derived region of topological inconsistency in terms of fidelities for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $w^* = y^*$ ($p_{w^*}=p_{y^*}$).
+%das: You just mean for the figure captions, right? I changed it in the figures and a few places in the text, but maybe you meant we should change around the whole text to be in terms of branch lengths? Should we change the InvFels/Fels tree figure, too?
+    An analytically-derived region of topological inconsistency in terms of probabilities of a character change along a branch for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $p_{w^*} = p_{y^*}$ (in terms of fidelities, $w^*=y^*$).
     Due to the looseness of the upper and lower bounds, the parameters in the white region do not necessarily indicate consistency, though all parameters in the shaded region result in an inconsistency.
 }
 \label{fig:inconsistency-farris}
@@ -316,14 +317,14 @@ and
 y^*-y_{L} \le \hat{y} \le y^*+y_{U}.
 \]
 Then $\gamma_L, \gamma_U$ and $\beta_L$ can be derived directly from the bounds on $\hat{x}$ and $\hat{y}$.
-As an example, the region to the left side of the curve in Fig.~\ref{fig:bl-loose-inconsistency} shows the case where $x_L=x_U=y_L=y_U=0.1$.
+As an example, Fig.~\ref{fig:bl-loose-inconsistency} shows the case where we have poor estimation of one of the three branch parameters when $x_L=x_U=y_L=y_U=0.1$.
 In this case, joint inference will either estimate $\hat{w}$ to have fidelity one or estimate either $\hat{x}$ or $\hat{y}$ to be more than $0.1$ away from its true fidelity.
 
 We provide the following as an intuition for the theoretical development.
 For a particular site pattern, in obtaining the joint maximum likelihood function we maximize over ancestral states.
 For the internal branch---the branch between the two internal nodes---we have a choice of $(1+w)$ or $(1-w)$ in each of our likelihood terms depending on which ancestral state split corresponds to the highest partial likelihood term.
 A maximization procedure will more likely introduce a $(1+w)$ term than a $(1-w)$ term, though this will not be guaranteed as the maximum depends on the values of $x$ and $y$.
-This tendency to include $(1+w)$ terms in the likelihood results in a positive bias of branch fidelities.
+This tendency to include $(1+w)$ terms in the likelihood results in a bias toward one of branch fidelities.
 If we allow multifurcating trees in our inference, then we can think of this as another instance of converging to the wrong topology.
 
 \begin{figure}
@@ -332,8 +333,9 @@ If we allow multifurcating trees in our inference, then we can think of this as 
 % python joint_inf_plot.py --analytic --general-branch-lengths --delta .001 --plot-name figures/bl-loose-inconsistency.svg
 \includegraphics[width=\textwidth]{bl-loose-inconsistency-inkscape}
 \caption{
-    Analytically-derived region of branch parameter inconsistency in terms of fidelities with the same data-generating setup as Fig.~\ref{fig:inconsistency-farris}.
-    In the marked region, either $\hat{p}_w=0$ or, for $p_{x^*}=(1-x^*)/2$ and $p_{y^*}=(1-y^*)/2$, one of $x^*-0.1 \le \hat{x} \le x^*+0.1$ or $y^*-0.1 \le \hat{y} \le y^*+0.1$ will not be true, resulting in poor estimation of the pendant branch parameters.
+    Analytically-derived region of branch parameter inconsistency in terms of probabilities of a character change with the same data-generating setup as Fig.~\ref{fig:inconsistency-farris}.
+    In the marked region, either $\hat{p}_w=0$ or one of $p_{x^*}-.05 \le \hat{p}_x \le p_{x^*}+.05$ or $p_{y^*}-.05 \le \hat{p}_y \le p_{y^*}+.05$ will not be true, resulting in poor estimation of the pendant branch parameters.
+    In terms of fidelities, these bounds are $x^*-0.1 \le \hat{x} \le x^*+0.1$ and $y^*-0.1 \le \hat{y} \le y^*+0.1$.
     As in previous plots, the shaded and white regions are loose indications of inconsistency.
 }
 \label{fig:bl-loose-inconsistency}
@@ -344,7 +346,7 @@ If we allow multifurcating trees in our inference, then we can think of this as 
 Direct numerical optimization confirms our theoretically-derived bounds and provides a more detailed picture compared to the conservative analytically-derived region (Fig.~\ref{fig:bl-loose-inconsistency}).
 To determine how conservative, we use the method of basin-hopping \citep{Wales1997} to perform joint estimation (Fig.~\ref{fig:bl-general-inconsistency}).
 We see that the region of inconsistency in the general case is similar to that of the restricted case (compare Figs.~\ref{fig:bl-inconsistency} and~\ref{fig:bl-general-inconsistency}).
-This region encompasses the majority of the branch fidelity space; even given the correct topology and performing our best possible optimization, we have many situations where we will estimate the interior branch fidelity to be one.
+This region encompasses the majority of the branch parameter space; even given the correct topology and performing our best possible optimization, we have many situations where we will estimate the interior branch length to be zero.
 
 We provide a full description of our optimization procedure in the Appendix, but briefly, we perform two maximizations---one over $0 \le x,y,w \le 1$ and one over $0 \le x,y \le 1$ with $w=1$---and take the value of $\hat{w}$ with the higher objective function.
 We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*$ and $y^*$ from $10^{-2}$ to $1-10^{-2}$.
@@ -399,7 +401,7 @@ The case of joint inference of a phylogenetic likelihood was discussed in \citet
 In it, Goldman provides a worked example in which estimating a topology with fixed branch lengths is equivalent to parsimony and thus not guaranteed to be consistent, though he does not discuss the inconsistency of joint inference in general.
 We show cases where the estimates of the topology will be inconsistent if we are estimating both topology and branch lengths, and, moreover, even if we know the correct topology, we show cases where branch lengths will also be inconsistent.
 Finally, just prior to his conclusion, he discusses when parsimony will give the same answer as maximum likelihood, concluding that the question is ill-posed since parsimony estimates different parameters than maximum likelihood, i.e., it assumes equal branch lengths.
-The joint inference procedure outlined here estimates the same parameters as classical maximum likelihood, rendering the question well-posed.
+The joint inference procedure outlined here estimates the same parameters as classical maximum likelihood---albeit implicitly estimating ancestral states as well---rendering the question well-posed.
 Finally, we are able to provide much more detail on how large branch lengths must be for general joint inference---estimating topology and branch lengths together---to fail to be consistent.
 
 While we have shown inconsistency in both topology and branch parameter estimation, there is substantial scope for future work to make these results more precise and more general.
