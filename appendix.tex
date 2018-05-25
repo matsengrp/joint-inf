@@ -560,7 +560,7 @@ We show the Hessian of the joint likelihood term is negative definite, which imp
 We decompose the likelihood into the divergence and partial log-likelihood terms as in \eqref{eq:log_likelihood_simplified}.
 
 %Without loss of generality, we focus on the single parameter $x_1$ and show we obtain a unique maximum when performing joint inference; similar arguments hold for the remaining parameters.
-Consider the general case of $\tilde{t}=\{x_1, y_2, x_1, y_2, w\}$; we restrict our attention to $x_1,y_1,x_2,y_2\in(0,1)$, i.e., cases where $0<p_{\siteSplit_j}<1$ for all $\siteSplit_j$.
+We restrict our attention to $x_1,y_1,x_2,y_2\in(0,1)$, i.e., cases where $0<p_{\siteSplit_j}<1$ for all $\siteSplit_j$.
 Additionally, we exclude the infinite branch length case of $w=0$.
 Recall the divergence
 \[
@@ -585,8 +585,8 @@ The difference of these two equations simplifies to
 0 = (y_1w+y_2w)(x_1-x_2)
 \]
 and, since $y_1w+y_2w > 0$ by assumption, we have $x_1=x_2$.
-This along with the previous equalities imply $x_1=x_2=x^*$.
-We use the same process to show that, at the maximum, $y_1=y_2=y^*$, and thus that the divergence term attains a unique maximum over $x_1,y_1,x_2,y_2\in(0,1)$.
+This along with the previous equalities imply $x_1=x_2=x^*$ is the unique maximum of the divergence term for $x_1$ and $x_2$.
+We use the same process to show that, at the maximum, $y_1=y_2=y^*$, and thus the divergence term attains a unique maximum over $x_1,y_1,x_2,y_2\in(0,1)$ with $w \neq 0$.
 
 We now focus on the partial log-likelihood term.
 Recall the partial log-likelihood takes the form
@@ -594,15 +594,16 @@ Recall the partial log-likelihood takes the form
 \tilde{\ell}_{\tau_1,t^*}(\tau_1, \tilde{t}) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau_1, \tilde{t}).
 \]
 The partial log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
-\[
-\tilde{\ell}_{\tau_1,t^*}(\tau_1, \tilde{t}) = \sum_{j=1}^\nSiteSplits c_j\cdot\left(\log h_{j,1}(x_1)+\log h_{j,2}(y_1)+\log h_{j,3}(x_2)+\log h_{j,4}(y_2)+\log h_{j,5}(w)\right).
-\]
-Due to this additive form, any off-diagonal terms of the Hessian for this function will be zero, so it remains to show that the diagonal terms are nonpositive.
+\begin{align*}
+\tilde{\ell}_{\tau_1,t^*}(\tau_1, \tilde{t}) &= \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,1}(x_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,2}(y_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,3}(x_2)\\
+&\qquad +\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,4}(y_2)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,5}(w).
+\end{align*}
+Due to this additive form, all off-diagonal terms of the Hessian for this function are zero, so we show that the diagonal terms are nonpositive.
 Without loss of generality we focus on the variable $x_1$ and the partial log-likelihood proportional to
 \[
 \tilde{\ell}(x_1) = \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,1}(x_1).
 \]
-Doing calculation as in Figure~\ref{fig:example_likelihoods} with $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$, we see each functional form, suppressing constants with respect to $x_1$ and the initial $1/32$ constant, will be
+Doing calculation as in Figure~\ref{fig:example_likelihoods} with $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$, each functional form, suppressing constants with respect to $x_1$ and the initial $1/32$ constant, is
 \[
 h_{j,1}(x_1) \propto (1+x_1)^{e_j}(1-x_1)^{1-e_j}
 \]
@@ -612,54 +613,70 @@ for $e_j\in\{0,1\}$, which, simplifying, results in
                   &= \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits c_je_j\right) \log (1-x_1).
 \end{align}
 Assume for now the functional form of the partial likelihood is fixed---in other words, each site split has a maximum at a single ancestral state split.
-This has a second derivative
+We have the second derivative
 \[
 \tilde{\ell}''(x_1) = -\left(\frac{\sum_j c_je_j}{(1+x_1)^2}+\frac{1-\sum_j c_je_j}{(1-x_1)^2}\right).
 \]
-Again, by assumption $x_1,y_1,x_2,y_2\in(0,1)$, and we need only $0 \le \sum_j c_je_j \le 1$ so that the diagonal term of the Hessian will be nonpositive.
+As $x_1,y_1,x_2,y_2\in(0,1)$, we need only $0 \le \sum_j c_je_j \le 1$ to imply the diagonal terms of the Hessian are nonpositive.
 Since $\sum_j c_j = 1$ and $e_j\in\{0,1\}$, then $0 \le \sum_j c_je_j \le 1$ and $\tilde{\ell}''(x_1) \le 0$.
-Applying similar arguments to the other variables, the Hessian for the partial log-likelihood will have nonpositive diagonal terms and off-diagonal terms equal to zero.
-Thus, the Hessian of the sum of the divergence and the partial log-likelihood will be negative definite, as the Hessian for the divergence is negative definite, provided there is a single maximal ancestral state split for each site split.
+Applying similar arguments to the other variables, the Hessian for the partial log-likelihood has nonpositive diagonal terms and off-diagonal terms equal to zero.
+Thus, the Hessian of the sum of the divergence and the partial log-likelihood is negative definite, as the Hessian for the divergence is negative definite, provided there is a single maximal ancestral state split for each site split.
+
+\begin{table}
+\centering
+\begin{tabular}{|l|ll|}
+    \hline
+    $\siteSplit_j$    & $\ancestralSplitPartition_j(\tau_1, \tilde{t})$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau_1,\tilde{t})$\\
+    \hline
+     $\{1\}$    &
+    $\begin{array}{l}
+                    \emptyset\\
+                    \{1\}\\
+                    \{2\}\\
+                    \{1,2\}
+                \end{array}$&
+    $\begin{array}{l}
+                    (1+x_1)(1-x_2)(1+w)(1+y_1)(1+y_2)\\
+                    (1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2)\\
+                    (1-x_1)(1+x_2)(1-w)(1+y_1)(1+y_2)\\
+                    (1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2)
+                \end{array}$\\
+    \hline
+     $\{1,2\}$    &
+    $\begin{array}{l}
+                    \emptyset\\
+                    \{1\}\\
+                    \{2\}\\
+                    \{1,2\}
+                \end{array}$&
+    $\begin{array}{l}
+                    (1-x_1)(1+x_2)(1+w)(1-y_1)(1+y_2)\\
+                    (1-x_1)(1-x_2)(1-w)(1+y_1)(1-y_2)\\
+                    (1+x_1)(1-x_2)(1-w)(1-y_1)(1+y_2)\\
+                    (1+x_1)(1-x_2)(1+w)(1+y_1)(1-y_2)
+                \end{array}$\\
+    \hline
+\end{tabular}
+\caption{Likelihood calculations for site splits $\{1\}$ and $\{1,2\}$ and ancestral state partitions $\ancestralSplitPartition_j$ on the InvFels tree $\tau_1$ with general branch parameters $\tilde{t}$.
+All values multiplied by $1/32$.}
+\label{tab:edge-cases}
+\end{table}
 
 We now consider the case where there may be more than one ancestral state split that maximizes the partial likelihood for a site split.
-For site split $\{1\}$, the four possible forms of the partial likelihood are
-\[
-(1+x_1)(1-x_2)(1+w)(1+y_1)(1+y_2),
-\]
-\[
-(1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2),
-\]
-\[
-(1-x_1)(1+x_2)(1-w)(1+y_1)(1+y_2),
-\]
-\[
-(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2).
-\]
-We ignore the second function as it will always be less than the first except for the case $y_1=y_2=w=0$.
-Comparing the remaining functions reveals that there will be an ambiguity in the form of the likelihood only when either $y_1=y_2=0$, $x_1=x_2=0$, or $w=0$.
-We reach the same conclusions doing these comparisons for site splits $\emptyset$, $\{2\}$, $\{3\}$, and $\{1,2,3\}$.
+Site split $\emptyset$ always attains a maximum at ancestral state split $\emptyset$ provided at least one branch fidelity is not exactly zero.
+Table~\ref{tab:edge-cases} gives the possible forms for the partial likelihood for two cases of site splits.
+For site split $\{1\}$ we ignore ancestral state split $\{2\}$ as its partial likelihood is always less than the ancestral state split $\emptyset$ except for the case $y_1=y_2=w=0$.
+Comparing the remaining ancestral state splits reveals that there is an ambiguity in the form of the likelihood only when either $y_1=y_2=0$, $x_1=x_2=0$, or $w=0$.
+We reach the same conclusions doing these comparisons for site splits $\{2\}$, $\{3\}$, and $\{1,2,3\}$.
+
 The remaining site splits $\{1,2\}$, $\{1,3\}$, and $\{2,3\}$ require the following argument.
-For site split $\{1,2\}$, the four possible forms of the partial likelihood are
+For site split $\{1,2\}$, we ignore cases where either $y_1=y_2=0$, $x_1=x_2=0$, or $w=0$, and see that an ambiguity in this maximization occurs when
 \[
-(1-x_1)(1+x_2)(1+w)(1-y_1)(1+y_2),
+(1-x_1)(1+x_2)(1-y_1)(1+y_2) = (1+x_1)(1-x_2)(1+y_1)(1-y_2),
 \]
-\[
-(1-x_1)(1-x_2)(1-w)(1+y_1)(1-y_2),
-\]
-\[
-(1+x_1)(1-x_2)(1-w)(1-y_1)(1+y_2),
-\]
-\[
-(1+x_1)(1-x_2)(1+w)(1+y_1)(1-y_2).
-\]
-We ignore cases where either $y_1=y_2=0$, $x_1=x_2=0$, or $w=0$, and see that an ambiguity in this maximization will occur when
-\[
-(1-x_1)(1+x_2)(1-y_1)(1+y_2) = (1+x_1)(1-x_2)(1+y_1)(1-y_2).
-\]
-Note that this can happen when $x_1=y_2=u_1$ and $x_2=y_1=u_2$ but $u_1 \neq u_2$.
-However, when $x_1=x_2=u_1$ and $y_1=y_2=u_2$ the partial likelihood takes the same value.
-To resolve this ambiguity, we look to the divergence quanitity and recall it will be maximized when $x_1=x_2$ and $y_1=y_2$.
-Thus, the full joint likelihood will obtain a unique maximum, and this maximum will occur when $x_1=x_2$ and $y_1=y_2$.
+or, in other words, when the ancestral state splits $\emptyset$ and $\{1,2\}$ both maximize the partial likelihood.
+This can happen when $x_1=y_2=u_1$ and $x_2=y_1=u_2$ but $u_1 \neq u_2$, though, when $x_1=x_2=u_1$ and $y_1=y_2=u_2$ the partial likelihood takes the same value.
+To resolve this ambiguity, we look to the divergence quanitity that is maximized when $x_1=x_2$ and $y_1=y_2$, and, thus, the full joint likelihood obtains a unique maximum when $x_1=x_2$ and $y_1=y_2$.
 
 Given the above, there exists a unique maximum to the likelihood over $x_1,y_2,x_1,y_2\in(0,1)$ with $w\neq 0$, and, with the symmetry of the likelihood, we let $x_1=x_2=x$ and $y_1=y_2=y$.
 The Felsenstein tree does not admit this property, but, since we are interested in a lower bound for this tree, we simplify the objective function by constraining $x_1=x_2$ and $y_1=y_2$ similarly.
