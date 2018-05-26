@@ -562,6 +562,7 @@ We decompose the likelihood into the divergence and partial log-likelihood terms
 %Without loss of generality, we focus on the single parameter $x_1$ and show we obtain a unique maximum when performing joint inference; similar arguments hold for the remaining parameters.
 We restrict our attention to $x_1,y_1,x_2,y_2\in(0,1)$, i.e., cases where $0<p_{\siteSplit_j}<1$ for all $\siteSplit_j$.
 Additionally, we exclude the infinite branch length case of $w=0$.
+%EM This looks good, but remind us what x^* is here.
 Recall the divergence
 \[
 \shannonDivergence_{\tau_1,t^*}(\tau_1,\tilde{t}) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t^*)\cdot\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, \tilde{t}).
@@ -587,6 +588,7 @@ The difference of these two equations simplifies to
 and, since $y_1w+y_2w > 0$ by assumption, we have $x_1=x_2$.
 This along with the previous equalities imply $x_1=x_2=x^*$ is the unique maximum of the divergence term for $x_1$ and $x_2$.
 We use the same process to show that, at the maximum, $y_1=y_2=y^*$, and thus the divergence term attains a unique maximum over $x_1,y_1,x_2,y_2\in(0,1)$ with $w \neq 0$.
+%EM IIUC we only use this fact to show that we have a _negative_ second derivative at the ^* parameter values. It would be nice to emphasize that fact, which would also keep people from worrying that we're falling into the "sum of two things with unique optima has a unique optimum."
 
 We now focus on the partial log-likelihood term.
 Recall the partial log-likelihood takes the form
@@ -636,6 +638,9 @@ Thus, the Hessian of the sum of the divergence and the partial log-likelihood is
                     \{1,2\}
                 \end{array}$&
     $\begin{array}{l}
+    %EM I must be confused here-- these aren't the values I get at all!
+    % e.g. for this first one everything is 0 except for the first taxon, which is 1. So shouldn't it be
+                   %(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2)\\ ?
                     (1+x_1)(1-x_2)(1+w)(1+y_1)(1+y_2)\\
                     (1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2)\\
                     (1-x_1)(1+x_2)(1-w)(1+y_1)(1+y_2)\\
