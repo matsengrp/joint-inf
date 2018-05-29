@@ -562,8 +562,6 @@ We decompose the likelihood into the divergence and partial log-likelihood terms
 %Without loss of generality, we focus on the single parameter $x_1$ and show we obtain a unique maximum when performing joint inference; similar arguments hold for the remaining parameters.
 We restrict our attention to $x_1,y_1,x_2,y_2\in(0,1)$, i.e., cases where $0<p_{\siteSplit_j}<1$ for all $\siteSplit_j$.
 Additionally, we exclude the infinite branch length case of $w=0$.
-%EM This looks good, but remind us what x^* is here.
-%das: fixed
 Recall the divergence
 \[
 \shannonDivergence_{\tau_1,t^*}(\tau_1,\tilde{t}) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t^*)\cdot\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, \tilde{t}).
@@ -591,8 +589,6 @@ and, since $y_1w+y_2w > 0$ by assumption, we have $x_1=x_2$.
 This along with the previous equalities imply $x_1=x_2=x^*$ is the unique maximum of the divergence term for $x_1$ and $x_2$.
 We use the same process to show that the divergence has a unique maximum for $y_1$ and $y_2$ at $y_1=y_2=y^*$, and thus the divergence term attains a unique maximum over $x_1,y_1,x_2,y_2\in(0,1)$ with $w \neq 0$.
 This implies the Hessian of $\shannonDivergence$ is negative definite.
-%EM IIUC we only use this fact to show that we have a _negative_ second derivative at the ^* parameter values. It would be nice to emphasize that fact, which would also keep people from worrying that we're falling into the "sum of two things with unique optima has a unique optimum."
-%das: Ah, right.
 
 We now focus on the partial log-likelihood term.
 Recall the partial log-likelihood takes the form
@@ -642,10 +638,6 @@ Thus, the Hessian of the sum of the divergence and the partial log-likelihood is
                     \{1,2\}
                 \end{array}$&
     $\begin{array}{l}
-    %EM I must be confused here-- these aren't the values I get at all!
-    % e.g. for this first one everything is 0 except for the first taxon, which is 1. So shouldn't it be
-                   %(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2)\\ ?
-    %das: Ha! I must have written out a different case. Went through everything with a fine-tooth comb and noticed one or two slip-ups but everything is basically the same.
                     (1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2)\\
                     (1+x_1)(1-x_2)(1-w)(1+y_1)(1+y_2)\\
                     (1-x_1)(1+x_2)(1-w)(1-y_1)(1-y_2)\\
@@ -660,6 +652,7 @@ Thus, the Hessian of the sum of the divergence and the partial log-likelihood is
                     \{1,2\}
                 \end{array}$&
     $\begin{array}{l}
+    %EM This doesn't seem right to me-- for all of these, shouldn't x_1 and x_2 have the same coefficient?
                     (1-x_1)(1+x_2)(1+w)(1-y_1)(1+y_2)\\
                     (1+x_1)(1-x_2)(1-w)(1-y_1)(1+y_2)\\
                     (1-x_1)(1+x_2)(1-w)(1+y_1)(1-y_2)\\
@@ -681,6 +674,7 @@ For example, in comparing ancestral state splits $\emptyset$ and $\{1\}$ an ambi
 \[
 (1-x_1)(1+x_2)(1+w) = (1+x_1)(1-x_2)(1-w),
 \]
+%EM It sounds like you are saying that this is the only case in which the above equality can happen, which is not the case, right? Isn't there a whole 2-dimensional set that has this equality?
 which holds either if $x_2=0$ and $w=x_1$ or $w=0$ and $x_1=x_2$.
 We reach the same conclusions doing these comparisons for site splits $\{2\}$, $\{3\}$, and $\{1,2,3\}$.
 
@@ -692,7 +686,7 @@ For site split $\{1,2\}$, we ignore cases where any of $x_1,y_1,x_2,y_2,$ or $w$
 or, in other words, when the ancestral state splits $\emptyset$ and $\{1,2\}$ both maximize the partial likelihood.
 This can happen when $x_1=y_2=u_1$ and $x_2=y_1=u_2$ but $u_1 \neq u_2$, though, when $x_1=x_2=u_1$ and $y_1=y_2=u_2$ the partial likelihood takes the same value.
 %das: @EM does the below make sense? I know you were worried earlier about arguing the max of the sum of two things, but I think to resolve this ambiguity it's necessary. Basically, we want to show we get a unique t from (max_t f(t) + (max_h g(t,h))) for t branch lengths and h ancestral states. To do this, if max_h g(t,h) has more than one value we can look at f(t) + max_h g(t,h). I.e., max_h g(t,h) happens if either {x_1=y_2,x_2=y_1} or {x_1=x_2,y_1=y_2}, but f(t)|_{x_1=x_2,y_1=y_2} > f(t)|_{x_1=y_2,x_2=y_1} (where |_{} is "restricted to") so the full likelihood will have a unique maximum, and that's what we're concerned about.
-To resolve this ambiguity, we look to the divergence quanitity that is maximized when $x_1=x_2$ and $y_1=y_2$, and, thus, the full joint likelihood obtains a unique maximum when $x_1=x_2$ and $y_1=y_2$.
+To resolve this ambiguity, we look to the divergence quantity that is maximized when $x_1=x_2$ and $y_1=y_2$, and, thus, the full joint likelihood obtains a unique maximum when $x_1=x_2$ and $y_1=y_2$.
 It is possible that ancestral state splits $\{1\}$ and $\{2\}$ both maximize the partial likelihood as well, but this case follows a similar argument.
 
 Given the above, there exists a unique maximum to the likelihood over $x_1,y_2,x_1,y_2\in(0,1)$ with $w\neq 0$, and, with the symmetry of the likelihood, we let $x_1=x_2=x$ and $y_1=y_2=y$.
