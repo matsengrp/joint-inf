@@ -8,20 +8,14 @@ env = Environment(ENV=os.environ)
 inkscape = Builder(action = 'inkscape --without-gui --export-pdf=$TARGET $SOURCE')
 env['BUILDERS']['Inkscape'] = inkscape
 env['BUILDERS']['Latexdiff'] = Builder(action = 'latexdiff $SOURCES > $TARGET')
-env['BUILDERS']['Copier'] = Builder(action = Copy('$TARGET', '$SOURCE'))
 
-converted_pdfs = [env.Inkscape(target="pdf-fig/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
+converted_pdfs = [env.Inkscape(target="figures/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
                for svg in glob.glob('svg-fig/*.svg')]
-
-pdfs = [env.Copier(target = 'figures/' + os.path.basename(pdf), source = pdf)
-        for pdf in glob.glob('pdf-fig/*.pdf')]
-
-Depends(Flatten([pdfs]), Flatten([converted_pdfs]))
 
 joint_inf, = env.PDF(target='_build/joint_inf.pdf',source='joint_inf.tex')
 
 Depends(Flatten([joint_inf]),
-        Flatten([pdfs, converted_pdfs, 'joint_inf.bib']))
+        Flatten([converted_pdfs, 'joint_inf.bib']))
 
 cont_build = env.Command('.continuous', ['joint_inf.bib', 'joint_inf.tex'],
     'while :; do inotifywait -e modify $SOURCES; scons -Q; done')
