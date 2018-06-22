@@ -551,6 +551,57 @@ We then need to show
 
 Note that the above will hold if we swap $\hat{y}_2$ and $\hat{y}_1$, as the likelihood is invariant to this.
 
+Tentative lemma:
+\begin{lemma}
+Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x_1, y_1, x_2, y_2, w\}$ and $\emptyset$ be the maximal ancestral state for all site splits.
+There exists a set of $0 < x^*, y^* < 1$ such that $\{x^*(y^*)^2, (y^*)^2, x^*(y^*)^2, 1, 1\}$ is the solution to maximizing \eqref{eq:profile_likelihood}.
+\end{lemma}
+
+Sketch of proof:
+We know the gradient is zero for the partials of the first three parameters.
+We must show then that the objective function is increasing in all directions for the second two parameters at the boundary.
+If the gradients for both $w$ and $y_2$ are positive at 1, the objective will be increasing in all increasing directions---for any positive direction, i.e., unit vector with nonnegative entries, the directional derivative is positive if each gradient is positive.
+Since the objective function is concave then this must be the maximum.
+Let
+\[
+a_{\emptyset} = \frac{(x_1+x_2)(y_1+y_2)}{(1+x_1x_2)(1+y_1y_2)}
+\]
+with similar definitions for the remaining site splits.
+The objective function proportional to $w$ is
+\begin{align*}
+\ell(w) \propto \log(1+w) + \sum_j p_{\siteSplit_j} \log(1 + a_{\siteSplit_j}w)
+\end{align*}
+and has gradient with respect to $w$ as
+\begin{align*}
+\ell_w(t) = \frac{1}{1+w} + \sum_j p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{1 + a_{\siteSplit_j}w}.
+\end{align*}
+Note that, $a_{\emptyset} = -a_{13}$ and $a_{2} = -a_{123}$, and, for $x_1=x_2$,
+\[
+a_{1} = a_{3} = a_{12} = a_{23} = 0.
+\]
+
+For $y_2$, we do the same, but now with
+\begin{align*}
+\ell(y_2) \propto \log(1+y_2) + \sum_j p_{\siteSplit_j} \log(1 + b_{\siteSplit_j}y_2)
+\end{align*}
+where
+\[
+b_{\emptyset} = \frac{y_1+wx_1+wx_2+x_1y_1x_2}{1+x_1x_2+wx_1y_1+wx_2y_1}.
+\]
+For $x_1=x_2$, the denominator is always positive, allowing the above simplification.
+%It is. Since x_1=x_2 at the maximum we can use an argument like 1+x^2-2y_1wx > 1+x^2-2x = (1-x)^2 > 0. We'll need to ignore cases where x=0 (i.e., x^* or y^* are zero)
+The constants $b$ do not simplify as easily.
+In Fig.~\ref{fig:positive-gradients}, we see the region where our solution is $\hat{t}=\{x^*(y^*)^2, (y^*)^2, x^*(y^*)^2, 1, 1\}$.
+
+\begin{figure}
+\centering
+%python joint_inf_plot.py --analytic --plot-name svg-fig/positive-gradients.svg --delta .001
+\includegraphics[width=.95\textwidth]{positive-gradients}
+\caption{
+}
+\label{fig:positive-gradients}
+\end{figure}
+
 \subsection*{Empirical validation}
 
 Consider Table~\ref{tab:likelihoods}.
@@ -632,11 +683,24 @@ In Fig.~\ref{fig:empirical-incons}, for various values of $x^*,y^*$, we compute 
 
 \begin{figure}
 \centering
+%python joint_inf_plot.py --empirical --plot-name svg-fig/empirical-incons.svg --delta .01 --n-jobs 10
 \includegraphics[width=.95\textwidth]{empirical-incons}
 \caption{
 Inconsistency in joint inference.
 In the white region, one of the possibly many equally likely maxima has the property that $\hat{w}=1$ and $\hat{y}_2=1$, indicating we converge to a topology that is not the one that generated the data.
 The gray regions are edge cases where one of the generating parameters was zero or one.
+}
+\label{fig:empirical-incons}
+\end{figure}
+
+\begin{figure}
+\centering
+%python joint_inf_plot.py --empirical --plot-name svg-fig/empirical-incons-curve.svg --delta .01 --n-jobs 10 --plot-curve
+\includegraphics[width=.95\textwidth]{empirical-incons-curve}
+\caption{
+Inconsistency in joint inference with intuitive curves.
+The white curve is our condition on the gradients.
+The blue curve is a condition on $x^*$ and $y^*$ such that $\emptyset$ is the most likely ancestral state.
 }
 \label{fig:empirical-incons}
 \end{figure}
