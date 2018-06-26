@@ -402,7 +402,7 @@ $\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
 \hline
 \end{tabular}
 \caption{
-Due to the symmetry of the likelihood, WLOG we assume $x_2 > x_1$ and $y_2 > y_1$ and maximize over ancestral states to reduce the number of possible functional forms to consider.
+Due to the symmetry of the likelihood, WLOG we assume $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral states to reduce the number of possible functional forms to consider.
 All values multiplied by $1/32$.
 Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
 See Table~\ref{tab:farris_likelihoods} for full calculations.}
@@ -595,11 +595,21 @@ In Fig.~\ref{fig:positive-gradients}, we see the region where our solution is $\
 
 \begin{figure}
 \centering
-%python joint_inf_plot.py --analytic --plot-name svg-fig/positive-gradients.svg --delta .001
+%python joint_inf_plot.py --optimum-conditions --plot-name svg-fig/positive-gradients.svg --delta .001 --n-jobs 10
 \includegraphics[width=.95\textwidth]{positive-gradients}
 \caption{
 }
 \label{fig:positive-gradients}
+\end{figure}
+
+\begin{figure}
+\centering
+%python joint_inf_plot.py --analytic --plot-name svg-fig/incons-analytic.svg --delta .001 --n-jobs 10
+\includegraphics[width=.95\textwidth]{incons-analytic}
+\caption{
+Region of inconsistency.
+}
+\label{fig:incons-analytic}
 \end{figure}
 
 \subsection*{Empirical validation}
@@ -695,13 +705,23 @@ The gray regions are edge cases where one of the generating parameters was zero 
 
 \begin{figure}
 \centering
-%python joint_inf_plot.py --empirical --plot-name svg-fig/empirical-incons-curve.svg --delta .01 --n-jobs 10 --plot-curve
-\includegraphics[width=.95\textwidth]{empirical-incons-curve}
+%python joint_inf_plot.py --empirical --plot-name svg-fig/empirical-incons-intuition.svg --delta .01 --n-jobs 10 --plot-intuition
+\includegraphics[width=.95\textwidth]{empirical-incons-intuition}
 \caption{
 Inconsistency in joint inference with intuitive curves.
 The white curve is our condition on the gradients.
 The blue curve is a condition on $x^*$ and $y^*$ such that $\emptyset$ is the most likely ancestral state.
 }
-\label{fig:empirical-incons}
+\label{fig:empirical-incons-intuition}
+\end{figure}
+
+\begin{figure}
+\centering
+%python joint_inf_plot.py --empirical --plot-name svg-fig/empirical-incons-analytic.svg --delta .01 --n-jobs 10 --plot-curve
+\includegraphics[width=.95\textwidth]{empirical-incons-analytic}
+\caption{
+Inconsistency in joint inference with bounding curve.
+}
+\label{fig:empirical-incons-analytic}
 \end{figure}
 
