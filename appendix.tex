@@ -325,28 +325,28 @@ Taking maxima over ancestral state splits results in Table~\ref{tab:likelihoods}
 $\siteSplit_j$ & $\ancestralSplit_k$ & $\Pr(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau_1, t)$\\
 \hline
 $\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1-w)$\\
-&$\{2\}$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1-w)$\\
-&$\{1,2\}$&$(1-x_1)(1-y_1)(1-x_2)(1-y_2)(1+w)$\\
+&$\{1\}^*$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1-w)$\\
+&$\{2\}^*$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1-w)$\\
+&$\{1,2\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1-y_2)(1+w)$\\
 
 $\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 &$\{1\}$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1-w)$\\
-&$\{2\}$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1-w)$\\
+&$\{2\}^*$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1-w)$\\
 &$\{1,2\}$&$(1+x_1)(1-y_1)(1-x_2)(1-y_2)(1+w)$\\
 
 $\{2\}$    &$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1-w)$\\
+&$\{1\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1-w)$\\
 &$\{2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1-w)$\\
 &$\{1,2\}$&$(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1+w)$\\
 
 $\{3\}$    &$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 &$\{1\}$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{2\}$&$(1+x_1)(1-y_1)(1-x_2)(1-y_2)(1-w)$\\
+&$\{2\}^*$&$(1+x_1)(1-y_1)(1-x_2)(1-y_2)(1-w)$\\
 &$\{1,2\}$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
 
 $\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
 &$\{1\}$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{2\}$&$(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1-w)$\\
+&$\{2\}^*$&$(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1-w)$\\
 &$\{1,2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
 
 $\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
@@ -356,7 +356,7 @@ $\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
 
 $\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 &$\{1\}$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{2\}$&$(1-x_1)(1-y_1)(1-x_2)(1-y_2)(1-w)$\\
+&$\{2\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1-y_2)(1-w)$\\
 &$\{1,2\}$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
 
 $\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
@@ -365,8 +365,12 @@ $\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
 &$\{1,2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
 \hline
 \end{tabular}
-\caption{Likelihood calculations for all site splits $\siteSplit_j$ and ancestral state splits $\ancestralSplit_k$ of the InvFels tree $\tau_1$.
-All values multiplied by $1/32$.}
+\caption{
+Likelihood calculations for all site splits $\siteSplit_j$ and ancestral state splits $\ancestralSplit_k$ of the InvFels tree $\tau_1$.
+All values multiplied by $1/32$.
+Ancestral states with $^*$ are never maximal provided parameters are in $(0,1)$.
+There are $3^5\cdot 4^2=3,888$ possible forms for the likelihood.
+}
 \label{tab:farris_likelihoods}
 \end{table}
 
@@ -405,7 +409,8 @@ $\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
 Due to the symmetry of the likelihood, WLOG we assume $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral states to reduce the number of possible functional forms to consider.
 All values multiplied by $1/32$.
 Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
-See Table~\ref{tab:farris_likelihoods} for full calculations.}
+There are $3^4=81$ possible forms for the likelihood.
+}
 \label{tab:likelihoods}
 \end{table}
 %TODO: the caption of this overlaps with the page number---will this be a problem or will MBE handle it?
@@ -454,46 +459,38 @@ The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $
 Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t})$, if there is a unique maximum of the log-likelihood then $x_1=x_2$ at the maximum.
 An analogous statement holds for $y_1$ and $y_2$.
 
-We now show that, if there exists a unique maximal ancestral state split for each site split then there exists a a unique estimate of $\tilde{t}$ when performing joint inference maximizing \eqref{eq:profile_likelihood}.
-To do so, we show the Hessian of the joint likelihood term is negative definite.
-First, we decompose the likelihood into the divergence and partial log-likelihood terms as in \eqref{eq:log_likelihood_simplified}.
-Recall the divergence
-\[
-\shannonDivergence_{\tau_1,t^*}(\tau_1,t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t^*)\cdot\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t).
-\]
-where data is generated on the InvFels tree with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$ (Fig.~\ref{fig:farris-fels-top}).
-By Gibbs inequality, this function attains a unique maximum when
-\[
-\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t^*)
-\]
-for all $j=1,\ldots,\nSiteSplits$ with $t^*=\{x^*,y^*,x^*,y^*,y^*\}$.
-Note that exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not affect the divergence, and, as it has a unique maximum, we have $x_1=x_2=x$ and $y_1=y_2=y$ at this maximum.
-Referring to Table~\ref{tab:sitepatprob}, we set up simultaneous equations as follows.
-The sum of generating probabilities for site splits $\{3\}$ and $\{1,2\}$ yields
-\[
-2-2(x^*)^2 = 2-2x^2
-\]
-and for $\{2\}$ and $\{1,2\}$ yields
-\[
-2-2(y^*)^2 = 2-2y^2.
-\]
-implying $x=x^*$ and $y=y^*$.
-Setting these parameters to their optima, the difference of generating probabilities for site splits $\emptyset$ and $\{1,3\}$ yields
-\[
-8x^*(y^*)^2 = 8x^*y^*w
-\]
-implying $w=y^*$.
-The unique maximum is $\hat{t}=\{x^*,y^*,x^*,y^*,y^*\}$, and thus the Hessian of $\shannonDivergence$ is negative definite.
+\subsection*{Theorems and proofs}
 
-We now focus on the partial log-likelihood term.
-Recall the partial log-likelihood takes the form
-\[
-\tilde{\ell}_{\tau_1,t^*}(\tau_1, t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau_1, t).
-\]
-Assume for now the functional form of the partial likelihood is fixed---in other words, each site split has a single partial likelihood function when maximizing over ancestral state splits.
-Then, the partial log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
+%where data is generated on the InvFels tree with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$ (Fig.~\ref{fig:farris-fels-top}).
+
+\topoInconsist*
+
+We first prove intermediate results to show the above.
+
+\begin{lemma}
+\label{lem:concavity}
+Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, $t=\{x_1, y_1, x_2, y_2, w\}$, and $\tau^*$ be the InvFels tree.
+For a fixed $\{\xi_1,\ldots,\xi_q\}$, the objective function
 \begin{align*}
-\tilde{\ell}_{\tau_1,t^*}(\tau_1, t) &= \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_2}(x_2)\\
+\ell_{\tau^*,t^*}(\tau^*, t) = \sum_{j=1}^\nSiteSplits &\left[\Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t) \right.\\
+&\qquad+ \left.\Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau^*, t)\right]
+\end{align*}
+is concave and
+\[
+\hat{t} = \arg\max_t \ell_{\tau^*, t^*}(\tau^*, t)
+\]
+is a unique maximum.
+\end{lemma}
+
+\begin{proof}
+We focus on the two terms separately, showing they are both concave and, thus, their sum is concave.
+Call the second term
+\[
+\tilde{\ell}_{\tau^*,t^*}(\tau^*, t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau^*, t).
+\]
+For fixed $\xi_j$, the partial log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
+\begin{align*}
+\tilde{\ell}_{\tau^*,t^*}(\tau^*, t) &= \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_2}(x_2)\\
 &\qquad + \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_2}(y_2)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,w}(w).
 \end{align*}
 Due to this additive form, all off-diagonal terms of the Hessian for this function are zero, so we show that the diagonal terms are nonpositive.
@@ -517,51 +514,170 @@ We have the second derivative
 As $x_1\in(0,1)$, we need only $0 \le \sum_j c_je_j \le 1$ to imply the diagonal terms of the Hessian are nonpositive.
 Since $\sum_j c_j = 1$ and $e_j\in\{0,1\}$, then $0 \le \sum_j c_je_j \le 1$ and $\tilde{\ell}''(x_1) \le 0$.
 Applying similar arguments to the other variables, the Hessian for the partial log-likelihood has nonpositive diagonal terms and off-diagonal terms equal to zero.
-Thus, the Hessian of the sum of the divergence and the partial log-likelihood is negative definite, as the Hessian for the divergence is negative definite, provided there is a single maximal ancestral state split for each site split.
 
-\subsection*{Theorems and proofs}
-
-Tentative theorem 1: 
-\begin{restatable}{theorem}{topoInconsist2}
-Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x_1, y_1, x_2, y_2, w\}$.
-There exists a set of $0 < x^*, y^* < 1$ such that
+We now focus on the divergence term.
+By Gibbs inequality, this function attains a unique maximum when
 \[
-\{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\} = \arg\max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t)
+\Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)
 \]
-and $\hat{w}\equiv 1$.
-\end{restatable}
+for all $j=1,\ldots,\nSiteSplits$ with $t^*=\{x^*,y^*,x^*,y^*,y^*\}$.
+Note that exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not affect the divergence, and, as it has a unique maximum, we have $x_1=x_2=x$ and $y_1=y_2=y$ at this maximum.
+Referring to Table~\ref{tab:sitepatprob}, we set up simultaneous equations as follows.
+The sum of generating probabilities for site splits $\{3\}$ and $\{1,2\}$ yields
+\[
+2-2(x^*)^2 = 2-2x^2
+\]
+and for $\{2\}$ and $\{1,2\}$ yields
+\[
+2-2(y^*)^2 = 2-2y^2.
+\]
+implying $x=x^*$ and $y=y^*$.
+Setting these parameters to their optima, the difference of generating probabilities for site splits $\emptyset$ and $\{1,3\}$ yields
+\[
+8x^*(y^*)^2 = 8x^*y^*w
+\]
+implying $w=y^*$.
+The unique maximum is $\hat{t}=\{x^*,y^*,x^*,y^*,y^*\}$.%, and thus the Hessian of $\shannonDivergence$ is negative definite.
+...
+\textbf{
+The Hessian as a function of $\Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t)$ is negative definite, but is it as a function of $t$?
+This seems intuitively obvious, but I don't know how to show it.
+How could it not be true?
+}
+%Let D(p, q) = \sum_j p_j \log q_j
+%This is concave in q_j, trivially, but we are interested in concavity in t.
+%Because t generates q_j, how can this not be true?
+%Thought:
+%- if f(x) has a unique maximum on [a,b] and g(x) is concave on [a,b], all we want to show is that f(x)+g(x) has a unique maximum on [a,b]; moreover, f(x) is concave in an open ball around its maximum.
+%- note that we have D(p, q(\theta)), where q(\theta) is this sort of complicated function involving Hadamard matrices. however, in the trivial case, D(p, q(\theta)) is concave, so we may be able to use induction?
+%- note f(x) + sum_h g(x,h) has a unique solution; what about f(x) + max_h g(x,h)? we still need concavity...
+%- the sum of divergence and partial likelihood may be easy to show is concave as partial likelihood clearly is.
+%- empirical results show that the gradient condition is accurate, though that might mean we need to show there are no zero crossings of the derivative or something like that
+%Oblique strategies:
+%- the condition of y_2 \ge y_1 and x_2 \ge x_1 may play a role
+%- we could also find x,y where derivative has no solutions, so fn is always increasing, though this might require some more argument
+%- we could show (if it's true) that going from fidelities to the Hadamard representation results in a concave function in t, and from there we know the divergence is concave in t.
+%   this seems hard but may be our best bet; proceed by induction seems reasonable, but, again, hard.
+%   it's true in the "trivial" n=0 case, which encourages me.
+%   moreover, the fidelities generate the probabilities, and the objective is concave in the probabilities, which is more encouragement.
+\end{proof}
 
-In words, this implies an inconsistency as we converge on the incorrect topology, estimating $\hat{w}$ to be $1$ and not $y^*$.
+In words, this means that, if we have a single maximal ancestral state for each site split, we have a unique maximum.
 
-Tentative lemma:
 \begin{lemma}
 Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x_1, y_1, x_2, y_2, w\}$.
 There exists a set of $0 < x^*, y^* < 1$ such that $\emptyset$ is the maximal ancestral state for all site splits.
 \end{lemma}
 
-This is useful as it will result in the largest estimates of $w$ and $y_2$ and a single objective function with a unique maximum.
-Empirically, it looks as if, for small $x$ and large $y$, this results in $\hat{w} = \hat{y}_2 = 1$.
-We can see easily that, if this is the case, $\hat{x}_1=\hat{x}_2=x*(y^*)^2$ and $\hat{y}_1=(y^*)^2$.
-We then need to show
-\begin{enumerate}
-\item there exist $x^*,y^*$ that give us this form for the likelihood
-\item there exist $x^*,y^*$ such that this likelihood for $w$ and $y_2$ has a maximum on the boundary
-\item the intersection of these sets of $x^*,y^*$ is nonempty
-\end{enumerate}
+\begin{proof}
+We obtain
+\[
+\max_{t} \ \ell_{\tau^*,t^*}(\tau^*, t) \le
+    \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
+    + \tilde{\ell}_{\tau^*,t^*}(\tau^*, \hat{t})
+\]
+as an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} using Gibbs's inequality
+\[
+\shannonDivergence_{\tau^*,t^*}(\tau^*,t) \le \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
+\]
+and
+\[
+\hat{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau^*, t).
+\]
+By straightforward calculus, the function $f(x)=a_1\log(1+x)+a_2\log(1-x)$ attains a maximum at $\hat{x} = (a_1-a_2)/(a_1+a_2)$, and so we have a closed form for $\hat{t}$.
+Using this estimate, we have the lower bound
+\[
+\max_{t} \ \ell_{\tau^*,t^*}(\tau^*, t) \ge
+    \shannonDivergence_{\tau^*,t^*}(\tau^*,\hat{t})
+    + \tilde{\ell}_{\tau^*,t^*}(\tau^*, \hat{t}).
+\]
+Figure~\ref{fig:max-anc-state} shows where the lower bound above is greater than all 80 other upper bounds.
+\end{proof}
 
-Note that the above will hold if we swap $\hat{y}_2$ and $\hat{y}_1$, as the likelihood is invariant to this.
+\begin{figure}
+\centering
+\includegraphics[width=.95\textwidth]{analytic-anc-state-inkscape}
+\caption{
+Region where $\emptyset$ is maximal ancestral state for each site split.
+}
+\label{fig:max-anc-state}
+\end{figure}
 
-Tentative lemma:
+The above will hold if we swap $\hat{y}_2$ and $\hat{y}_1$, as the likelihood is invariant to this.
+
 \begin{lemma}
 Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x_1, y_1, x_2, y_2, w\}$ and $\emptyset$ be the maximal ancestral state for all site splits.
 There exists a set of $0 < x^*, y^* < 1$ such that $\{x^*(y^*)^2, (y^*)^2, x^*(y^*)^2, 1, 1\}$ is the solution to maximizing \eqref{eq:profile_likelihood}.
 \end{lemma}
 
-Sketch of proof:
-We know the gradient is zero for the partials of the first three parameters.
-We must show then that the objective function is increasing in all directions for the second two parameters at the boundary.
-If the gradients for both $w$ and $y_2$ are positive at 1, the objective will be increasing in all increasing directions---for any positive direction, i.e., unit vector with nonnegative entries, the directional derivative is positive if each gradient is positive.
-Since the objective function is concave then this must be the maximum.
+\begin{proof}
+Assume $\emptyset$ is the most likely ancestral state for all site splits.
+In this case, the likelihood has no ambiguity, and has terms given in Table~\ref{tab:likelihoods-restricted}.
+
+\begin{table}
+\centering
+\begin{tabular}{|ll|l|}
+\hline
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau, t)$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
+\hline
+$\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{2\}$    &$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{3\}$    &$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
+$\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
+$\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
+$\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
+\hline
+\end{tabular}
+\caption{
+The maximal likelihood values given $w=1$ and $y_2=1$.
+All values multiplied by $1/32$.}
+\label{tab:likelihoods-restricted}
+\end{table}
+
+Assume $w=1$ and $y_2=1$.
+Then, there is a closed form solution maximizing the joint optimization procedure, as follows.
+We simplify the generating probabilities as in Table~\ref{tab:gen-sitepatprob-restricted}.
+We see that, on simplifying, for each site split the generating probability is the same functional form as the likelihood.
+Thus, the joint optimization procedure has a unique, closed form solution solving
+\begin{align*}
+&\arg\max_{x_1,y_y,x_2} \ (p_{\emptyset} + p_2 + p_3 + p_{23}) \log(1+x_1) + (p_1 + p_{123} + p_{12} + p_{13}) \log(1-x_1)\\
+               &\qquad + (p_{\emptyset} + p_1 + p_3 + p_{13}) \log(1+y_1) + (p_2 + p_{123} + p_{12} + p_{23}) \log(1-y_1)\\
+               &\qquad + (p_{\emptyset} + p_1 + p_2 + p_{12}) \log(1+x_2) + (p_3 + p_{123} + p_{13} + p_{23}) \log(1-x_2)\\
+&\propto\arg\max_{x_1,y_y,x_2} \ (4+4x*(y^*)^2) \log(1+x_1) + (4-4x*(y^*)^2) \log(1-x_1)\\
+               &\qquad + (4+4(y^*)^2) \log(1+y_1) + (4-4(y^*)^2) \log(1-y_1)\\
+               &\qquad + (4+4x*(y^*)^2) \log(1+x_2) + (4-4x*(y^*)^2) \log(1-x_2).
+\end{align*}
+We have estimates
+\[
+\{\hat{x}_1,\hat{y}_1,\hat{x}_2\} = \{x^*(y^*)^2, (y^*)^2, x^*(y^*)^2\}
+\]
+and the gradient is equal to zero at this point.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|}
+    \hline
+$\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,1,1\})$\\
+    \hline
+    $\emptyset$ & $p_{\emptyset}$   &$(1+x_1)(1+y_1)(1+x_2)$\\
+    $\{1\}$     & $p_{1}$       &$(1-x_1)(1+y_1)(1+x_2)$\\
+    $\{2\}$     & $p_{2}$       &$(1+x_1)(1-y_1)(1+x_2)$\\
+    $\{3\}$     & $p_{3}$       &$(1+x_1)(1+y_1)(1-x_2)$\\
+    $\{1,2,3\}$ & $p_{123}$   &$(1-x_1)(1-y_1)(1-x_2)$\\
+    $\{1,2\}$   & $p_{12}$     &$(1-x_1)(1-y_1)(1+x_2)$\\
+    $\{1,3\}$   & $p_{13}$     &$(1-x_1)(1+y_1)(1-x_2)$\\
+    $\{2,3\}$   & $p_{23}$     &$(1+x_1)(1-y_1)(1-x_2)$\\
+    \hline
+\end{tabular}
+\caption{Site split probabilities $p_{\siteSplit_j}$ on the InvFels tree $\tau_1$ with $t=\{x_1,y_1,x_2,1,1\}$ obtained using the Hadamard transform.
+All values multiplied by $1/8$.}
+\label{tab:gen-sitepatprob-restricted}
+\end{table}
+
+Now we show there are $0 < x^*, y^* < 1$ on which the gradient with respect to $w$ and $y_2$ is increasing on the boundary for all $x_1,y_1,x_2,y_2,w$.
+We use the fact that $x_1=x_2$ as there exists a unique solution and the likelihood is invariant to swapping these two variables.
 Let
 \[
 a_{\emptyset} = \frac{(x_1+x_2)(y_1+y_2)}{(1+x_1x_2)(1+y_1y_2)}
@@ -575,11 +691,10 @@ and has gradient with respect to $w$ as
 \begin{align*}
 \ell_w(t) = \frac{1}{1+w} + \sum_j p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{1 + a_{\siteSplit_j}w}.
 \end{align*}
-Note that, $a_{\emptyset} = -a_{13}$ and $a_{2} = -a_{123}$, and, for $x_1=x_2$,
-\[
-a_{1} = a_{3} = a_{12} = a_{23} = 0.
-\]
-
+%Note that, $a_{\emptyset} = -a_{13}$ and $a_{2} = -a_{123}$, and, for $x_1=x_2$,
+%\[
+%a_{1} = a_{3} = a_{12} = a_{23} = 0.
+%\]
 For $y_2$, we do the same, but now with
 \begin{align*}
 \ell(y_2) \propto \log(1+y_2) + \sum_j p_{\siteSplit_j} \log(1 + b_{\siteSplit_j}y_2)
@@ -589,111 +704,29 @@ where
 b_{\emptyset} = \frac{y_1+wx_1+wx_2+x_1y_1x_2}{1+x_1x_2+wx_1y_1+wx_2y_1}.
 \]
 For $x_1=x_2$, the denominator is always positive, allowing the above simplification.
-%It is. Since x_1=x_2 at the maximum we can use an argument like 1+x^2-2y_1wx > 1+x^2-2x = (1-x)^2 > 0. We'll need to ignore cases where x=0 (i.e., x^* or y^* are zero)
-The constants $b$ do not simplify as easily.
-In Fig.~\ref{fig:positive-gradients}, we see the region where our solution is $\hat{t}=\{x^*(y^*)^2, (y^*)^2, x^*(y^*)^2, 1, 1\}$.
+%Since x_1=x_2 at the maximum we can use an argument like 1+x^2-2y_1wx > 1+x^2-2x = (1-x)^2 > 0. We'll need to ignore cases where x=0 (i.e., x^* or y^* are zero)
+In Fig.~\ref{fig:positive-gradients}, we see the region where the gradients of both $w$ and $y_2$ are increasing at $\hat{t}=\{x^*(y^*)^2, (y^*)^2, x^*(y^*)^2, 1, 1\}$, and, thus, the objective function is increasing in all positive directions over $(y_2,w)$ on the boundary.
+Since, from Lemma~\ref{lem:concavity}, the objective function is concave on our domain, this must be the maximum.
+\end{proof}
 
 \begin{figure}
 \centering
-%python joint_inf_plot.py --optimum-conditions --plot-name svg-fig/positive-gradients.svg --delta .001 --n-jobs 10
-\includegraphics[width=.95\textwidth]{positive-gradients}
+\includegraphics[width=.95\textwidth]{positive-gradients-inkscape}
 \caption{
+Region where gradients w.r.t. $w$ and $y_2$ are increasing on the boundary.
 }
 \label{fig:positive-gradients}
-\end{figure}
-
-\begin{figure}
-\centering
-%python joint_inf_plot.py --analytic --plot-name svg-fig/incons-analytic.svg --delta .001 --n-jobs 10
-\includegraphics[width=.95\textwidth]{incons-analytic}
-\caption{
-Region of inconsistency.
-}
-\label{fig:incons-analytic}
 \end{figure}
 
 \subsection*{Empirical validation}
 
 Consider Table~\ref{tab:likelihoods}.
 There are 81 separate possible forms for the likelihood, corresponding to the three possible most likely ancestral states for each of the four ambiguous site splits.
-Moreover, as shown previously, each of these objective functions has a unique maximum and is concave on $[0,1]^5$.
-
-Assume $w=1$ and $y_2=1$.
-Then, there is a closed form solution maximizing the joint optimization procedure.
-In this case, the likelihood has no ambiguity, and has terms given in Table~\ref{tab:likelihoods-restricted}.
-
-\begin{table}
-\centering
-\begin{tabular}{|ll|l|}
-\hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau, t)$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
-\hline
-$\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)$\\
-
-$\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)$\\
-
-$\{2\}$    &$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)$\\
-
-$\{3\}$    &$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)$\\
-
-$\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)$\\
-
-$\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)$\\
-
-$\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)$\\
-
-$\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)$\\
-\hline
-\end{tabular}
-\caption{
-The maximal likelihood values given $w=1$ and $y_2=1$.
-All values multiplied by $1/32$.}
-\label{tab:likelihoods-restricted}
-\end{table}
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{|l|l|l|}
-    \hline
-$\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,1,1\})$\\
-    \hline
-    $\emptyset$ & $p_{\emptyset}$   &$1 + x_1x_2 +  y_1 +  [  x_1 + x_2][  y_1 + 1] + x_1y_1x_2 = (1+x_1)(1+y_1)(1+x_2)$\\
-    $\{1\}$     & $p_{1}$       &$1 - x_1x_2 +  y_1 +  [- x_1 + x_2][  y_1 + 1] - x_1y_1x_2 = (1-x_1)(1+y_1)(1+x_2)$\\
-    $\{2\}$     & $p_{2}$       &$1 + x_1x_2 -  y_1 +  [  x_1 + x_2][- y_1 + 1] - x_1y_1x_2 = (1+x_1)(1-y_1)(1+x_2)$\\
-    $\{3\}$     & $p_{3}$       &$1 - x_1x_2 +  y_1 +  [  x_1 - x_2][  y_1 + 1] - x_1y_1x_2 = (1+x_1)(1+y_1)(1-x_2)$\\
-    $\{1,2,3\}$ & $p_{123}$   &$1 + x_1x_2 -  y_1 +  [  x_1 + x_2][  y_1 - 1] - x_1y_1x_2 = (1-x_1)(1-y_1)(1-x_2)$\\
-    $\{1,2\}$   & $p_{12}$     &$1 - x_1x_2 -  y_1 +  [- x_1 + x_2][- y_1 + 1] + x_1y_1x_2 = (1-x_1)(1-y_1)(1+x_2)$\\
-    $\{1,3\}$   & $p_{13}$     &$1 + x_1x_2 +  y_1 +  [- x_1 - x_2][  y_1 + 1] + x_1y_1x_2 = (1-x_1)(1+y_1)(1-x_2)$\\
-    $\{2,3\}$   & $p_{23}$     &$1 - x_1x_2 -  y_1 +  [  x_1 - x_2][- y_1 + 1] + x_1y_1x_2 = (1+x_1)(1-y_1)(1-x_2)$\\
-    \hline
-\end{tabular}
-\caption{Site split probabilities $p_{\siteSplit_j}$ on the InvFels tree $\tau_1$ with $t=\{x_1,y_1,x_2,1,1\}$ obtained using the Hadamard transform.
-All values multiplied by $1/8$.}
-\label{tab:gen-sitepatprob-restricted}
-\end{table}
-
-Additionally, we simplify the generating probabilities as in Table~\ref{tab:gen-sitepatprob-restricted}.
-We see that, on simplifying, for each site split the generating probability is the same functional form as the likelihood.
-Thus, the joint optimization procedure has a unique, closed form solution solving
-\begin{align*}
-&\arg\max_{x_1,y_y,x_2} \ (p_{\emptyset} + p_2 + p_3 + p_{23}) \log(1+x_1) + (p_1 + p_{123} + p_{12} + p_{13}) \log(1-x_1)\\
-               &\qquad + (p_{\emptyset} + p_1 + p_3 + p_{13}) \log(1+y_1) + (p_2 + p_{123} + p_{12} + p_{23}) \log(1-y_1)\\
-               &\qquad + (p_{\emptyset} + p_1 + p_2 + p_{12}) \log(1+x_2) + (p_3 + p_{123} + p_{13} + p_{23}) \log(1-x_2)\\
-&\propto\arg\max_{x_1,y_y,x_2} \ (4+4x*(y^*)^2) \log(1+x_1) + (4-4x*(y^*)^2) \log(1-x_1)\\
-               &\qquad + (4+4(y^*)^2) \log(1+y_1) + (4-4(y^*)^2) \log(1-y_1)\\
-               &\qquad + (4+4x*(y^*)^2) \log(1+x_2) + (4-4x*(y^*)^2) \log(1-x_2).
-\end{align*}
-Using the fact that $a_1\log(1+x)+a_2\log(1-x)$ attains a maximum at $\hat{x} = (a_1-a_2)/(a_1+a_2)$ we have the parameters
-\[
-\{\hat{x}_1,\hat{y}_1,\hat{x}_2\} = \{x^*(y^*)^2, (y^*)^2, x^*(y^*)^2\}
-\]
-and a closed form function of $x^*,y^*$ for this likelihood.
-
+Moreover, as shown previously, each of these objective functions has a unique maximum on $[0,1]^5$.
 In Fig.~\ref{fig:empirical-incons}, for various values of $x^*,y^*$, we compute the maximum of each of the 81 likelihoods, as well as the above restricted likelihood, and plot the generating values for which the above likelihood is greater than or equal to all 81 candidate likelihoods.
 
 \begin{figure}
 \centering
-%python joint_inf_plot.py --empirical --plot-name svg-fig/empirical-incons.svg --delta .01 --n-jobs 10
 \includegraphics[width=.95\textwidth]{empirical-incons}
 \caption{
 Inconsistency in joint inference.
@@ -705,23 +738,32 @@ The gray regions are edge cases where one of the generating parameters was zero 
 
 \begin{figure}
 \centering
-%python joint_inf_plot.py --empirical --plot-name svg-fig/empirical-incons-intuition.svg --delta .01 --n-jobs 10 --plot-intuition
-\includegraphics[width=.95\textwidth]{empirical-incons-intuition}
+\includegraphics[width=.95\textwidth]{empirical-bias}
 \caption{
-Inconsistency in joint inference with intuitive curves.
-The white curve is our condition on the gradients.
-The blue curve is a condition on $x^*$ and $y^*$ such that $\emptyset$ is the most likely ancestral state.
+Bias in branch length estimation.
+In regions where joint optimization should perform well, there is systematic bias toward shorter branch lengths.
 }
-\label{fig:empirical-incons-intuition}
+\label{fig:empirical-bias}
 \end{figure}
+
 
 \begin{figure}
 \centering
-%python joint_inf_plot.py --empirical --plot-name svg-fig/empirical-incons-analytic.svg --delta .01 --n-jobs 10 --plot-curve
-\includegraphics[width=.95\textwidth]{empirical-incons-analytic}
+\includegraphics[width=\textwidth]{empirical-marginal}
 \caption{
-Inconsistency in joint inference with bounding curve.
+    Estimates for $\hat{p}_w$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using L-BFGS-B optimizing the classical marginal likelihood \eqref{eq:marginal_likelihood} (rather than a joint optimization procedure).
 }
-\label{fig:empirical-incons-analytic}
+\label{fig:bl-general-marginal}
 \end{figure}
+%
+%\begin{figure}
+%\centering
+%\includegraphics[width=.95\textwidth]{empirical-incons-intuition}
+%\caption{
+%Inconsistency in joint inference with intuitive curves.
+%The white curve is our condition on the gradients.
+%The blue curve is a condition on $x^*$ and $y^*$ such that $\emptyset$ is the most likely ancestral state.
+%}
+%\label{fig:empirical-incons-intuition}
+%\end{figure}
 
