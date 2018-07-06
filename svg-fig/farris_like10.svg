@@ -14,7 +14,7 @@
    id="svg3475"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="farris_like00.svg">
+   sodipodi:docname="farris_like10.svg">
   <defs
      id="defs3477" />
   <sodipodi:namedview
@@ -43,7 +43,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -167,7 +167,7 @@
          sodipodi:role="line"
          id="tspan3009"
          x="46.269859"
-         y="825.51086">(1-x)/2</tspan></text>
+         y="825.51086">(1-x₁)/2</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
@@ -178,7 +178,7 @@
          sodipodi:role="line"
          id="tspan3009-6"
          x="361.67419"
-         y="825.51086">(1+x)/2</tspan></text>
+         y="825.51086">(1+x₂)/2</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
@@ -189,7 +189,7 @@
          sodipodi:role="line"
          id="tspan3009-5"
          x="99.034546"
-         y="952.9765">(1-y)/2</tspan></text>
+         y="952.9765">(1-y₁)/2</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
@@ -211,6 +211,6 @@
          sodipodi:role="line"
          id="tspan3009-1"
          x="297.02444"
-         y="952.9765">(1+y)/2</tspan></text>
+         y="952.9765">(1+y₂)/2</tspan></text>
   </g>
 </svg>

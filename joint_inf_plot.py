@@ -82,16 +82,6 @@ def parse_args():
         help='plot analytic',
     )
     parser.add_argument(
-        '--optimum-conditions',
-        action="store_true",
-        help='plot conditions where we have y_2=1, w=1 at optimum',
-    )
-    parser.add_argument(
-        '--empirical-inconsistency',
-        action="store_true",
-        help='compute empirical',
-    )
-    parser.add_argument(
         '--empirical-parameter-estimate',
         action="store_true",
         help='compute empirical',
@@ -113,6 +103,10 @@ def parse_args():
         help='file name for where to save pkl',
         default='output.pkl',
     )
+    parser.add_argument(
+        '--analytic-inconsistency',
+        action="store_true",
+    )
 
     args = parser.parse_args()
 
@@ -121,17 +115,6 @@ def parse_args():
 # ~~~~~~~~~
 # Functions for exact likelihood bounds
 
-
-def A_INVFELS(theta0, site_pattern):
-    theta = [-t if s=='1' else t \
-            for t,s in zip(theta0, site_pattern+'0')]
-    return ((theta[0]+theta[2])*(theta[1]+theta[3])) / ((1+theta[0]*theta[2])*(1+theta[1]*theta[3]))
-
-def B_INVFELS(theta0, site_pattern):
-    theta = [-t if s=='1' else t \
-            for t,s in zip(theta0, site_pattern+'0')]
-    return (theta[1] + theta[4]*theta[0] + theta[4]*theta[2] + theta[0]*theta[1]*theta[2]) / \
-           (1 + theta[0]*theta[2] + theta[0]*theta[1]*theta[4] + theta[1]*theta[2]*theta[4])
 
 def P_INVFELS(theta0, site_pattern):
     """
@@ -272,48 +255,32 @@ def get_ancestral_state_conds(xy):
         output.append(likelihood_upper_bound(theta, anc_state))
     return bnd - max(output)
 
-def get_empirical_inconsistency(xy):
+def get_analytic_inconsistency(xy):
     """
-    Plot region where likelihood of w=1 and y_2=1 is greater than or equal to all other maximized likelihoods
     """
-    # if we're in an edge case, return .5 to gray out plot
-    if xy[0] == 1. or xy[0] == 0. or xy[1] == 1. or xy[1] == 0.:
+    x = xy[0]
+    y = xy[1]
+    if x == 1. or x == 0. or y == 1. or y == 0.:
         return np.nan
-    theta = [xy[0], xy[1], xy[0], xy[1], xy[1]]
+    theta = [x, y, x, y, y]
+    cx = (1+x*x) / (2.*x)
+    cy = (1-y)
+    cxcy = cx*cy
+    p13 = P_INVFELS(theta, '1010')
+    p2 = P_INVFELS(theta, '0100')
+    cond1 = cxcy >= 1
+    cond2 = 2 - cxcy - cx + p13*(3-cxcy) + p2*(3-cx) <= 0
+    cond3 = 1 + cx*cxcy - cxcy - cx + p13*(2-2*cxcy) + p2*(2-2*cx) >= 0
     bnd = likelihood_lower_bound(theta)
     output = []
     for anc_state in product('012', repeat=4):
         if ''.join(anc_state) == '0000':
             continue
-        max_obj = -np.inf
-        for init_theta in [theta, [0.]*5, [1.]*5, [.5]*5]:
-            obj = -minimize(lambda z: -likelihood(theta, z, anc_state),
-                x0=init_theta,
-                method="L-BFGS-B",
-                bounds=[(0.,1.)]*5,
-            ).fun
-            if obj > max_obj:
-                max_obj = obj
-        output.append(max_obj)
-    max_out = max(output)
-    if bnd > max_out:
-        return 0.
+        output.append(likelihood_upper_bound(theta, anc_state))
+    if bnd >= max(output) and cond1 and cond2 and cond3:
+        return -1.
     else:
         return 1.
-
-def get_gradient_conds(xy):
-    # w gradient
-    x = xy[0]
-    y = xy[1]
-    w_output = .5
-    theta = [x*y*y, y*y, x*y*y, 1., 1.]
-    theta0 = [x, y, x, y, y]
-    for pattern in ALL_PATTERNS:
-        w_output += P_INVFELS(theta0, pattern) * A_INVFELS(theta, pattern) / (1 + A_INVFELS(theta, pattern))
-    y2_output = .5
-    for pattern in ALL_PATTERNS:
-        y2_output += P_INVFELS(theta0, pattern) * B_INVFELS(theta, pattern) / (1 + B_INVFELS(theta, pattern))
-    return np.minimum(w_output, y2_output)
 
 def get_marginal_what(xy):
     """
@@ -361,19 +328,21 @@ def get_empirical_what(xy):
     what = params[objs.index(max_out)]
     return (1 - what) / 2
 
-def obj_fn(xy, obj_type='get_gradient_conds'):
-    if obj_type == 'get_gradient_conds':
-        return get_gradient_conds(xy)
-    elif obj_type == 'get_empirical_what':
+def obj_fn(xy, obj_type='get_ancestral_state_conds'):
+    """
+    """
+    if obj_type == 'get_empirical_what':
         return get_empirical_what(xy)
     elif obj_type == 'get_ancestral_state_conds':
         return get_ancestral_state_conds(xy)
-    elif obj_type == 'get_empirical_inconsistency':
-        return get_empirical_inconsistency(xy)
     elif obj_type == 'get_marginal_what':
         return get_marginal_what(xy)
+    elif obj_type == 'get_analytic_inconsistency':
+        return get_analytic_inconsistency(xy)
 
 def make_plot(plottitle, plotname, legendtext=None, ct=None, scale=1, plotbar=False, move_legend=False):
+    """
+    """
     plt.axis('scaled')
     plt.xlabel(r'$p_{x^*}$', fontsize=FONT_SIZE-4)
     plt.ylabel(r'$p_{y^*}$', fontsize=FONT_SIZE-4)
@@ -430,16 +399,6 @@ def main(args=sys.argv[1:]):
         legendtext = r'$\emptyset$ is maximal'
         obj_type = 'get_ancestral_state_conds'
         move_legend = True
-    elif args.optimum_conditions:
-        plottitle = r'Region where gradient w.r.t. $y_2$ and $w$ increasing at boundary'
-        legendtext = r'positive''\n''gradient'
-        obj_type = 'get_gradient_conds'
-    elif args.empirical_inconsistency:
-        # The intuition is that if the generating parameters will most likely generate \emptyset ancestral states, then we'll
-        # be in this situation. It's not exact, but it's a start. This is the curve y = 2x/(1+x^2)
-        plottitle = r'Region of inconsistency'
-        obj_type = 'get_empirical_inconsistency'
-        scale = args.delta
     elif args.empirical_parameter_estimate:
         plottitle = r'Estimated $\hat{p}_w$'
         obj_type = 'get_empirical_what'
@@ -450,6 +409,10 @@ def main(args=sys.argv[1:]):
         obj_type = 'get_marginal_what'
         scale = args.delta
         plotbar = True
+    elif args.analytic_inconsistency:
+        plottitle = r'Region of inconsistency'
+        legendtext = r'joint inference inconsistent'
+        obj_type = 'get_analytic_inconsistency'
 
     if args.in_pkl_name is None:
         if args.n_jobs > 1:
@@ -457,7 +420,7 @@ def main(args=sys.argv[1:]):
             Z_pool = p.map( Obj(obj_type) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
             Z = np.reshape(Z_pool, (int(.5 / args.delta)+1, int(.5 / args.delta)+1))
         else:
-            Z = np.vectorize(lambda x, y: obj_fn((x, y)))(X, Y)
+            Z = np.vectorize(lambda x, y: obj_fn((x, y), obj_type=obj_type))(X, Y)
 
         with open(args.out_pkl_name, 'w') as f:
             pickle.dump((X, Y, Z, args.delta), f)
@@ -465,7 +428,7 @@ def main(args=sys.argv[1:]):
         with open(args.in_pkl_name, 'r') as f:
             X, Y, Z, args.delta = pickle.load(f)
 
-    if not args.empirical_inconsistency and not args.empirical_parameter_estimate and not args.marginal:
+    if not args.empirical_parameter_estimate and not args.marginal:
         ct = plt.contour(PX, PY, Z, [0], colors='k', linewidths=1)
     else:
         plt.imshow(Z, cmap=plt.cm.gray_r, origin='lower')

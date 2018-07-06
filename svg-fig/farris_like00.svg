@@ -25,7 +25,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="237.64899"
+     inkscape:cx="249.77083"
      inkscape:cy="211.39355"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -160,14 +160,14 @@
     <text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
-       x="46.269859"
-       y="825.51086"
+       x="27.076962"
+       y="826.521"
        id="text3186"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3009"
-         x="46.269859"
-         y="825.51086">(1+x)/2</tspan></text>
+         x="27.076962"
+         y="826.521">(1+x₁)/2</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
@@ -178,18 +178,18 @@
          sodipodi:role="line"
          id="tspan3009-6"
          x="361.67419"
-         y="825.51086">(1-x)/2</tspan></text>
+         y="825.51086">(1-x₂)/2</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
-       x="99.034546"
+       x="87.922867"
        y="952.9765"
        id="text3186-7"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3009-5"
-         x="99.034546"
-         y="952.9765">(1-y)/2</tspan></text>
+         x="87.922867"
+         y="952.9765">(1-y₁)/2</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
@@ -204,13 +204,13 @@
     <text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
-       x="297.02444"
-       y="952.9765"
+       x="308.13611"
+       y="949.94604"
        id="text3186-9"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3009-1"
-         x="297.02444"
-         y="952.9765">(1+y)/2</tspan></text>
+         x="308.13611"
+         y="949.94604">(1+y₂)/2</tspan></text>
   </g>
 </svg>
