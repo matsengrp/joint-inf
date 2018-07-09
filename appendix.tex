@@ -554,7 +554,7 @@ In this case, the partial likelihood has no ambiguity, and has terms given in Ta
 \centering
 \begin{tabular}{|ll|l|}
 \hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau, t)$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau, t)$ & $\Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
 \hline
 $\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 $\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
@@ -567,7 +567,7 @@ $\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
 \hline
 \end{tabular}
 \caption{
-The maximal likelihood values given $w=1$ and $y_2=1$.
+The maximal likelihood values given $\emptyset$ is the most likely ancestral state.
 All values multiplied by $1/32$.}
 \label{tab:likelihoods-restricted}
 \end{table}
@@ -581,7 +581,7 @@ as a function of $x_1$, using Table~\ref{tab:sitepatprob}, is
 \[
 \tilde{\ell}(x_1) \propto \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1).
 \]
-By some calculus, the gradient with respect to $x_1$ is
+By some calculus, the partial derivative with respect to $x_1$ is
 \[
 \tilde{\ell}_{x_1}(x_1) = \frac{-x_1+x^*(y^*)^2}{1-x_1^2}
 \]
@@ -630,7 +630,7 @@ Using the bounds on $\hat{x}_1,\hat{y}_1,\hat{y}_1$, and $\hat{y}_2$ from Lemma~
 \]
 so that $\ell'(w)$ has lower bound
 \[
-\ell'_{L}(w) = \frac{1}{1+w} + - \frac{p_{13}}{c_x^* - w} - \frac{p_{2}}{c_x^*c_y^* - w}
+\ell'_{L}(w) = \frac{1}{1+w} - \frac{p_{13}}{c_x^* - w} - \frac{p_{2}}{c_x^*c_y^* - w}
 \]
 with
 \[
@@ -639,56 +639,18 @@ c_x^* = \frac{1+(x^*)^2}{2x^*},
 \[
 c_y^* = 1-y^*.
 \]
-The solution $\hat{w}$ solving $\ell'(w) = 0$ is greater than $\hat{w}'$ solving $\ell'_{L}(w) = 0$.
-As $c_x^* > 1$, provided $c_x^*c_y^* > 1$, $\ell'_{L}(w)$ stays finite and, when considering $\ell'_{L}(w) \lessgtr 0$, we equivalently consider $f(w) \lessgtr 0$ where $f$ is the quadratic function
-\begin{align*}
-f(w) &= (w)^2\cdot(1+p_{13}+p_{2}) \\
-      &\qquad + w\cdot(-c_x^*-c_x^*c_y^*-p_{13}c_x^*c_y^*+p_{13}-p_{2}c_x^*+p_{2}) \\
-      &\qquad + ((c_x^*)^2c_y^*-p_{13}c_x^*c_y^*-p_{2}c_x^*).
-\end{align*}
+Clearly $c_x^* > 1$.
 We see
 \[
 \ell'_L(0) = 1 - \frac{p_{13}}{c_x^*} - \frac{p_{2}}{c_x^*c_y^*} > 0
 \]
-provided again that $c_x^*c_y^* > 1$.
-Now this quadratic has either zero, one, or two solutions.
-If there are zero solutions, the derivative with respect to $w$ is increasing on all of $[0,1]$ so that $\hat{w} = 1$ and we are done.
-If there are one or two solutions,
-if the smaller of the zeros of $f(w)$ is greater than one, then $\hat{w} \equiv 1$.
-Using the quadratic formula with
+provided $c_x^*c_y^* > 1$.
+Note that $\ell'_{L}(w)$ is strictly decreasing in $w$ on the interval $(0,1)$.
+Thus, if $\ell'_{L}(1) > 0$ then $\ell(w)$ is increasing on the entire interval $(0,1)$, including at the boundary $w=1$, implying $\hat{w} \equiv 1$.
+So we want $x^*$ and $y^*$ where $c_x^*c_y^* > 1$ and $\ell_L'(1) > 0$.
+These two conditions are straightforward, the second one being
 \[
-a = 1+p_{13}+p_{2},
-\]
-\[
-b = -c_x^*-c_x^*c_y^*-p_{13}c_x^*c_y^*+p_{13}-p_{2}c_x^*+p_{2},
-\]
-\[
-c = (c_x^*)^2c_y^*-p_{13}c_x^*c_y^*-p_{2}c_x^*,
-\]
-the smaller zero is
-\[
-\hat{w} = \frac{-b - \sqrt{b^2 - 4ac}}{2a},
-\]
-which is a function of the generating parameters $x^*$ and $y^*$.
-We see that $a \ge 0$ and, provided that $2a+b \leq 0$, we have,
-\[
-\hat{w} \ge 1 \iff
-|2a + b| \leq \sqrt{b^2 - 4ac} \iff
-%-b - \sqrt{b^2 - 4ac} \le 2a,
-%0 \ge -b - 2a \le \sqrt{b^2 - 4ac},
-%b^2 + 4ab + 4a^2 \le b^2 - 4ac,
-%a^2 + ab + ac \le 0,
-a + b + c \ge 0.
-\]
-Therefore, we have three conditions to satisfy for $\hat{w} \equiv 1$:
-\[
-\mathrm{C}1: c_x^*c_y^* > 1,
-\]
-\[
-\mathrm{C}2: 2-c_x^*c_y^*-c_x^*+p_{13}(3-c_x^*c_y^*)+p_{2}(3-c_x^*) \leq 0,
-\]
-\[
-\mathrm{C}3: 1+(c_x^*)^2c_y^*-c_x^*c_y^*-c_x^*+p_{13}(2-2c_x^*c_y^*)+p_{2}(2-2c_x^*) \ge 0.
+\ell'_L(1) = \frac{1}{2} - \frac{p_{13}}{c_x^*-1} - \frac{p_{2}}{c_x^*c_y^*-1} > 0.
 \]
 The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state is given in Figure~\ref{fig:incons-analytic}.
 \end{proof}

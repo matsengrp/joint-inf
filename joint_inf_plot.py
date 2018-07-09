@@ -268,16 +268,15 @@ def get_analytic_inconsistency(xy):
     cxcy = cx*cy
     p13 = P_INVFELS(theta, '1010')
     p2 = P_INVFELS(theta, '0100')
-    cond1 = cxcy >= 1
-    cond2 = 2 - cxcy - cx + p13*(3-cxcy) + p2*(3-cx) <= 0
-    cond3 = 1 + cx*cxcy - cxcy - cx + p13*(2-2*cxcy) + p2*(2-2*cx) >= 0
+    cond1 = cxcy > 1
+    cond2 = .5 - p13 / (cx - 1.) - p2 / (cxcy - 1.) >= 0
     bnd = likelihood_lower_bound(theta)
     output = []
     for anc_state in product('012', repeat=4):
         if ''.join(anc_state) == '0000':
             continue
         output.append(likelihood_upper_bound(theta, anc_state))
-    if bnd >= max(output) and cond1 and cond2 and cond3:
+    if bnd >= max(output) and cond1 and cond2:
         return -1.
     else:
         return 1.
