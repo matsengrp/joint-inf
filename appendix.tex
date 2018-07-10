@@ -599,10 +599,9 @@ We now prove the main result.
 
 \begin{proof}
 %TODO: make this more explicit/clear
-We use the fact that $x_1=x_2=x$ as there exists a unique solution and the likelihood is invariant to swapping these two variables.
 Let
 \[
-a_{\emptyset} = \frac{(2x)(y_1+y_2)}{(1+x^2)(1+y_1y_2)}
+a_{\emptyset} = \frac{(x_1+x_2)(y_1+y_2)}{(1+x_1x_2)(1+y_1y_2)}
 \]
 with similar definitions for the remaining site splits.
 The objective function proportional to $w$ is
@@ -613,44 +612,57 @@ and has derivative with respect to $w$ as
 \begin{align*}
 \ell'(w) := \frac{d}{dw} \ell(w) = \frac{1}{1+w} + \sum_j p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{1 + a_{\siteSplit_j}w}.
 \end{align*}
-Note that, $a_{\emptyset} = -a_{13}$, $a_{2} = -a_{123}$, $p_{2} = p_{123}$, and for $x_1=x_2$
-\[
-a_{1} = a_{3} = a_{12} = a_{23} = 0
-\]
+Note the following:
+\begin{itemize}
+\item $a_{\emptyset} = -a_{13}$, $p_{\emptyset} \ge p_{13}$;
+\item $a_{1} = -a_{3}$, $p_{1} = p_{3}$;
+\item $a_{2} = -a_{123}$, $p_{2} = p_{123}$;
+\item $a_{12} = -a_{23}$, $p_{12} = p_{23}$;
+\end{itemize}
 so
 \begin{align*}
-\ell'(w) = \frac{1}{1+w} + \frac{p_{\emptyset}a_{\emptyset}}{1 + a_{\emptyset}w} - \frac{p_{13}a_{\emptyset}}{1 - a_{\emptyset}w} + \frac{p_{2}a_{2}}{1 + a_{2}w} - \frac{p_{2}a_{2}}{1 - a_{2}w}.
+\ell'(w) &= \frac{1}{1+w} + \frac{p_{\emptyset}a_{\emptyset}}{1 + a_{\emptyset}w} - \frac{p_{13}a_{\emptyset}}{1 - a_{\emptyset}w} + \frac{p_{2}a_{2}}{1 + a_{2}w} - \frac{p_{2}a_{2}}{1 - a_{2}w} \\
+         &\qquad \frac{p_{1}a_{1}}{1 + a_{1}w} - \frac{p_{1}a_{1}}{1 - a_{1}w} + \frac{p_{12}a_{12}}{1 + a_{12}w} - \frac{p_{12}a_{12}}{1 - a_{12}w} \\
 \end{align*}
-Using the bounds on $\hat{x}_1,\hat{y}_1,\hat{y}_1$, and $\hat{y}_2$ from Lemma~\ref{lemma:bounds}, we have
+Using the bounds on $\hat{x}_1,\hat{y}_1,\hat{y}_1$, and $\hat{y}_2$ from Lemma~\ref{lemma:bounds} and our assumption of $y_2 \ge y_1$ and $x_2 \ge x_1$, we have
 \[
 0 \le a_{\emptyset} \le \frac{2x^*}{1+(x^*)^2},
 \]
 \[
 0 \le a_{2} \le \frac{2x^*}{1+(x^*)^2}\cdot\frac{1}{1-y^*},
 \]
+\[
+0 \le a_{1} \le \frac{x^*}{1-(x^*)^2}
+\]
+\[
+0 \le a_{12} \le \frac{x^*}{1-(x^*)^2}\cdot\frac{1}{1-y^*},
+\]
 so that $\ell'(w)$ has lower bound
 \[
-\ell'_{L}(w) = \frac{1}{1+w} - \frac{p_{13}}{c_x^* - w} - \frac{p_{2}}{c_x^*c_y^* - w}
+\ell'_{L}(w) = \frac{1}{1+w} - \frac{p_{13}}{c_1 - w} - \frac{p_{2}}{c_1c_2 - w} - \frac{p_{1}}{c_3 - w} - \frac{p_{12}}{c_2c_3 - w}
 \]
 with
 \[
-c_x^* = \frac{1+(x^*)^2}{2x^*},
+c_1 = \frac{1+(x^*)^2}{2x^*},
 \]
 \[
-c_y^* = 1-y^*.
+c_2 = 1-y^*,
 \]
-Clearly $c_x^* > 1$.
+\[
+c_3 = \frac{1-(x^*)^2}{x^*}.
+\]
+Clearly $c_1 > 1$.
 We see
 \[
-\ell'_L(0) = 1 - \frac{p_{13}}{c_x^*} - \frac{p_{2}}{c_x^*c_y^*} > 0
+\ell'_{L}(0) = 1 - \frac{p_{13}}{c_1} - \frac{p_{2}}{c_1c_2} - \frac{p_{1}}{c_3} - \frac{p_{12}}{c_2c_3} > 0
 \]
-provided $c_x^*c_y^* > 1$.
+provided $c_1c_2, c_3, c_2c_3 > 1$
 Note that $\ell'_{L}(w)$ is strictly decreasing in $w$ on the interval $(0,1)$.
 Thus, if $\ell'_{L}(1) > 0$ then $\ell(w)$ is increasing on the entire interval $(0,1)$, including at the boundary $w=1$, implying $\hat{w} \equiv 1$.
-So we want $x^*$ and $y^*$ where $c_x^*c_y^* > 1$ and $\ell_L'(1) > 0$.
-These two conditions are straightforward, the second one being
+So we want $x^*$ and $y^*$ where $c_1c_2, c_3, c_2c_3 > 1$ and $\ell_L'(1) > 0$.
+These conditions are straightforward, the one on the derivative being
 \[
-\ell'_L(1) = \frac{1}{2} - \frac{p_{13}}{c_x^*-1} - \frac{p_{2}}{c_x^*c_y^*-1} > 0.
+\ell'_{L}(1) = \frac{1}{2} - \frac{p_{13}}{c_1-1} - \frac{p_{2}}{c_1c_2-1} - \frac{p_{1}}{c_3-1} - \frac{p_{12}}{c_2c_3-1} > 0.
 \]
 The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state is given in Figure~\ref{fig:incons-analytic}.
 \end{proof}

@@ -263,20 +263,26 @@ def get_analytic_inconsistency(xy):
     if x == 1. or x == 0. or y == 1. or y == 0.:
         return np.nan
     theta = [x, y, x, y, y]
-    cx = (1+x*x) / (2.*x)
-    cy = (1-y)
-    cxcy = cx*cy
+    c1 = (1+x*x) / (2.*x)
+    c2 = (1-y)
+    c3 = (1-x*x) / x
+    c1c2 = c1*c2
+    c2c3 = c2*c3
     p13 = P_INVFELS(theta, '1010')
     p2 = P_INVFELS(theta, '0100')
-    cond1 = cxcy > 1
-    cond2 = .5 - p13 / (cx - 1.) - p2 / (cxcy - 1.) >= 0
+    p1 = P_INVFELS(theta, '0010')
+    p12 = P_INVFELS(theta, '0110')
+    cond1 = c1c2 > 1
+    cond2 = c2c3 > 1
+    cond3 = c3 > 1
+    cond4 = .5 - p13 / (c1 - 1.) - p2 / (c1c2 - 1.) - p1 / (c3 - 1.) - p12 / (c2c3 - 1.) >= 0
     bnd = likelihood_lower_bound(theta)
     output = []
     for anc_state in product('012', repeat=4):
         if ''.join(anc_state) == '0000':
             continue
         output.append(likelihood_upper_bound(theta, anc_state))
-    if bnd >= max(output) and cond1 and cond2:
+    if bnd >= max(output) and cond1 and cond2 and cond3 and cond4:
         return -1.
     else:
         return 1.
