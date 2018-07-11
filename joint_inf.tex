@@ -265,7 +265,7 @@ To determine how conservative, we use the well-known L-BFGS-B method to perform 
 We see that the region of inconsistency in the general case is much larger than in the analytic case---the analytic case dealt with loose bounds and only concerned a single set of maximal ancestral states, so this is reasonable.
 This region encompasses almost half of the branch parameter space; even given the correct topology and performing our best possible optimization, we have many situations where we will estimate the interior branch length to be zero.
 
-We provide a full description of our optimization procedure in the Appendix, but briefly, we perform 81 maximizations for each separate likelihood function in Table~\ref{table:likelihoods}.
+We provide a full description of our optimization procedure in the Appendix, but briefly, we perform 81 maximizations for each separate likelihood function in Table~\ref{tab:likelihoods}.
 For each function, we optimize the objective starting at five separate initial values to mitigate problems with small curvature of the objective surface and nonconcavity.
 We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*$ and $y^*$ from $0$ to $1$.
 Our optimization code can be found at \url{https://github.com/matsengrp/joint-inf/}.
