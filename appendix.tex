@@ -546,7 +546,37 @@ The unique maximum is $\hat{t}=\{x^*,y^*,x^*,y^*,y^*\}$, and
 \[
 \nabla_t \shannonDivergence_{\tau^*,t^*}(\tau^*,t) \mid_{t=t^*} = 0.
 \]
+We now show the gradient of the divergence term is a decreasing function on $(0,1)$ in each variable.
+We focus on $x_1$.
+The divergence proportional to $x_1$ can be written as
+\begin{align*}
+\shannonDivergence(x_1) \propto \sum_j p_{\siteSplit_j} \log(c_{\siteSplit_j} + a_{\siteSplit_j}x_1)
+\end{align*}
+where $c_{\siteSplit_j}$ and $a_{\siteSplit_j}$ are functions of $y_1,x_2,y_2,$ and $w$.
+For example,
+\[
+c_{\emptyset} = 1+y_1y_2+wx_2y_1+wx_2y_2
+\]
+and
+\[
+a_{\emptyset} = x_2+wy_1+wy_2+x_2y_1y_2
+\]
+with similar definitions for the remaining site splits.
+Consider the derivative with respect to $x_1$
+\begin{align*}
+\shannonDivergence'(x_1) := \frac{d}{dx_1} \shannonDivergence(x_1) = \sum_j p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{c_{\siteSplit_j} + a_{\siteSplit_j}x_1}
+\end{align*}
+and focus on a single term
+\[
+f_j(x_1) = p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{c_{\siteSplit_j} + a_{\siteSplit_j}x_1}.
+\]
+Regardless of $a_{\siteSplit_j} \lessgtr 0$, this is a decreasing function of $x_1$ provided $c_{\siteSplit_j} + a_{\siteSplit_j}x_1 > 0$, but we see
+\[
+p_{\siteSplit_j} := \frac{1}{8} (c_{\siteSplit_j} + a_{\siteSplit_j}x_1)
+\]
+and $p_{\siteSplit_j} > 0$ so long as $x^*\in(0,1)$ and $y^*\in(0,1)$.
 
+We now focus on the partial likelihood term.
 Assume $\emptyset$ is the most likely ancestral state for all site splits.
 In this case, the partial likelihood has no ambiguity, and has terms given in Table~\ref{tab:likelihoods-restricted}.
 
@@ -572,7 +602,6 @@ All values multiplied by $1/32$.}
 \label{tab:likelihoods-restricted}
 \end{table}
 
-We focus on $x_1$, similar arguments applying to the other variables.
 The partial likelihood
 \[
 \tilde{\ell}_{\tau^*,t^*}(\tau^*, t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau^*, t)
@@ -599,70 +628,60 @@ We now prove the main result.
 
 \begin{proof}
 %TODO: make this more explicit/clear
-Let
+Similar to the previous proof, let
 \[
-a_{\emptyset} = \frac{(x_1+x_2)(y_1+y_2)}{(1+x_1x_2)(1+y_1y_2)}
+b_{\emptyset} = \frac{(x_1+x_2)(y_1+y_2)}{(1+x_1x_2)(1+y_1y_2)}
 \]
 with similar definitions for the remaining site splits.
 The objective function proportional to $w$ is
 \begin{align*}
-\ell(w) \propto \log(1+w) + \sum_j p_{\siteSplit_j} \log(1 + a_{\siteSplit_j}w)
+\ell(w) \propto \log(1+w) + \sum_j p_{\siteSplit_j} \log(1 + b_{\siteSplit_j}w)
 \end{align*}
 and has derivative with respect to $w$ as
 \begin{align*}
-\ell'(w) := \frac{d}{dw} \ell(w) = \frac{1}{1+w} + \sum_j p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{1 + a_{\siteSplit_j}w}.
+\ell'(w) := \frac{d}{dw} \ell(w) = \frac{1}{1+w} + \sum_j p_{\siteSplit_j}b_{\siteSplit_j}\frac{1}{1 + b_{\siteSplit_j}w}.
 \end{align*}
 Note the following:
 \begin{itemize}
-\item $a_{\emptyset} = -a_{13}$, $p_{\emptyset} \ge p_{13}$;
-\item $a_{1} = -a_{3}$, $p_{1} = p_{3}$;
-\item $a_{2} = -a_{123}$, $p_{2} = p_{123}$;
-\item $a_{12} = -a_{23}$, $p_{12} = p_{23}$;
+\item $b_{\emptyset} = -b_{13}$, $p_{\emptyset} \ge p_{13}$;
+\item $b_{1} = -b_{3}$, $p_{1} = p_{3}$;
+\item $b_{2} = -b_{123}$, $p_{2} = p_{123}$;
+\item $b_{12} = -b_{23}$, $p_{12} = p_{23}$;
 \end{itemize}
 so
 \begin{align*}
-\ell'(w) &= \frac{1}{1+w} + \frac{p_{\emptyset}a_{\emptyset}}{1 + a_{\emptyset}w} - \frac{p_{13}a_{\emptyset}}{1 - a_{\emptyset}w} + \frac{p_{2}a_{2}}{1 + a_{2}w} - \frac{p_{2}a_{2}}{1 - a_{2}w} \\
-         &\qquad \frac{p_{1}a_{1}}{1 + a_{1}w} - \frac{p_{1}a_{1}}{1 - a_{1}w} + \frac{p_{12}a_{12}}{1 + a_{12}w} - \frac{p_{12}a_{12}}{1 - a_{12}w} \\
+\ell'(w) &= \frac{1}{1+w} + \frac{p_{\emptyset}b_{\emptyset}}{1 + b_{\emptyset}w} - \frac{p_{13}b_{\emptyset}}{1 - b_{\emptyset}w} + \frac{p_{2}b_{2}}{1 + b_{2}w} - \frac{p_{2}b_{2}}{1 - b_{2}w} \\
+         &\qquad \frac{p_{1}b_{1}}{1 + b_{1}w} - \frac{p_{1}b_{1}}{1 - b_{1}w} + \frac{p_{12}b_{12}}{1 + b_{12}w} - \frac{p_{12}b_{12}}{1 - b_{12}w} \\
 \end{align*}
 Using the bounds on $\hat{x}_1,\hat{y}_1,\hat{y}_1$, and $\hat{y}_2$ from Lemma~\ref{lemma:bounds} and our assumption of $y_2 \ge y_1$ and $x_2 \ge x_1$, we have
 \[
-0 \le a_{\emptyset} \le \frac{2x^*}{1+(x^*)^2},
+0 \le b_{\emptyset} \le \frac{2x^*}{1+(x^*)^2} := b_{\emptyset}^U,
 \]
 \[
-0 \le a_{2} \le \frac{2x^*}{1+(x^*)^2}\cdot\frac{1}{1-y^*},
+0 \le b_{2} \le \frac{2x^*}{1+(x^*)^2}\cdot\frac{1}{1-y^*} := b_{2}^U,
 \]
 \[
-0 \le a_{1} \le \frac{x^*}{1-(x^*)^2}
+0 \le b_{1} \le \frac{x^*}{1-(x^*)^2} := b_{1}^U
 \]
 \[
-0 \le a_{12} \le \frac{x^*}{1-(x^*)^2}\cdot\frac{1}{1-y^*},
+0 \le b_{12} \le \frac{x^*}{1-(x^*)^2}\cdot\frac{1}{1-y^*} := b_{12}^U,
 \]
 so that $\ell'(w)$ has lower bound
 \[
-\ell'_{L}(w) = \frac{1}{1+w} - \frac{p_{13}}{c_1 - w} - \frac{p_{2}}{c_1c_2 - w} - \frac{p_{1}}{c_3 - w} - \frac{p_{12}}{c_2c_3 - w}
+\ell'_{L}(w) = \frac{1}{1+w} - \frac{p_{13}}{1/b_{\emptyset}^U - w} - \frac{p_{2}}{1/b_{2}^U - w} - \frac{p_{1}}{1/b_{1}^U - w} - \frac{p_{12}}{1/b_{12}^U - w}
 \]
-with
-\[
-c_1 = \frac{1+(x^*)^2}{2x^*},
-\]
-\[
-c_2 = 1-y^*,
-\]
-\[
-c_3 = \frac{1-(x^*)^2}{x^*}.
-\]
-Clearly $c_1 > 1$.
+Clearly $b_{\emptyset}^U < 1$.
 We see
 \[
-\ell'_{L}(0) = 1 - \frac{p_{13}}{c_1} - \frac{p_{2}}{c_1c_2} - \frac{p_{1}}{c_3} - \frac{p_{12}}{c_2c_3} > 0
+\ell'_{L}(0) = 1 - p_{13}b_{\emptyset}^U - p_{2}b_{2}^U - p_{1}b_{1}^U p_{12}b_{12}^U > 0
 \]
-provided $c_1c_2, c_3, c_2c_3 > 1$
-Note that $\ell'_{L}(w)$ is strictly decreasing in $w$ on the interval $(0,1)$.
+provided $b_{2}^U, b_{1}^U, b_{12}^U < 1$.
+Note that $\ell'_{L}(w)$ is strictly decreasing in $w$ on the interval $(0,1)$, as shown in the previous proof.
 Thus, if $\ell'_{L}(1) > 0$ then $\ell(w)$ is increasing on the entire interval $(0,1)$, including at the boundary $w=1$, implying $\hat{w} \equiv 1$.
-So we want $x^*$ and $y^*$ where $c_1c_2, c_3, c_2c_3 > 1$ and $\ell_L'(1) > 0$.
+So we want $x^*$ and $y^*$ where $b_{2}^U, b_{1}^U, b_{12}^U < 1$ and $\ell_L'(1) > 0$.
 These conditions are straightforward, the one on the derivative being
 \[
-\ell'_{L}(1) = \frac{1}{2} - \frac{p_{13}}{c_1-1} - \frac{p_{2}}{c_1c_2-1} - \frac{p_{1}}{c_3-1} - \frac{p_{12}}{c_2c_3-1} > 0.
+\ell'_{L}(1) = \frac{1}{2} - \frac{p_{13}b_{\emptyset}^U}{1-b_{\emptyset}^U} - \frac{p_{2}b_{2}^U}{1-b_{2}^U} - \frac{p_{1}b_{1}^U}{1-b_{1}^U} - \frac{p_{12}b_{12}^U}{1-b_{12}^U} > 0.
 \]
 The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state is given in Figure~\ref{fig:incons-analytic}.
 \end{proof}
