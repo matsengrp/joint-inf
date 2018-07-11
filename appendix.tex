@@ -294,7 +294,6 @@ To compute the likelihood of observing a set of data, we need $\Pr(\ancestralSpl
 Using branch fidelities, the probability of a character change along a branch with fidelity parameter $\theta$ is $(1-\theta)/2$, while the probability of a character remaining the same is $(1+\theta)/2$.
 See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern on the InvFels tree.
 Likelihood computations for all site splits and ancestral state splits are in Table~\ref{tab:farris_likelihoods} for the InvFels tree.
-Taking maxima over ancestral state splits results in Table~\ref{tab:likelihoods}.
 
 \begin{figure}
 \centering
@@ -373,45 +372,6 @@ There are $3^5\cdot 4^2=3,888$ possible forms for the likelihood.
 \label{tab:farris_likelihoods}
 \end{table}
 
-\begin{table}
-\centering
-\begin{tabular}{|ll|l|}
-\hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau, t)$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
-\hline
-$\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
-
-$\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
-
-$\{2\}$    &$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
-
-$\{3\}$    &$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{1,2\}$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
-
-$\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{1,2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
-
-$\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
-
-$\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{1,2\}$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
-
-$\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{1,2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
-\hline
-\end{tabular}
-\caption{
-Due to the symmetry of the likelihood, WLOG we assume $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral states to reduce the number of possible functional forms to consider.
-All values multiplied by $1/32$.
-Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
-There are $3^4=81$ possible forms for the likelihood.
-}
-\label{tab:likelihoods}
-\end{table}
 %TODO: the caption of this overlaps with the page number---will this be a problem or will MBE handle it?
 %EM There is a latex package for that, which I tried out and then removed for some reason. It's no bigs.
 
@@ -455,8 +415,48 @@ for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exc
 
 The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
-Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t})$, if there is a unique maximum of the log-likelihood then $x_1=x_2$ at the maximum.
-An analogous statement holds for $y_1$ and $y_2$.
+Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t})$ we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$.
+An analogous statement holds for $y_2 \ge y_1$, with these likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral states.
+
+\begin{table}
+\centering
+\begin{tabular}{|ll|l|}
+\hline
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau, t)$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
+\hline
+$\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
+
+$\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
+
+$\{2\}$    &$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
+
+$\{3\}$    &$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
+&$\{1\}$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
+&$\{1,2\}$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
+
+$\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
+&$\{1\}$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
+&$\{1,2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
+
+$\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
+
+$\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
+&$\{1\}$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
+&$\{1,2\}$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
+
+$\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
+&$\{1\}$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
+&$\{1,2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
+\hline
+\end{tabular}
+\caption{
+Due to the symmetry of the likelihood, WLOG we assume $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral states to reduce the number of possible functional forms to consider.
+All values multiplied by $1/32$.
+Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
+There are $3^4=81$ possible forms for the likelihood.
+}
+\label{tab:likelihoods}
+\end{table}
 
 \subsection*{Theorems and proofs}
 
@@ -507,6 +507,7 @@ The above will hold if we swap $\hat{y}_2$ and $\hat{y}_1$, as the likelihood is
 
 \begin{lemma}
 Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x_1, y_1, x_2, y_2, w\}$ and $\emptyset$ be the maximal ancestral state for all site splits.
+Assume $0 < x^*, y^* < 1$.
 The solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
 \[
 \hat{t} = \arg\max_t \ell_{\tau^*, t^*}(\tau^*, t)
@@ -575,6 +576,7 @@ Regardless of $a_{\siteSplit_j} \lessgtr 0$, this is a decreasing function of $x
 p_{\siteSplit_j} := \frac{1}{8} (c_{\siteSplit_j} + a_{\siteSplit_j}x_1)
 \]
 and $p_{\siteSplit_j} > 0$ so long as $x^*\in(0,1)$ and $y^*\in(0,1)$.
+The remaining variables follow similar arguments.
 
 We now focus on the partial likelihood term.
 Assume $\emptyset$ is the most likely ancestral state for all site splits.
@@ -651,7 +653,7 @@ Note the following:
 so
 \begin{align*}
 \ell'(w) &= \frac{1}{1+w} + \frac{p_{\emptyset}b_{\emptyset}}{1 + b_{\emptyset}w} - \frac{p_{13}b_{\emptyset}}{1 - b_{\emptyset}w} + \frac{p_{2}b_{2}}{1 + b_{2}w} - \frac{p_{2}b_{2}}{1 - b_{2}w} \\
-         &\qquad \frac{p_{1}b_{1}}{1 + b_{1}w} - \frac{p_{1}b_{1}}{1 - b_{1}w} + \frac{p_{12}b_{12}}{1 + b_{12}w} - \frac{p_{12}b_{12}}{1 - b_{12}w} \\
+         &\qquad \frac{p_{1}b_{1}}{1 + b_{1}w} - \frac{p_{1}b_{1}}{1 - b_{1}w} + \frac{p_{12}b_{12}}{1 + b_{12}w} - \frac{p_{12}b_{12}}{1 - b_{12}w}.\\
 \end{align*}
 Using the bounds on $\hat{x}_1,\hat{y}_1,\hat{y}_1$, and $\hat{y}_2$ from Lemma~\ref{lemma:bounds} and our assumption of $y_2 \ge y_1$ and $x_2 \ge x_1$, we have
 \[
@@ -671,12 +673,7 @@ so that $\ell'(w)$ has lower bound
 \ell'_{L}(w) = \frac{1}{1+w} - \frac{p_{13}}{1/b_{\emptyset}^U - w} - \frac{p_{2}}{1/b_{2}^U - w} - \frac{p_{1}}{1/b_{1}^U - w} - \frac{p_{12}}{1/b_{12}^U - w}
 \]
 Clearly $b_{\emptyset}^U < 1$.
-We see
-\[
-\ell'_{L}(0) = 1 - p_{13}b_{\emptyset}^U - p_{2}b_{2}^U - p_{1}b_{1}^U - p_{12}b_{12}^U > 0
-\]
-provided $b_{2}^U, b_{1}^U, b_{12}^U < 1$.
-Note that $\ell'_{L}(w)$ is strictly decreasing in $w$ on the interval $(0,1)$, as shown in the previous proof.
+Note that $\ell'_{L}(w)$ is strictly decreasing in $w$ on the interval $(0,1)$, as shown in the previous proof, provided $b_{2}^U, b_{1}^U, b_{12}^U < 1$.
 Thus, if $\ell'_{L}(1) > 0$ then $\ell(w)$ is increasing on the entire interval $(0,1)$, including at the boundary $w=1$, implying $\hat{w} \equiv 1$.
 So we want $x^*$ and $y^*$ where $b_{2}^U, b_{1}^U, b_{12}^U < 1$ and $\ell_L'(1) > 0$.
 These conditions are straightforward, the one on the derivative being
