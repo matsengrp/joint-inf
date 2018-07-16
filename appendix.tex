@@ -244,48 +244,54 @@ For notational convenience, let
 p_{\siteSplit_j} := \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,t),
 \]
 for any site split $\siteSplit_j$.
-Table~\ref{tab:gen-sitepatprob} contains calculations of site split probabilities for the InvFels topology with arbitrary branch lengths and Table~\ref{tab:sitepatprob} site split probabilities for the InvFels topology in Fig.~\ref{fig:farris-fels-top}a.
+Table~\ref{tab:gen-sitepatprob} contains calculations of site split probabilities for the trees in Fig.~\ref{fig:farris-fels-top}.
 
 \begin{table}[ht]
 \centering
 \begin{tabular}{|l|l|l|}
+    \multicolumn{3}{c}{InvFels tree $\tau=\tau^*$, $t^*=\{x^*,y^*,x^*,y^*,y^*\}$}\\
     \hline
-$\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\})$\\
+$\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau,t)$\\
+    \hline
+    $\emptyset$ & $p_{\emptyset}$   &$1+(x^*)^2+(y^*)^2+4x^*(y^*)^2+(x^*)^2(y^*)^2$\\
+    $\{1\}$     & $p_{1}$           &$1-(x^*)^2+(y^*)^2-(x^*)^2(y^*)^2$\\
+    $\{2\}$     & $p_{2}$           &$1+(x^*)^2-(y^*)^2-(x^*)^2(y^*)^2$\\
+    $\{3\}$     & $p_{3}$           &$1-(x^*)^2+(y^*)^2-(x^*)^2(y^*)^2$\\
+    $\{1,2,3\}$ & $p_{123}$         &$1+(x^*)^2-(y^*)^2-(x^*)^2(y^*)^2$\\
+    $\{1,2\}$   & $p_{12}$          &$1-(x^*)^2-(y^*)^2+(x^*)^2(y^*)^2$\\
+    $\{2,3\}$   & $p_{23}$          &$1-(x^*)^2-(y^*)^2+(x^*)^2(y^*)^2$\\
+    $\{1,3\}$   & $p_{13}$          &$1+(x^*)^2+(y^*)^2-4x^*(y^*)^2+(x^*)^2(y^*)^2$\\
+    \hline
+    \multicolumn{3}{c}{InvFels tree $\tau=\tau_1$, $t=\{x_1,y_1,x_2,y_2,w\}$}\\
+    \hline
+$\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau,t)$\\
     \hline
     $\emptyset$ & $p_{\emptyset}$   &$1 + x_1x_2 +  y_1y_2 +  w[  x_1 + x_2][  y_1 + y_2] + x_1y_1x_2y_2$\\
-    $\{1\}$     & $p_{1}$       &$1 - x_1x_2 +  y_1y_2 +  w[- x_1 + x_2][  y_1 + y_2] - x_1y_1x_2y_2$\\
-    $\{2\}$     & $p_{2}$       &$1 + x_1x_2 -  y_1y_2 +  w[  x_1 + x_2][- y_1 + y_2] - x_1y_1x_2y_2$\\
-    $\{3\}$     & $p_{3}$       &$1 - x_1x_2 +  y_1y_2 +  w[  x_1 - x_2][  y_1 + y_2] - x_1y_1x_2y_2$\\
-    $\{1,2\}$   & $p_{12}$     &$1 - x_1x_2 -  y_1y_2 +  w[- x_1 + x_2][- y_1 + y_2] + x_1y_1x_2y_2$\\
-    $\{1,3\}$   & $p_{13}$     &$1 + x_1x_2 +  y_1y_2 +  w[- x_1 - x_2][  y_1 + y_2] + x_1y_1x_2y_2$\\
-    $\{2,3\}$   & $p_{23}$     &$1 - x_1x_2 -  y_1y_2 +  w[  x_1 - x_2][- y_1 + y_2] + x_1y_1x_2y_2$\\
-    $\{1,2,3\}$ & $p_{123}$   &$1 + x_1x_2 -  y_1y_2 +  w[  x_1 + x_2][  y_1 - y_2] - x_1y_1x_2y_2$\\
+    $\{1\}$     & $p_{1}$           &$1 - x_1x_2 +  y_1y_2 +  w[- x_1 + x_2][  y_1 + y_2] - x_1y_1x_2y_2$\\
+    $\{2\}$     & $p_{2}$           &$1 + x_1x_2 -  y_1y_2 +  w[  x_1 + x_2][- y_1 + y_2] - x_1y_1x_2y_2$\\
+    $\{3\}$     & $p_{3}$           &$1 - x_1x_2 +  y_1y_2 +  w[  x_1 - x_2][  y_1 + y_2] - x_1y_1x_2y_2$\\
+    $\{1,2,3\}$ & $p_{123}$         &$1 + x_1x_2 -  y_1y_2 +  w[  x_1 + x_2][  y_1 - y_2] - x_1y_1x_2y_2$\\
+    $\{1,2\}$   & $p_{12}$          &$1 - x_1x_2 -  y_1y_2 +  w[- x_1 + x_2][- y_1 + y_2] + x_1y_1x_2y_2$\\
+    $\{2,3\}$   & $p_{23}$          &$1 - x_1x_2 -  y_1y_2 +  w[  x_1 - x_2][- y_1 + y_2] + x_1y_1x_2y_2$\\
+    $\{1,3\}$   & $p_{13}$          &$1 + x_1x_2 +  y_1y_2 +  w[- x_1 - x_2][  y_1 + y_2] + x_1y_1x_2y_2$\\
+    \hline
+    \multicolumn{3}{c}{Felsenstein tree $\tau=\tau_2$, $t=\{x_1,y_1,x_2,y_2,w\}$}\\
+    \hline
+$\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau,t)$\\
+    \hline
+    $\emptyset$ & $p_{\emptyset}$   &$1 + x_1y_1 +  x_2y_2 +  w[  x_1 + y_1][  x_2 + y_2] + x_1y_1x_2y_2$\\
+    $\{1\}$     & $p_{1}$           &$1 - x_1y_1 +  x_2y_2 +  w[ -x_1 + y_1][  x_2 + y_2] - x_1y_1x_2y_2$\\
+    $\{2\}$     & $p_{2}$           &$1 - x_1y_1 +  x_2y_2 +  w[  x_1 - y_1][  x_2 + y_2] - x_1y_1x_2y_2$\\
+    $\{3\}$     & $p_{3}$           &$1 + x_1y_1 -  x_2y_2 +  w[  x_1 + y_1][ -x_2 + y_2] - x_1y_1x_2y_2$\\
+    $\{1,2,3\}$ & $p_{123}$         &$1 + x_1y_1 -  x_2y_2 +  w[ -x_1 - y_1][ -x_2 + y_2] - x_1y_1x_2y_2$\\
+    $\{1,2\}$   & $p_{12}$          &$1 + x_1y_1 +  x_2y_2 +  w[ -x_1 - y_1][  x_2 + y_2] + x_1y_1x_2y_2$\\
+    $\{2,3\}$   & $p_{23}$          &$1 - x_1y_1 -  x_2y_2 +  w[  x_1 - y_1][ -x_2 + y_2] + x_1y_1x_2y_2$\\
+    $\{1,3\}$   & $p_{13}$          &$1 - x_1y_1 -  x_2y_2 +  w[ -x_1 + y_1][ -x_2 + y_2] + x_1y_1x_2y_2$\\
     \hline
 \end{tabular}
-\caption{Site split probabilities $p_{\siteSplit_j}$ on the InvFels tree $\tau_1$ with $t=\{x_1,y_1,x_2,y_2,w\}$ obtained using the Hadamard transform.
+\caption{Site split probabilities $p_{\siteSplit_j}$ on the true InvFels tree $\tau^*$ with $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, and on the InvFels tree $\tau_1$ and Felsenstein tree $\tau_2$ with $t=\{x_1,y_1,x_2,y_2,w\}$ obtained using the Hadamard transform.
 All values multiplied by $1/8$.}
 \label{tab:gen-sitepatprob}
-\end{table}
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{|l|l|l|}
-    \hline
-$\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x,y,x,y,y\})$\\
-    \hline
-    $\emptyset$ & $p_{\emptyset}$   &$1+x^2+y^2+4xy^2+x^2y^2$\\
-    $\{1\}$     & $p_{1}$           &$1-x^2+y^2-x^2y^2$\\
-    $\{2\}$     & $p_{2}$           &$1+x^2-y^2-x^2y^2$\\
-    $\{3\}$     & $p_{3}$           &$1-x^2+y^2-x^2y^2$\\
-    $\{1,2,3\}$ & $p_{123}$         &$1+x^2-y^2-x^2y^2$\\
-    $\{1,2\}$   & $p_{12}$          &$1-x^2-y^2+x^2y^2$\\
-    $\{2,3\}$   & $p_{23}$          &$1-x^2-y^2+x^2y^2$\\
-    $\{1,3\}$   & $p_{13}$          &$1+x^2+y^2-4xy^2+x^2y^2$\\
-    \hline
-\end{tabular}
-\caption{Site split probabilities $p_{\siteSplit_j}$ on the InvFels tree $\tau_1$ with $t=\{x,y,x,y,y\}$ obtained using the Hadamard transform.
-All values multiplied by $1/8$.}
-\label{tab:sitepatprob}
 \end{table}
 
 \subsection*{Likelihood computations}
@@ -318,49 +324,49 @@ Likelihood computations for all site splits and ancestral state splits are in Ta
 
 \begin{table}
 \centering
-\begin{tabular}{|ll|l|}
+\begin{tabular}{|l|ll|}
 \hline
 $\siteSplit_j$ & $\ancestralSplit_k$ & $\Pr(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau_1, t)$\\
 \hline
 $\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
-&$\{1\}^*$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1-w)$\\
-&$\{2\}^*$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1-w)$\\
-&$\{1,2\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1-y_2)(1+w)$\\
-
+&$\{1\}^*$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1-w)$             \\
+&$\{2\}^*$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1-w)$             \\
+&$\{1,2\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1-y_2)(1+w)$           \\
+                                                           
 $\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1-w)$\\
-&$\{2\}^*$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1-w)$\\
-&$\{1,2\}$&$(1+x_1)(1-y_1)(1-x_2)(1-y_2)(1+w)$\\
-
+&$\{1\}$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1-w)$               \\
+&$\{2\}^*$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1-w)$             \\
+&$\{1,2\}$&$(1+x_1)(1-y_1)(1-x_2)(1-y_2)(1+w)$             \\
+                                                           
 $\{2\}$    &$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
-&$\{1\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1-w)$\\
-&$\{2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1-w)$\\
-&$\{1,2\}$&$(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1+w)$\\
-
+&$\{1\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1-w)$             \\
+&$\{2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1-w)$               \\
+&$\{1,2\}$&$(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1+w)$             \\
+                                                           
 $\{3\}$    &$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{2\}^*$&$(1+x_1)(1-y_1)(1-x_2)(1-y_2)(1-w)$\\
-&$\{1,2\}$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
-
+&$\{1\}$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$               \\
+&$\{2\}^*$&$(1+x_1)(1-y_1)(1-x_2)(1-y_2)(1-w)$             \\
+&$\{1,2\}$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$             \\
+                                                           
 $\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{2\}^*$&$(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1-w)$\\
-&$\{1,2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
-
+&$\{1\}$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$               \\
+&$\{2\}^*$&$(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1-w)$             \\
+&$\{1,2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$             \\
+                                                           
 $\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1-w)$\\
-&$\{2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1-w)$\\
-&$\{1,2\}$&$(1+x_1)(1+y_1)(1-x_2)(1-y_2)(1+w)$\\
+&$\{1\}$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1-w)$               \\
+&$\{2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1-w)$               \\
+&$\{1,2\}$&$(1+x_1)(1+y_1)(1-x_2)(1-y_2)(1+w)$             \\
+                                                           
+$\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
+&$\{1\}$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$               \\
+&$\{2\}$&$(1+x_1)(1+y_1)(1-x_2)(1-y_2)(1-w)$               \\
+&$\{1,2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$             \\
 
 $\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{2\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1-y_2)(1-w)$\\
-&$\{1,2\}$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
-
-$\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{2\}$&$(1+x_1)(1+y_1)(1-x_2)(1-y_2)(1-w)$\\
-&$\{1,2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
+&$\{1\}$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$               \\
+&$\{2\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1-y_2)(1-w)$             \\
+&$\{1,2\}$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$             \\
 \hline
 \end{tabular}
 \caption{
@@ -440,13 +446,13 @@ $\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
 
 $\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
 
-$\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{1,2\}$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
-
 $\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
 &$\{1\}$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
 &$\{1,2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
+
+$\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
+&$\{1\}$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
+&$\{1,2\}$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
 \hline
 \end{tabular}
 \caption{
@@ -491,7 +497,7 @@ Using this estimate, we have the lower bound
     \shannonDivergence_{\tau^*,t^*}(\tau^*,\hat{t})
     + \tilde{\ell}_{\tau^*,t^*}(\tau^*, \hat{t}).
 \]
-Figure~\ref{fig:max-anc-state} shows where the lower bound above is greater than all 80 other upper bounds.
+Fig.~\ref{fig:max-anc-state} shows where the lower bound above is greater than all 80 other upper bounds.
 \end{proof}
 
 \begin{figure}
@@ -528,7 +534,7 @@ By Gibbs inequality, this function attains a unique maximum when
 \]
 for all $j=1,\ldots,\nSiteSplits$ with $t^*=\{x^*,y^*,x^*,y^*,y^*\}$.
 Note that exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not affect the divergence, and, as it has a unique maximum, we have $x_1=x_2=x$ and $y_1=y_2=y$ at this maximum.
-Referring to Table~\ref{tab:sitepatprob}, we set up simultaneous equations as follows.
+Referring to the top of Table~\ref{tab:gen-sitepatprob}, we set up simultaneous equations as follows.
 The sum of generating probabilities for site splits $\{3\}$ and $\{1,2\}$ yields
 \[
 2-2(x^*)^2 = 2-2x^2
@@ -573,9 +579,9 @@ f_j(x_1) = p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{c_{\siteSplit_j} + a_{\siteS
 \]
 Regardless of $a_{\siteSplit_j} \lessgtr 0$, this is a decreasing function of $x_1$ provided $c_{\siteSplit_j} + a_{\siteSplit_j}x_1 > 0$, but we see
 \[
-p_{\siteSplit_j} := \frac{1}{8} (c_{\siteSplit_j} + a_{\siteSplit_j}x_1)
+\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) := \frac{1}{8} (c_{\siteSplit_j} + a_{\siteSplit_j}x_1)
 \]
-and $p_{\siteSplit_j} > 0$ so long as $x^*\in(0,1)$ and $y^*\in(0,1)$.
+which is strictly greater than zero provided $x_1,y_1,x_2,y_2\in(0,1)$.
 The remaining variables follow similar arguments.
 
 We now focus on the partial likelihood term.
@@ -594,8 +600,8 @@ $\{2\}$    &$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
 $\{3\}$    &$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 $\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
 $\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
-$\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 $\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
+$\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 \hline
 \end{tabular}
 \caption{
@@ -608,7 +614,7 @@ The partial likelihood
 \[
 \tilde{\ell}_{\tau^*,t^*}(\tau^*, t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau^*, t)
 \]
-as a function of $x_1$, using Table~\ref{tab:sitepatprob}, is
+as a function of $x_1$, using Table~\ref{tab:gen-sitepatprob}, is
 \[
 \tilde{\ell}(x_1) \propto \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1).
 \]
@@ -617,7 +623,6 @@ By some calculus, the partial derivative with respect to $x_1$ is
 \tilde{\ell}_{x_1}(x_1) = \frac{-x_1+x^*(y^*)^2}{1-x_1^2}
 \]
 which is clearly negative for all $x_1 \ge x^*$.
-%TODO: make more explicit/clear why this means \hat{x}_1 \in [0,x^*]
 This same process applied to the remaining variables shows the gradient of the full likelihood is negative for $x_1,x_2 \ge x^*$ and $y_1 \ge y^*$ and positive for $y_2,w \ge y^*$, yielding the constraints
 \[
 \hat{x}_1,\hat{x}_2 \in [0, x^*], \ \hat{y}_1 \in [0, y^*], \ \hat{y}_2,\hat{w} \in [y^*, 1].
@@ -629,7 +634,6 @@ We now prove the main result.
 \topoInconsist*
 
 \begin{proof}
-%TODO: make this more explicit/clear
 Similar to the previous proof, let
 \[
 b_{\emptyset} = \frac{(x_1+x_2)(y_1+y_2)}{(1+x_1x_2)(1+y_1y_2)}
@@ -643,14 +647,7 @@ and has derivative with respect to $w$ as
 \begin{align*}
 \ell'(w) := \frac{d}{dw} \ell(w) = \frac{1}{1+w} + \sum_j p_{\siteSplit_j}b_{\siteSplit_j}\frac{1}{1 + b_{\siteSplit_j}w}.
 \end{align*}
-Note the following:
-\begin{itemize}
-\item $b_{\emptyset} = -b_{13}$, $p_{\emptyset} \ge p_{13}$;
-\item $b_{1} = -b_{3}$, $p_{1} = p_{3}$;
-\item $b_{2} = -b_{123}$, $p_{2} = p_{123}$;
-\item $b_{12} = -b_{23}$, $p_{12} = p_{23}$;
-\end{itemize}
-so
+Using the fact that $b_{\emptyset} = -b_{13}$, $b_{1} = -b_{3}$, $b_{2} = -b_{123}$, and $b_{12} = -b_{23}$ in addition to $p_{1} = p_{3}$, $p_{2} = p_{123}$, and $p_{12} = p_{23}$, we simplify the likelihood as
 \begin{align*}
 \ell'(w) &= \frac{1}{1+w} + \frac{p_{\emptyset}b_{\emptyset}}{1 + b_{\emptyset}w} - \frac{p_{13}b_{\emptyset}}{1 - b_{\emptyset}w} + \frac{p_{2}b_{2}}{1 + b_{2}w} - \frac{p_{2}b_{2}}{1 - b_{2}w} \\
          &\qquad \frac{p_{1}b_{1}}{1 + b_{1}w} - \frac{p_{1}b_{1}}{1 - b_{1}w} + \frac{p_{12}b_{12}}{1 + b_{12}w} - \frac{p_{12}b_{12}}{1 - b_{12}w}.\\
@@ -680,10 +677,29 @@ These conditions are straightforward, the one on the derivative being
 \[
 \ell'_{L}(1) = \frac{1}{2} - \frac{p_{13}b_{\emptyset}^U}{1-b_{\emptyset}^U} - \frac{p_{2}b_{2}^U}{1-b_{2}^U} - \frac{p_{1}b_{1}^U}{1-b_{1}^U} - \frac{p_{12}b_{12}^U}{1-b_{12}^U} > 0.
 \]
-The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state is given in Figure~\ref{fig:incons-analytic}.
+The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state is given in Fig.~\ref{fig:incons-analytic}.
 \end{proof}
 
-As the region in Figure~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on the incorrect topology in these cases, resulting in an inconsistency.
+As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on the incorrect topology in these cases, resulting in an inconsistency.
+We show this is a type of inconsistency in topology estimation by constructing a lower bound on the likelihood for the Felsenstein topology and showing it is equal to the likelihood given the InvFels topology in the demarcated region of Fig.~\ref{fig:incons-analytic}.
+As we are interested in a lower bound, assume $\ancestralSplitPartition_j(\tau_2,\{x_1,y_1,x_2,y_2,w\})=\emptyset$ for all $j$.
+In this case, the partial likelihood term for the Felsenstein tree is composed of the same functional forms given in Table~\ref{tab:likelihoods-restricted}.
+This is apparent as assuming $\emptyset$ for the ancestral state split will result in the same partial likelihood for both topologies.
+
+Assume $w=1$.
+The maximum likelihood value for the Felsenstein topology is greater than or equal to the value of the likelihood given these two constraints.
+In this case, Table~\ref{tab:gen-sitepatprob} shows that, for $w=1$, the divergence term is identical to that of the InvFels topology.
+Again, this is apparent as when the internal branch becomes zero-length, the two topologies are indistinguishable.
+Let $\mathcal{T}$ be the shaded region in Fig.~\ref{fig:incons-analytic}.
+We have
+\begin{align*}
+\max_{t} & \ \ell_{\tau^*,t^*}(\tau_2, t) \ge \\
+&\max_{t} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_2, \{x_1,y_1,x_2,y_2,1\}) \\
+&\qquad + \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit_j, \tau_2, \{x_1,y_1,x_2,y_2,1\}) \\ 
+&= \max_{t} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, \{x_1,y_1,x_2,y_2,1\})\\
+&\qquad \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit_j, \tau_1, \{x_1,y_1,x_2,y_2,1\})\\
+&= \max_{t : t^*\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau_1, t).
+\end{align*}
 
 \subsection*{Empirical validation}
 

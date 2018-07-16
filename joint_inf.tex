@@ -149,21 +149,24 @@ The ``inverse Felsenstein'' terminology comes from \citet{Swofford2001-hr}, alth
 In the standard configuration of this tree, the interior branch length parameters are equal to the bottom two parameters.
 We use this standard configuration as our data generating process, though we do not constrain our branch lengths to be equal in considering our optimization objective function.
 
-%TODO: update this figure
 \begin{figure}
 \centering
-\begin{subfigure}{.45\linewidth}
+\begin{subfigure}{.3\linewidth}
 \centering
-\includegraphics[width=\textwidth]{farris_blank}
+\includegraphics[width=\textwidth]{farris_blank_generating}
+\caption[short]{InvFels tree $\tau^*$}
+\end{subfigure}
+\begin{subfigure}{.3\linewidth}
+\centering
+\includegraphics[width=\textwidth]{farris_blank_general}
 \caption[short]{InvFels tree $\tau_1$}
 \end{subfigure}
-\begin{subfigure}{.45\linewidth}
+\begin{subfigure}{.3\linewidth}
 \centering
-\includegraphics[width=\textwidth]{felsenstein_blank}
+\includegraphics[width=\textwidth]{felsenstein_blank_general}
 \caption[short]{Felsenstein tree $\tau_2$}
 \end{subfigure}
-\caption{Two four-taxon trees with fidelities as labeled.
-}
+\caption{Three four-taxon trees with fidelities as labeled.}
 \label{fig:farris-fels-top}
 \end{figure}
 
@@ -234,11 +237,9 @@ There exists a set of $0 < x^*, y^* < 1$ such that
 and $\hat{w}\equiv 1$.
 \end{restatable}
 
+The proof is through analyzing upper and lower bounds of various likelihood forms and the gradients of the objective function.
 In words, this implies an inconsistency as we converge on the incorrect topology, estimating the interior branch length to be zero.
 For example, the Felsenstein tree $\tau_2$ will achieve the same objective function value in this case as the InvFels tree $\tau_1$, as if the interior branch is zero-length these two topologies are indistinguishable.
-%TODO: more discussion on proof, intution
-%Intuitively, $\tau_2$ is favored in performing joint inference since the objective function for $\tau_2$ has more ``degrees of freedom''---Table~\ref{tab:likelihoods} shows that $\tau_1$ has only three possible forms for its objective function while $\tau_2$ has many more.
-%This enables more possible maxima for $\tau_2$ even if data are generated from $\tau_1$.
 
 \begin{figure}
 \centering
@@ -307,7 +308,7 @@ In this previous work, when simulating data under the Felsenstein topology $\tau
 We have shown cases in which, when generating from the InvFels topology, we converge to a multifurcating topology, with one or more branch lengths estimated to be zero.
 Moreover, the inconsistency demonstrated by \citet{Felsenstein1978-rr} is attributed to long branch attraction, i.e., the fact that there may be multiple long branches where parallel changes are more likely than a single change along a short branch.
 This is not the case here; while analytically the inconsistency occurs in the long branch attraction region of the parameter space, we see empirically that this inconsistency is present in roughly half of the entire parameter space, and occurs when the true branches generate data that more likely has no change along the interior branch.
-%TODO: add plot or at least discussion of intuition here
+This is especially apparent in the ``long $x^*$, short $y^*$'' case discussed previously.
 Difficulties in phylogenetic estimation when generating data on the InvFels tree have been found by \citet{Siddall1998-hq}, though \citet{Swofford2001-hr} show that sequence length plays a major role in these issues.
 
 The case of joint inference of a phylogenetic likelihood was discussed in \citet{Goldman1990-dk}.
