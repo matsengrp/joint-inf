@@ -66,6 +66,14 @@ def parse_args():
         action="store_true",
         help='general branch lengths plot',
     )
+    parser.add_argument(
+        '--fels',
+        action="store_true",
+    )
+    parser.add_argument(
+        '--invfels',
+        action="store_true",
+    )
 
     args = parser.parse_args()
 
@@ -73,6 +81,50 @@ def parse_args():
 
 # ~~~~~~~~~
 # global functions for exact likelihood computation
+
+def P_FELS(theta, site_pattern):
+    """
+    Site pattern frequencies for Felsenstein tree
+    """
+    # fifth branch will always be positive
+    theta_sgn = [-1 if s=='1' else 1 for s in site_pattern+'0']
+    prob_list = [
+        [theta[0], theta[1]],
+        [theta[2], theta[3]],
+        [theta[0], theta[2], theta[4]],
+        [theta[1], theta[2], theta[4]],
+        [theta[0], theta[3], theta[4]],
+        [theta[1], theta[3], theta[4]],
+        [theta[0], theta[1], theta[2], theta[3]],
+    ]
+    sgn_list = [
+        theta_sgn[0]*theta_sgn[1],
+        theta_sgn[2]*theta_sgn[3],
+        theta_sgn[0]*theta_sgn[2]*theta_sgn[4],
+        theta_sgn[1]*theta_sgn[2]*theta_sgn[4],
+        theta_sgn[0]*theta_sgn[3]*theta_sgn[4],
+        theta_sgn[1]*theta_sgn[3]*theta_sgn[4],
+        theta_sgn[0]*theta_sgn[1]*theta_sgn[2]*theta_sgn[3],
+    ]
+    new_prob_list = [resolve_exp(p, pad=False) for p in prob_list]
+    out_str = ''.join(['+'+p if s > 0 else '-'+p for p,s in zip(new_prob_list, sgn_list)])
+
+    return PATT2SPLIT[site_pattern] + '&' + '(1'+out_str+')' + '\\\\'
+
+def L_FELS(theta, site_pattern):
+    """
+    Likelihood for Felsenstein topology
+    """
+    all_likes = []
+    all_likes += [''.join(['(1+'+t+')' if s=='0' else '(1-'+t+')' for t,s in zip(theta, site_pattern+'0')])]
+    all_likes += [''.join(['(1+'+t+')' if s=='0' and i < 2 or s=='1' and i >= 2 else '(1-'+t+')' for i,(t,s) in enumerate(zip(theta, site_pattern+'0'))])]
+    all_likes += [''.join(['(1+'+t+')' if s=='1' and i < 2 or s=='0' and i >= 2 else '(1-'+t+')' for i,(t,s) in enumerate(zip(theta, site_pattern+'1'))])]
+    all_likes += [''.join(['(1+'+t+')' if s=='1' else '(1-'+t+')' for t,s in zip(theta, site_pattern+'1')])]
+
+    out_str = PATT2SPLIT[site_pattern]
+    for anc_state, split in zip(ALL_ANC_STATES, all_likes):
+        out_str += '&' + ANC2SPLIT[anc_state] + '&$' + split + '$\\\\\n'
+    return out_str
 
 def P_INVFELS(theta, site_pattern):
     """
@@ -145,15 +197,23 @@ def main(args=sys.argv[1:]):
     else:
         pref = 'True'
         theta = ['x*', 'y*', 'x*', 'y*', 'y*']
+    if args.fels:
+        pref += ' Fels'
+        p = lambda x,y: P_FELS(x, y)
+        ell = lambda x,y: L_FELS(x, y)
+    else:
+        pref += ' InvFels'
+        p = lambda x,y: P_INVFELS(x, y)
+        ell = lambda x,y: L_INVFELS(x, y)
 
-    print pref + ' InvFels'
+    print pref
     print 'Probabilities:'
     for site_pattern in ALL_PATTERNS:
-        print P_INVFELS(theta, site_pattern)
+        print p(theta, site_pattern)
     print '\n'
     print 'Likelihoods:'
     for site_pattern in ALL_PATTERNS:
-        print L_INVFELS(theta, site_pattern)
+        print ell(theta, site_pattern)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
