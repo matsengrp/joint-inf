@@ -297,7 +297,7 @@ All values multiplied by $1/8$.}
 \subsection*{Likelihood computations}
 
 To compute the likelihood of observing a set of data, we need $\Pr(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t)$ for each $\ancestralSplit_k$ and $\siteSplit_j$.
-Using branch fidelities, the probability of a character change along a branch with fidelity parameter $\theta$ is $(1-\theta)/2$, while the probability of a character remaining the same is $(1+\theta)/2$.
+Using branch fidelities, the probability of a character change along a branch with fidelity parameter $x$ is $(1-x)/2$, while the probability of a character remaining the same is $(1+x)/2$.
 See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern on the InvFels tree.
 Likelihood computations for all site splits and ancestral state splits are in Table~\ref{tab:farris_likelihoods} for the InvFels tree.
 
@@ -372,7 +372,7 @@ $\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 \caption{
 Likelihood calculations for all site splits $\siteSplit_j$ and ancestral state splits $\ancestralSplit_k$ of the InvFels tree $\tau_1$.
 All values multiplied by $1/32$.
-Ancestral states with $^*$ are never maximal provided parameters are in $(0,1)$.
+Ancestral states with $^*$ are never maximal provided parameters are in $(0,1]$.
 There are $3^5\cdot 4^2=3,888$ possible forms for the likelihood.
 }
 \label{tab:farris_likelihoods}
@@ -422,13 +422,13 @@ for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exc
 The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
 Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t})$ we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$.
-An analogous statement holds for $y_2 \ge y_1$, with these likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral states.
+An analogous statement holds for $y_2 \ge y_1$, with these likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
 
 \begin{table}
 \centering
 \begin{tabular}{|ll|l|}
 \hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau, t)$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau_1,t)$\\
 \hline
 $\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 
@@ -456,7 +456,8 @@ $\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 \hline
 \end{tabular}
 \caption{
-Due to the symmetry of the likelihood, WLOG we assume $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral states to reduce the number of possible functional forms to consider.
+Likelihood calculations on the InvFels tree $\tau_1$.
+Due to the symmetry of the likelihood, WLOG we assume $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral state splits to reduce the number of possible functional forms to consider.
 All values multiplied by $1/32$.
 Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
 There are $3^4=81$ possible forms for the likelihood.
@@ -468,57 +469,56 @@ There are $3^4=81$ possible forms for the likelihood.
 
 %where data is generated on the InvFels tree with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$ (Fig.~\ref{fig:farris-fels-top}).
 
-We first prove intermediate results to show the above.
+We first prove intermediate results to show the main result.
 
 \begin{lemma}
-Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x_1, y_1, x_2, y_2, w\}$.
-There exists a set of $0 < x^*, y^* < 1$ such that $\emptyset$ is the maximal ancestral state for all site splits.
+Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
+There exists a set of $0 < x^*, y^* < 1$ such that $\emptyset$ is the maximal ancestral state split for all site splits given $\tau=\tau_1$.
 \end{lemma}
 
 \begin{proof}
 We obtain
 \[
-\max_{t} \ \ell_{\tau^*,t^*}(\tau^*, t) \le
+\max_{t} \ \ell_{\tau^*,t^*}(\tau, t) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-    + \tilde{\ell}_{\tau^*,t^*}(\tau^*, \hat{t})
+    + \tilde{\ell}_{\tau^*,t^*}(\tau, \tilde{t})
 \]
 as an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} using Gibbs's inequality
 \[
-\shannonDivergence_{\tau^*,t^*}(\tau^*,t) \le \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
+\shannonDivergence_{\tau^*,t^*}(\tau,t) \le \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
 \]
 and
 \[
-\hat{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau^*, t).
+\tilde{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t).
 \]
-By straightforward calculus, the function $f(x)=a_1\log(1+x)+a_2\log(1-x)$ attains a maximum at $\hat{x} = (a_1-a_2)/(a_1+a_2)$, and so we have a closed form for $\hat{t}$.
+By straightforward calculus, the function $f(x)=a_1\log(1+x)+a_2\log(1-x)$ attains a maximum at $\hat{x} = (a_1-a_2)/(a_1+a_2)$, and so we have a closed form for each component of $\tilde{t}$.
 Using this estimate, we have the lower bound
 \[
-\max_{t} \ \ell_{\tau^*,t^*}(\tau^*, t) \ge
-    \shannonDivergence_{\tau^*,t^*}(\tau^*,\hat{t})
-    + \tilde{\ell}_{\tau^*,t^*}(\tau^*, \hat{t}).
+\max_{t} \ \ell_{\tau^*,t^*}(\tau, t) \ge
+    \shannonDivergence_{\tau^*,t^*}(\tau,\tilde{t})
+    + \tilde{\ell}_{\tau^*,t^*}(\tau, \tilde{t}).
 \]
-Fig.~\ref{fig:max-anc-state} shows where the lower bound above is greater than all 80 other upper bounds.
+We compute the lower bound $C_0(x^*,y^*)$ above given $\emptyset$ as the maximal ancestral state split for all site splits and $\tau=\tau_1$.
+We need only consider the remaining $u=1,\ldots,80$ possibilities for choices of ancestral state splits in Table~\ref{tab:likelihoods} upon excluding cases of infinite branch lengths (i.e., any of $x_1,y_1,x_2,y_2,w$ equal to zero) and the redundant cases of $x_1 > x_2$ and $y_1 > y_2$.
+We compute upper bounds $C_{1,u}(x^*,y^*)$ and show in Fig.~\ref{fig:max-anc-state} the region where $C_0(x^*,y^*) > \max_u C_{1,u}(x^*,y^*)$.
 \end{proof}
 
 \begin{figure}
 \centering
 \includegraphics[width=.95\textwidth]{analytic-anc-state-inkscape}
 \caption{
-Region where $\emptyset$ is maximal ancestral state for each site split.
+Region where $\emptyset$ is maximal ancestral state split for each site split on the InvFels tree $\tau_1$.
 }
 \label{fig:max-anc-state}
 \end{figure}
 
-The above will hold if we swap $\hat{y}_2$ and $\hat{y}_1$, as the likelihood is invariant to this.
-
 \begin{lemma}
-Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x_1, y_1, x_2, y_2, w\}$ and $\emptyset$ be the maximal ancestral state for all site splits.
-Assume $0 < x^*, y^* < 1$.
-The solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
+Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
+For $0 < x^*, y^* < 1$ and $\emptyset$ as the maximal ancestral state split for all site splits, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
 \[
-\hat{t} = \arg\max_t \ell_{\tau^*, t^*}(\tau^*, t)
+\hat{t} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t)
 \]
-is subject to the constraints $\hat{x}_1,\hat{x}_2 \in [0, x^*]$, $\hat{y}_1 \in [0, y^*]$, and $\hat{y}_2,\hat{w} \in [y^*, 1]$.
+is subject to the constraints $\hat{x}_1,\hat{x}_2 \in (0, x^*]$, $\hat{y}_1 \in (0, y^*]$, and $\hat{y}_2,\hat{w} \in [y^*, 1]$.
 \label{lemma:bounds}
 \end{lemma}
 
@@ -526,11 +526,11 @@ is subject to the constraints $\hat{x}_1,\hat{x}_2 \in [0, x^*]$, $\hat{y}_1 \in
 We proceed by analyzing the gradients of each component of the likelihood function.
 We first focus on the divergence term
 \[
-\shannonDivergence_{\tau^*,t^*}(\tau^*,t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t).
+\shannonDivergence_{\tau^*,t^*}(\tau_1,t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t).
 \]
 By Gibbs inequality, this function attains a unique maximum when
 \[
-\Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)
+\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)
 \]
 for all $j=1,\ldots,\nSiteSplits$ with $t^*=\{x^*,y^*,x^*,y^*,y^*\}$.
 Note that exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not affect the divergence, and, as it has a unique maximum, we have $x_1=x_2=x$ and $y_1=y_2=y$ at this maximum.
@@ -551,9 +551,9 @@ Setting these parameters to their optima, the difference of generating probabili
 implying $w=y^*$.
 The unique maximum is $\hat{t}=\{x^*,y^*,x^*,y^*,y^*\}$, and
 \[
-\nabla_t \shannonDivergence_{\tau^*,t^*}(\tau^*,t) \mid_{t=t^*} = 0.
+\nabla_t \shannonDivergence_{\tau^*,t^*}(\tau_1,t) \mid_{t=t^*} = 0.
 \]
-We now show the gradient of the divergence term is a decreasing function on $(0,1)$ in each variable.
+We now show the gradient of the divergence term is a decreasing function on $(0,1]$ in each variable.
 We focus on $x_1$.
 The divergence proportional to $x_1$ can be written as
 \begin{align*}
@@ -577,22 +577,19 @@ and focus on a single term
 \[
 f_j(x_1) = p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{c_{\siteSplit_j} + a_{\siteSplit_j}x_1}.
 \]
-Regardless of $a_{\siteSplit_j} \lessgtr 0$, this is a decreasing function of $x_1$ provided $c_{\siteSplit_j} + a_{\siteSplit_j}x_1 > 0$, but we see
+We see
 \[
-\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) := \frac{1}{8} (c_{\siteSplit_j} + a_{\siteSplit_j}x_1)
+\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) := \frac{1}{8} (c_{\siteSplit_j} + a_{\siteSplit_j}x_1),
 \]
-which is strictly greater than zero provided $x_1,y_1,x_2,y_2\in(0,1)$.
+which greater than or equal to zero as it is a probability.
+Thus, regardless of $a_{\siteSplit_j} \lessgtr 0$, $f_j$ is a decreasing function of $x_1$ as $c_{\siteSplit_j} + a_{\siteSplit_j}x_1 \ge 0$.
 The remaining variables follow similar arguments.
-
-We now focus on the partial likelihood term.
-Assume $\emptyset$ is the most likely ancestral state for all site splits.
-In this case, the partial likelihood has no ambiguity, and has terms given in Table~\ref{tab:likelihoods-restricted}.
 
 \begin{table}
 \centering
 \begin{tabular}{|ll|l|}
 \hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau, t)$ & $\Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit_j,\tau,t)$\\
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit_j,\tau_1,t)$\\
 \hline
 $\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 $\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
@@ -605,24 +602,27 @@ $\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 \hline
 \end{tabular}
 \caption{
-The maximal likelihood values given $\emptyset$ is the most likely ancestral state.
+The maximal likelihood values on the InvFels tree $\tau_1$ given $\emptyset$ is the most likely ancestral state split for each site split.
 All values multiplied by $1/32$.}
 \label{tab:likelihoods-restricted}
 \end{table}
 
+We now focus on the partial likelihood term.
+Assume $\emptyset$ is the most likely ancestral state split for all site splits.
+In this case, the partial likelihood has no ambiguity, and has terms given in Table~\ref{tab:likelihoods-restricted}.
 The partial likelihood
 \[
-\tilde{\ell}_{\tau^*,t^*}(\tau^*, t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau^*, t)
+\tilde{\ell}_{\tau^*,t^*}(\tau_1, t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau_1, t)
 \]
 as a function of $x_1$, using Table~\ref{tab:gen-sitepatprob}, is
 \[
 \tilde{\ell}(x_1) \propto \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1).
 \]
-By some calculus, the partial derivative with respect to $x_1$ is
+The derivative with respect to $x_1$ is
 \[
-\tilde{\ell}_{x_1}(x_1) = \frac{-x_1+x^*(y^*)^2}{1-x_1^2}
+\tilde{\ell}'(x_1) := \frac{d}{dx_1} \tilde{\ell}(x_1) = \frac{-x_1+x^*(y^*)^2}{1-x_1^2}
 \]
-which is clearly negative for all $x_1 \ge x^*$.
+which is negative for all $x_1 \ge x^*$.
 This same process applied to the remaining variables shows the gradient of the full likelihood is negative for $x_1,x_2 \ge x^*$ and $y_1 \ge y^*$ and positive for $y_2,w \ge y^*$, yielding the constraints
 \[
 \hat{x}_1,\hat{x}_2 \in [0, x^*], \ \hat{y}_1 \in [0, y^*], \ \hat{y}_2,\hat{w} \in [y^*, 1].
@@ -634,78 +634,72 @@ We now prove the main result.
 \topoInconsist*
 
 \begin{proof}
-Similar to the previous proof, let
-\[
-b_{\emptyset} = \frac{(x_1+x_2)(y_1+y_2)}{(1+x_1x_2)(1+y_1y_2)}
-\]
-with similar definitions for the remaining site splits.
 The objective function proportional to $w$ is
 \begin{align*}
 \ell(w) \propto \log(1+w) + \sum_j p_{\siteSplit_j} \log(1 + b_{\siteSplit_j}w)
 \end{align*}
-and has derivative with respect to $w$ as
+where, as in the previous proof,
+\[
+b_{\emptyset} = \frac{(x_1+x_2)(y_1+y_2)}{(1+x_1x_2)(1+y_1y_2)}
+\]
+with similar definitions for the remaining site splits.
+This function has derivative with respect to $w$ as
 \begin{align*}
 \ell'(w) := \frac{d}{dw} \ell(w) = \frac{1}{1+w} + \sum_j p_{\siteSplit_j}b_{\siteSplit_j}\frac{1}{1 + b_{\siteSplit_j}w}.
 \end{align*}
-Using the fact that $b_{\emptyset} = -b_{13}$, $b_{1} = -b_{3}$, $b_{2} = -b_{123}$, and $b_{12} = -b_{23}$ in addition to $p_{1} = p_{3}$, $p_{2} = p_{123}$, and $p_{12} = p_{23}$, we simplify the likelihood as
+Using the fact that $b_{\emptyset} = -b_{13}$, $b_{1} = -b_{3}$, $b_{2} = -b_{123}$, and $b_{12} = -b_{23}$ in addition to $p_{1} = p_{3}$, $p_{2} = p_{123}$, and $p_{12} = p_{23}$, we simplify the derivative as
 \begin{align*}
 \ell'(w) &= \frac{1}{1+w} + \frac{p_{\emptyset}b_{\emptyset}}{1 + b_{\emptyset}w} - \frac{p_{13}b_{\emptyset}}{1 - b_{\emptyset}w} + \frac{p_{2}b_{2}}{1 + b_{2}w} - \frac{p_{2}b_{2}}{1 - b_{2}w} \\
          &\qquad \frac{p_{1}b_{1}}{1 + b_{1}w} - \frac{p_{1}b_{1}}{1 - b_{1}w} + \frac{p_{12}b_{12}}{1 + b_{12}w} - \frac{p_{12}b_{12}}{1 - b_{12}w}.\\
 \end{align*}
-Using the bounds on $\hat{x}_1,\hat{y}_1,\hat{y}_1$, and $\hat{y}_2$ from Lemma~\ref{lemma:bounds} and our assumption of $y_2 \ge y_1$ and $x_2 \ge x_1$, we have
+Using the bounds on $\hat{x}_1,\hat{y}_1,\hat{x}_2$, and $\hat{y}_2$ from Lemma~\ref{lemma:bounds} and our assumption of $y_2 \ge y_1$ and $x_2 \ge x_1$, we have
 \[
-0 \le b_{\emptyset} \le \frac{2x^*}{1+(x^*)^2} := b_{\emptyset}^U,
+0 < b_{\emptyset} \le \frac{2x^*}{1+(x^*)^2} := b_{\emptyset}^U,
 \]
 \[
-0 \le b_{2} \le \frac{2x^*}{1+(x^*)^2}\cdot\frac{1}{1-y^*} := b_{2}^U,
+0 < b_{2} \le \frac{2x^*}{1+(x^*)^2}\cdot\frac{1}{1-y^*} := b_{2}^U,
 \]
 \[
-0 \le b_{1} \le \frac{x^*}{1-(x^*)^2} := b_{1}^U
+0 < b_{1} \le \frac{x^*}{1-(x^*)^2} := b_{1}^U,
 \]
 \[
-0 \le b_{12} \le \frac{x^*}{1-(x^*)^2}\cdot\frac{1}{1-y^*} := b_{12}^U,
+0 < b_{12} \le \frac{x^*}{1-(x^*)^2}\cdot\frac{1}{1-y^*} := b_{12}^U,
 \]
 so that $\ell'(w)$ has lower bound
 \[
 \ell'_{L}(w) = \frac{1}{1+w} - \frac{p_{13}}{1/b_{\emptyset}^U - w} - \frac{p_{2}}{1/b_{2}^U - w} - \frac{p_{1}}{1/b_{1}^U - w} - \frac{p_{12}}{1/b_{12}^U - w}
 \]
-Clearly $b_{\emptyset}^U < 1$.
-Note that $\ell'_{L}(w)$ is strictly decreasing in $w$ on the interval $(0,1)$, as shown in the previous proof, provided $b_{2}^U, b_{1}^U, b_{12}^U < 1$.
-Thus, if $\ell'_{L}(1) > 0$ then $\ell(w)$ is increasing on the entire interval $(0,1)$, including at the boundary $w=1$, implying $\hat{w} \equiv 1$.
-So we want $x^*$ and $y^*$ where $b_{2}^U, b_{1}^U, b_{12}^U < 1$ and $\ell_L'(1) > 0$.
-These conditions are straightforward, the one on the derivative being
+Note that $\ell'_{L}(w)$ is strictly decreasing in $w$ on the interval $(0,1]$, as shown in the previous proof, provided $b_{\emptyset}^U, b_{2}^U, b_{1}^U, b_{12}^U < 1$.
+Thus, if $\ell'_{L}(1) > 0$ then $\ell(w)$ is increasing on the entire interval $(0,1]$, including at the boundary $w=1$, and $\hat{w} \equiv 1$.
+The conditions on $x^*$ and $y^*$ where $b_{2}^U, b_{1}^U, b_{12}^U < 1$ and $\ell_L'(1) > 0$ are straightforward, the one on the derivative being
 \[
 \ell'_{L}(1) = \frac{1}{2} - \frac{p_{13}b_{\emptyset}^U}{1-b_{\emptyset}^U} - \frac{p_{2}b_{2}^U}{1-b_{2}^U} - \frac{p_{1}b_{1}^U}{1-b_{1}^U} - \frac{p_{12}b_{12}^U}{1-b_{12}^U} > 0.
 \]
-The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state is given in Fig.~\ref{fig:incons-analytic}.
+The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state split is given in Fig.~\ref{fig:incons-analytic}, giving the region of generating parameters where $\hat{w}\equiv 1$.
 \end{proof}
 
-As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on the incorrect topology in these cases, resulting in an inconsistency.
-We show this is a type of inconsistency in topology estimation by constructing a lower bound on the likelihood for the Felsenstein topology and showing it is equal to the likelihood given the InvFels topology in the demarcated region of Fig.~\ref{fig:incons-analytic}.
-As we are interested in a lower bound, assume $\ancestralSplitPartition_j(\tau_2,\{x_1,y_1,x_2,y_2,w\})=\emptyset$ for all $j$.
-In this case, the partial likelihood term for the Felsenstein tree is composed of the same functional forms given in Table~\ref{tab:likelihoods-restricted}.
-This is apparent as assuming $\emptyset$ for the ancestral state split will result in the same partial likelihood for both topologies.
+As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
+We show this is a type of inconsistency in topology estimation by constructing a lower bound on the likelihood for the Felsenstein topology $\tau_2$ and demonstrating it is equal to the likelihood given the InvFels topology $\tau_1$ in the demarcated region of Fig.~\ref{fig:incons-analytic}.
+As we are interested in a lower bound, assume $\ancestralSplitPartition_j(\tau_2,\{x_1,y_1,x_2,y_2,w\})=\emptyset$ for all $j=1,\ldots,\nSiteSplits$.
+In this case, the partial likelihood term for $\tau_2$ is composed of the same functional forms given in Table~\ref{tab:likelihoods-restricted}, as assuming $\emptyset$ for the ancestral state split results in the same partial likelihood for both topologies.
 
 Assume $w=1$.
-The maximum likelihood value for the Felsenstein topology is greater than or equal to the value of the likelihood given these two constraints.
-In this case, Table~\ref{tab:gen-sitepatprob} shows that, for $w=1$, the divergence term is identical to that of the InvFels topology.
-Again, this is apparent as when the internal branch becomes zero-length, the two topologies are indistinguishable.
-Let $\mathcal{T}$ be the shaded region in Fig.~\ref{fig:incons-analytic}.
+In this case, Table~\ref{tab:gen-sitepatprob} shows that, for $w=1$, the divergence term is identical for $\tau_1$ and $\tau_2$ as when the internal branch becomes zero-length the two topologies are indistinguishable.
+Let $\mathcal{T}$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}$ corresponds to $x^*$ and $y^*$ falling in the shaded region in Fig.~\ref{fig:incons-analytic}.
+The unconstrained maximum likelihood value for $\tau_2$ is greater than or equal to the value of the likelihood given these two constraints.
 We have
 \begin{align*}
 \max_{t} & \ \ell_{\tau^*,t^*}(\tau_2, t) \ge \\
-&\max_{t} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_2, \{x_1,y_1,x_2,y_2,1\}) \\
-&\qquad + \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit_j, \tau_2, \{x_1,y_1,x_2,y_2,1\}) \\ 
-&= \max_{t} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, \{x_1,y_1,x_2,y_2,1\})\\
-&\qquad \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit_j, \tau_1, \{x_1,y_1,x_2,y_2,1\})\\
-&= \max_{t : t^*\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau_1, t).
+&\max_{t: \xi_j=\emptyset, w=1, \tau=\tau_2} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\}) \\
+&\qquad\qquad + \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, \{x_1,y_1,x_2,y_2,w\}) \\
+&= \max_{t: \xi_j=\emptyset, w=1, \tau=\tau_1} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
+&\qquad\qquad + \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, \{x_1,y_1,x_2,y_2,w\})\\
+&= \max_{t : t^*\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau_1, t),
 \end{align*}
+and thus the incorrect topology achieves a likelihood value greater than or equal to the correct one.
 
-\subsection*{Empirical validation}
-
-Consider Table~\ref{tab:likelihoods}.
-There are 81 separate possible forms for the likelihood, corresponding to the three possible most likely ancestral states for each of the four ambiguous site splits.
-In Fig.~\ref{fig:bl-general-inconsistency}, for various values of $x^*,y^*$, we compute the maximum of each of the 81 likelihoods and plot the value of $\hat{p}_w = (1-\hat{w})/2$.
+%~~~
+% Figures mentioned in main section of manuscript
 
 \begin{figure}
 \centering

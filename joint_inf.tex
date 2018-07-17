@@ -110,9 +110,9 @@ Maximum likelihood estimation in phylogenetics requires a means of handling unkn
 Classical maximum likelihood averages over these unknown intermediate states, leading to consistent estimation of the topology and continuous model parameters.
 Recently, a computationally-efficient approach was proposed to jointly maximize over these unknown states and phylogenetic parameters.
 Although this method of joint maximum likelihood estimation can obtain estimates more quickly, its properties as an estimator are not yet clear.
-In this paper, we show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
+We show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
 We find a set of parameters that generate data under a four-taxon tree for which this joint method estimates an incorrect topology in the limit of infinite-length sequences by estimating one or more branches to be zero length.
-For branch length estimation on the correct topology, we outline similar cases where branch length estimates are consistently and heavily biased and provide extensive empirical results for this setting.
+For branch length estimation on the correct topology, we outline cases where branch length estimates are consistently and heavily biased and provide extensive empirical results for this setting.
 \end{abstract}
 
 \newpage
@@ -125,7 +125,7 @@ This is attractive from a computational perspective: such joint inference can pr
 This latter conditional optimization is simpler and more computationally efficient than optimizing the marginal likelihood.
 But is it statistically consistent?
 
-An estimator is said to be statistically consistent if it converges to the generating model with probability 1 in the large-data limit; existing consistency proofs for maximum likelihood phylogenetics \citep{Allman2008-wd,Chai2011-ff,RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
+An estimator is said to be statistically consistent if it converges to the generating model with probability one in the large-data limit; existing consistency proofs for maximum likelihood phylogenetics \citep{Allman2008-wd,Chai2011-ff,RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood.
 These proofs do not readily extend to include estimating ancestral states.
 Moreover, examples of inconsistency arising from problems where the number of parameters increases with the amount of data \citep{Neyman1948-tt} indicate that joint inference of trees and ancestral states may not enjoy good statistical properties.
 In this case those additional parameters come in the form of the states of ancestral sequences.
@@ -134,7 +134,7 @@ Although the software described in \citet{Sagulenko2018-xl} fits on a user-suppl
 In particular, one would like to know when this approximate technique breaks down for both topology and branch length inference, even when sequence data is ``perfect,'' i.e., is generated without sampling error according to the exact model used for inference.
 
 In this paper, we show that the joint inference of trees and ancestral sequences is not consistent in general.
-To do so, we use a binary symmetric model with data being generated on the four-taxon ``inverse Felsenstein'' tree (a.k.a.\ the ``Farris'' tree) and we construct bounds on the joint objective function to demarcate a sizeable area of branch lengths in which joint inference is guaranteed to give the wrong tree in the case of perfect sequence data with an infinite number of sites by estimating one or more branch lengths to be zero.
+To do so, we use a binary symmetric model with data being generated on a four-taxon tree and we construct bounds on the joint objective function to demarcate a sizeable area of branch lengths in which joint inference is guaranteed to give the wrong tree in the case of perfect sequence data with an infinite number of sites by estimating one or more branch lengths to be zero.
 We find similar areas through empirical means where joint inference consistently underestimates interior branch lengths when the topology is known and fixed.
 
 \section*{Phylogenetic maximum likelihood}
@@ -144,10 +144,10 @@ Let $\nSiteRows$ be the number of tips of the tree, and $\nAncestralStateRows = 
 We observe $\nCols$ independent and identically distributed samples of character data, i.e., an alignment with $\nCols$ columns, $\fullAlignment=[\alignmentColumn_1,\ldots,\alignmentColumn_\nCols]\in\alphabet^{\nSiteRows\times\nCols}$ distributed as the random variable $\alignmentColumnRV$.
 The corresponding unobserved ancestral states are $\fullAncestralStates=[\ancestralStateColumn_1,\ldots,\ancestralStateColumn_\nCols]\in\alphabet^{\nAncestralStateRows\times\nCols}$ and distributed as $\ancestralStateColumnRV$ with each $\ancestralStateColumn_i\in\alphabet^\nAncestralStateRows$.
 
-We parameterize branches on the unique unrooted four-tip phylogenetic tree in ways known as the ``inverse Felsenstein (InvFels)'' tree (Fig.~\ref{fig:farris-fels-top}).
+We parameterize branches on the unique unrooted four-tip phylogenetic tree in ways known as the ``inverse Felsenstein (InvFels)'' tree (Figs.~\ref{fig:farris-fels-top}a and~\ref{fig:farris-fels-top}b) and the ``Felsenstein'' tree (Fig.~\ref{fig:farris-fels-top}c).
 The ``inverse Felsenstein'' terminology comes from \citet{Swofford2001-hr}, although it is also called the ``Farris'' tree \citep{Siddall1998-hq, Felsenstein2004}.
-In the standard configuration of this tree, the interior branch length parameters are equal to the bottom two parameters.
-We use this standard configuration as our data generating process, though we do not constrain our branch lengths to be equal in considering our optimization objective function.
+In the standard configuration of this tree, the interior branch parameters are equal to the bottom two parameters as in Fig.~\ref{fig:farris-fels-top}a.
+We use this standard configuration as our data generating process, though we do not constrain our branch parameters to be equal in considering our optimization objective function.
 
 \begin{figure}
 \centering
@@ -171,13 +171,13 @@ We use this standard configuration as our data generating process, though we do 
 \end{figure}
 
 We parameterize the branches of these trees not with the standard notion of branch length in terms of number of substitutions per site, but with an alternate formulation called ``fidelity.''
-The probability of a substitution on a branch with fidelity $\theta$ is $(1-\theta)/2$ while the probability of no substitution is $(1+\theta)/2$ where $0 \le \theta \le 1$.
+The probability of a substitution on a branch with fidelity $x$ is $(1-x)/2$ while the probability of no substitution is $(1+x)/2$ where $0 \le x \le 1$.
 This parameter quantifies the fidelity of transmission of the ancestral state across an edge \citep{Matsen2007-jq}.
 
 Fidelities have useful algebraic properties.
 As data becomes plentiful, we use the Hadamard transform (see \eqref{eq:hadamard_probability} in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form.
-For a four-taxon tree, define the general branch fidelity parameter $t=\{\theta_1,\theta_2,\theta_3,\theta_4,\theta_5\}$ where fidelities are ordered in the order of the taxa with the internal branch last (Fig.~\ref{fig:farris-fels-top}).
-Although we use fidelities exclusively for our theoretical development, we have made our figures in terms of probabilities of substitution $p_{\theta} = (1-\theta)/2$ as they are easier to interpret.
+For a four-taxon tree, define the general branch fidelity parameter $t=\{x_1,y_1,x_2,y_2,w\}$ where fidelities are ordered in the order of the taxa with the internal branch last (Figs.~\ref{fig:farris-fels-top}b and~\ref{fig:farris-fels-top}c).
+Although we use fidelities exclusively for our theoretical development, we have made our figures in terms of probabilities of substitution $p_{x} = (1-x)/2$ as they are easier to interpret.
 
 \subsection*{Two paths to maximum likelihood}
 
@@ -197,7 +197,7 @@ The classical approach is to maximize the likelihood marginalized across ancestr
 to estimate the tree $\tau$ and branch fidelities $t$.
 
 The alternative approach \citep{Sagulenko2018-xl} does away with the marginalization and directly estimates the maximum likelihood parameters of the fully-observed likelihood in \eqref{eq:full_likelihood}.
-This is known in statistics as a profile likelihood \citep{Murphy2000-ry}, which exists here because $\alphabet$ is a finite set:
+This is known in statistics as a profile likelihood \citep{Murphy2000-ry} or a relative likelihood \citep{Goldman1990-dk}, which exists here because $\alphabet$ is a finite set:
 \begin{equation}
 \label{eq:profile_likelihood}
 L_\nCols'(\tau, t; \fullAlignment) = \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i\in\alphabet^{\nAncestralStateRows}} \ \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) = \max_{\fullAncestralStates\in\alphabet^{\nAncestralStateRows\times\nCols}} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates).
@@ -207,7 +207,7 @@ We use $\hat{\fullAncestralStates}$ to denote an estimate for $\fullAncestralSta
 \label{eq:profile_likelihood_topology_bl}
 (\hat{\tau}, \hat{t}) = \argmax_{\tau, t} \ L_\nCols'(\tau, t; \fullAlignment).
 \end{equation}
-In general, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities arising from taking maxima over ancestral state splits in Table~\ref{tab:farris_likelihoods} to obtain the likelihood term for each most likely ancestral state, these terms depending on the unknown $(\tau, t)$.
+In general, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities arising from taking maxima over ancestral state splits in Table~\ref{tab:farris_likelihoods} to obtain the likelihood term for each most likely ancestral state split, these terms depending on the unknown $(\tau, t)$.
 For this reason, in practice, the joint inference strategy estimates $\hat{\fullAncestralStates}$ for a fixed $(\tau,t)$, then $(\hat{\tau},\hat{t})$ given $\hat{\fullAncestralStates}$, maximizing each of these conditional objectives until convergence \citep{Sagulenko2018-xl}.
 
 
@@ -216,30 +216,30 @@ For this reason, in practice, the joint inference strategy estimates $\hat{\full
 We now state our results on the inconsistency of joint inference.
 All proofs are deferred to the Appendix.
 
-Assume $\fullAlignment$ is generated from topology $\tau^*$ and branch fidelities $t^*$.
+Assume $\fullAlignment$ is generated from the InvFels topology $\tau^*$ and with true generating branch fidelities $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ (Fig.~\ref{fig:farris-fels-top}a).
 Use $\ell_{\tau^*,t^*}(\tau, t)$ to denote the expected per-site log-likelihood, which can be thought of as the infinite-length sequence case
 \[
 \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) \rightarrow \ell_{\tau^*,t^*}(\tau, t).
 \]
 We give $\ell$ explicitly as \eqref{eq:site_pattern_profile_likelihood_mean} in the Appendix.
 
-To show an inconsistency in topology estimation, we start with true generating parameters $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ on the InvFels topology (Fig.~\ref{fig:farris-fels-top}a).
 %We show that, as $\nCols\rightarrow\infty$, there exist values for $x^*$ and $y^*$ such that the value of the likelihood after maximizing using joint inference is greater for the Felsenstein topology ($\tau_2$) than for the true, generating InvFels topology ($\tau_1$).
 %To do so, we construct an upper bound $C_0(x^*, y^*)$ for the likelihood given the InvFels topology as a function of $x^*$ and $y^*$ and, similarly, a lower bound $C_1(x^*, y^*)$ for the likelihood given the Felsenstein topology.
 %When $C_0(x^*, y^*) < C_1(x^*, y^*)$, the likelihood in the Felsenstein case is larger than the likelihood in the InvFels case, demonstrating inconsistency (Fig.~\ref{fig:inconsistency-farris}).
 
 \begin{restatable}{theorem}{topoInconsist}
-Let $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ and $t=\{x_1, y_1, x_2, y_2, w\}$.
-There exists a set of $0 < x^*, y^* < 1$ such that
+Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
+There exists a set of $0 < x^*, y^* < 1$ such that the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
 \[
-\{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\} = \arg\max_{t} \ \ell_{\tau_1,t^*}(\tau_1, t)
+\hat{t} = \arg\max_{t} \ \ell_{\tau^*,t^*}(\tau_1, t)
 \]
-and $\hat{w}\equiv 1$.
+has the property $\hat{w}\equiv 1$.
 \end{restatable}
 
-The proof is through analyzing upper and lower bounds of various likelihood forms and the gradients of the objective function.
-In words, this implies an inconsistency as we converge on the incorrect topology, estimating the interior branch length to be zero.
-For example, the Felsenstein tree $\tau_2$ will achieve the same objective function value in this case as the InvFels tree $\tau_1$, as if the interior branch is zero-length these two topologies are indistinguishable.
+The proof is through analyzing upper and lower bounds of the potential likelihood forms in Table~\ref{tab:farris_likelihoods} and the gradients of the objective function $\ell_{\tau^*,t^*}(\tau_1, t)$ with respect to $t$.
+This result implies an inconsistency as we estimate the interior branch length to be zero (i.e., interior branch fidelity is one), and the incorrect topology attains an equal or greater likelihood at its maximum than the true topology in the limit.
+For example, if $w=1$ the objective functions $\ell_{\tau^*,t^*}(\tau_1, t)$ and $\ell_{\tau^*,t^*}(\tau_2, t)$ are equivalent.
+We elaborate on this point in the Appendix.
 
 \begin{figure}
 \centering
@@ -252,30 +252,30 @@ For example, the Felsenstein tree $\tau_2$ will achieve the same objective funct
 \end{figure}
 
 We provide the following as an intuition for the theoretical development.
-For a particular site pattern, in obtaining the joint maximum likelihood function we maximize over ancestral states.
+For a particular site pattern, in obtaining the joint maximum likelihood function we maximize over ancestral state splits.
 For the internal branch---the branch between the two internal nodes---we have a choice of $(1+w)$ or $(1-w)$ in each of our likelihood terms depending on which ancestral state split corresponds to the highest partial likelihood term.
-A maximization procedure will more likely introduce a $(1+w)$ term than a $(1-w)$ term, though this will not be guaranteed as the maximum depends on the values of $x$ and $y$.
+A maximization procedure will more likely introduce a $(1+w)$ term than a $(1-w)$ term, though this will not be guaranteed as the maximum depends on the values of the unknown branch parameters $t$.
 This tendency to include $(1+w)$ terms in the likelihood results in a bias toward one of branch fidelities.
-This is apparent in the ``long $x^*$, short $y^*$'' scenario as these are the cases in which $\emptyset$ is the most likely ancestral state split (Table~\ref{tab:likelihoods} in the Appendix with $x_1=x_2=x^*$ and $y_1=y_2=y^*$).
-If we allow multifurcating trees in our inference, then we can think of this as an instance of converging to the wrong topology.
+This is apparent in the ``long $x^*$, short $y^*$'' scenario as these are the cases in which $\emptyset$ is the most likely ancestral state split if we let $x_1=x_2=x^*$ and $y_1=y_2=y^*$ (Table~\ref{tab:likelihoods}).
+If we allow multifurcating trees in our inference, then we can think of this as another instance of converging to the wrong topology, as the true $y^*\neq 1$.
 
 \subsubsection*{Empirical validation}
 
 Direct numerical optimization confirms our theoretically-derived bounds and provides a more detailed picture compared to the conservative analytically-derived region (Fig.~\ref{fig:incons-analytic}).
-To determine how conservative, we use the well-known L-BFGS-B method to perform joint estimation (Fig.~\ref{fig:bl-general-inconsistency}).
-We see that the region of inconsistency in the general case is much larger than in the analytic case---the analytic case dealt with loose bounds and only concerned a single set of maximal ancestral states, so this is reasonable.
-This region encompasses almost half of the branch parameter space; even given the correct topology and performing our best possible optimization, we have many situations where we will estimate the interior branch length to be zero.
+To determine how conservative, we use the L-BFGS-B method to perform joint estimation (Fig.~\ref{fig:bl-general-inconsistency}).
+We see that the region of inconsistency in the general case is much larger than in the analytic case---the analytic case dealt with loose bounds and only concerned a single set of maximal ancestral state splits, so this is reasonable.
+This region encompasses almost half of the branch parameter space; given the correct topology and performing our best possible optimization, we have many situations where we will estimate the interior branch length to be zero.
 
 We provide a full description of our optimization procedure in the Appendix, but briefly, we perform 81 maximizations for each separate likelihood function in Table~\ref{tab:likelihoods}.
 For each function, we optimize the objective starting at five separate initial values to mitigate problems with small curvature of the objective surface and nonconcavity.
-We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*$ and $y^*$ from $0$ to $1$.
+We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*,y^*\in(0,1)$.
 Our optimization code can be found at \url{https://github.com/matsengrp/joint-inf/}.
 
 As data were generated with parameters $\{x^*, y^*, x^*, y^*, y^*\}$, the true value for $w$ is $y^*$.
 Marginal inference performs as expected, where $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$ (Fig.~\ref{fig:bl-general-marginal}) when optimizing \eqref{eq:marginal_likelihood} using the same optimization code.
 For joint inference, the estimates for $\hat{p}_w$ when $p_{x^*}$ and $p_{y^*}$ are both small look reasonable, with $\hat{p}_w$ increasing as $p_{y^*}$ increases, though Fig.~\ref{fig:empirical-bias} shows there is a systematic negative bias in this procedure even when the true branches are short.
 To understand the quality of each fit, we report the range of $\hat{p}_w-p_{y^*}$ where $p_{x^*}, p_{y^*} \le .1$.
-Due to the discontinuities in the fit (Fig.~\ref{fig:bl-general-inconsistency}), an overall estimate of the bias is misleading, and these short-branch cases should be the best settings for joint optimization.
+Due to the discontinuities in the fit (Fig.~\ref{fig:bl-general-inconsistency}), an overall estimate of the bias is misleading, and these short-branch cases should be the best settings for joint optimization \citep{Sagulenko2018-xl}.
 For joint inference, the errors given $p_{x^*}, p_{y^*} \le .1$ range from $[-2\times 10^{-2}, 3\times 10^{-3}]$ and for marginal inference, $[-3\times 10^{-17}, 3\times 10^{-17}]$ showing that, even in cases where joint inference is supposed to do well, it still fails to achieve a low error from truth.
 
 \begin{figure}
@@ -291,14 +291,16 @@ For joint inference, the errors given $p_{x^*}, p_{y^*} \le .1$ range from $[-2\
 \section*{Discussion}
 
 We have shown that jointly inferring ancestral states and phylogenetic parameters \citep{Sagulenko2018-xl} is not consistent in general.
-Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in a type of inconsistency: the joint inference procedure estimates severely biased branch lengths even given the correct topology.
+Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in a type of inconsistency: the joint inference procedure estimates zero-length branches given the correct topology.
+This results in an incorrect topology having a likelihood as large or greater than that of the generating topology.
 These regions of inconsistency arise when the top two branches of the generating trees are ``long,'' that is, when the top branch fidelities tend to be small, and when the lower branches are ``short,'' i.e., have large fidelities.
+%TODO: double check the below sentence
 This inconsistency in the case of long branches concurs with some empirical findings in \citet{Sagulenko2018-xl}, namely their Figures~2 and~3.
 \citet{Sagulenko2018-xl} explicitly warn their approximation is only valid for ``short'' branches, though Fig.~\ref{fig:empirical-bias} shows even when branches are short there is a consistent bias.
 
 Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \citep{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., the method of sieves \citep{Geman1982}.
-A potential solution in this case using the method of sieves could be to project the column-wise ancestral state patterns into a lower-dimensional space, allowing the degrees of freedom in the ancestral state columns to grow with $\nCols$, albeit more slowly than $O(\nCols)$.
+A potential solution in this case using the method of sieves could be to project the column-wise ancestral states into a lower-dimensional space, allowing the degrees of freedom in the ancestral state columns to grow with $\nCols$, albeit more slowly than $O(\nCols)$.
 Elsewhere in statistics literature, the failure of maximum likelihood estimates to obtain consistent estimates as the number of parameters goes to infinity have been shown by the Neyman-Scott paradox \citep{Neyman1948-tt}, though parameters tending to infinity is not a necessary condition for inconsistency \citep{LeCam1990}.
 Consistency proofs of standard maximum likelihood estimates of phylogeny \eqref{eq:marginal_likelihood} are recent \citep{Allman2008-wd,Chai2011-ff,RoyChoudhury2015-ta}, and no results have been obtained for profile likelihood.
 We have furthered progress in understanding the limitations of this joint optimization procedure.
@@ -329,6 +331,7 @@ Finally, all of the material presented here concerns joint estimation under maxi
 
 \section*{Acknowledgements}
 We thank Richard Neher, Vladimir Minin, and Joe Felsenstein for helpful discussions.
+%TODO: change up this line?
 Insight from the editors and Vu Dinh greatly improved this manuscript.
 
 This work was supported by National Institutes of Health grants R01-GM113246, R01-AI120961, U19-AI117891, and U54-GM111274 as well as National Science Foundation grants CISE-1561334 and CISE-1564137.
