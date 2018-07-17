@@ -254,8 +254,8 @@ We elaborate on this point in the Appendix.
 We provide the following as an intuition for the theoretical development.
 For a particular site pattern, in obtaining the joint maximum likelihood function we maximize over ancestral state splits.
 For the internal branch---the branch between the two internal nodes---we have a choice of $(1+w)$ or $(1-w)$ in each of our likelihood terms depending on which ancestral state split corresponds to the highest partial likelihood term.
-A maximization procedure will more likely introduce a $(1+w)$ term than a $(1-w)$ term, though this will not be guaranteed as the maximum depends on the values of the unknown branch parameters $t$.
-This tendency to include $(1+w)$ terms in the likelihood results in a bias toward one of branch fidelities.
+As $(1+w) > (1-w)$, a maximization procedure more likely introduces the $(1+w)$ term, though this will not be guaranteed as the maximum depends on the values of the unknown branch parameters $t$.
+This tendency to include $(1+w)$ terms in the likelihood results in a positive bias of branch fidelities, i.e., estimating branch lengths to be shorter than truth.
 This is apparent in the ``long $x^*$, short $y^*$'' scenario as these are the cases in which $\emptyset$ is the most likely ancestral state split if we let $x_1=x_2=x^*$ and $y_1=y_2=y^*$ (Table~\ref{tab:likelihoods}).
 If we allow multifurcating trees in our inference, then we can think of this as another instance of converging to the wrong topology, as the true $y^*\neq 1$.
 
