@@ -143,17 +143,20 @@ def safe_p_logq(p, logq):
 
 def marginal_likelihood(theta, theta_hat):
     """
-    Table S4 in manuscript: we have 81 possible likelihood functions we can compute
+    Marginal likelihood given generating theta and estimated theta_hat
     """
     probs = {pattern: P_INVFELS(theta, pattern) for pattern in ALL_PATTERNS}
     fit_probs = {pattern: P_INVFELS(theta_hat, pattern) for pattern in ALL_PATTERNS}
 
     likelihood = np.sum([safe_p_logq(p_gen, safe_log(fit_probs[pattern])) for pattern, p_gen in probs.iteritems()])
     likelihood -= LOG32
-    likelihood += get_partial_likelihood(probs, theta_hat)
+    likelihood += get_partial_marginal_likelihood(probs, theta_hat)
     return likelihood
 
-def get_partial_likelihood(probs, theta):
+def get_partial_marginal_likelihood(probs, theta):
+    """
+    Second term of the likelihood in marginal inference
+    """
     all_terms = []
     likelihood = 0.
     for t in theta:
@@ -174,6 +177,11 @@ def get_partial_likelihood(probs, theta):
     return likelihood
 
 def get_log_coefficients(probs, anc_states):
+    """
+    Function to return coefficients for (1+x_1), (1-x_1), etc.
+
+    returns a 5x2 array, with coefficient for (1+x_1) the 0,0 term, (1-x_1) the 0,1 term, etc.
+    """
     all_terms = []
     for _ in range(5):
         all_terms.append([0., 0.])
@@ -198,7 +206,7 @@ def get_log_coefficients(probs, anc_states):
 
 def likelihood_lower_bound(theta):
     """
-    Table S4 but with w=1 and y_2=1 (and then x_1, y_1, x_2 their optima)
+    Compute lower bound of the likelihood in Lemma 2
     """
     probs = {pattern: P_INVFELS(theta, pattern) for pattern in ALL_PATTERNS}
     all_terms = get_log_coefficients(probs, '0000')
@@ -214,6 +222,8 @@ def likelihood_lower_bound(theta):
 
 def likelihood_upper_bound(theta, anc_states='0000'):
     """
+    Compute upper bound of the likelihood in Lemma 2
+
     maximized at t=(a1-a2)/(a1+a2), but note a1+a2=1, so a1log(1+a1-a2) + a2log(1+a2-a1) is max
     """
     probs = {pattern: P_INVFELS(theta, pattern) for pattern in ALL_PATTERNS}
@@ -243,6 +253,10 @@ def likelihood(theta, theta_hat, anc_states='0000'):
 
 def get_ancestral_state_conds(xy):
     """
+    takes in xy---the generating parameter values (a 2-tuple)
+
+    returns the difference between the lower bound of the likelihood with $\emptyset$ as the
+    maximal ancestral state (i.e., Table S4) and the upper bound of the remaining likelihoods
     """
     if xy[0] == 1. or xy[0] == 0. or xy[1] == 1. or xy[1] == 0.:
         return -np.inf
@@ -257,6 +271,7 @@ def get_ancestral_state_conds(xy):
 
 def get_analytic_inconsistency(xy):
     """
+    Get region in Theorem 1
     """
     x = xy[0]
     y = xy[1]
@@ -288,6 +303,7 @@ def get_analytic_inconsistency(xy):
 
 def get_marginal_what(xy):
     """
+    Get marginal value of $\hat{w}$ empirically to compare with $\hat{w}$ estimated through joint inf
     """
     # if we're in an edge case, return .25 to gray out plot
     if xy[0] == 1. or xy[0] == 0. or xy[1] == 1. or xy[1] == 0.:
@@ -308,6 +324,7 @@ def get_marginal_what(xy):
 
 def get_empirical_what(xy):
     """
+    Get $\hat{w}$ through joint inf
     """
     # if we're in an edge case, return .25 to gray out plot
     if xy[0] == 1. or xy[0] == 0. or xy[1] == 1. or xy[1] == 0.:
@@ -334,6 +351,9 @@ def get_empirical_what(xy):
 
 def obj_fn(xy, obj_type='get_ancestral_state_conds'):
     """
+    return different objective functions based on what we are interested in computing
+
+    needed for Pool to work properly
     """
     if obj_type == 'get_empirical_what':
         return get_empirical_what(xy)
@@ -346,6 +366,7 @@ def obj_fn(xy, obj_type='get_ancestral_state_conds'):
 
 def make_plot(plottitle, plotname, legendtext=None, ct=None, scale=1, plotbar=False, move_legend=False):
     """
+    tweaked plotting settings for each plot
     """
     plt.axis('scaled')
     plt.xlabel(r'$p_{x^*}$', fontsize=FONT_SIZE-4)

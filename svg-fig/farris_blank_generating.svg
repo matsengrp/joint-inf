@@ -16,7 +16,7 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="farris_blank_general.svg"
+   sodipodi:docname="farris_blank_generating.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <metadata
      id="metadata73">
@@ -26,7 +26,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -96,7 +96,7 @@
      id="base"
      showgrid="false"
      inkscape:zoom="2.0125994"
-     inkscape:cx="-16.596816"
+     inkscape:cx="-13.615597"
      inkscape:cy="129.64464"
      inkscape:window-x="65"
      inkscape:window-y="24"
@@ -182,45 +182,6 @@
          style="font-size:4.27107286px">x</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:6.40660954px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
-       x="96.73053"
-       y="31.517948"
-       id="text3007-3"
-       sodipodi:linespacing="125%"
-       transform="scale(0.99689209,1.0031176)"><tspan
-         sodipodi:role="line"
-         id="tspan3017-6"
-         x="96.73053"
-         y="31.517948"
-         style="font-size:4.27107286px">x</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:2.13553643px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="83.046181"
-       y="52.761932"
-       id="text3040"
-       sodipodi:linespacing="125%"
-       transform="scale(0.99689209,1.0031176)"><tspan
-         sodipodi:role="line"
-         id="tspan3042"
-         x="83.046181"
-         y="52.761932"
-         style="font-size:4.27107286px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math">y</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.13553643px;line-height:125%;font-family:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="93.634171"
-       y="52.761932"
-       id="text3040-7"
-       sodipodi:linespacing="125%"
-       transform="scale(0.99689209,1.0031176)"><tspan
-         sodipodi:role="line"
-         id="tspan3042-5"
-         x="93.634171"
-         y="52.761932"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.27107286px;line-height:125%;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math;text-align:start;writing-mode:lr-tb;text-anchor:start">y</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-size:4.27107286px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
        x="68.088936"
        y="25.194447"
@@ -278,20 +239,124 @@
        sodipodi:linespacing="125%"
        transform="matrix(0.13305622,0,0,0.13388714,53.478736,18.478717)"><tspan
          sodipodi:role="line"
-         id="tspan3019"></tspan></text>
+         id="tspan3019" /></text>
     <text
        xml:space="preserve"
-       style="font-size:2.13553643px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="91.403587"
-       y="47.027878"
-       id="text3040-7-3"
+       style="font-size:5.33884144px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="81.963135"
+       y="30.408216"
+       id="text3019"
+       sodipodi:linespacing="125%"
+       transform="scale(0.99689209,1.0031176)"><tspan
+         sodipodi:role="line"
+         id="tspan3021"
+         x="81.963135"
+         y="30.408216"
+         style="font-size:1.60165238px">*</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:6.40660954px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+       x="96.876198"
+       y="31.66659"
+       id="text3007-36"
+       sodipodi:linespacing="125%"
+       transform="scale(0.99689209,1.0031176)"><tspan
+         sodipodi:role="line"
+         id="tspan3017-7"
+         x="96.876198"
+         y="31.66659"
+         style="font-size:4.27107286px">x</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.33884144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="99.445663"
+       y="30.556858"
+       id="text3019-5"
+       sodipodi:linespacing="125%"
+       transform="scale(0.99689209,1.0031176)"><tspan
+         sodipodi:role="line"
+         id="tspan3021-3"
+         x="99.445663"
+         y="30.556858"
+         style="font-size:1.60165238px">*</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:6.40660954px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+       x="83.415367"
+       y="53.150192"
+       id="text3007-5"
+       sodipodi:linespacing="125%"
+       transform="scale(0.99689209,1.0031176)"><tspan
+         sodipodi:role="line"
+         id="tspan3017-62"
+         x="83.415367"
+         y="53.150192"
+         style="font-size:4.27107286px">y</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.33884144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="85.984833"
+       y="52.040462"
+       id="text3019-9"
+       sodipodi:linespacing="125%"
+       transform="scale(0.99689209,1.0031176)"><tspan
+         sodipodi:role="line"
+         id="tspan3021-1"
+         x="85.984833"
+         y="52.040462"
+         style="font-size:1.60165238px">*</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:6.40660954px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+       x="93.358009"
+       y="53.218182"
+       id="text3007-2"
        sodipodi:linespacing="125%"
        transform="scale(0.9968921,1.0031176)"><tspan
          sodipodi:role="line"
-         id="tspan3042-5-6"
-         x="91.403587"
-         y="47.027878"
-         style="font-size:4.27107286px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math">y</tspan></text>
+         id="tspan3017-70"
+         x="93.358009"
+         y="53.218182"
+         style="font-size:4.27107286px">y</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.33884144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="95.927483"
+       y="52.108452"
+       id="text3019-93"
+       sodipodi:linespacing="125%"
+       transform="scale(0.9968921,1.0031176)"><tspan
+         sodipodi:role="line"
+         id="tspan3021-6"
+         x="95.927483"
+         y="52.108452"
+         style="font-size:1.60165238px">*</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:6.40660954px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+       x="91.434792"
+       y="46.917995"
+       id="text3007-0"
+       sodipodi:linespacing="125%"
+       transform="scale(0.9968921,1.0031176)"><tspan
+         sodipodi:role="line"
+         id="tspan3017-626"
+         x="91.434792"
+         y="46.917995"
+         style="font-size:4.27107286px">y</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.33884144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="94.004257"
+       y="45.808266"
+       id="text3019-1"
+       sodipodi:linespacing="125%"
+       transform="scale(0.9968921,1.0031176)"><tspan
+         sodipodi:role="line"
+         id="tspan3021-8"
+         x="94.004257"
+         y="45.808266"
+         style="font-size:1.60165238px">*</tspan></text>
   </g>
 </svg>
 <!-- bounding box -->
