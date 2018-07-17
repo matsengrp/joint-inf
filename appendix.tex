@@ -314,7 +314,7 @@ Likelihood computations for all site splits and ancestral state splits are in Ta
 \caption[short]{}
 \end{subfigure}
 \caption{
-    Example likelihood computations on the InvFels tree $\tau_1$ for fidelities $\{x_1,y_1,x_2,y_2,w\}$.
+    Example likelihood computations on the InvFels tree $\tau_1$ for fidelities $t=\{x_1,y_1,x_2,y_2,w\}$.
     Edges labeled by the probability of substitution along that edge.
     In (a), we compute the product to obtain $\Pr(\ancestralSplitRV=\emptyset\mid \siteSplitRV=\{2,3\},\tau_1,t) = (1+x_1)(1-x_2)(1+y_1)(1-y_2)(1+w)/32$.
     In (b), the same process yields $\Pr(\ancestralSplitRV=\{1\}\mid \siteSplitRV=\{2,3\},\tau_1,t) = (1+x_1)(1-x_2)(1+y_1)(1-y_2)(1-w)/32$.
@@ -383,12 +383,12 @@ There are $3^5\cdot 4^2=3,888$ possible forms for the likelihood.
 
 \subsection*{Properties of the joint objective function}
 
-Consider the InvFels tree $\tau_1$ with arbitrary fidelities, i.e., $\tilde{t}=\{x_1,y_1,x_2,y_2,w\}$.
+Consider the InvFels tree $\tau_1$ with arbitrary fidelities, i.e., $t=\{x_1,y_1,x_2,y_2,w\}$.
 We show that the likelihood remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
 Using the Hadamard transform, we calculate the generating probabilities on the InvFels tree.
 For site split $\emptyset$,
 \begin{align*}
-    \Pr(\siteSplitRV=\emptyset\mid \tau_1, \tilde{t}) & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  x_1y_1w + x_1y_2w + y_1x_2w + x_2y_2w + x_1y_1x_2y_2) \\
+    \Pr(\siteSplitRV=\emptyset\mid \tau_1, t) & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  x_1y_1w + x_1y_2w + y_1x_2w + x_2y_2w + x_1y_1x_2y_2) \\
                                               & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  w[x_1y_1 + x_1y_2 + y_1x_2 + x_2y_2] + x_1y_1x_2y_2) \\
                                               & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  w[x_1 + x_2][y_1 + y_2] + x_1y_1x_2y_2),
 \end{align*}
@@ -396,63 +396,63 @@ and this probability is unchanged when $x_1$ is exchanged with $x_2$ and $y_1$ i
 All other generating probabilities differ only in the signs of each term (see Table~\ref{tab:gen-sitepatprob}).
 For example, for site split $\{1\}$ we have
 \begin{align*}
-    \Pr(\siteSplitRV=\{1\}\mid \tau_1, \tilde{t}) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[-x_1 + x_2][y_1 + y_2] - x_1y_1x_2y_2)
+    \Pr(\siteSplitRV=\{1\}\mid \tau_1, t) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[-x_1 + x_2][y_1 + y_2] - x_1y_1x_2y_2)
 \end{align*}
 and for site split $\{3\}$ we have
 \begin{align*}
-    \Pr(\siteSplitRV=\{3\}\mid \tau_1, \tilde{t}) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[x_1 - x_2][y_1 + y_2] - x_1y_1x_2y_2)
+    \Pr(\siteSplitRV=\{3\}\mid \tau_1, t) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[x_1 - x_2][y_1 + y_2] - x_1y_1x_2y_2)
 \end{align*}
 meaning if we exchange the values of $x_1$ and $x_2$ then these probabilities swap values.
 The corresponding possibilities for the likelihood values are
 \begin{align*}
-    \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2); \\
-    \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1+y_1)(1+y_2); \\
-    \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1-x_1)(1+x_2)(1-w)(1-y_1)(1-y_2); \\
-    \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1+x_1)(1-x_2)(1+w)(1-y_1)(1-y_2);
+    \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2); \\
+    \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1+y_1)(1+y_2); \\
+    \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1-w)(1-y_1)(1-y_2); \\
+    \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1+w)(1-y_1)(1-y_2);
 \end{align*}
 for site split $\{1\}$ and
 \begin{align*}
-        \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{3\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1+x_1)(1-x_2)(1+w)(1+y_1)(1+y_2); \\
-    \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{3\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1-x_1)(1+x_2)(1-w)(1+y_1)(1+y_2); \\
-    \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{3\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2); \\
-    \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{3\}, \tau_1, \tilde{t}) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2);
+        \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1+w)(1+y_1)(1+y_2); \\
+    \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1-w)(1+y_1)(1+y_2); \\
+    \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2); \\
+    \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2);
 \end{align*}
 for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exchanged.
 
 The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
-Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, \tilde{t})$ we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$.
+Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t)$ we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$.
 An analogous statement holds for $y_2 \ge y_1$, with these likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
 
 \begin{table}
 \centering
-\begin{tabular}{|ll|l|}
+\begin{tabular}{|lll|l|}
 \hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau_1,t)$\\
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_j$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau_1,t)$\\
 \hline
-$\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\emptyset$&$\{\emptyset\}$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 
-$\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{1\}$    &$\{\emptyset\}$&$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 
-$\{2\}$    &$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{2\}$    &$\{\emptyset\}$&$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
 
-$\{3\}$    &$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{1,2\}$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
+$\{3\}$    &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
+&&$\{1\}$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
+&&$\{1,2\}$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
 
-$\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{1,2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
+$\{1,2,3\}$&$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
+&&$\{1\}$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
+&&$\{1,2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
 
-$\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{1,2\}$  &$\{\emptyset\}$&$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
 
-$\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{1,2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
+$\{2,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
+&&$\{1\}$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$\\
+&&$\{1,2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$\\
 
-$\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
-&$\{1\}$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
-&$\{1,2\}$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
+$\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
+&&$\{1\}$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$\\
+&&$\{1,2\}$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$\\
 \hline
 \end{tabular}
 \caption{
@@ -587,18 +587,18 @@ The remaining variables follow similar arguments.
 
 \begin{table}
 \centering
-\begin{tabular}{|ll|l|}
+\begin{tabular}{|lll|l|}
 \hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit_j,\tau_1,t)$\\
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_j$ & $\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau_1,t)$\\
 \hline
-$\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
-$\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
-$\{2\}$    &$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
-$\{3\}$    &$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
-$\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
-$\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
-$\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
-$\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
+$\emptyset$&$\{\emptyset\}$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{1\}$    &$\{\emptyset\}$&$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{2\}$    &$\{\emptyset\}$&$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{3\}$    &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
+$\{1,2,3\}$&$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
+$\{1,2\}$  &$\{\emptyset\}$&$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
+$\{2,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
+$\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 \hline
 \end{tabular}
 \caption{
@@ -625,7 +625,7 @@ The derivative with respect to $x_1$ is
 which is negative for all $x_1 \ge x^*$.
 This same process applied to the remaining variables shows the gradient of the full likelihood is negative for $x_1,x_2 \ge x^*$ and $y_1 \ge y^*$ and positive for $y_2,w \ge y^*$, yielding the constraints
 \[
-\hat{x}_1,\hat{x}_2 \in [0, x^*], \ \hat{y}_1 \in [0, y^*], \ \hat{y}_2,\hat{w} \in [y^*, 1].
+\hat{x}_1,\hat{x}_2 \in (0, x^*], \ \hat{y}_1 \in (0, y^*], \ \hat{y}_2,\hat{w} \in [y^*, 1].
 \]
 \end{proof}
 
@@ -680,7 +680,7 @@ The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset
 
 As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
 We show this is a type of inconsistency in topology estimation by constructing a lower bound on the likelihood for the Felsenstein topology $\tau_2$ and demonstrating it is equal to the likelihood given the InvFels topology $\tau_1$ in the demarcated region of Fig.~\ref{fig:incons-analytic}.
-As we are interested in a lower bound, assume $\ancestralSplitPartition_j(\tau_2,\{x_1,y_1,x_2,y_2,w\})=\emptyset$ for all $j=1,\ldots,\nSiteSplits$.
+As we are interested in a lower bound, assume $\xi_j=\emptyset$ for all $j=1,\ldots,\nSiteSplits$.
 In this case, the partial likelihood term for $\tau_2$ is composed of the same functional forms given in Table~\ref{tab:likelihoods-restricted}, as assuming $\emptyset$ for the ancestral state split results in the same partial likelihood for both topologies.
 
 Assume $w=1$.
@@ -716,7 +716,7 @@ In regions where joint optimization should perform well, there is systematic bia
 \centering
 \includegraphics[width=\textwidth]{empirical-marginal}
 \caption{
-    Estimates for $\hat{p}_w$ when computing $(\hat{x}, \hat{y}, \hat{w})$ using L-BFGS-B optimizing the classical marginal likelihood \eqref{eq:marginal_likelihood} (rather than a joint optimization procedure).
+    Estimates for $\hat{p}_w$ when computing $(\hat{x}_1, \hat{y}_1, \hat{x}_2, \hat{y}_2, \hat{w})$ using L-BFGS-B optimizing the classical marginal likelihood \eqref{eq:marginal_likelihood} rather than a joint optimization procedure.
 }
 \label{fig:bl-general-marginal}
 \end{figure}
