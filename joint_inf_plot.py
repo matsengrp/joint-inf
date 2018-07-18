@@ -63,25 +63,38 @@ def parse_args():
         default=0.01,
     )
     parser.add_argument(
+        '--cutoff',
+        type=float,
+        help='upper bound for p_x* and p_y* (default .5)',
+        default=.5,
+    )
+    parser.add_argument(
         '--n-jobs',
         type=int,
         help='number of processes to use for empirically computing maxima',
         default=1,
     )
     parser.add_argument(
-        '--ancestral-state-conditions',
-        action="store_true",
-        help='plot conditions where \emptyset is most likely ancestral state (Fig. S2)',
+        '--plot-type',
+        type=str,
+        help="""
+             choices:
+             ancestral_state_conditions-- conditions where \emptyset is most likely ancestral state (Fig. S2),
+             analytic_inconsistency-- plot conditions where \emptyset is most likely ancestral state and \hat{w} is one analytically (Fig. 2),
+             joint_empirical-- plot empirical estimate of \hat{w} for joint inference (Fig. 3),
+             marginal_empirical-- plot empirical estimate of \hat{w} for marginal inference (Fig. S4),
+             """,
+        choices=(
+             'ancestral_state_conditions',
+             'analytic_inconsistency',
+             'joint_empirical',
+             'marginal_empirical',
+            ),
     )
     parser.add_argument(
-        '--empirical-parameter-estimate',
+        '--bias',
         action="store_true",
-        help='plot empirical estimate of \hat{w} for joint inference (Fig. 3)',
-    )
-    parser.add_argument(
-        '--marginal',
-        action="store_true",
-        help='plot empirical estimate of \hat{w} for marginal likelihood (Fig. S4)',
+        help='plot and print bias instead of parameter estimate (Fig. S3)',
     )
     parser.add_argument(
         '--in-pkl-name',
@@ -94,11 +107,6 @@ def parse_args():
         type=str,
         help='file name for where to save output for time saving',
         default='output.pkl',
-    )
-    parser.add_argument(
-        '--analytic-inconsistency',
-        action="store_true",
-        help='plot conditions where \emptyset is most likely ancestral state and \hat{w} is one analytically (Fig. 2)',
     )
 
     args = parser.parse_args()
@@ -295,11 +303,11 @@ def get_analytic_inconsistency(xy):
     else:
         return 1.
 
-def get_marginal_what(xy):
+def get_marginal_what(xy, bias=False):
     """
     Get marginal value of $\hat{w}$ empirically to compare with $\hat{w}$ estimated through joint inf
     """
-    # if we're in an edge case, return .25 to gray out plot
+    # if we're in an edge case, return nan
     if xy[0] == 1. or xy[0] == 0. or xy[1] == 1. or xy[1] == 0.:
         return np.nan
     theta = [xy[0], xy[1], xy[0], xy[1], xy[1]]
@@ -314,13 +322,16 @@ def get_marginal_what(xy):
             max_obj = -output.fun
             out_obj = output
     what = out_obj.x[-1]
-    return (1 - what) / 2
+    if bias:
+        return .5 * (xy[1] - what)
+    else:
+        return .5 * (1 - what)
 
-def get_empirical_what(xy):
+def get_empirical_what(xy, bias=False):
     """
     Get $\hat{w}$ through joint inf
     """
-    # if we're in an edge case, return .25 to gray out plot
+    # if we're in an edge case, return nan to gray out plot
     if xy[0] == 1. or xy[0] == 0. or xy[1] == 1. or xy[1] == 0.:
         return np.nan
     theta = [xy[0], xy[1], xy[0], xy[1], xy[1]]
@@ -341,24 +352,29 @@ def get_empirical_what(xy):
         params.append(out_obj.x[-1])
     max_out = max(objs)
     what = params[objs.index(max_out)]
-    return (1 - what) / 2
+    if bias:
+        return .5 * (xy[1] - what)
+    else:
+        return .5 * (1 - what)
 
-def obj_fn(xy, obj_type='get_ancestral_state_conds'):
+def obj_fn(xy, plot_type='ancestral_state_conditions', bias=False):
     """
     return different objective functions based on what we are interested in computing
 
     needed for Pool to work properly
     """
-    if obj_type == 'get_empirical_what':
-        return get_empirical_what(xy)
-    elif obj_type == 'get_ancestral_state_conds':
+    if plot_type == 'joint_empirical':
+        return get_empirical_what(xy, bias=bias)
+    elif plot_type == 'marginal_empirical':
+        return get_marginal_what(xy, bias=bias)
+    elif plot_type == 'ancestral_state_conditions':
         return get_ancestral_state_conds(xy)
-    elif obj_type == 'get_marginal_what':
-        return get_marginal_what(xy)
-    elif obj_type == 'get_analytic_inconsistency':
+    elif plot_type == 'analytic_inconsistency':
         return get_analytic_inconsistency(xy)
+    else:
+        raise ValueError('Must pass actual plot_type')
 
-def make_plot(plottitle, plotname, legendtext=None, ct=None, scale=1, plotbar=False, move_legend=False):
+def make_plot(plottitle, plotname, legendtext=None, ct=None, scale=1, plotbar=False, move_legend=False, cutoff=.5):
     """
     tweaked plotting settings for each plot
     """
@@ -369,8 +385,8 @@ def make_plot(plottitle, plotname, legendtext=None, ct=None, scale=1, plotbar=Fa
     ttl.set_position([.5, 1.05])
     if ct is not None:
         ct.ax.tick_params(labelsize=FONT_SIZE-2)
-        x = np.concatenate(([0.], [.5], [.5]))
-        y = np.concatenate(([.5], [.5], [0.]))
+        x = np.concatenate(([0.], [cutoff], [cutoff]))
+        y = np.concatenate(([cutoff], [cutoff], [0.]))
         plt.plot(x, y, '-', alpha=.15, lw=.5)
     if legendtext is not None:
         if move_legend:
@@ -382,10 +398,13 @@ def make_plot(plottitle, plotname, legendtext=None, ct=None, scale=1, plotbar=Fa
                 handler_map={Legend: LegendHandler()}, fontsize=FONT_SIZE-4)
 
     ax = plt.gca()
-    ax.set_xticks(np.arange(0., 0.5/scale+.1, .1/scale))
-    ax.set_yticks(np.arange(0., 0.5/scale+.1, .1/scale))
-    ax.set_xticklabels([r'$0.0$', r'$0.1$', r'$0.2$', r'$0.3$', r'$0.4$', r'$0.5$'], fontsize=FONT_SIZE-2)
-    ax.set_yticklabels([r'$0.0$', r'$0.1$', r'$0.2$', r'$0.3$', r'$0.4$', r'$0.5$'], fontsize=FONT_SIZE-2)
+
+    ax.set_xticks(np.arange(0, cutoff/scale+scale, cutoff/(scale*5)))
+    ax.set_yticks(np.arange(0, cutoff/scale+scale, cutoff/(scale*5)))
+
+    labels = [r'$%s$' % str(val) for val in np.arange(0, cutoff + 1, cutoff / 5)]
+    ax.set_xticklabels(labels, fontsize=FONT_SIZE-2)
+    ax.set_yticklabels(labels, fontsize=FONT_SIZE-2)
     sns.despine()
     if plotbar:
         cbar = plt.colorbar()
@@ -394,89 +413,76 @@ def make_plot(plottitle, plotname, legendtext=None, ct=None, scale=1, plotbar=Fa
     plt.close()
 
 class Obj(object):
-    def __init__(self, obj_type):
-        self.obj_type = obj_type
+    def __init__(self, plot_type, bias=False):
+        self.plot_type = plot_type
+        self.bias = bias
     def __call__(self, xy):
-        return obj_fn(xy, self.obj_type)
+        return obj_fn(xy, self.plot_type, self.bias)
 
 def main(args=sys.argv[1:]):
     args = parse_args()
 
     st_time = time.time()
-    px_range = np.arange(0., 0.5+args.delta, args.delta)
-    py_range = np.arange(0., 0.5+args.delta, args.delta)
-    PX, PY = np.meshgrid(px_range,py_range)
-    X = 1-2*PX
-    Y = 1-2*PY
 
-    plotbar = False
-    move_legend = False
-    scale = 1
-    legendtext = None
-    if args.ancestral_state_conditions:
-        plottitle = r'Region where $\emptyset$ is maximal ancestral state split'
-        legendtext = r'$\emptyset$ is maximal'
-        obj_type = 'get_ancestral_state_conds'
-        move_legend = True
-    elif args.empirical_parameter_estimate:
-        plottitle = r'Estimated $\hat{p}_w$'
-        obj_type = 'get_empirical_what'
-        scale = args.delta
-        plotbar = True
-    elif args.marginal:
-        plottitle = r'Estimated $\hat{p}_w$ (marginal inference)'
-        obj_type = 'get_marginal_what'
-        scale = args.delta
-        plotbar = True
-    elif args.analytic_inconsistency:
-        plottitle = r'Region of inconsistency'
-        legendtext = r'joint inference inconsistent'
-        obj_type = 'get_analytic_inconsistency'
-
+    # Compute output or load previously computed output from pickle
     if args.in_pkl_name is None:
+        px_range = np.arange(0., args.cutoff+args.delta, args.delta)
+        py_range = np.arange(0., args.cutoff+args.delta, args.delta)
+        PX, PY = np.meshgrid(px_range,py_range)
+        X = 1-2*PX
+        Y = 1-2*PY
         if args.n_jobs > 1:
             p = Pool(processes=args.n_jobs)
-            Z_pool = p.map( Obj(obj_type) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
-            Z = np.reshape(Z_pool, (int(.5 / args.delta)+1, int(.5 / args.delta)+1))
+            Z_pool = p.map( Obj(args.plot_type, args.bias) , [(x, y) for x, y in zip(X.ravel(), Y.ravel())])
+            Z = np.reshape(Z_pool, (int(args.cutoff / args.delta)+1, int(args.cutoff / args.delta)+1))
         else:
-            Z = np.vectorize(lambda x, y: obj_fn((x, y), obj_type=obj_type))(X, Y)
+            Z = np.vectorize(lambda x, y: obj_fn((x, y), plot_type=args.plot_type, bias=args.bias))(X, Y)
 
         with open(args.out_pkl_name, 'w') as f:
-            pickle.dump((X, Y, Z, args.delta), f)
+            pickle.dump((X, Y, Z, args.delta, args.cutoff, args.bias, args.plot_type), f)
     else:
         with open(args.in_pkl_name, 'r') as f:
-            X, Y, Z, args.delta = pickle.load(f)
+            X, Y, Z, args.delta, args.cutoff, args.bias, args.plot_type = pickle.load(f)
 
-    if not args.empirical_parameter_estimate and not args.marginal:
+    # Print error range for bias
+    if args.bias:
+        print "Error range (p < %.2f) [%.0E, %.0E], Mean: %.2E" % (args.cutoff, np.nanmin(Z), np.nanmax(Z), np.nanmean(Z))
+
+    # Plot output
+    if not args.plot_type == 'joint_empirical' and not args.plot_type == 'marginal_empirical':
         ct = plt.contour(PX, PY, Z, [0], colors='k', linewidths=1)
     else:
         plt.imshow(Z, cmap=plt.cm.gray_r, origin='lower')
         ct = None
 
-    make_plot(plottitle, args.plot_name, legendtext=legendtext, ct=ct, scale=scale, plotbar=plotbar)
+    # Plotting settings
+    plotbar = False
+    move_legend = False
+    scale = 1
+    legendtext = None
+    if args.plot_type == 'ancestral_state_conditions':
+        plottitle = r'Region where $\emptyset$ is maximal ancestral state split'
+        legendtext = r'$\emptyset$ is maximal'
+        move_legend = True
+    elif args.plot_type == 'joint_empirical':
+        if args.bias:
+            plottitle = r'Relative bias: $(\hat{p}_w-p_{y^*})/p_{y^*}$'
+        else:
+            plottitle = r'Estimated $\hat{p}_w$ (marginal inference)'
+        scale = args.delta
+        plotbar = True
+    elif args.plot_type == 'marginal_empirical':
+        if args.bias:
+            plottitle = r'Relative bias: $(\hat{p}_w-p_{y^*})/p_{y^*}$ (marginal inference)'
+        else:
+            plottitle = r'Estimated $\hat{p}_w$ (marginal inference)'
+        scale = args.delta
+        plotbar = True
+    elif args.plot_type == 'analytic_inconsistency':
+        plottitle = r'Region of inconsistency'
+        legendtext = r'joint inference inconsistent'
 
-    if args.empirical_parameter_estimate or args.marginal:
-        # plot bias
-        bias = Z - PY
-        nan_mask = ~np.isnan(Z)
-        print "Error range [%.0E, %.0E], Mean: %.2E" % (min(bias[nan_mask]), max(bias[nan_mask]), np.mean(bias[nan_mask]))
-        small_mask = np.logical_and(~np.isnan(Z), np.logical_and(PY <= .1, PX <= .1))
-        print "Error range (p < .1) [%.0E, %.0E], Mean: %.2E" % (min(bias[small_mask]), max(bias[small_mask]), np.mean(bias[small_mask]))
-
-        plt.imshow(bias[0:int(.1/args.delta)+1, 0:int(.1/args.delta)+1], cmap=plt.cm.gray_r, origin='lower')
-        plt.xlabel(r'$p_{x^*}$', fontsize=FONT_SIZE)
-        plt.ylabel(r'$p_{y^*}$', fontsize=FONT_SIZE)
-        ttl = plt.title(r'Bias: $\hat{p}_w-p_{y^*}$', fontsize=FONT_SIZE+2)
-        ttl.set_position([.5, 1.05])
-        ax = plt.gca()
-        ax.set_xticks(np.arange(0, .1/args.delta+args.delta, .02/args.delta))
-        ax.set_yticks(np.arange(0, .1/args.delta+args.delta, .02/args.delta))
-        ax.set_xticklabels([r'$0.0$', r'$0.02$', r'$0.04$', r'$0.06$', r'$0.08$', r'$0.1$'], fontsize=FONT_SIZE-2)
-        ax.set_yticklabels([r'$0.0$', r'$0.02$', r'$0.04$', r'$0.06$', r'$0.08$', r'$0.1$'], fontsize=FONT_SIZE-2)
-        sns.despine()
-        cbar = plt.colorbar()
-        cbar.ax.tick_params(labelsize=FONT_SIZE-2)
-        plt.savefig(args.plot_name.replace('.svg', '-bias.svg'))
+    make_plot(plottitle, args.plot_name, legendtext=legendtext, ct=ct, scale=scale, plotbar=plotbar, cutoff=args.cutoff)
 
     print "Completed! Time: %s" % str(time.time() - st_time)
 
