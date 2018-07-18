@@ -466,14 +466,14 @@ def main(args=sys.argv[1:]):
         move_legend = True
     elif args.plot_type == 'joint_empirical':
         if args.bias:
-            plottitle = r'Relative bias: $(\hat{p}_w-p_{y^*})/p_{y^*}$'
+            plottitle = r'Bias: $\hat{p}_w-p_{y^*}$'
         else:
-            plottitle = r'Estimated $\hat{p}_w$ (marginal inference)'
+            plottitle = r'Estimated $\hat{p}_w$'
         scale = args.delta
         plotbar = True
     elif args.plot_type == 'marginal_empirical':
         if args.bias:
-            plottitle = r'Relative bias: $(\hat{p}_w-p_{y^*})/p_{y^*}$ (marginal inference)'
+            plottitle = r'Bias: $\hat{p}_w-p_{y^*}$ (marginal inference)'
         else:
             plottitle = r'Estimated $\hat{p}_w$ (marginal inference)'
         scale = args.delta
