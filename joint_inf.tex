@@ -274,10 +274,9 @@ Our optimization code can be found at \url{https://github.com/matsengrp/joint-in
 As data were generated with parameters $\{x^*, y^*, x^*, y^*, y^*\}$, the true value for $w$ is $y^*$.
 Marginal inference performs as expected, where $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$ (Fig.~\ref{fig:bl-general-marginal}) when optimizing \eqref{eq:marginal_likelihood} using the same optimization code.
 For joint inference, the estimates for $\hat{p}_w$ when $p_{x^*}$ and $p_{y^*}$ are both small look reasonable, with $\hat{p}_w$ increasing as $p_{y^*}$ increases, though Fig.~\ref{fig:empirical-bias} shows there is a systematic negative bias in this procedure even when the true branches are short.
-%TODO: does this bias make sense? should it be log-diff?
-To understand the quality of each fit, we report the range of $\hat{p}_w-p_{y^*}$ where $p_{x^*}, p_{y^*} \le .1$.
+To understand the quality of each fit, we report the range of the bias $\hat{p}_w-p_{y^*}$ where $p_{x^*}, p_{y^*} \le .1$.
 Due to the discontinuities in the fit (Fig.~\ref{fig:bl-general-inconsistency}), an overall estimate of the bias is misleading, and these short-branch cases should be the best settings for joint optimization \citep{Sagulenko2018-xl}.
-For joint inference, the errors given $p_{x^*}, p_{y^*} \le .1$ range from $[-2\times 10^{-2}, 3\times 10^{-3}]$ and for marginal inference, $[-3\times 10^{-17}, 3\times 10^{-17}]$ showing that, even in cases where joint inference is supposed to do well, it still fails to achieve a low error from truth.
+For joint inference, the errors given $p_{x^*}, p_{y^*} \le .1$ range from $[-2\times 10^{-2}, 3\times 10^{-3}]$ and for marginal inference are lower than machine tolerance showing that, even in cases where joint inference is supposed to do well, it still fails to achieve a low error from truth.
 
 \begin{figure}
 \centering
