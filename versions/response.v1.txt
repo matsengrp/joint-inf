@@ -9,15 +9,19 @@
 > be even further improved.
 
 Outline of revisions:
-1.
-2.
+1. generalized the results to arbitrary branch lengths and not restricting the top and bottom two branches to be equal
+2. expanded and clarified the exposition of the mathematics and the motivation for the Hadamard representation
+3. changed discussion and plots to involve branch lengths and not fidelities
 
 Some of the reviewers have expressed their opinion that we reduce our emphasis on mathematical development in exchange for a more numerical-optimization-based approach.
 Our primary goal was to mathematically prove inconsistency of joint inference, which is what we have done.
 As pointed out by reviewer 4, this answers an open question, which has special relevance given the recent work of Sagulenko et al.
 We provide some numerical results to confirm our derivations and to provide a comparison.
 
-As we now emphasize (TODO XXX) this work is not the final word on the joint inference question from an applied perspective.
+As we now emphasize, this work is not the final word on the joint inference question from an applied perspective.
+%das: added
+%Examples with larger trees and more realistic mutation models fall within the scope of an extension to applied models.
+%Further study is needed to determine the impact of these results on problems that are of interest to practitioners.
 Even if we were to greatly expand the sections doing numerical optimization, these results would only be for the binary symmetric model, which is never applied in practice.
 An investigation of these aspects deserves another paper.
 
@@ -30,7 +34,11 @@ An investigation of these aspects deserves another paper.
 > torturous efforts of cladists to undermine the entire line of inquiry.
 
 We are grateful to reviewer 4 for pointing us to literature of which we were not aware.
-We have greatly expanded ...
+We have greatly expanded on the discussion in Goldman (1990) about the limitations of joint optimization of phylogenetic parameters and ancestral states.
+The previous work concerns an example where branch lengths are fixed and equal, while here we show cases where inconsistency arises when branch lengths are treated as unknown parameters.
+Additionally, we have placed joint optimization and maximum likelihood on level footing by viewing them both as optimization procedures over topologies and branch lengths.
+Goldman (1990) does not compare maximum likelihood and maximum relative likelihood as the latter assumes equal branch lengths while the former does not.
+We have added this to our discussion.
 
 We have complied with this request regarding terminology, despite it going against current practice.
 Indeed, Felsenstein's book has a subsection entitled "The Farris zone" spanning two pages (pp 120-121), a figure entitled "A tree in the Farris zone.", and a table with a caption "Properties of the Felsenstein and Farris zones...".
@@ -193,7 +201,8 @@ We are sure that once our paper demonstrates this inconsistency, others will qui
 > general quantitative reader doesn't struggle too much to follow would
 > help (suggestions below).
 
-Thank you very much for reading the derivations and for your suggestions. As noted inline we have revised the text accordingly.
+Thank you very much for reading the derivations and for your suggestions.
+As noted inline we have revised the text accordingly.
 
 > I know that it's not feasible to explicitly compute (analytically)
 > these likelihoods for bigger trees. But one of the main motivations
@@ -261,7 +270,8 @@ We have now made this much more explicit with three additional display equations
 > L354 why does psi take the complement of site patterns? Just above it
 > is defined as a random variable psi (Y) where Y is a site pattern
 
-This wasn't as clear as it should have been. We have revised to:
+This wasn't as clear as it should have been.
+We have revised to:
 "The mapping $\patternToSplit$ operates by returning the complement of a site pattern to obtain a site split in $\mathcal{P}(\siteSplitSet)$ if it is not in $\mathcal{P}(\siteSplitSet)$."
 
 
@@ -283,7 +293,9 @@ Thanks for reminding us to define p(e), which is now described as "where $p(e)$ 
 > What's a 'generating probability' ? Is that the fidelity? Or a
 > generator?
 
-We have updated the text to explicitly define "generating probability." Background for equation (8) can be found in Section 8.6 in the Semple and Steel text. This is referenced at the beginning of the section. We do not believe an exhaustive explanation would provide any benefit to the reader that they could not get from referring to the text.
+We have updated the text to explicitly define "generating probability." Background for equation (8) can be found in Section 8.6 in the Semple and Steel text.
+This is referenced at the beginning of the section.
+We do not believe an exhaustive explanation would provide any benefit to the reader that they could not get from referring to the text.
 
 > Reviewer: 3
 
@@ -358,7 +370,7 @@ TODO we should make some changes to at least say that we've further clarified th
 This is an interesting suggestion but is different than our goal, which was to establish inconsistency.
 Moreover, in the revised manuscript we see cases where assigning ML ancestral states results in longer branches, not shorter ones (Lemma 3 in the updated paper).
 We believe the inaccuracies have more to do with the specific choice of which ancestral state is maximal than asymmetries in the tree.
-Asymmetries can drive these particular choices, but Fig. 3 in the revised manuscript shows that almost half of the parameter space results in branch lengths being estimated as zero.
+Asymmetries can drive these particular choices, but Fig. 3 in the revised manuscript shows that almost half of the parameter space results in an interior branch length being estimated as zero.
 We do not think providing an argument about accumulating inaccuracies would elucidate why such starkly-defined regions of inconsistency exist.
 For reasonable parameter settings, one could investigate the error accumulation given fixed ancestral states, but this was not our goal and will require another paper.
 
