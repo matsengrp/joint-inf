@@ -17,6 +17,8 @@ from multiprocessing import Pool
 from scipy.optimize import minimize
 from itertools import product
 
+from joint_inf_helpers import ALL_PATTERNS
+
 sns.set_style('white')
 sns.set_style('ticks')
 
@@ -29,16 +31,6 @@ FONT_SIZE = 20
 LOG2 = np.log(2)
 LOG32 = np.log(32)
 
-ALL_PATTERNS = [
-        '0000',
-        '1000',
-        '0100',
-        '0010',
-        '1110',
-        '1100',
-        '1010',
-        '0110'
-]
 
 class Legend(object):
     pass
@@ -79,33 +71,34 @@ def parse_args():
     parser.add_argument(
         '--ancestral-state-conditions',
         action="store_true",
-        help='plot analytic',
+        help='plot conditions where \emptyset is most likely ancestral state (Fig. S2)',
     )
     parser.add_argument(
         '--empirical-parameter-estimate',
         action="store_true",
-        help='compute empirical',
+        help='plot empirical estimate of \hat{w} for joint inference (Fig. 3)',
     )
     parser.add_argument(
         '--marginal',
         action="store_true",
-        help='compute marginal',
+        help='plot empirical estimate of \hat{w} for marginal likelihood (Fig. S4)',
     )
     parser.add_argument(
         '--in-pkl-name',
         type=str,
-        help='file name for where to save pkl',
+        help='file name for where saved output is, if computed, for time saving',
         default=None,
     )
     parser.add_argument(
         '--out-pkl-name',
         type=str,
-        help='file name for where to save pkl',
+        help='file name for where to save output for time saving',
         default='output.pkl',
     )
     parser.add_argument(
         '--analytic-inconsistency',
         action="store_true",
+        help='plot conditions where \emptyset is most likely ancestral state and \hat{w} is one analytically (Fig. 2)',
     )
 
     args = parser.parse_args()
@@ -135,6 +128,7 @@ def P_INVFELS(theta0, site_pattern):
 # ~~~~~~~~~
 # Functions for empirical plot
 
+# Safe log and safe p*log(q) so we do not have as many edge cases in optimization
 def safe_log(x):
     return np.log(x) if x > 0. else -np.inf
 

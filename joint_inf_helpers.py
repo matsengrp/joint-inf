@@ -57,22 +57,19 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
 
     parser.add_argument(
-        '--restricted-branch-lengths',
-        action="store_true",
-        help='restricted branch lengths plot',
-    )
-    parser.add_argument(
         '--general-branch-lengths',
         action="store_true",
-        help='general branch lengths plot',
+        help='general branch lengths probabilities',
     )
     parser.add_argument(
         '--fels',
         action="store_true",
+        help='felsenstein topology probabilities',
     )
     parser.add_argument(
         '--invfels',
         action="store_true",
+        help='inverse felsenstein topology probabilities',
     )
 
     args = parser.parse_args()
@@ -191,12 +188,10 @@ def main(args=sys.argv[1:]):
     if args.general_branch_lengths:
         pref = 'General'
         theta = ['x_1', 'y_1', 'x_2', 'y_2', 'w']
-    elif args.restricted_branch_lengths:
-        pref = 'Restricted'
-        theta = ['x', 'y', 'x', 'y', 'w']
     else:
         pref = 'True'
         theta = ['x*', 'y*', 'x*', 'y*', 'y*']
+
     if args.fels:
         pref += ' Fels'
         p = lambda x,y: P_FELS(x, y)
