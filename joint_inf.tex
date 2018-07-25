@@ -222,9 +222,42 @@ Use $\ell_{\tau^*,t^*}(\tau, t)$ to denote the expected per-site log-likelihood,
 \label{eq:exp-log-lik}
 \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) \rightarrow \ell_{\tau^*,t^*}(\tau, t).
 \end{equation}
+We give $\ell$ explicitly as \eqref{eq:site_pattern_profile_likelihood_mean} in the Appendix.
+
 %EM Could we give an extra sentence justifying that the limit of the inferential process will be the same as the inferences applied to the limiting data? Compare https://paperpile.com/shared/HohiVH in which they are rather different.
 %das: wow, good catch! This is not at all obvious to me it turns out :/ I guess I'll have to think harder on it
-We give $\ell$ explicitly as \eqref{eq:site_pattern_profile_likelihood_mean} in the Appendix.
+%das: update: I think I've got it, but I need to write it up a little more explicitly, and probably in the appendix. I think this approach maybe doesn't apply to your reference? But I'd like to work through it and see if that's the case, as a sanity check.
+Let
+\[
+\hat{t} = \arg\max_{t\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau, t)
+\]
+and
+\[
+m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot [\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
+\]
+so that for a fixed $\tau$
+\[
+\frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) = \frac{1}{n} \sum_{i=1}^\nCols m_t(\alignmentColumn_i)
+\]
+and
+\[
+\ell_{\tau^*,t^*}(\tau, t) = E[m_t].
+\]
+To show $\hat{t}_\nCols \rightarrow \hat{t}$, we use Wald's consistency proof \citep[p. 48, Theorem 5.14 of ][]{van1998asymptotic}, which requires the following:
+\begin{itemize}
+\item $\mathcal{T}$ is compact;
+\item $t \mapsto m_t(\alignmentColumn)$ is upper-semicontinuous for almost all $\alignmentColumn$;
+\item $\alignmentColumn \mapsto \sup_t m_t(\alignmentColumn)$ is measurable;
+\item $E[\sup_t m_t] < \infty$.
+\end{itemize}
+Point one is obviously true.
+Point two is true as well: for a fixed ancestral state split $t \mapsto m_t(\alignmentColumn)$ is continuous for all $\alignmentColumn$.
+Discontinuities only occur when, if we move about in $\mathcal{T}$, a different ancestral state split becomes more likely.
+Maximizing over ancestral state splits ensures the upper-semicontinuous property of this mapping.
+For point three, we can think of $\sup_t m_t$ as fixing a maximal ancestral state split.
+Since $\alignmentColumn\in\alphabet^\nSiteRows$, the domain $\alphabet^\nSiteRows$ of the mapping $\alignmentColumn \mapsto m_t(\alignmentColumn)$ is a finite set, and so all subsets of the domain are also finite.
+This implies measurability of this mapping.
+Finally, $m_t(\alignmentColumn)$ is nonpositive for all $t$ and $\alignmentColumn$, satisfying point four.
 
 %We show that, as $\nCols\rightarrow\infty$, there exist values for $x^*$ and $y^*$ such that the value of the likelihood after maximizing using joint inference is greater for the Felsenstein topology ($\tau_2$) than for the true, generating InvFels topology ($\tau_1$).
 %To do so, we construct an upper bound $C_0(x^*, y^*)$ for the likelihood given the InvFels topology as a function of $x^*$ and $y^*$ and, similarly, a lower bound $C_1(x^*, y^*)$ for the likelihood given the Felsenstein topology.
