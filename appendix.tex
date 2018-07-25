@@ -685,7 +685,7 @@ In this case, the partial likelihood term for $\tau_2$ is composed of the same f
 
 Assume $w=1$.
 In this case, Table~\ref{tab:gen-sitepatprob} shows that, for $w=1$, the divergence term is identical for $\tau_1$ and $\tau_2$ as when the internal branch becomes zero-length the two topologies are indistinguishable.
-Let $\mathcal{T}$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}$ corresponds to $x^*$ and $y^*$ falling in the shaded region in Fig.~\ref{fig:incons-analytic}.
+Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the shaded region in Fig.~\ref{fig:incons-analytic}.
 The unconstrained maximum likelihood value for $\tau_2$ is greater than or equal to the value of the likelihood given these two constraints.
 We have
 \begin{align*}
@@ -694,7 +694,7 @@ We have
 &\qquad\qquad + \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, \{x_1,y_1,x_2,y_2,w\}) \\
 &= \max_{t: \xi_j=\emptyset, w=1, \tau=\tau_1} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
 &\qquad\qquad + \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, \{x_1,y_1,x_2,y_2,w\})\\
-&= \max_{t : t^*\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau_1, t),
+&= \max_{t : t^*\in\mathcal{T}_0} \ \ell_{\tau^*,t^*}(\tau_1, t),
 \end{align*}
 and thus the incorrect topology achieves a likelihood value greater than or equal to the correct one.
 
