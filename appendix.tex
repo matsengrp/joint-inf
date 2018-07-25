@@ -381,6 +381,54 @@ There are $3^5\cdot 4^2=3,888$ possible forms for the likelihood.
 %TODO: the caption of this overlaps with the page number---will this be a problem or will MBE handle it?
 %EM There is a latex package for that, which I tried out and then removed for some reason. It's no bigs.
 
+\subsection*{Convergence of branch parameters}
+
+%das: @EM I think this is actually the same Wald reference that Felsenstein tried to use.
+%It works here for a fixed topology, and didn't work for him or your reference because I think the upper-semicontinuous condition doesn't hold for trees in general.
+%Also I don't think the compactness condition holds---tree space isn't compact is it?
+%However we now have a potential snag in that we are doing what Yang (1994) in his intro says is bad, i.e., doing ML for fixed, separate topologies and comparing them.
+%We still have the behavior in the plots and the proofs, since they all assumed a fixed topology, and I think everything's fine with the arguments about Fels vs InvFels, but maybe you can let me know what you think?
+For a fixed $\tau$, we show that $\hat{t}_\nCols \rightarrow \hat{t}$ for
+\[
+\hat{t}_\nCols = \arg\max_{t\in\mathcal{T}} \ \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment)
+\]
+and
+\[
+\hat{t} = \arg\max_{t\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau, t).
+\]
+Using the notation in \citet{van1998asymptotic}, we let
+\[
+m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot [\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
+\]
+so that
+\[
+\frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) = \frac{1}{n} \sum_{i=1}^\nCols m_t(\alignmentColumn_i)
+\]
+and
+\[
+\ell_{\tau^*,t^*}(\tau, t) = E[m_t].
+\]
+To show $\hat{t}_\nCols \rightarrow \hat{t}$, we use Wald's consistency proof \citep[p. 48, Theorem 5.14 of ][]{van1998asymptotic}, which requires four conditions.
+The first is that $\mathcal{T}$ is compact, which is obviously true.
+The second is that
+\[
+E\left[\sup_{t\in\mathcal{T}} m_t\right] < \infty,
+\]
+and, since $m_t(\alignmentColumn)$ is nonpositive for all $t$ and $\alignmentColumn$, this property holds.
+The remaining conditions are on the maps
+\[
+\alignmentColumn \mapsto \sup_t m_t(\alignmentColumn)
+\]
+and
+\[
+t \mapsto m_t(\alignmentColumn).
+\]
+We need the first map to be measurable, which is evident since the domain $\alphabet^\nSiteRows$ of the mapping is a finite set, and so all subsets of the domain are also finite and thus measurable.
+Finally, we must have the the second mapping be upper-semicontinuous for almost all $\alignmentColumn$.
+For a fixed ancestral state split $t \mapsto m_t(\alignmentColumn)$ is continuous for all $\alignmentColumn$.
+Discontinuities occur when, if we move about in $\mathcal{T}$, a different ancestral state split becomes more likely, though when we are at a point of discontinuity we maximize over ancestral state splits, ensuring the upper-semicontinuous property of this mapping.
+This shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t)$.
+
 \subsection*{Properties of the joint objective function}
 
 Consider the InvFels tree $\tau_1$ with arbitrary fidelities, i.e., $t=\{x_1,y_1,x_2,y_2,w\}$.
