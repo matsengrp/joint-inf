@@ -226,14 +226,10 @@ We give $\ell$ explicitly as \eqref{eq:site_pattern_profile_likelihood_mean} in 
 For a fixed $\tau$, let $\hat{t}_\nCols$ maximize the left-hand side of \eqref{eq:exp-log-lik} and $\hat{t}$ maximize the right-hand side.
 We show in the Appendix that $\hat{t}_\nCols \rightarrow \hat{t}$, allowing us to focus on only the right-hand side above.
 
-%EM Could we give an extra sentence justifying that the limit of the inferential process will be the same as the inferences applied to the limiting data? Compare https://paperpile.com/shared/HohiVH in which they are rather different.
-%das: moved to appendix
-
 %We show that, as $\nCols\rightarrow\infty$, there exist values for $x^*$ and $y^*$ such that the value of the likelihood after maximizing using joint inference is greater for the Felsenstein topology ($\tau_2$) than for the true, generating InvFels topology ($\tau_1$).
 %To do so, we construct an upper bound $C_0(x^*, y^*)$ for the likelihood given the InvFels topology as a function of $x^*$ and $y^*$ and, similarly, a lower bound $C_1(x^*, y^*)$ for the likelihood given the Felsenstein topology.
 %When $C_0(x^*, y^*) < C_1(x^*, y^*)$, the likelihood in the Felsenstein case is larger than the likelihood in the InvFels case, demonstrating inconsistency (Fig.~\ref{fig:inconsistency-farris}).
 
-%EM Suggest "Our main theorem states that ... internal branch length zero ..."
 Our main theorem states that given data generated on $\tau_1$ there exist true nonzero branch lengths such that the estimator $\hat{t}$ maximizing the right-hand side of \eqref{eq:exp-log-lik} has an internal branch of length zero.
 \begin{restatable}{theorem}{topoInconsist}
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
@@ -244,8 +240,6 @@ There exists a set of $0 < x^*, y^* < 1$ such that the solution $\hat{t} := \{\h
 has the property $\hat{w}\equiv 1$.
 \end{restatable}
 
-%EM You're doing some interpretation here, but biologists will skip any paragraph that starts with "proof".
-%EM If you are using "topology" to refer to the multifurcating tree structure, you need to clarify that.
 This result implies an inconsistency as we estimate the interior branch length to be zero (i.e., interior branch fidelity is one).
 As we consider different topologies $\tau_1$ and $\tau_2$ for $\hat{t}$, the incorrect topology attains a likelihood value at its maximum equal to that of the true topology in the limit.
 In other words, if $w=1$ the objective functions $\ell_{\tau^*,t^*}(\tau_1, t)$ and $\ell_{\tau^*,t^*}(\tau_2, t)$ are equivalent.
@@ -284,14 +278,11 @@ This region encompasses almost half of the branch fidelity space; given the corr
     Numerical estimates for $\hat{p}_w=(1-\hat{w})/2$ when optimizing \eqref{eq:profile_likelihood}, where the true value for $p_w$ is $p_{y^*}$.
     Data generated as in Fig.~\ref{fig:incons-analytic}.
     The white region in the lower right highlights which values of $x^*$ and $y^*$ result in an interior branch being estimated as length zero, resulting in an inconsistency.
-%EM This is fucking nuts. Nice work. Perhaps drive the point home by adding a sentence repeating that p_w is p_y and just saying the basic point that the entire white region represents inconsistent estimates?
 }
 \label{fig:bl-general-inconsistency}
 \end{figure}
 
-%EM Describe in a sentence how you can reduce things down to 81 maximizations.
-We provide a full description of our optimization procedure in the Appendix, but briefly, we perform 81 maximizations for each separate likelihood function in Table~\ref{tab:likelihoods}.
-By the symmetry in the likelihood, we assume without loss of generality that $y_2 \ge y_1$ and $x_2 \ge x_1$, allowing us to consider far fewer potential ancestral state splits than the 3,888 possible given in Table~\ref{tab:farris_likelihoods}.
+We provide a full description of our optimization procedure in the Appendix, but briefly, we analytically reduce the general case to 81 (see Table~\ref{tab:likelihoods}) and perform maximizations for each.
 For each function, we optimize the objective starting at five separate initial values to mitigate problems with small curvature of the objective surface and nonconcavity.
 We compute these maxima over a lattice in steps of $10^{-2}$ for $x^*,y^*\in(0,1)$.
 Our optimization code can be found at \url{https://github.com/matsengrp/joint-inf/}.
@@ -319,12 +310,15 @@ In regions where joint optimization should perform well with $p_{x^*}, p_{y^*} \
 We have shown that jointly inferring ancestral states and phylogenetic parameters \citep{Sagulenko2018-xl} is not consistent in general.
 Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in a type of topological inconsistency: the joint inference procedure estimates zero-length branches given the correct topology.
 %EM Suggest "Considering this zero length branch as a multifurcating topology..."
+%EM Oops, somehow I misunderstood this the first time around. You're saying that the wrong topology, with internal branch shrunk to zero, will have the same likelihood. And that we can't exclude that it could have a greater likelihood with internal branch nonzero. If you want to make those points (or something about multifurcating) they need to be more explicit. Right now it reads like we found cases where the wrong topology has larger likelihood.
+%EM Seems like clarification might be justified in other places in the MS as well.
 Considering a tree with a zero-length branch as a multifurcating topology, this results in the incorrect topology having a likelihood as large or greater than that of the generating topology.
 These regions of inconsistency arise when the top two branches of the generating trees are ``long,'' that is, when the top branch fidelities tend to be small, and when the lower branches are ``short,'' i.e., have large fidelities.
 We see that this inconsistency occurs even if some branches are short.
 This expands on the empirical findings of poor estimation given long branches in \citet{Sagulenko2018-xl} (their Figures~2 and~3).
 %EM I suggest flipping this around and making it stronger, so that we lead with and emphasize the differences.
-\citet{Sagulenko2018-xl} explicitly warn their approximation is only valid for ``short'' branches, though Fig.~\ref{fig:empirical-bias} shows even when all branches are short there is a consistent bias, and that the bias is on the same order as the magnitude of the parameters.
+%EM I've made this a little spicier: happy with the first part?
+However, the problems are not just for long branches as \citet{Sagulenko2018-xl} imply: even when all branches are short there is a consistent bias, and that the bias is on the same order as the magnitude of the parameters (Fig.~\ref{fig:empirical-bias})
 
 Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \citep{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., the method of sieves \citep{Geman1982}.
@@ -342,25 +336,9 @@ This is especially apparent in the ``long $x^*$, short $y^*$'' case discussed pr
 Difficulties in phylogenetic estimation when generating data on the InvFels tree have been found by \citet{Siddall1998-hq}, though \citet{Swofford2001-hr} show that sequence length plays a major role in these issues.
 
 The case of joint inference of a phylogenetic likelihood was discussed in \citet{Goldman1990-dk}.
-%das: not so sure if your below edit accurately reflects Goldman; he says that, because parsimony (ie, joint inf) and ML estimate different parameters the question is not ineteresting:
-%"There has been considerable speculation
-%and analysis of when the above methods
-%give the same answer (e.g., Felsenstein,
-%1973b, 1981b, 1983a; Sober, 1983, 1985; Fel-
-%senstein and Sober, 1986; Friday, 1989).
-%Now that clear formulations are available
-%for each, this question in fact becomes less
-%interesting. The methods can now be
-%judged on the merits of their models as
-%well as on the results they produce; be-
-%cause they estimate different parameters,
-%the estimates cannot match precisely."
-%das: I don't remember reading anywhere him stating that general consistency is an open problem. Regarding general consistency, he says things like "results may be unpredictable" and "may also be inconsistent" and only provides a single example, but this doesn't seem strong enough to say he says it's an open problem. Thoughts?
-There, Goldman provides a worked example in which estimating a topology with fixed branch lengths is equivalent to parsimony and thus not guaranteed to be consistent, though he does not discuss the inconsistency of joint inference in general. %EM ... and indeed explicitly describes general consistency as an open problem.
-%EM Does the following sentence need revision after the proof updates?
-We show cases where the incorrect topology attains an equal likelihood value at the maxium as the correct topology, and, moreover, if we know the correct topology, we show cases where branch lengths are severely biased.
+There, Goldman provides a worked example in which estimating a topology with fixed branch lengths is equivalent to parsimony and thus not guaranteed to be consistent, though he does not discuss the inconsistency of joint inference in general.
+We show cases where the incorrect topology attains an equal likelihood value at the maximum as the correct topology, and, moreover, if we know the correct topology, we show cases where branch lengths are severely biased.
 Finally, just prior to his conclusion, he discusses when parsimony gives the same answer as maximum likelihood, concluding that the question is ill-posed since parsimony estimates different parameters than maximum likelihood, i.e., it assumes equal branch lengths.
-%EM Two em-dash phrases in a row is too many.
 We render the question well-posed: the joint inference procedure outlined here estimates the same parameters as classical maximum likelihood---topology and branch lengths---albeit implicitly estimating ancestral states as well.
 We are able to provide much more detail on how large branch lengths must be for general joint inference to fail to be consistent.
 
