@@ -17,7 +17,7 @@ joint_inf, = env.PDF(target='_build/joint_inf.pdf',source='joint_inf.tex')
 Depends(Flatten([joint_inf]),
         Flatten([converted_pdfs, 'joint_inf.bib']))
 
-cont_build = env.Command('.continuous', ['joint_inf.bib', 'joint_inf.tex'],
+cont_build = env.Command('.continuous', ['joint_inf.bib', 'joint_inf.tex', 'appendix.tex'],
     'while :; do inotifywait -e modify $SOURCES; scons -Q; done')
 Alias('continuous', cont_build)
 

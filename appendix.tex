@@ -214,6 +214,7 @@ Define the divergence quantity
 \[
 \shannonDivergence_{\tau^*,t^*}(\tau,t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t)
 \]
+%EM Curious: is this an established use of the term "partial"?
 and the partial log-likelihood
 \[
 \tilde{\ell}_{\tau^*,t^*}(\tau, t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, t)
@@ -332,32 +333,32 @@ $\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 &$\{1\}^*$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1-w)$             \\
 &$\{2\}^*$&$(1+x_1)(1-y_1)(1+x_2)(1-y_2)(1-w)$             \\
 &$\{1,2\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1-y_2)(1+w)$           \\
-                                                           
+
 $\{1\}$    &$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 &$\{1\}$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1-w)$               \\
 &$\{2\}^*$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1-w)$             \\
 &$\{1,2\}$&$(1+x_1)(1-y_1)(1-x_2)(1-y_2)(1+w)$             \\
-                                                           
+
 $\{2\}$    &$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
 &$\{1\}^*$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1-w)$             \\
 &$\{2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1-w)$               \\
 &$\{1,2\}$&$(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1+w)$             \\
-                                                           
+
 $\{3\}$    &$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 &$\{1\}$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1-w)$               \\
 &$\{2\}^*$&$(1+x_1)(1-y_1)(1-x_2)(1-y_2)(1-w)$             \\
 &$\{1,2\}$&$(1-x_1)(1-y_1)(1+x_2)(1-y_2)(1+w)$             \\
-                                                           
+
 $\{1,2,3\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
 &$\{1\}$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$               \\
 &$\{2\}^*$&$(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1-w)$             \\
 &$\{1,2\}$&$(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w)$             \\
-                                                           
+
 $\{1,2\}$  &$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
 &$\{1\}$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1-w)$               \\
 &$\{2\}$&$(1-x_1)(1+y_1)(1+x_2)(1-y_2)(1-w)$               \\
 &$\{1,2\}$&$(1+x_1)(1+y_1)(1-x_2)(1-y_2)(1+w)$             \\
-                                                           
+
 $\{2,3\}$  &$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
 &$\{1\}$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1-w)$               \\
 &$\{2\}$&$(1+x_1)(1+y_1)(1-x_2)(1-y_2)(1-w)$               \\
@@ -373,7 +374,7 @@ $\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 Likelihood calculations for all site splits $\siteSplit_j$ and ancestral state splits $\ancestralSplit_k$ of the InvFels tree $\tau_1$.
 All values multiplied by $1/32$.
 Ancestral states with $^*$ are never maximal provided parameters are in $(0,1]$.
-There are $3^5\cdot 4^2=3,888$ possible forms for the likelihood.
+By combinations of $\ancestralSplit_k$, there are $3^5\cdot 4^2=3,888$ possible forms for the likelihood.
 }
 \label{tab:farris_likelihoods}
 \end{table}
@@ -432,7 +433,7 @@ This shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency result
 \subsection*{Properties of the joint objective function}
 
 Consider the InvFels tree $\tau_1$ with arbitrary fidelities, i.e., $t=\{x_1,y_1,x_2,y_2,w\}$.
-We show that the likelihood remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
+We show that the likelihood $\ell_{\tau_1,t^*}(\tau_1, t)$ remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
 Using the Hadamard transform, we calculate the generating probabilities on the InvFels tree.
 For site split $\emptyset$,
 \begin{align*}
@@ -451,6 +452,8 @@ and for site split $\{3\}$ we have
     \Pr(\siteSplitRV=\{3\}\mid \tau_1, t) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[x_1 - x_2][y_1 + y_2] - x_1y_1x_2y_2)
 \end{align*}
 meaning if we exchange the values of $x_1$ and $x_2$ then these probabilities swap values.
+
+%EM It seems to me that the point here is that these swaps in the generating probabilities are matched by swaps in the likelihoods, meaning that things stay the same. A topic sentence to this effect would help if that's right.
 The corresponding possibilities for the likelihood values are
 \begin{align*}
     \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2); \\
@@ -466,10 +469,11 @@ for site split $\{1\}$ and
     \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2);
 \end{align*}
 for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exchanged.
-
 The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
-Since exchanging $x_1$ and $x_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t)$ we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$.
+Exchanging $x_1$ and $x_2$ also does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t)$.
+
+Thus, we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$.
 An analogous statement holds for $y_2 \ge y_1$, with these likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
 
 \begin{table}
@@ -508,7 +512,7 @@ Likelihood calculations on the InvFels tree $\tau_1$.
 Due to the symmetry of the likelihood, WLOG we assume $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral state splits to reduce the number of possible functional forms to consider.
 All values multiplied by $1/32$.
 Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
-There are $3^4=81$ possible forms for the likelihood.
+Because in 4 cases there are 3 possibilities for $\xi_j$, there are $3^4=81$ possible forms for the likelihood.
 }
 \label{tab:likelihoods}
 \end{table}
@@ -525,6 +529,10 @@ There exists a set of $0 < x^*, y^* < 1$ such that $\emptyset$ is the maximal an
 \end{lemma}
 
 \begin{proof}
+Recall
+\[
+\ell_{\tau^*,t^*}(\tau, t) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\tau, t).
+\]
 We obtain
 \[
 \max_{t} \ \ell_{\tau^*,t^*}(\tau, t) \le
@@ -546,8 +554,10 @@ Using this estimate, we have the lower bound
     \shannonDivergence_{\tau^*,t^*}(\tau,\tilde{t})
     + \tilde{\ell}_{\tau^*,t^*}(\tau, \tilde{t}).
 \]
+%EM C_0 needs a better definition here. Too much going on.
 We compute the lower bound $C_0(x^*,y^*)$ above given $\emptyset$ as the maximal ancestral state split for all site splits and $\tau=\tau_1$.
 We need only consider the remaining $u=1,\ldots,80$ possibilities for choices of ancestral state splits in Table~\ref{tab:likelihoods} upon excluding cases of infinite branch lengths (i.e., any of $x_1,y_1,x_2,y_2,w$ equal to zero) and the redundant cases of $x_1 > x_2$ and $y_1 > y_2$.
+%EM Also suggest a real def for C_{1,u}.
 We compute upper bounds $C_{1,u}(x^*,y^*)$ and show in Fig.~\ref{fig:max-anc-state} the region where $C_0(x^*,y^*) > \max_u C_{1,u}(x^*,y^*)$.
 \end{proof}
 
