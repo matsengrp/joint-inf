@@ -126,7 +126,7 @@ This tree has two internal nodes with $\ancestralSplitSet=\{1,2\}$ and unique an
 \mathcal{P}(\ancestralSplitSet) = \{\emptyset, \{1\}, \{2\}, \{1,2\}\}.
 \]
 Internal node $1$ is the node connected to leaves $1$ and $3$ while internal node $2$ is connected to leaves $2$ and $4$.
-The mapping from characters to splits in this case will depend on the characters at the tips and the ancestral states.
+The mapping from characters to splits in this case depends on the characters at the tips and the ancestral states.
 For example, we take both $\patternToSplit(0000)=\emptyset$ and $\patternToSplit(1111)=\emptyset$.
 Similarly, we have $\ancestralToSplit(0000, 00) = \emptyset$ and $\ancestralToSplit(1111, 11)=\emptyset$, needing to take the complement of all the characters present on the tree to identify splits.
 We cannot identify complements for ancestral states in the same way as tip states since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
@@ -527,6 +527,7 @@ Because in 4 cases there are 3 possibilities for $\xi_j$, there are $3^4=81$ pos
 We first prove intermediate results to show the main result.
 
 \begin{lemma}
+\label{lemma:bounds}
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
 There exists a set of $0 < x^*, y^* < 1$ such that $\emptyset$ is the maximal ancestral state split for all site splits given $\tau=\tau_1$.
 \end{lemma}
@@ -757,6 +758,7 @@ The conditions on $x^*$ and $y^*$ where $b_{2}^U, b_{1}^U, b_{12}^U < 1$ and $\e
 The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state split is given in Fig.~\ref{fig:incons-analytic}, giving the region of generating parameters where $\hat{w}\equiv 1$.
 \end{proof}
 
+%das: @EM did you say you wanted to get rid of these paragraphs? we never show there is a case where Fels > InvFels, just where it's equal...
 As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
 We show this is a type of inconsistency in topology estimation by constructing a lower bound on the likelihood for the Felsenstein topology $\tau_2$ and demonstrating it is equal to the likelihood given the InvFels topology $\tau_1$ in the demarcated region of Fig.~\ref{fig:incons-analytic}.
 As we are interested in a lower bound, assume $\boldsymbol\xi=\boldsymbol\xi_0$, i.e., $\emptyset$ is the maximal ancestral state split for all site splits.
