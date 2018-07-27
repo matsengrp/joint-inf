@@ -473,9 +473,9 @@ def main(args=sys.argv[1:]):
         plotbar = True
     elif args.plot_type == 'marginal_empirical':
         if args.bias:
-            plottitle = r'Bias: $\hat{p}_w-p_{y^*}$ (marginal inference)'
+            plottitle = r'Bias: $\hat{p}_w-p_{y^*}$ (integrated likelihood)'
         else:
-            plottitle = r'Estimated $\hat{p}_w$ (marginal inference)'
+            plottitle = r'Estimated $\hat{p}_w$ (integrated likelihood)'
         scale = args.delta
         plotbar = True
     elif args.plot_type == 'analytic_inconsistency':

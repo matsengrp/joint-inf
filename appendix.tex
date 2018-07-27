@@ -63,7 +63,7 @@ and
 The mapping $\patternToSplit$ operates by returning the tips labeled as $1$ in a site pattern to obtain a site split in $\mathcal{P}(\siteSplitSet)$ if the set of tips labeled $1$ is not in $\mathcal{P}(\siteSplitSet)$.
 The mapping $\ancestralToSplit$ is defined by whether the tip states have their complements taken or not: if the set of tips labeled $1$ in $\alignmentColumn$ is in $\mathcal{P}(\siteSplitSet)$, $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is the set of tips labeled $1$ in $\ancestralStateColumn$; otherwise, the set of tips labeled $1$ in $\overline{\alignmentColumn}$ necessarily is in $\mathcal{P}(\siteSplitSet)$.
 
-For the $i$th factor of \eqref{eq:full_likelihood},
+For the $i$th factor of \eqref{eq:full_likelihood}, we decompose the likelihood into its marginal and conditional components as
 \[
 \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) = \Pr(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t) \cdot \Pr(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t).
 \]
@@ -210,19 +210,20 @@ so that, in the $\nCols\rightarrow\infty$ limit,
 &\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
 \end{split}
 \end{equation}
-Define the divergence quantity
+Define the marginal log-likelihood
 \[
 \shannonDivergence_{\tau^*,t^*}(\tau,t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t)
 \]
 %EM Curious: is this an established use of the term "partial"?
-and the partial log-likelihood
+%das: not really; a partial likelihood is if the likelihood is separable in the parameters, so more accurate terms for what we're doing might be "marginal likelihood" and "conditional likelihood." I changed a lot throughout, using "integrated likelihood" so we don't confuse "marginal inference" with "marginal likelihood".
+and the conditional log-likelihood
 \[
-\tilde{\ell}_{\tau^*,t^*}(\tau, t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, t)
+\ell^C_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, t)
 \]
-so that \eqref{eq:site_pattern_profile_likelihood_mean} is
+with $\boldsymbol\xi = [\xi_j]_{j=1}^\nSiteSplits$ so that \eqref{eq:site_pattern_profile_likelihood_mean} is
 \begin{equation}
     \label{eq:log_likelihood_simplified}
-    \ell_{\tau^*,t^*}(\tau, t) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\tau, t).
+    \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \ell^C_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
 \end{equation}
 
 \subsection*{Hadamard representation}
@@ -395,7 +396,7 @@ For a fixed $\tau$, we show that $\hat{t}_\nCols \rightarrow \hat{t}$ for
 \]
 and
 \[
-\hat{t} = \arg\max_{t\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau, t).
+\hat{t} = \arg\max_{t\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
 \]
 Using the notation in \citet{van1998asymptotic}, we let
 \[
@@ -407,7 +408,7 @@ so that
 \]
 and
 \[
-\ell_{\tau^*,t^*}(\tau, t) = E[m_t].
+\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) = E[m_t].
 \]
 To show $\hat{t}_\nCols \rightarrow \hat{t}$, we use Wald's consistency proof \citep[p. 48, Theorem 5.14 of ][]{van1998asymptotic}, which requires four conditions.
 The first is that $\mathcal{T}$ is compact, which is obviously true.
@@ -428,12 +429,12 @@ We need the first map to be measurable, which is evident since the domain $\alph
 Finally, we must have the the second mapping be upper-semicontinuous for almost all $\alignmentColumn$.
 For a fixed ancestral state split $t \mapsto m_t(\alignmentColumn)$ is continuous for all $\alignmentColumn$.
 Discontinuities occur when, if we move about in $\mathcal{T}$, a different ancestral state split becomes more likely, though when we are at a point of discontinuity we maximize over ancestral state splits, ensuring the upper-semicontinuous property of this mapping.
-This shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t)$.
+This shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)$.
 
 \subsection*{Properties of the joint objective function}
 
 Consider the InvFels tree $\tau_1$ with arbitrary fidelities, i.e., $t=\{x_1,y_1,x_2,y_2,w\}$.
-We show that the likelihood $\ell_{\tau_1,t^*}(\tau_1, t)$ remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
+We show that the likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$ remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
 Using the Hadamard transform, we calculate the generating probabilities on the InvFels tree.
 For site split $\emptyset$,
 \begin{align*}
@@ -442,6 +443,7 @@ For site split $\emptyset$,
                                               & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  w[x_1 + x_2][y_1 + y_2] + x_1y_1x_2y_2),
 \end{align*}
 and this probability is unchanged when $x_1$ is exchanged with $x_2$ and $y_1$ is exchanged with $y_2$.
+
 All other generating probabilities differ only in the signs of each term (see Table~\ref{tab:gen-sitepatprob}).
 For example, for site split $\{1\}$ we have
 \begin{align*}
@@ -452,9 +454,10 @@ and for site split $\{3\}$ we have
     \Pr(\siteSplitRV=\{3\}\mid \tau_1, t) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[x_1 - x_2][y_1 + y_2] - x_1y_1x_2y_2)
 \end{align*}
 meaning if we exchange the values of $x_1$ and $x_2$ then these probabilities swap values.
-
+We show that for site splits $\{1\}$ and $\{3\}$, exchanging $x_1$ and $x_2$ also swaps the values of the conditional likelihood terms.
 %EM It seems to me that the point here is that these swaps in the generating probabilities are matched by swaps in the likelihoods, meaning that things stay the same. A topic sentence to this effect would help if that's right.
-The corresponding possibilities for the likelihood values are
+%das: updated
+The corresponding possibilities for the conditional likelihood values are
 \begin{align*}
     \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2); \\
     \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1+y_1)(1+y_2); \\
@@ -468,10 +471,10 @@ for site split $\{1\}$ and
     \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2); \\
     \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2);
 \end{align*}
-for site split $\{3\}$, which also both swap values when $x_1$ and $x_2$ are exchanged.
+for site split $\{3\}$, which shows the likelihood remains unchanged if $x_1$ and $x_2$ are swapped.
 The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
-Exchanging $x_1$ and $x_2$ also does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t)$.
+Exchanging $x_1$ and $x_2$ also does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$.
 
 Thus, we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$.
 An analogous statement holds for $y_2 \ge y_1$, with these likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
@@ -531,13 +534,13 @@ There exists a set of $0 < x^*, y^* < 1$ such that $\emptyset$ is the maximal an
 \begin{proof}
 Recall
 \[
-\ell_{\tau^*,t^*}(\tau, t) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \tilde{\ell}_{\tau^*,t^*}(\tau, t).
+\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \ell^C_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
 \]
 We obtain
 \[
-\max_{t} \ \ell_{\tau^*,t^*}(\tau, t) \le
+\max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) \le
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-    + \tilde{\ell}_{\tau^*,t^*}(\tau, \tilde{t})
+    + \ell^C_{\tau^*,t^*}(\tau, \tilde{t}; \boldsymbol\xi)
 \]
 as an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} using Gibbs's inequality
 \[
@@ -545,20 +548,38 @@ as an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} 
 \]
 and
 \[
-\tilde{t} = \argmax_{t} \ \tilde{\ell}_{\tau^*,t^*}(\tau, t).
+\tilde{t} = \argmax_{t} \ \ell^C_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
 \]
 By straightforward calculus, the function $f(x)=a_1\log(1+x)+a_2\log(1-x)$ attains a maximum at $\hat{x} = (a_1-a_2)/(a_1+a_2)$, and so we have a closed form for each component of $\tilde{t}$.
 Using this estimate, we have the lower bound
 \[
-\max_{t} \ \ell_{\tau^*,t^*}(\tau, t) \ge
+\max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) \ge
     \shannonDivergence_{\tau^*,t^*}(\tau,\tilde{t})
-    + \tilde{\ell}_{\tau^*,t^*}(\tau, \tilde{t}).
+    + \ell^C_{\tau^*,t^*}(\tau, \tilde{t}; \boldsymbol\xi).
 \]
 %EM C_0 needs a better definition here. Too much going on.
-We compute the lower bound $C_0(x^*,y^*)$ above given $\emptyset$ as the maximal ancestral state split for all site splits and $\tau=\tau_1$.
-We need only consider the remaining $u=1,\ldots,80$ possibilities for choices of ancestral state splits in Table~\ref{tab:likelihoods} upon excluding cases of infinite branch lengths (i.e., any of $x_1,y_1,x_2,y_2,w$ equal to zero) and the redundant cases of $x_1 > x_2$ and $y_1 > y_2$.
+%das: :check:
+Let $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$ and
+\[
+\tilde{t}_{\boldsymbol\xi} = \argmax_{t} \ \ell^C_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi).
+\]
+Define
+\[
+C_0(x^*, y^*) :=
+    \shannonDivergence_{\tau^*,t^*}(\tau_1,\tilde{t}_{\boldsymbol\xi_0})
+    + \ell^C_{\tau^*,t^*}(\tau_1, \tilde{t}_{\boldsymbol\xi_0}; \boldsymbol\xi_0),
+\]
+i.e., the lower bound given $\emptyset$ as the maximal ancestral state split for all site splits and $\tau=\tau_1$.
+
+We need only consider the remaining possibilities for choices of ancestral state splits in Table~\ref{tab:likelihoods} upon excluding cases of infinite branch lengths (i.e., any of $x_1,y_1,x_2,y_2,w$ equal to zero) and the redundant cases of $x_1 > x_2$ and $y_1 > y_2$, i.e.,
+\[
+C_1(x^*, y^*) :=
+    \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
+    +  \max_{\boldsymbol\xi : \boldsymbol\xi \neq \boldsymbol\xi_0} \ \ell^C_{\tau^*,t^*}(\tau_1, \tilde{t}_{\boldsymbol\xi}; \boldsymbol\xi).
+\]
 %EM Also suggest a real def for C_{1,u}.
-We compute upper bounds $C_{1,u}(x^*,y^*)$ and show in Fig.~\ref{fig:max-anc-state} the region where $C_0(x^*,y^*) > \max_u C_{1,u}(x^*,y^*)$.
+%das: :check:
+We show in Fig.~\ref{fig:max-anc-state} the region where $C_0(x^*,y^*) > C_1(x^*,y^*)$.
 \end{proof}
 
 \begin{figure}
@@ -572,9 +593,9 @@ Region where $\emptyset$ is maximal ancestral state split for each site split on
 
 \begin{lemma}
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
-For $0 < x^*, y^* < 1$ and $\emptyset$ as the maximal ancestral state split for all site splits, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
+For $0 < x^*, y^* < 1$ and $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
 \[
-\hat{t} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t)
+\hat{t} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi_0)
 \]
 is subject to the constraints $\hat{x}_1,\hat{x}_2 \in (0, x^*]$, $\hat{y}_1 \in (0, y^*]$, and $\hat{y}_2,\hat{w} \in [y^*, 1]$.
 \label{lemma:bounds}
@@ -582,7 +603,7 @@ is subject to the constraints $\hat{x}_1,\hat{x}_2 \in (0, x^*]$, $\hat{y}_1 \in
 
 \begin{proof}
 We proceed by analyzing the gradients of each component of the likelihood function.
-We first focus on the divergence term
+We first focus on the marginal log-likelihood
 \[
 \shannonDivergence_{\tau^*,t^*}(\tau_1,t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t).
 \]
@@ -591,7 +612,7 @@ By Gibbs inequality, this function attains a unique maximum when
 \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)
 \]
 for all $j=1,\ldots,\nSiteSplits$ with $t^*=\{x^*,y^*,x^*,y^*,y^*\}$.
-Note that exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not affect the divergence, and, as it has a unique maximum, we have $x_1=x_2=x$ and $y_1=y_2=y$ at this maximum.
+Note that exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not affect the marginal log-likelihood, and, as it has a unique maximum, we have $x_1=x_2=x$ and $y_1=y_2=y$ at this maximum.
 Referring to the top of Table~\ref{tab:gen-sitepatprob}, we set up simultaneous equations as follows.
 The sum of generating probabilities for site splits $\{3\}$ and $\{1,2\}$ yields
 \[
@@ -611,9 +632,9 @@ The unique maximum is $\hat{t}=\{x^*,y^*,x^*,y^*,y^*\}$, and
 \[
 \nabla_t \shannonDivergence_{\tau^*,t^*}(\tau_1,t) \mid_{t=t^*} = 0.
 \]
-We now show the gradient of the divergence term is a decreasing function on $(0,1]$ in each variable.
+We now show the gradient of the marginal log-likelihood is a decreasing function on $(0,1]$ in each variable.
 We focus on $x_1$.
-The divergence proportional to $x_1$ can be written as
+The marginal log-likelihood proportional to $x_1$ can be written as
 \begin{align*}
 \shannonDivergence(x_1) \propto \sum_j p_{\siteSplit_j} \log(c_{\siteSplit_j} + a_{\siteSplit_j}x_1)
 \end{align*}
@@ -629,7 +650,7 @@ a_{\emptyset} = x_2+wy_1+wy_2+x_2y_1y_2
 with similar definitions for the remaining site splits.
 Consider the derivative with respect to $x_1$
 \begin{align*}
-\shannonDivergence'(x_1) := \frac{d}{dx_1} \shannonDivergence(x_1) = \sum_j p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{c_{\siteSplit_j} + a_{\siteSplit_j}x_1}
+\frac{d}{dx_1} \shannonDivergence(x_1) = \sum_j p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{c_{\siteSplit_j} + a_{\siteSplit_j}x_1}
 \end{align*}
 and focus on a single term
 \[
@@ -665,20 +686,20 @@ All values multiplied by $1/32$.}
 \label{tab:likelihoods-restricted}
 \end{table}
 
-We now focus on the partial likelihood term.
+We now focus on the conditional log-likelihood.
 Assume $\emptyset$ is the most likely ancestral state split for all site splits.
-In this case, the partial likelihood has no ambiguity, and has terms given in Table~\ref{tab:likelihoods-restricted}.
-The partial likelihood
+In this case, the conditional log-likelihood has no ambiguity, and has terms given in Table~\ref{tab:likelihoods-restricted}.
+The conditional log-likelihood
 \[
-\tilde{\ell}_{\tau^*,t^*}(\tau_1, t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau_1, t)
+\ell^C_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi_0) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV = \siteSplit_j, \tau_1, t)
 \]
-as a function of $x_1$, using Table~\ref{tab:gen-sitepatprob}, is
+as a function of $x_1$, using Tables~\ref{tab:gen-sitepatprob} and~\ref{tab:likelihoods-restricted}, is
 \[
-\tilde{\ell}(x_1) \propto \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1).
+\ell^C(x_1; \boldsymbol\xi_0) \propto \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1).
 \]
 The derivative with respect to $x_1$ is
 \[
-\tilde{\ell}'(x_1) := \frac{d}{dx_1} \tilde{\ell}(x_1) = \frac{-x_1+x^*(y^*)^2}{1-x_1^2}
+\frac{d}{dx_1} \ell^C(x_1; \boldsymbol\xi_0) = \frac{-x_1+x^*(y^*)^2}{1-x_1^2}
 \]
 which is negative for all $x_1 \ge x^*$.
 This same process applied to the remaining variables shows the gradient of the full likelihood is negative for $x_1,x_2 \ge x^*$ and $y_1 \ge y^*$ and positive for $y_2,w \ge y^*$, yielding the constraints
@@ -738,21 +759,21 @@ The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset
 
 As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
 We show this is a type of inconsistency in topology estimation by constructing a lower bound on the likelihood for the Felsenstein topology $\tau_2$ and demonstrating it is equal to the likelihood given the InvFels topology $\tau_1$ in the demarcated region of Fig.~\ref{fig:incons-analytic}.
-As we are interested in a lower bound, assume $\xi_j=\emptyset$ for all $j=1,\ldots,\nSiteSplits$.
-In this case, the partial likelihood term for $\tau_2$ is composed of the same functional forms given in Table~\ref{tab:likelihoods-restricted}, as assuming $\emptyset$ for the ancestral state split results in the same partial likelihood for both topologies.
+As we are interested in a lower bound, assume $\boldsymbol\xi=\boldsymbol\xi_0$, i.e., $\emptyset$ is the maximal ancestral state split for all site splits.
+In this case, the conditional log-likelihood for $\tau_2$ is composed of the same functional forms given in Table~\ref{tab:likelihoods-restricted}, as assuming $\emptyset$ for the ancestral state split results in the same conditional log-likelihood for both topologies.
 
 Assume $w=1$.
-In this case, Table~\ref{tab:gen-sitepatprob} shows that, for $w=1$, the divergence term is identical for $\tau_1$ and $\tau_2$ as when the internal branch becomes zero-length the two topologies are indistinguishable.
+In this case, Table~\ref{tab:gen-sitepatprob} shows that, for $w=1$, the marginal log-likelihood is identical for $\tau_1$ and $\tau_2$ as when the internal branch becomes zero-length the two topologies are indistinguishable.
 Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the shaded region in Fig.~\ref{fig:incons-analytic}.
 The unconstrained maximum likelihood value for $\tau_2$ is greater than or equal to the value of the likelihood given these two constraints.
 We have
 \begin{align*}
-\max_{t} & \ \ell_{\tau^*,t^*}(\tau_2, t) \ge \\
-&\max_{t: \xi_j=\emptyset, w=1, \tau=\tau_2} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\}) \\
+\max_{t} & \ \ell_{\tau^*,t^*}(\tau_2, t; \boldsymbol\xi) \ge \\
+&\max_{t: \boldsymbol\xi=\boldsymbol\xi_0, w=1, \tau=\tau_2} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\}) \\
 &\qquad\qquad + \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, \{x_1,y_1,x_2,y_2,w\}) \\
-&= \max_{t: \xi_j=\emptyset, w=1, \tau=\tau_1} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
+&= \max_{t: \boldsymbol\xi=\boldsymbol\xi_0, w=1, \tau=\tau_1} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
 &\qquad\qquad + \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, \{x_1,y_1,x_2,y_2,w\})\\
-&= \max_{t : t^*\in\mathcal{T}_0} \ \ell_{\tau^*,t^*}(\tau_1, t),
+&= \max_{t : t^*\in\mathcal{T}_0} \ \ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi),
 \end{align*}
 and thus the incorrect topology achieves a likelihood value greater than or equal to the correct one.
 
@@ -764,7 +785,7 @@ and thus the incorrect topology achieves a likelihood value greater than or equa
 \centering
 \includegraphics[width=\textwidth]{empirical-marginal}
 \caption{
-    Estimates for $\hat{p}_w$ when computing $(\hat{x}_1, \hat{y}_1, \hat{x}_2, \hat{y}_2, \hat{w})$ using L-BFGS-B optimizing the classical marginal likelihood \eqref{eq:marginal_likelihood} rather than a joint optimization procedure.
+    Estimates for $\hat{p}_w$ when computing $(\hat{x}_1, \hat{y}_1, \hat{x}_2, \hat{y}_2, \hat{w})$ using L-BFGS-B optimizing the classical integrated likelihood \eqref{eq:marginal_likelihood} rather than a joint optimization procedure.
 }
 \label{fig:bl-general-marginal}
 \end{figure}
