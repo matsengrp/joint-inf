@@ -18,12 +18,17 @@ Our primary goal was to mathematically prove inconsistency of joint inference, w
 As pointed out by reviewer 4, this answers an open question, which has special relevance given the recent work of Sagulenko et al.
 We provide some numerical results to confirm our derivations and to provide a comparison.
 
-As we now emphasize, this work is not the final word on the joint inference question from an applied perspective.
 %das: added
-%Examples with larger trees and more realistic mutation models fall within the scope of an extension to applied models.
-%Further study is needed to determine the impact of these results on problems that are of interest to practitioners.
+This work is not the final word on the joint inference question from an applied perspective, as we now emphasize with an expanded Discussion section as well as the addition of these lines:
+"Examples with larger trees and more realistic mutation models fall within the scope of an extension to applied models.
+Further study is needed to determine the impact of these results on problems that are of interest to practitioners."
+
 Even if we were to greatly expand the sections doing numerical optimization, these results would only be for the binary symmetric model, which is never applied in practice.
 An investigation of these aspects deserves another paper.
+We have added clarification of these points to the discussion:
+"All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases.
+Examples with larger trees and more realistic mutation models fall within the scope of an extension to applied models.
+Further study is needed to determine the impact of these results on problems that are of interest to practitioners."
 
 
 > Finally, please pay VERY careful attention to improving your
@@ -34,13 +39,13 @@ An investigation of these aspects deserves another paper.
 > torturous efforts of cladists to undermine the entire line of inquiry.
 
 We are grateful to reviewer 4 for pointing us to literature of which we were not aware.
-We have greatly expanded on the discussion in Goldman (1990) about the limitations of joint optimization of phylogenetic parameters and ancestral states.
+We have greatly expanded on the discussion in Goldman (1990) about the limitations of joint optimization of phylogenetic parameters and ancestral states (the newly added fourth paragraph of the Discussion section), and have chosen to use his terminology of "integrated likelihood" to avoid confusion.
 The previous work concerns an example where branch lengths are fixed and equal, while here we show cases where inconsistency arises when branch lengths are treated as unknown parameters.
 Additionally, we have placed joint optimization and maximum likelihood on level footing by viewing them both as optimization procedures over topologies and branch lengths.
-Goldman (1990) does not compare maximum likelihood and maximum relative likelihood as the latter assumes equal branch lengths while the former does not.
-We have added this to our discussion.
+Goldman (1990) does not compare maximum integrated likelihood and maximum relative likelihood as the latter assumes equal branch lengths while the former does not.
+We have added this to our discussion as well.
 
-We have complied with this request regarding terminology, despite it going against current practice.
+We have complied with the request regarding the use of "Farris tree," despite it going against current practice.
 Indeed, Felsenstein's book has a subsection entitled "The Farris zone" spanning two pages (pp 120-121), a figure entitled "A tree in the Farris zone.", and a table with a caption "Properties of the Felsenstein and Farris zones...".
 The term "Farris zone" has almost 7 times as many citations as the term "inverse Felsenstein zone" on Google Scholar.
 
@@ -77,6 +82,9 @@ This must be done with analytic arguments rather than optimization.
 We could have only shown this bad behavior in a very small area to establish that it happens.
 In contrast to this reviewer, we believe that Fig 5 is optional to this line of argument, and we provide it just for interest.
 A true investigation into the practical implications of our work will require another paper.
+We have clarified this in the Discussion section with:
+"Our aim is to analytically demonstrate joint inference is inconsistent, and, while this indicates an issue with this inference procedure, there is substantial scope for future work to make these results more precise and more general.
+The techniques used to obtain upper and lower bounds for the likelihoods in Lemma 3 provide relatively loose bounds, though how loose they are remain unknown without either further analysis or verification through simulation."
 
 > Getting exact regions is what I think the authors should do. The
 > approach used to obtain Fig 5 is generally applicable. Explicit,
@@ -221,9 +229,8 @@ As noted inline we have revised the text accordingly.
 > Some detailed comments and questions:
 > – line 85 some cut/paste or sentence issue
 
-TODO: not sure what this is?
-%das: this reviewer was confused about the phrase "generating probabilities," thinking we were generating the probabilities and not that they were the probabilities of generating a particular data configuration.
-We have added the definition of a "generating probability" to ease confusion in this sentence.
+We have added the definition of a "generating probability" to ease confusion in this sentence:
+"As data becomes plentiful, we use the Hadamard transform (see (9) in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form."
 
 > - line 97 below (2) define A^p
 
@@ -232,15 +239,19 @@ We have clarified this with an explicit definition of A^p where we introduce A, 
 > - l106: why is the functional form of (3) determined by inequalites;
 > what are they?
 
-We have made this more precise and directly referenced the inequalities.
+We have made this more precise and directly referenced the inequalities:
+"In general, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities arising from taking maxima over ancestral state splits in Table~\ref{tab:farris_likelihoods} to obtain the likelihood term for each most likely ancestral state split, these terms depending on the unknown $(\tau, t)$.
+For this reason, in practice, the joint inference strategy estimates $\hat{\fullAncestralStates}_\nCols$ for a fixed $(\tau,t)$, then $(\hat{\tau}_\nCols,\hat{t}_\nCols)$ given $\hat{\fullAncestralStates}_\nCols$, maximizing each of these conditional objectives until convergence \citep{Sagulenko2018-xl}."
 
 > - l 118-124: clarify are tau1 and tau2 Farris and Felsenstein?
 
-That is correct, and we've added parenthetical notes to reminde the reader, thanks.
+Thank you for highlighting this omission.
+You are correct, and we have added parenthetical notes to remind the reader where appropriate.
 
 > L 132 clarify “equivalent but different notion” – different from what?
 
-We have reformulated this sentence to avoid the comparison.
+We have reformulated this sentence to avoid the comparison:
+"We parameterize the branches of these trees not with the standard notion of branch length in terms of number of substitutions per site, but with an alternate formulation called "fidelity.""
 
 > - line 146 “seeing no change along a branch more likely increases the
 > likelihood by introducing a term of (1 + θ) instead of (1 − θ)” – I
@@ -248,17 +259,22 @@ We have reformulated this sentence to avoid the comparison.
 
 TODO: this is changed, but I don't see this being a lot clearer.
 %das: I believe this is clear now; lmk
-We have clarified the intuition in this sentence.
+We have clarified the intuition in this sentence:
+"For the internal branch---the branch between the two internal nodes---we have a choice of $(1+w)$ or $(1-w)$ in each of our likelihood terms depending on which ancestral state split corresponds to the highest conditional log-likelihood.
+As $(1+w) > (1-w)$, a maximization procedure tends to prefer the $(1+w)$ term, though this is not guaranteed because the maximum depends on the values of the unknown branch parameters $t$.
+Nevertheless, this tendency to include $(1+w)$ terms in the likelihood results in a positive bias of branch fidelities, i.e., estimating branch lengths to be shorter than truth."
 
 > line 185++ and figure5: true value of w?
 
 We have added clarifying sentence:
-"As data were generated with parameters $\{x^*, y^*, x^*, y^*, y^*\}$, the true value for $w$ is $y^*$."
+"As data are generated with parameters $\{x^*, y^*, x^*, y^*, y^*\}$, the true value for $w$ is $y^*$."
 
 
 > L 334 missing “the”
 
 Fixed via simpler language.
+We removed the sentence following the semicolon entirely, as we feel it did not add anything:
+"Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$."
 
 > L332++ I got confused about the complements and factors of 2, though I
 > see the point that the site split has symmetry. As it's fundamental to
@@ -270,9 +286,12 @@ We have now made this much more explicit with three additional display equations
 > L354 why does psi take the complement of site patterns? Just above it
 > is defined as a random variable psi (Y) where Y is a site pattern
 
-This wasn't as clear as it should have been.
+We apologize for the confusion, as this was not as clear as it should have been.
 We have revised to:
-"The mapping $\patternToSplit$ operates by returning the complement of a site pattern to obtain a site split in $\mathcal{P}(\siteSplitSet)$ if it is not in $\mathcal{P}(\siteSplitSet)$."
+"The mapping $\patternToSplit$ operates by returning the tips labeled as $1$ in a site pattern to obtain a site split in $\mathcal{P}(\siteSplitSet)$ if the set of tips labeled $1$ is not in $\mathcal{P}(\siteSplitSet)$.
+The mapping $\ancestralToSplit$ is defined by whether the tip states have their complements taken or not: if the set of tips labeled $1$ in $\alignmentColumn$ is in $\mathcal{P}(\siteSplitSet)$, $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is the set of tips labeled $1$ in $\ancestralStateColumn$; otherwise, the set of tips labeled $1$ in $\overline{\alignmentColumn}$ necessarily is in $\mathcal{P}(\siteSplitSet)$."
+
+Additionally, we have explicitly defined psi(Y) and xi(Y,H) prior to this clarifying sentence.
 
 
 > What are the elements of the sets eta(tau, t)?
@@ -282,7 +301,10 @@ We removed the ordered list of sets as it did not add to any understanding of th
 > Why is xi surjective? I don't understand the equation before line 359,
 > and then I don't understand what “such a choice” is in line 359
 
-We have made this explicit now, with two additional intermediate steps and an explicit explanation in terms of collapsing terms.
+We have made this explicit now, with two additional intermediate steps and an explicit explanation in terms of collapsing terms:
+"For each $\alignmentColumn_i$, $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective as it can map values from $\alphabet^\nAncestralStateRows$ to all elements in $\mathcal{P}(\ancestralSplitSet)$.
+This can be seen by using the definition of $\ancestralToSplit(\alignmentColumn_i, \cdot)$ and assuming $\alignmentColumn_{i,\nSiteRows}\neq 1$, where in this case each of the $2^\nAncestralStateRows$ values of $\ancestralStateColumn$ correspond to each of the $2^\nAncestralStateRows$ elements of $\mathcal{P}(\{1,\ldots,\nAncestralStateRows\})$.
+The same can be done for the case of $\alignmentColumn_{i,\nSiteRows}=1$, implying $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective."
 
 > line 364 define p(e)
 
@@ -293,8 +315,13 @@ Thanks for reminding us to define p(e), which is now described as "where $p(e)$ 
 > What's a 'generating probability' ? Is that the fidelity? Or a
 > generator?
 
-We have updated the text to explicitly define "generating probability." Background for equation (8) can be found in Section 8.6 in the Semple and Steel text.
-This is referenced at the beginning of the section.
+We have updated the text to explicitly define "generating probability."
+"As data becomes plentiful, we use the Hadamard transform (see (9) in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form."
+
+Background for equation (8) can be found in Section 8.6 in the Semple and Steel text.
+This is referenced at the beginning of the section:
+"We state the Hadamard representation of site split generating probabilities---that is, probabilities of obtaining particular site splits given a tree---following Section 8.6 of \citet{Semple2003-em}."
+
 We do not believe an exhaustive explanation would provide any benefit to the reader that they could not get from referring to the text.
 
 > Reviewer: 3
@@ -332,11 +359,16 @@ However, in our assessment the word "approximate" doesn't completely describe a 
 The TreeTime paper says that its use is appropriate when "ancestral sequence inference has little ambiguity" but even in these cases the bias in branch lengths persists.
 
 TODO we should make some changes to at least say that we've further clarified the implications of our results.
-%das: how much more should we say than this sentence (which we already say)? We already quote them as saying they should only use it when branches are short.
-%Although the software described in \citet{Sagulenko2017-jo} fits on a user-supplied topology and the authors explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference.
-%and
-%In all cases, these regions of inconsistency arise when the branches of the generating trees are ``long,'' that is, when branch fidelities tend to be small.
-%This inconsistency in the case of long branches concurs with some empirical findings in \citet{Sagulenko2017-jo}, namely their Figures~2 and 3.
+%das: I believe this is done
+We clarify our aim and warnings from Sagulenko et al. (2017) in the Introduction:
+"Although the software described in \citet{Sagulenko2018-xl} fits on a user-supplied topology and the authors explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference.
+In particular, one would like to know when this approximate technique breaks down for both topology and branch length inference, even when sequence data is ``perfect,'' i.e., is generated without sampling error according to the exact model used for inference."
+
+Additionally, we refer to how our work extends that from Sagulenko et al. (2017) in the Discussion:
+"The regions of inconsistency we found arise when the top two branches of the generating trees are ``long,'' that is, when the top branch fidelities tend to be small, and when the lower branches are ``short,'' i.e., have large fidelities.
+We see that this inconsistency occurs even if some branches are short.
+This expands on the empirical findings of poor estimation given long branches in \citet{Sagulenko2018-xl} (their Figures~2 and~3)."
+
 
 > At the same time, these results are not particularly surprising.
 > Assigning ML ancestral states will always result in shorter branches.
@@ -368,14 +400,17 @@ TODO we should make some changes to at least say that we've further clarified th
 > will fail if branches are long.
 
 This is an interesting suggestion but is different than our goal, which was to establish inconsistency.
-Moreover, in the revised manuscript we see cases where assigning ML ancestral states results in longer branches, not shorter ones (Lemma 3 in the updated paper).
-We believe the inaccuracies have more to do with the specific choice of which ancestral state is maximal than asymmetries in the tree.
+Moreover, in the revised manuscript we see cases where assigning ML ancestral states results in longer branches, not shorter ones (Lemma 3).
+We believe the inaccuracies have more to do with the specific choice of which ancestral state is maximal than asymmetries in the tree:
+"This is apparent in the ``long $x^*$, short $y^*$'' scenario as these are the cases in which $\emptyset$ is the most likely ancestral state split if we let $x_1=x_2=x^*$ and $y_1=y_2=y^*$ (Table~\ref{tab:likelihoods})."
+
 Asymmetries can drive these particular choices, but Fig. 3 in the revised manuscript shows that almost half of the parameter space results in an interior branch length being estimated as zero.
 We do not think providing an argument about accumulating inaccuracies would elucidate why such starkly-defined regions of inconsistency exist.
 For reasonable parameter settings, one could investigate the error accumulation given fixed ancestral states, but this was not our goal and will require another paper.
 
 TODO describe why Taylor isn't a straightforward thing.
 TODO refer to idea of applied paper again?
+%das: I believe these are done as well
 
 > Specific comments:
 >  - when y=x=w, the two topologies are indistinguishable other than for
@@ -384,7 +419,9 @@ TODO refer to idea of applied paper again?
 
 It is true when y=x=w we are unable to distinguish the topologies apart from the labeling, though the labeling is what distinguishes the topologies.
 As shown in Goldman (1990), with all branch lengths fixed and equal the joint inference procedure degenerates into parsimony, which has well known inconsistency issues.
-We have added discussion of this point.
+We have added discussion of this point:
+"The case of joint inference of a phylogenetic likelihood is discussed in \citet{Goldman1990-dk}.
+There, Goldman provides a worked example in which estimating a topology with fixed branch lengths is equivalent to parsimony and thus not guaranteed to be consistent, though he does not discuss the inconsistency of joint inference in general."
 
 >  - line 50: overestimates branch lengths? It overestimates fidelity ->
 >  underestimates branch length.  As expected.  Again line 249. Please
@@ -400,6 +437,9 @@ We have tried to use branch lengths in as many instances as we could in the disc
 
 The discontinuity is a reflection of the change in ancestral states when the generating parameters change.
 As the true generating parameters change, we become more likely to choose a different ancestral state as most likely, resulting in an entirely different objective function to be optimized.
+We have added the following:
+"There are discontinuities in the fit (Fig.~\ref{fig:bl-general-inconsistency}) due to the choice of which ancestral state splits are maximal."
+
 The analytical bound is a coarse estimate of where inconsistency arises.
 In the revised manuscript, we fix the maximal ancestral state to simplify the argument, and comparing the analytical with the empirical would not provide much added benefit to the analysis.
 
@@ -412,9 +452,9 @@ In the revised manuscript, we fix the maximal ancestral state to simplify the ar
 >  branches... we show that this doesn't work for long branches..."
 
 TODO we should do some change, but make it clear that it's consistently biased even for short branches.
-%das: I added this line:
+%das: I believe this is done
 We have added the line:
-\citet{Sagulenko2017-jo} explicitly warn their approximation is only valid for ``short'' branches, though Fig.~\ref{fig:bl-general-bias} shows even when branches are short there is a consistent bias.
+"Although the software described in \citet{Sagulenko2018-xl} fits on a user-supplied topology and the authors explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference."
 
 We believe it's important not to mischaracterize the suggested use of joint inference, though we would like to emphasize to the reader that problems are apparent in large regions of the parameter space.
 We think the current discussion treats this optimization procedure as fairly as possible.
@@ -466,7 +506,13 @@ We have worked hard in our initial submission and in our revision to write out t
 
 We are very grateful to this reviewer for pointing out the Goldman paper.
 We were not aware of this paper and now have a paragraph describing it and comparing to our work.
-It's also a good idea to cite additional papers about identifiability, and we have done so.
+See the fourth paragraph of the Discussion section.
+Additionally, we have used his terminology of "integrated likelihood" to avoid confusion.
+
+It's also a good idea to cite additional papers about identifiability, and we have done so in the Introduction:
+"An estimator is said to be statistically consistent if it converges to the generating model with probability one in the large-data limit; existing consistency proofs for maximum likelihood phylogenetics \citep{Allman2008-wd,Chai2011-ff,RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood."
+and Discussion sections:
+"Consistency proofs of standard maximum likelihood estimates of phylogeny \eqref{eq:marginal_likelihood} are recent \citep{Allman2008-wd,Chai2011-ff,RoyChoudhury2015-ta}, and no results have been obtained for profile likelihood."
 
 %EM David, heh, can you point me to the place where the equal branch length result was done?
 %EM Also, I think you said that he says that the varying branch length thing is an open question-- it would be great to quote that.
