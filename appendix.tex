@@ -214,8 +214,6 @@ Define the marginal log-likelihood
 \[
 \shannonDivergence_{\tau^*,t^*}(\tau,t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t)
 \]
-%EM Curious: is this an established use of the term "partial"?
-%das: not really; a partial likelihood is if the likelihood is separable in the parameters, so more accurate terms for what we're doing might be "marginal likelihood" and "conditional likelihood." I changed a lot throughout, using "integrated likelihood" so we don't confuse "marginal inference" with "marginal likelihood".
 and the conditional log-likelihood
 \[
 \ell^C_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, t)
@@ -455,8 +453,6 @@ and for site split $\{3\}$ we have
 \end{align*}
 meaning if we exchange the values of $x_1$ and $x_2$ then these probabilities swap values.
 We show that for site splits $\{1\}$ and $\{3\}$, exchanging $x_1$ and $x_2$ also swaps the values of the conditional likelihood terms.
-%EM It seems to me that the point here is that these swaps in the generating probabilities are matched by swaps in the likelihoods, meaning that things stay the same. A topic sentence to this effect would help if that's right.
-%das: updated
 The corresponding possibilities for the conditional likelihood values are
 \begin{align*}
     \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2); \\
@@ -558,8 +554,6 @@ Using this estimate, we have the lower bound
     \shannonDivergence_{\tau^*,t^*}(\tau,\tilde{t})
     + \ell^C_{\tau^*,t^*}(\tau, \tilde{t}; \boldsymbol\xi).
 \]
-%EM C_0 needs a better definition here. Too much going on.
-%das: :check:
 Let $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$ and
 \[
 \tilde{t}_{\boldsymbol\xi} = \argmax_{t} \ \ell^C_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi).
@@ -578,8 +572,6 @@ C_1(x^*, y^*) :=
     \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
     +  \max_{\boldsymbol\xi : \boldsymbol\xi \neq \boldsymbol\xi_0} \ \ell^C_{\tau^*,t^*}(\tau_1, \tilde{t}_{\boldsymbol\xi}; \boldsymbol\xi).
 \]
-%EM Also suggest a real def for C_{1,u}.
-%das: :check:
 We show in Fig.~\ref{fig:max-anc-state} the region where $C_0(x^*,y^*) > C_1(x^*,y^*)$.
 \end{proof}
 

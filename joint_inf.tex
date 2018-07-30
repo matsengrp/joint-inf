@@ -293,8 +293,6 @@ As data are generated with parameters $\{x^*, y^*, x^*, y^*, y^*\}$, the true va
 Marginal inference performs as expected, where $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$ (Fig.~\ref{fig:bl-general-marginal}) when optimizing \eqref{eq:marginal_likelihood} using the same optimization code.
 For joint inference, the estimates for $\hat{p}_w$ when $p_{x^*}$ and $p_{y^*}$ are both small look reasonable, with $\hat{p}_w$ increasing as $p_{y^*}$ increases, though Fig.~\ref{fig:empirical-bias} shows there is a systematic negative bias in this procedure even when the true branches are short.
 To understand the quality of each fit, we report the range of the bias $\hat{p}_w-p_{y^*}$ where $p_{x^*}, p_{y^*} \le .1$.
-%EM I'd suggest bringing this figure into the main text. It'd fit.
-%das: :check:
 There are discontinuities in the fit (Fig.~\ref{fig:bl-general-inconsistency}) due to the choice of which ancestral state splits are maximal.
 Because of these discontinuities, an overall estimate of the bias is misleading, and these short-branch cases should be the best settings for joint optimization \citep{Sagulenko2018-xl}.
 For joint inference, the errors given $p_{x^*}, p_{y^*} \le .1$ range from $[-2\times 10^{-2}, 3\times 10^{-3}]$ and for inference on the integrated likelihood are lower than machine tolerance showing that, even in cases where joint inference is supposed to do well, it still fails to achieve a low error from truth.
@@ -313,19 +311,11 @@ In regions where joint optimization should perform well with $p_{x^*}, p_{y^*} \
 
 We have shown that jointly inferring ancestral states and phylogenetic parameters \citep{Sagulenko2018-xl} is not consistent in general.
 Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in a type of topological inconsistency: the joint inference procedure estimates zero-length branches given the correct topology.
-%EM Suggest "Considering this zero length branch as a multifurcating topology..."
-%EM Oops, somehow I misunderstood this the first time around. You're saying that the wrong topology, with internal branch shrunk to zero, will have the same likelihood. And that we can't exclude that it could have a greater likelihood with internal branch nonzero. If you want to make those points (or something about multifurcating) they need to be more explicit. Right now it reads like we found cases where the wrong topology has larger likelihood.
-%das: maybe this is better?
-%EM Seems like clarification might be justified in other places in the MS as well.
-%das: also hedged a bit in the remainder of the MS.
 Considering a tree with a zero-length branch as a multifurcating topology, the incorrect topology attains the same likelihood as the topology that generated the data by fixing this branch to have zero length.
 Since the parameters with the highest likelihood given the generating topology include a zero-length branch, we cannot exclude the possibility that the incorrect topology with this branch having nonzero length is more likely to be observed, though we have not found regions where this is the case.
 The regions of inconsistency we found arise when the top two branches of the generating trees are ``long,'' that is, when the top branch fidelities tend to be small, and when the lower branches are ``short,'' i.e., have large fidelities.
 We see that this inconsistency occurs even if some branches are short.
 This expands on the empirical findings of poor estimation given long branches in \citet{Sagulenko2018-xl} (their Figures~2 and~3).
-%EM I suggest flipping this around and making it stronger, so that we lead with and emphasize the differences.
-%EM I've made this a little spicier: happy with the first part?
-%das: I like it
 However, the problems are not just for long branches as \citet{Sagulenko2018-xl} imply: even when all branches are short there is a consistent bias, and that the bias is on the same order as the magnitude of the parameters (Fig.~\ref{fig:empirical-bias})
 
 Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \citep{Murphy2000-ry}.
