@@ -32,7 +32,7 @@ be
 \patternToSplit(\alignmentColumn) =
 \left\{
     \begin{array}{ll}
-        \{i'\in\{1,\ldots,\nSiteRows-1\}: \alignmentColumn_{i,i'}=1\}  & \mbox{if } \alignmentColumn_{i,\nSiteRows}\neq 1,\\
+        \{i'\in\{1,\ldots,\nSiteRows-1\}: \alignmentColumn_{i,i'}=1\}  & \mbox{if } \alignmentColumn_{i,\nSiteRows}=0,\\
         \{i'\in\{1,\ldots,\nSiteRows-1\}: \overline{\alignmentColumn}_{i,i'}=1\}  & \mbox{if } \alignmentColumn_{i,\nSiteRows}=1,
     \end{array}
 \right.
@@ -46,7 +46,7 @@ be
 \ancestralToSplit(\alignmentColumn, \ancestralStateColumn) =
 \left\{
     \begin{array}{ll}
-        \{i'\in\{1,\ldots,\nAncestralStateRows\}: \ancestralStateColumn_{i,i'}=1\}  & \mbox{if } \alignmentColumn_{i,\nSiteRows}\neq 1,\\
+        \{i'\in\{1,\ldots,\nAncestralStateRows\}: \ancestralStateColumn_{i,i'}=1\}  & \mbox{if } \alignmentColumn_{i,\nSiteRows}=0,\\
         \{i'\in\{1,\ldots,\nAncestralStateRows\}: \overline{\ancestralStateColumn}_{i,i'}=1\}  & \mbox{if } \alignmentColumn_{i,\nSiteRows}=1.
     \end{array}
 \right.
@@ -86,7 +86,7 @@ Thus given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\l
 In other words, for the $j$th site split, $\ancestralSplitPartition_j(\tau, t)\subseteq\mathcal{P}(\ancestralSplitSet)$ is the set of most likely ancestral state splits for that particular site split, topology and set of branch lengths, i.e., $\ancestralSplitPartition_j(\tau, t)$ is a set of sets of most likely internal node labels.
 Here, $\xi_j$ is one of possibly many equiprobable ancestral state splits in $\ancestralSplitPartition_j(\tau, t)$.
 For each $\alignmentColumn_i$, $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective as it can map values from $\alphabet^\nAncestralStateRows$ to all elements in $\mathcal{P}(\ancestralSplitSet)$.
-This can be seen by using the definition of $\ancestralToSplit(\alignmentColumn_i, \cdot)$ and assuming $\alignmentColumn_{i,\nSiteRows}\neq 1$, where in this case each of the $2^\nAncestralStateRows$ values of $\ancestralStateColumn$ correspond to each of the $2^\nAncestralStateRows$ elements of $\mathcal{P}(\{1,\ldots,\nAncestralStateRows\})$.
+This can be seen by using the definition of $\ancestralToSplit(\alignmentColumn_i, \cdot)$ and assuming $\alignmentColumn_{i,\nSiteRows}=0$, where in this case each of the $2^\nAncestralStateRows$ values of $\ancestralStateColumn$ correspond to each of the $2^\nAncestralStateRows$ elements of $\mathcal{P}(\{1,\ldots,\nAncestralStateRows\})$.
 The same can be done for the case of $\alignmentColumn_{i,\nSiteRows}=1$, implying $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective.
 From this we have
 \begin{align*}
@@ -426,6 +426,7 @@ t \mapsto m_t(\alignmentColumn).
 We need the first map to be measurable, which is evident since the domain $\alphabet^\nSiteRows$ of the mapping is a finite set, and so all subsets of the domain are also finite and thus measurable.
 Finally, we must have the the second mapping be upper-semicontinuous for almost all $\alignmentColumn$.
 For a fixed ancestral state split $t \mapsto m_t(\alignmentColumn)$ is continuous for all $\alignmentColumn$.
+%EM Do discontinuities occur? In my mind we are taking the maximum of continuous functions, which is continuous.
 Discontinuities occur when, if we move about in $\mathcal{T}$, a different ancestral state split becomes more likely, though when we are at a point of discontinuity we maximize over ancestral state splits, ensuring the upper-semicontinuous property of this mapping.
 This shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)$.
 
@@ -564,7 +565,7 @@ C_0(x^*, y^*) :=
     \shannonDivergence_{\tau^*,t^*}(\tau_1,\tilde{t}_{\boldsymbol\xi_0})
     + \ell^C_{\tau^*,t^*}(\tau_1, \tilde{t}_{\boldsymbol\xi_0}; \boldsymbol\xi_0),
 \]
-i.e., the lower bound given $\emptyset$ as the maximal ancestral state split for all site splits and $\tau=\tau_1$.
+i.e., the lower bound assuming $\emptyset$ is the maximal ancestral state split for all site splits and $\tau=\tau_1$.
 
 We need only consider the remaining possibilities for choices of ancestral state splits in Table~\ref{tab:likelihoods} upon excluding cases of infinite branch lengths (i.e., any of $x_1,y_1,x_2,y_2,w$ equal to zero) and the redundant cases of $x_1 > x_2$ and $y_1 > y_2$, i.e.,
 \[
@@ -579,7 +580,7 @@ We show in Fig.~\ref{fig:max-anc-state} the region where $C_0(x^*,y^*) > C_1(x^*
 \centering
 \includegraphics[width=.95\textwidth]{analytic-anc-state-inkscape}
 \caption{
-Region where $\emptyset$ is maximal ancestral state split for each site split on the InvFels tree $\tau_1$.
+Region where $\emptyset$ is the maximal ancestral state split for each site split on the InvFels tree $\tau_1$.
 }
 \label{fig:max-anc-state}
 \end{figure}
@@ -600,7 +601,7 @@ We first focus on the marginal log-likelihood
 \[
 \shannonDivergence_{\tau^*,t^*}(\tau_1,t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t).
 \]
-By Gibbs inequality, this function attains a unique maximum when
+By Gibbs' inequality, this function attains a unique maximum when
 \[
 \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)
 \]
@@ -622,7 +623,7 @@ Setting these parameters to their optima, the difference of generating probabili
 8x^*(y^*)^2 = 8x^*y^*w
 \]
 implying $w=y^*$.
-Thus the unique maximum is $\hat{t}=\{x^*,y^*,x^*,y^*,y^*\}$, and
+Thus the unique maximum is $\hat{t}=\{x^*,y^*,x^*,y^*,y^*\}$, and consequently
 \[
 \nabla_t \shannonDivergence_{\tau^*,t^*}(\tau_1,t) \mid_{t=t^*} = 0.
 \]
@@ -635,7 +636,7 @@ The marginal log-likelihood proportional to $x_1$ can be written as
 \shannonDivergence(x_1) \propto \sum_j p_{\siteSplit_j} \log(c_{\siteSplit_j} + a_{\siteSplit_j}x_1)
 \end{align*}
 where $c_{\siteSplit_j}$ and $a_{\siteSplit_j}$ are functions of $y_1,x_2,y_2,$ and $w$.
-For example,
+For example, reading from Table~\ref{tab:gen-sitepatprob},
 \[
 c_{\emptyset} = 1+y_1y_2+wx_2y_1+wx_2y_2
 \]
@@ -650,11 +651,11 @@ Consider the derivative with respect to $x_1$
 \end{align*}
 and focus on a single term
 \[
-f_j(x_1) = p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{c_{\siteSplit_j} + a_{\siteSplit_j}x_1}.
+f_j(x_1) := p_{\siteSplit_j}a_{\siteSplit_j}\frac{1}{c_{\siteSplit_j} + a_{\siteSplit_j}x_1}.
 \]
-We see
+Recall that
 \[
-\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) := \frac{1}{8} (c_{\siteSplit_j} + a_{\siteSplit_j}x_1),
+\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) = \frac{1}{8} (c_{\siteSplit_j} + a_{\siteSplit_j}x_1),
 \]
 which, being a probability, is greater than or equal to zero.
 Thus, regardless of $a_{\siteSplit_j} \lessgtr 0$, $f_j$ is a decreasing function of $x_1$ as $c_{\siteSplit_j} + a_{\siteSplit_j}x_1 \ge 0$.
@@ -677,7 +678,7 @@ $\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y
 \hline
 \end{tabular}
 \caption{
-The maximal likelihood values on the InvFels tree $\tau_1$ given $\emptyset$ is the most likely ancestral state split for each site split.
+The maximal likelihood values on the InvFels tree $\tau_1$ assuming $\emptyset$ is the most likely ancestral state split for each site split.
 All values multiplied by $1/32$.}
 \label{tab:likelihoods-restricted}
 \end{table}
@@ -691,6 +692,7 @@ The conditional log-likelihood
 \]
 as a function of $x_1$, using Tables~\ref{tab:gen-sitepatprob} and~\ref{tab:likelihoods-restricted}, is
 \[
+%EM Can you help me understand this? Where did the other terms from \log \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV = \siteSplit_j, \tau_1, t) go? They don't disappear with the proportionality-- they will be additive terms, not multiplicative. Or perhaps there's a bunch of cancellation? If the latter, let me know and I'll pull out my paper and pad.
 \ell^C(x_1; \boldsymbol\xi_0) \propto \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1).
 \]
 The derivative with respect to $x_1$ is

@@ -218,7 +218,7 @@ All proofs are deferred to the Appendix.
 
 Assume $\fullAlignment$ is generated from the InvFels topology $\tau^*$ and with true generating branch fidelities $t^*=\{x^*, y^*, x^*, y^*, y^*\}$ (Fig.~\ref{fig:farris-fels-top}a).
 Let $\boldsymbol\xi = [\xi_j]_{j=1}^\nSiteSplits$ be the vector of most likely ancestral state splits.
-Use $\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)$ to denote the expected per-site log-likelihood, which can be thought of as the infinite-length sequence case
+Use $\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)$ to denote the expected per-site log-likelihood, which can be thought of as the infinite-length sequence case because
 \begin{equation}
 \label{eq:exp-log-lik}
 \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment) \rightarrow \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
@@ -302,7 +302,7 @@ For joint inference, the errors given $p_{x^*}, p_{y^*} \le .1$ range from $[-2\
 \includegraphics[width=.95\textwidth]{empirical-bias}
 \caption{
 Bias in branch length estimation.
-In regions where joint optimization should perform well with $p_{x^*}, p_{y^*} \le .1$, there is systematic bias toward shorter branch lengths.
+Even in regions with short branch length ($p_{x^*}, p_{y^*} \le .1$) where joint optimization should perform well, there is systematic bias toward shorter branch lengths.
 }
 \label{fig:empirical-bias}
 \end{figure}
@@ -316,7 +316,7 @@ Since the parameters with the highest likelihood given the generating topology i
 The regions of inconsistency we found arise when the top two branches of the generating trees are ``long,'' that is, when the top branch fidelities tend to be small, and when the lower branches are ``short,'' i.e., have large fidelities.
 We see that this inconsistency occurs even if some branches are short.
 This expands on the empirical findings of poor estimation given long branches in \citet{Sagulenko2018-xl} (their Figures~2 and~3).
-However, the problems are not just for long branches as \citet{Sagulenko2018-xl} imply: even when all branches are short there is a consistent bias, and that the bias is on the same order as the magnitude of the parameters (Fig.~\ref{fig:empirical-bias})
+However, the problems are not just for long branches as \citet{Sagulenko2018-xl} imply: even when all branches are short there is a consistent bias, and that the bias is on the same order as the magnitude of the parameters (Fig.~\ref{fig:empirical-bias}).
 
 Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \citep{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., the method of sieves \citep{Geman1982}.
