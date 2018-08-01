@@ -290,6 +290,7 @@ $\siteSplit_j$  & $p_{\siteSplit_j}$ &$\Pr(\siteSplitRV=\siteSplit_j \mid \tau,t
     \hline
 \end{tabular}
 \caption{Site split probabilities $p_{\siteSplit_j}$ on the true InvFels tree $\tau^*$ with $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, and on the InvFels tree $\tau_1$ and Felsenstein tree $\tau_2$ with $t=\{x_1,y_1,x_2,y_2,w\}$ obtained using the Hadamard transform.
+%EM "Multiplied by 1/8"... I think this should be "need to be multiplied by 1/8" or "All values have been divided by 1/8."
 All values multiplied by $1/8$.}
 \label{tab:gen-sitepatprob}
 \end{table}
@@ -702,7 +703,7 @@ The derivative with respect to $x_1$ is
 which is negative for all $x_1 \ge x^*$.
 This same process applied to the remaining variables shows the gradient of the full likelihood is negative for $x_1,x_2 \ge x^*$ and $y_1 \ge y^*$ and positive for $y_2,w \ge y^*$, yielding the constraints
 \[
-\hat{x}_1,\hat{x}_2 \in (0, x^*], \ \hat{y}_1 \in (0, y^*], \ \hat{y}_2,\hat{w} \in [y^*, 1].
+\hat{x}_1,\hat{x}_2 \in (0, x^*], \ \hat{y}_1 \in (0, y^*], \text{and}\ \hat{y}_2,\hat{w} \in [y^*, 1].
 \]
 \end{proof}
 
@@ -711,10 +712,13 @@ We now prove the main result.
 \topoInconsist*
 
 \begin{proof}
+%EM "Proportional" thing again.
 The objective function proportional to $w$ is
 \begin{align*}
+%EM The conditional term is \log(1+w), right? If so, it'd be easier to have that second rather than first so that it corresponds to the order in eq:log_likelihood_simplified
 \ell(w) \propto \log(1+w) + \sum_j p_{\siteSplit_j} \log(1 + b_{\siteSplit_j}w)
 \end{align*}
+% Hm, we didn't do a trick quite like this with the division bit.
 where, as in the previous proof,
 \[
 b_{\emptyset} = \frac{(x_1+x_2)(y_1+y_2)}{(1+x_1x_2)(1+y_1y_2)}
@@ -726,6 +730,7 @@ This function has derivative with respect to $w$ as
 \end{align*}
 Using the fact that $b_{\emptyset} = -b_{13}$, $b_{1} = -b_{3}$, $b_{2} = -b_{123}$, and $b_{12} = -b_{23}$ in addition to $p_{1} = p_{3}$, $p_{2} = p_{123}$, and $p_{12} = p_{23}$, we simplify the derivative as
 \begin{align*}
+%EM the negative sign                                                             V here doesn't seem right. We get the negative sign from going from p13 to the empty set.
 \ell'(w) &= \frac{1}{1+w} + \frac{p_{\emptyset}b_{\emptyset}}{1 + b_{\emptyset}w} - \frac{p_{13}b_{\emptyset}}{1 - b_{\emptyset}w} + \frac{p_{2}b_{2}}{1 + b_{2}w} - \frac{p_{2}b_{2}}{1 - b_{2}w} \\
          &\qquad \frac{p_{1}b_{1}}{1 + b_{1}w} - \frac{p_{1}b_{1}}{1 - b_{1}w} + \frac{p_{12}b_{12}}{1 + b_{12}w} - \frac{p_{12}b_{12}}{1 - b_{12}w}.\\
 \end{align*}
@@ -756,6 +761,7 @@ The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset
 \end{proof}
 
 %das: @EM did you say you wanted to get rid of these paragraphs? we never show there is a case where Fels > InvFels, just where it's equal...
+%EM It doesn't seem necessary to me. If we shrink the internal branch to zero, the two topologies match, right? It just seems like we need a sentence or two expressing that.
 As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
 We show this is a type of inconsistency in topology estimation by constructing a lower bound on the likelihood for the Felsenstein topology $\tau_2$ and demonstrating it is equal to the likelihood given the InvFels topology $\tau_1$ in the demarcated region of Fig.~\ref{fig:incons-analytic}.
 As we are interested in a lower bound, assume $\boldsymbol\xi=\boldsymbol\xi_0$, i.e., $\emptyset$ is the maximal ancestral state split for all site splits.
