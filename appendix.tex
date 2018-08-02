@@ -587,6 +587,7 @@ Region where $\emptyset$ is the maximal ancestral state split for each site spli
 
 \begin{lemma}
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
+Assume $x_1,y_1,x_2 < 1$.
 For $0 < x^*, y^* < 1$ and $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
 \[
 \hat{t} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi_0)
@@ -642,6 +643,13 @@ and
 a_{x_1,\emptyset} = x_2+wy_1+wy_2+x_2y_1y_2
 \]
 with similar definitions for the remaining site splits.
+By the assumption of $0 < x^*, y^* < 1$, we have $p_{\siteSplit_j} > 0$ for $j=1,\ldots,\nSiteSplits$, therefore we assume $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 \neq 0$ for all $j$ otherwise we obtain a zero value for our likelihood, i.e., $\shannonDivergence\rightarrow -\infty$.
+Assuming $x_1,y_1,x_2 < 1$ precludes all cases where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for some $j$.
+Moreover, we have
+\[
+\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) = \frac{1}{8} (c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1),
+\]
+which, being a probability, is greater than or equal to zero.
 Consider the derivative with respect to $x_1$
 \begin{align*}
 \frac{d}{dx_1} \shannonDivergence(x_1) = \sum_j \frac{p_{\siteSplit_j}a_{x_1,\siteSplit_j}}{c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1}
@@ -650,13 +658,8 @@ and focus on the $j$th term in the summation
 \[
 f_j(x_1) := \frac{p_{\siteSplit_j}a_{x_1,\siteSplit_j}}{c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1}.
 \]
-Recall that
-\[
-\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) = \frac{1}{8} (c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1),
-\]
-which, being a probability, is greater than or equal to zero.
-As we exclude the infinite branch length cases by letting $x_1,y_1,x_2,y_2,w > 0$, we have the strict inequality $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 > 0$.
-Thus, regardless of $a_{x_1,\siteSplit_j} \lessgtr 0$, $f_j$ is a decreasing function of $x_1$.
+%das: gah, had to roll back this line and add some stuff above since there are cases where some probabilities are 0. Maybe I'm being too careful? I don't think it's an issue, just an edge case that could induce wonkiness, so I included an assumption.
+Regardless of $a_{x_1,\siteSplit_j} \lessgtr 0$, $f_j$ is a decreasing function of $x_1$ as $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 > 0$.
 The remaining variables follow similar arguments.
 
 \begin{table}
@@ -710,6 +713,7 @@ This same process applied to the remaining variables shows the gradient of the f
 \]
 \end{proof}
 
+Since $x^*, y^* < 1$, the assumption that $x_1,y_1,x_2 < 1$ is reasonable.
 We now prove the main result.
 
 \topoInconsist*
