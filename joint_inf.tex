@@ -207,7 +207,7 @@ We use $\hat{\fullAncestralStates}_\nCols$ to denote an estimate for $\fullAnces
 \label{eq:profile_likelihood_topology_bl}
 (\hat{\tau}_\nCols, \hat{t}_\nCols) = \argmax_{\tau, t} \ L_\nCols'(\tau, t; \fullAlignment).
 \end{equation}
-In general, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities arising from taking maxima over ancestral state splits in Table~\ref{tab:farris_likelihoods} to obtain the likelihood term for each most likely ancestral state split, these terms depending on the unknown $(\tau, t)$.
+In general, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities arising from taking maxima over ancestral state splits in Table~\ref{tab:farris_likelihoods} to obtain the conditional likelihood term for each most likely ancestral state split, these terms depending on the unknown $(\tau, t)$.
 For this reason, in practice, the joint inference strategy estimates $\hat{\fullAncestralStates}_\nCols$ for a fixed $(\tau,t)$, then $(\hat{\tau}_\nCols,\hat{t}_\nCols)$ given $\hat{\fullAncestralStates}_\nCols$, maximizing each of these conditional objectives until convergence \citep{Sagulenko2018-xl}.
 
 
@@ -246,7 +246,7 @@ This result implies an inconsistency as we estimate the interior branch length t
 As we consider different topologies $\tau_1$ and $\tau_2$ for $\hat{t}$, the incorrect topology $\tau_2$ attains a likelihood value at its maximum equal to that of the true topology $\tau_1$ in the limit.
 In other words, if $w=1$ the objective functions $\ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)$ and $\ell_{\tau^*,t^*}(\tau_2, t; \boldsymbol\xi)$ are equivalent.
 We elaborate on this point in the Appendix.
-The proof is through analyzing upper and lower bounds of the potential likelihood forms in Table~\ref{tab:farris_likelihoods} and the gradients of the objective function $\ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)$ with respect to $t$.
+The proof is through analyzing upper and lower bounds of the potential conditional likelihood forms in Table~\ref{tab:farris_likelihoods} and the gradients of the objective function $\ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)$ with respect to $t$.
 
 \begin{figure}
 \centering
