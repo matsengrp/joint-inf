@@ -766,12 +766,15 @@ Using the bounds on $\hat{x}_1,\hat{y}_1,\hat{x}_2$, and $\hat{y}_2$ from Lemma~
 \]
 so that $\ell'(w)$ has lower bound
 \[
-\ell'_{L}(w) =  -\frac{p_{13}}{1/b_{\emptyset}^U - w} - \frac{p_{2}}{1/b_{2}^U - w} - \frac{p_{1}}{1/b_{1}^U - w} - \frac{p_{12}}{1/b_{12}^U - w} + \frac{1}{1+w}
+\ell'_{L}(w) :=  -\frac{p_{13}}{1/b_{\emptyset}^U - w} - \frac{p_{2}}{1/b_{2}^U - w} - \frac{p_{1}}{1/b_{1}^U - w} - \frac{p_{12}}{1/b_{12}^U - w} + \frac{1}{1+w}
 \]
+%EM Where is this shown in the previous proof?
 Note that $\ell'_{L}(w)$ is strictly decreasing in $w$ on the interval $(0,1]$, as shown in the previous proof, provided $b_{\emptyset}^U, b_{2}^U, b_{1}^U, b_{12}^U < 1$.
+%EM I agree that this condition shows that the lower bound is increasing on the entire interval. But how do we get to a conclusion about $\ell(.)$ itself?
 Thus, if $\ell'_{L}(1) > 0$ then $\ell(w; \boldsymbol\xi_0)$ is increasing on the entire interval $(0,1]$, including at the boundary $w=1$, and $\hat{w} \equiv 1$.
 The conditions on $x^*$ and $y^*$ where $b_{2}^U, b_{1}^U, b_{12}^U < 1$ and $\ell_L'(1) > 0$ are straightforward, the one on the derivative being
 \[
+%EM Hm... it seems like we need to exclude having the b's very close to 1. How do we do that?
 \ell'_{L}(1) =  -\frac{p_{13}b_{\emptyset}^U}{1-b_{\emptyset}^U} - \frac{p_{2}b_{2}^U}{1-b_{2}^U} - \frac{p_{1}b_{1}^U}{1-b_{1}^U} - \frac{p_{12}b_{12}^U}{1-b_{12}^U} + \frac{1}{2} > 0.
 \]
 The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state split is given in Fig.~\ref{fig:incons-analytic}, giving the region of generating parameters where $\hat{w}\equiv 1$.
@@ -779,6 +782,7 @@ The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset
 
 %das: @EM did you say you wanted to get rid of these paragraphs? we never show there is a case where Fels > InvFels, just where it's equal...
 %EM It doesn't seem necessary to me. If we shrink the internal branch to zero, the two topologies match, right? It just seems like we need a sentence or two expressing that.
+%EM Thoughts here?
 As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
 We show this is a type of inconsistency in topology estimation by constructing a lower bound on the likelihood for the Felsenstein topology $\tau_2$ and demonstrating it is equal to the likelihood given the InvFels topology $\tau_1$ in the demarcated region of Fig.~\ref{fig:incons-analytic}.
 As we are interested in a lower bound, assume $\boldsymbol\xi=\boldsymbol\xi_0$, i.e., $\emptyset$ is the maximal ancestral state split for all site splits.
