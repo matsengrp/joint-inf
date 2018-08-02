@@ -370,8 +370,6 @@ $\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 \hline
 \end{tabular}
 \caption{
-%EM Here and below, it seems a bit funny to call these likelihoods, as the Xi aren't observed.
-%das: went with "conditional likelihood"
 32 times conditional likelihood values for all site splits $\siteSplit_j$ and ancestral state splits $\ancestralSplit_k$ of the InvFels tree $\tau_1$.
 Ancestral states with $^*$ are never maximal provided parameters are in $(0,1]$.
 By combinations of $\ancestralSplit_k$, there are $3^5\cdot 4^2=3,888$ possible forms for the conditional likelihood.
@@ -428,6 +426,7 @@ We need the first map to be measurable, which is evident since the domain $\alph
 Finally, we must have the the second mapping be upper-semicontinuous for almost all $\alignmentColumn$.
 For a fixed ancestral state split $t \mapsto m_t(\alignmentColumn)$ is continuous for all $\alignmentColumn$.
 %EM Do discontinuities occur? In my mind we are taking the maximum of continuous functions, which is continuous.
+%EM We don't think they occur.
 Discontinuities occur when, if we move about in $\mathcal{T}$, a different ancestral state split becomes more likely, though when we are at a point of discontinuity we maximize over ancestral state splits, ensuring the upper-semicontinuous property of this mapping.
 This shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)$.
 
@@ -587,6 +586,8 @@ Region where $\emptyset$ is the maximal ancestral state split for each site spli
 
 \begin{lemma}
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
+%EM Perhaps we can say something about how this is not a strong assumption.
+%EM see below "By the assumption of"
 Assume $x_1,y_1,x_2 < 1$.
 For $0 < x^*, y^* < 1$ and $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
 \[
@@ -713,6 +714,7 @@ This same process applied to the remaining variables shows the gradient of the f
 \]
 \end{proof}
 
+%EM Also here.
 Since $x^*, y^* < 1$, the assumption that $x_1,y_1,x_2 < 1$ is reasonable.
 We now prove the main result.
 
@@ -775,8 +777,6 @@ so that $\ell'(w)$ has lower bound
 \[
 \ell'_{L}(w) :=  -\frac{p_{13}}{1/b_{\emptyset}^U - w} - \frac{p_{2}}{1/b_{2}^U - w} - \frac{p_{1}}{1/b_{1}^U - w} - \frac{p_{12}}{1/b_{12}^U - w} + \frac{1}{1+w}.
 \]
-%EM Where is this shown in the previous proof?
-%das: wrote out more explicitly. It's similar to the argument starting at L612.
 Each term in $\ell'_{L}(w)$ is of the form
 \[
 f(w) = \frac{p}{1/b + w} = \frac{p\cdot b}{1 + b\cdot w}
@@ -787,10 +787,10 @@ Since $b > -1$ and $w\in(0,1]$, $1+b\cdot w > 0$ and, thus, each term in $\ell'_
 %EM I agree that this condition shows that the lower bound is increasing on the entire interval. But how do we get to a conclusion about $\ell(.)$ itself?
 %das: The derivative of \ell, i.e., \ell', is a decreasing function on [0,1]. The value of \ell' at 1 is positive, thus, \ell' > 0 on all of [0,1]. Since \ell' > 0 on all of [0,1], \ell is increasing on all of [0,1] (I think via MVT?).
 Thus, if $\ell'_{L}(1) > 0$ then $\ell(w; \boldsymbol\xi_0)$ is increasing on the entire interval $(0,1]$, including at the boundary $w=1$, and $\hat{w} \equiv 1$.
+
+%EM Topic sentence here please.
 The conditions on $x^*$ and $y^*$ where $b_{2}^U, b_{1}^U, b_{12}^U < 1$ and $\ell_L'(1) > 0$ are straightforward, the one on the derivative being
 \[
-%EM Hm... it seems like we need to exclude having the b's very close to 1. How do we do that?
-%das: I thought that was taken care of by the condition above: $b_{2}^U, b_{1}^U, b_{12}^U < 1$. It should also be taken care of by the below inequality, too, right? Otherwise as b -> 1 this will go to -\infty, so the below will fail. Do you think they need to be well-separated from 1 instead of just strictly less than 1?
 \ell'_{L}(1) =  -\frac{p_{13}b_{\emptyset}^U}{1-b_{\emptyset}^U} - \frac{p_{2}b_{2}^U}{1-b_{2}^U} - \frac{p_{1}b_{1}^U}{1-b_{1}^U} - \frac{p_{12}b_{12}^U}{1-b_{12}^U} + \frac{1}{2} > 0.
 \]
 The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state split is given in Fig.~\ref{fig:incons-analytic}, giving the region of generating parameters where $\hat{w}\equiv 1$.
