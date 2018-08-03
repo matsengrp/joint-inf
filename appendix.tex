@@ -396,7 +396,7 @@ and
 \hat{t} = \arg\max_{t\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
 \]
 %EM perhaps a section reference for this big book?
-Using the notation in \citet{van1998asymptotic}, we let
+Using the notation in Section 5.2.1 in \citet{van1998asymptotic}, we let
 \[
 m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot [\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
 \]
@@ -443,7 +443,7 @@ For site split $\emptyset$,
 and this probability is unchanged when $x_1$ is exchanged with $x_2$ and $y_1$ is exchanged with $y_2$.
 Similarly, for site split $\{1,3\}$,
 \[
-    \Pr(\siteSplitRV=\{1,3\}\mid \tau_1, t) & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 -  w[x_1 + x_2][y_1 + y_2] + x_1y_1x_2y_2),
+    \Pr(\siteSplitRV=\{1,3\}\mid \tau_1, t) = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 -  w[x_1 + x_2][y_1 + y_2] + x_1y_1x_2y_2),
 \]
 which also is invariant to exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
 
@@ -473,16 +473,33 @@ for site split $\{1\}$ and
     \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2);
 \end{align*}
 for site split $\{3\}$, which shows the likelihood remains unchanged if $x_1$ and $x_2$ are swapped.
+
 %EM does this one need a different explanation now?
 %das: wrote out in more detail; I realize now I maybe took some of these intermediate steps for granted. Effectively we want to look at exchanging xs and ys together as well as separately, because they result in different arguments of symmetry, but still don't change the likelihood value.
-The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ independent of what we do with $x_1$ and $x_2$.
+%das: okay, even gorier detail---I think it's all correct now.
+For site splits $\{2\}$ and $\{1,2,3\}$, exchanging $y_1$ and $y_2$ swaps the values of the generating probabilities, independent of what happens to $x_1$ and $x_2$.
+In the case of the conditional likelihood values, we see that the values for these site splits swap as well, though, we look at the complement of the most likely ancestral state split.
+In other words, the function value for the conditional likelihood also swaps between site splits $\{2\}$ and $\{1,2,3\}$, though the most likely ancestral state split is different.
+Indeed,
+\begin{align*}
+    \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{2\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w);\\
+    \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{2\}, \tau_1, t)     &= \frac{1}{32}(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1-w);\\
+    \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{2\}, \tau_1, t)     &= \frac{1}{32}(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1-w);\\
+    \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{2\}, \tau_1, t)   &= \frac{1}{32}(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1+w);
+\end{align*}
+for site split $\{2\}$ and
+\begin{align*}
+    \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1,2,3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w);\\
+    \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1,2,3\}, \tau_1, t)     &= \frac{1}{32}(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w);\\
+    \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1,2,3\}, \tau_1, t)     &= \frac{1}{32}(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1-w);\\
+    \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1,2,3\}, \tau_1, t)   &= \frac{1}{32}(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w);
+\end{align*}
+for site split $\{1,2,3\}$, which shows the likelihood remains unchanged if $y_1$ and $y_2$ are swapped.
 
 For site splits $\{1,2\}$ and $\{2,3\}$ we see the following.
 By exchanging only $x_1$ with $x_2$, the generating probabilities and conditional likelihood values swap between these two site splits.
-The same is true of the generating probabilities if we exchange only $y_1$ and $y_2$, except, for the case of the conditional likelihood values, we look at the complement of the most likely ancestral state split.
-In other words, the function value for the conditional likelihood also swaps between site splits $\{1,2\}$ and $\{2,3\}$, though the most likely ancestral state split is different.
-Now, if we exchange both $x_1$ with $x_2$ and $y_1$ with $y_2$, we see these generating probabilities remain unchanged.
-Again, for the conditional likelihood values, we look at the complement of the most likely ancestral state split and see these values also remain unchanged.
+The same is true of the generating probabilities if we exchange only $y_1$ and $y_2$, except, for the case of the conditional likelihood values, we again look at the complement of the most likely ancestral state split as in the case of splits $\{2\}$ and $\{1,2,3\}$.
+Now, if we exchange both $x_1$ with $x_2$ and $y_1$ with $y_2$, we see these generating probabilities remain unchanged, and, for the conditional likelihood values, we look at the complement of the most likely ancestral state split and see these values also remain unchanged.
 
 Exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$.
 Thus, we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$ and $y_2 \ge y_1$, with these conditional likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
@@ -714,10 +731,23 @@ using Tables~\ref{tab:gen-sitepatprob} and~\ref{tab:likelihoods-restricted}, is
 where $C_{x_1}$ is a function of $y_1,x_2,y_2,$ and $w$.
 The derivative with respect to $x_1$ is
 \[
-\frac{d}{dx_1} \ell^C(x_1; \boldsymbol\xi_0) = \frac{-x_1+x^*(y^*)^2}{1-x_1^2}
+\frac{d}{dx_1} \ell^C(x_1; \boldsymbol\xi_0) = \frac{-x_1+x^*(y^*)^2}{1-x_1^2},
 \]
 which is negative for all $x_1 \ge x^*$.
-This same process applied to the remaining variables shows the gradient of the full likelihood is negative for $x_1,x_2 \ge x^*$ and $y_1 \ge y^*$ and positive for $y_2,w \ge y^*$, yielding the constraints
+This same process applied to $x_2$ and $y_1$ shows the gradient of the full likelihood is negative for $x_2 \ge x^*$ and $y_1 \ge y^*$.
+
+The variables $y_2$ and $w$ require the following.
+Consider the conditional log-likelihood with respect to $w$
+\[
+\ell^C(w; \boldsymbol\xi_0) := \log(1+w) + C_{w}(x_1,y_1,x_2,y_2)
+\]
+with derivative with respect to $w$
+\[
+\frac{d}{dw} \ell^C(w; \boldsymbol\xi_0) = \frac{1}{1+w},
+\]
+which is positive for all $w \ge 0$.
+As the gradient of the marginal log-likelihood is a decreasing function in $w$ and has a zero crossing at $y^*$, the addition of the derivative of the conditional log-likelihood makes the gradient of the full log-likelihood positive for all $w \le y^*$.
+The same argument holds for $y_2$, yielding the constraints
 \[
 \hat{x}_1,\hat{x}_2 \in (0, x^*], \ \hat{y}_1 \in (0, y^*], \text{and}\ \hat{y}_2,\hat{w} \in [y^*, 1].
 \]
