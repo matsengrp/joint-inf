@@ -2,7 +2,7 @@
 
 \subsection*{Site split formulation}
 We begin by introducing ``site splits.''
-One application of site splits is to formalize the notion that a given site pattern is equally probable to its complement under the binary symmetric model.
+We use site splits to formalize the notion that a given site pattern is equally probable to its complement under the binary symmetric model.
 This is a standard step in the description of the Hadamard transform (Section 8.6 of \citet{Semple2003-em}), although our approach is complicated slightly by the inclusion of ancestral states.
 
 Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$.
@@ -61,7 +61,7 @@ and
 \]
 \end{definition}
 The mapping $\patternToSplit$ operates by returning the tips labeled as $1$ in a site pattern to obtain a site split in $\mathcal{P}(\siteSplitSet)$ if the set of tips labeled $1$ is not in $\mathcal{P}(\siteSplitSet)$.
-The mapping $\ancestralToSplit$ is defined by whether the tip states have their complements taken or not: if the set of tips labeled $1$ in $\alignmentColumn$ is in $\mathcal{P}(\siteSplitSet)$, $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is the set of tips labeled $1$ in $\ancestralStateColumn$; otherwise, the set of tips labeled $1$ in $\overline{\alignmentColumn}$ necessarily is in $\mathcal{P}(\siteSplitSet)$.
+The mapping $\ancestralToSplit$ is defined by whether the tip states have their complements taken or not: if the set of tips labeled $1$ in $\alignmentColumn$ is in $\mathcal{P}(\siteSplitSet)$, $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is the set of tips labeled $1$ in $\ancestralStateColumn$; otherwise, the set of tips labeled $1$ in $\overline{\alignmentColumn}$ necessarily is in $\mathcal{P}(\siteSplitSet)$ and so $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is $\overline{\ancestralStateColumn}$.
 
 For the $i$th factor of \eqref{eq:full_likelihood}, we decompose the likelihood into its marginal and conditional components as
 \[
@@ -98,7 +98,7 @@ for some $j$.
 Thus, each term in the likelihood can be collapsed into terms relating only to site splits and ancestral state splits, indexed by $j$, as opposed to individual observations, indexed by $i$.
 
 \subsection*{Example}
-We follow with an expository example computing these probabilities and likelihoods.
+We follow with an example computing these probabilities and likelihoods.
 Consider the fixed, binary four-taxon tree $\tau_1$ in Fig.~\ref{fig:farris-fels-top}a.
 The set of all possible character assignments is
 \begin{align*}
@@ -395,6 +395,7 @@ and
 \[
 \hat{t} = \arg\max_{t\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
 \]
+%EM perhaps a section reference for this big book?
 Using the notation in \citet{van1998asymptotic}, we let
 \[
 m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot [\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
@@ -431,7 +432,7 @@ This ensures the upper-semicontinuous property of this mapping, and shows $\hat{
 \subsection*{Properties of the joint objective function}
 
 Consider the InvFels tree $\tau_1$ with arbitrary fidelities, i.e., $t=\{x_1,y_1,x_2,y_2,w\}$.
-We show that the likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$ remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
+Next we show that the likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$ remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
 Using the Hadamard transform, we calculate the generating probabilities on the InvFels tree.
 For site split $\emptyset$,
 \begin{align*}
@@ -451,8 +452,8 @@ and for site split $\{3\}$ we have
     \Pr(\siteSplitRV=\{3\}\mid \tau_1, t) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[x_1 - x_2][y_1 + y_2] - x_1y_1x_2y_2)
 \end{align*}
 meaning if we exchange the values of $x_1$ and $x_2$ then these probabilities swap values.
-We show that for site splits $\{1\}$ and $\{3\}$, exchanging $x_1$ and $x_2$ also swaps the values of the conditional likelihood terms.
-The corresponding possibilities for the conditional likelihood values are
+We show that for site splits $\{1\}$ and $\{3\}$, exchanging $x_1$ and $x_2$ also swaps the values of the conditional likelihood terms (Table~\ref{tab:farris_likelihoods}).
+Indeed, the corresponding possibilities for the conditional likelihood values are
 \begin{align*}
     \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2); \\
     \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1+y_1)(1+y_2); \\
@@ -467,7 +468,9 @@ for site split $\{1\}$ and
     \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2);
 \end{align*}
 for site split $\{3\}$, which shows the likelihood remains unchanged if $x_1$ and $x_2$ are swapped.
-The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ as well as $\{1,2\}$ and $\{1,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
+The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$
+%EM does this one need a different explanation now?
+as well as $\{1,2\}$ and $\{2,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
 The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
 Exchanging $x_1$ and $x_2$ also does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$.
 
