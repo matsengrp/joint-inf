@@ -395,7 +395,6 @@ and
 \[
 \hat{t} = \arg\max_{t\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
 \]
-%EM perhaps a section reference for this big book?
 Using the notation in Section 5.2.1 in \citet{van1998asymptotic}, we let
 \[
 m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot [\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
@@ -474,9 +473,6 @@ for site split $\{1\}$ and
 \end{align*}
 for site split $\{3\}$, which shows the likelihood remains unchanged if $x_1$ and $x_2$ are swapped.
 
-%EM does this one need a different explanation now?
-%das: wrote out in more detail; I realize now I maybe took some of these intermediate steps for granted. Effectively we want to look at exchanging xs and ys together as well as separately, because they result in different arguments of symmetry, but still don't change the likelihood value.
-%das: okay, even gorier detail---I think it's all correct now.
 For site splits $\{2\}$ and $\{1,2,3\}$, exchanging $y_1$ and $y_2$ swaps the values of the generating probabilities, independent of what happens to $x_1$ and $x_2$.
 In the case of the conditional likelihood values, we see that the values for these site splits swap as well, though, we look at the complement of the most likely ancestral state split.
 In other words, the function value for the conditional likelihood also swaps between site splits $\{2\}$ and $\{1,2,3\}$, though the most likely ancestral state split is different.
@@ -825,8 +821,6 @@ Since $b > -1$ and $w\in(0,1]$, $1+b\cdot w > 0$ and, thus, each term in $\ell'_
 Thus, if $\ell'_{L}(1) > 0$, since $\ell'_{L}(w)$ is decreasing on $(0,1]$ then $\ell'_{L}(w) > 0$ for all $w\in (0,1]$.
 Since $\ell'(w) > \ell'_{L}(w)$ for $w\in(0,1]$, this implies $\ell'(w) > 0$, which further implies $\ell(w; \boldsymbol\xi_0)$ is increasing on the entire interval $(0,1]$, including at the boundary $w=1$, and $\hat{w} \equiv 1$.
 
-%EM Topic sentence here please.
-%das: made more explicit and introduced more gently
 We now construct the conditions on $x^*$ and $y^*$ that are required for $\hat{w}\equiv 1$:
 \[
 C1-C3: b_{2}^U, b_{1}^U, b_{12}^U < 1,
