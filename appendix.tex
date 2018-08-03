@@ -427,8 +427,9 @@ Finally, we must have the the second mapping be upper-semicontinuous for almost 
 For a fixed ancestral state split $t \mapsto m_t(\alignmentColumn)$ is continuous for all $\alignmentColumn$.
 %EM Do discontinuities occur? In my mind we are taking the maximum of continuous functions, which is continuous.
 %EM We don't think they occur.
-Discontinuities occur when, if we move about in $\mathcal{T}$, a different ancestral state split becomes more likely, though when we are at a point of discontinuity we maximize over ancestral state splits, ensuring the upper-semicontinuous property of this mapping.
-This shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)$.
+%das: done
+If we move about in $\mathcal{T}$, a different ancestral state split becomes more likely, though when we maximize over ancestral state splits we obtain a continuous function since the maximum over continuous functions is also continuous.
+This ensures the upper-semicontinuous property of this mapping, and shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)$.
 
 \subsection*{Properties of the joint objective function}
 
@@ -588,7 +589,7 @@ Region where $\emptyset$ is the maximal ancestral state split for each site spli
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
 %EM Perhaps we can say something about how this is not a strong assumption.
 %EM see below "By the assumption of"
-Assume $x_1,y_1,x_2 < 1$.
+%das: moved below
 For $0 < x^*, y^* < 1$ and $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
 \[
 \hat{t} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi_0)
@@ -645,7 +646,8 @@ a_{x_1,\emptyset} = x_2+wy_1+wy_2+x_2y_1y_2
 \]
 with similar definitions for the remaining site splits.
 By the assumption of $0 < x^*, y^* < 1$, we have $p_{\siteSplit_j} > 0$ for $j=1,\ldots,\nSiteSplits$, therefore we assume $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 \neq 0$ for all $j$ otherwise we obtain a zero value for our likelihood, i.e., $\shannonDivergence\rightarrow -\infty$.
-Assuming $x_1,y_1,x_2 < 1$ precludes all cases where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for some $j$.
+In other words, we make the assumption that $x_1,y_1,x_2 < 1$, precluding all cases where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for some $j$.
+This assumption is reasonable as the likelihood is never maximized at these values where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$.
 Moreover, we have
 \[
 \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) = \frac{1}{8} (c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1),
@@ -715,7 +717,8 @@ This same process applied to the remaining variables shows the gradient of the f
 \end{proof}
 
 %EM Also here.
-Since $x^*, y^* < 1$, the assumption that $x_1,y_1,x_2 < 1$ is reasonable.
+%das: reworded
+Since $x^*, y^* < 1$, the assumption that $x_1,y_1,x_2 < 1$ does not contradict with the statement of Lemma~\ref{lemma:bounds}.
 We now prove the main result.
 
 \topoInconsist*
@@ -786,14 +789,20 @@ Assume $b_{\emptyset}^U, b_{2}^U, b_{1}^U, b_{12}^U < 1$, so that $-1 < b < 1$.
 Since $b > -1$ and $w\in(0,1]$, $1+b\cdot w > 0$ and, thus, each term in $\ell'_{L}(w)$ is a decreasing function in $w$.
 %EM I agree that this condition shows that the lower bound is increasing on the entire interval. But how do we get to a conclusion about $\ell(.)$ itself?
 %das: The derivative of \ell, i.e., \ell', is a decreasing function on [0,1]. The value of \ell' at 1 is positive, thus, \ell' > 0 on all of [0,1]. Since \ell' > 0 on all of [0,1], \ell is increasing on all of [0,1] (I think via MVT?).
-Thus, if $\ell'_{L}(1) > 0$ then $\ell(w; \boldsymbol\xi_0)$ is increasing on the entire interval $(0,1]$, including at the boundary $w=1$, and $\hat{w} \equiv 1$.
+Thus, if $\ell'_{L}(1) > 0$, since $\ell'_{L}(w)$ is decreasing on $(0,1]$ then $\ell'_{L}(w) > 0$ for all $w\in (0,1]$.
+Since $\ell'(w) > \ell'_{L}(w)$ for $w\in(0,1]$, this implies $\ell'(w) > 0$, which further implies $\ell(w; \boldsymbol\xi_0)$ is increasing on the entire interval $(0,1]$, including at the boundary $w=1$, and $\hat{w} \equiv 1$.
 
 %EM Topic sentence here please.
-The conditions on $x^*$ and $y^*$ where $b_{2}^U, b_{1}^U, b_{12}^U < 1$ and $\ell_L'(1) > 0$ are straightforward, the one on the derivative being
+%das: made more explicit and introduced more gently
+We now construct the conditions on $x^*$ and $y^*$ that are required for $\hat{w}\equiv 1$:
 \[
-\ell'_{L}(1) =  -\frac{p_{13}b_{\emptyset}^U}{1-b_{\emptyset}^U} - \frac{p_{2}b_{2}^U}{1-b_{2}^U} - \frac{p_{1}b_{1}^U}{1-b_{1}^U} - \frac{p_{12}b_{12}^U}{1-b_{12}^U} + \frac{1}{2} > 0.
+C1-C3: b_{2}^U, b_{1}^U, b_{12}^U < 1,
 \]
-The set of $x^*,y^*$ satisfying these conditions as well as those for $\emptyset$ being the most likely ancestral state split is given in Fig.~\ref{fig:incons-analytic}, giving the region of generating parameters where $\hat{w}\equiv 1$.
+\[
+C4: -\frac{p_{13}b_{\emptyset}^U}{1-b_{\emptyset}^U} - \frac{p_{2}b_{2}^U}{1-b_{2}^U} - \frac{p_{1}b_{1}^U}{1-b_{1}^U} - \frac{p_{12}b_{12}^U}{1-b_{12}^U} + \frac{1}{2} > 0.
+\]
+Conditions $C1-C3$ are needed so that $\ell'_{L}(w)$ is a decreasing function on $(0,1]$, while condition $C4$ is the one on $\ell'_{L}(1) > 0$, i.e., so that $\ell'(w)$ is positive on $(0,1]$.
+The set of $x^*,y^*$ satisfying conditions $C1-C4$ as well as those for $\emptyset$ being the most likely ancestral state split is given in Fig.~\ref{fig:incons-analytic}, giving the region of generating parameters where $\hat{w}\equiv 1$.
 \end{proof}
 
 %das: @EM did you say you wanted to get rid of these paragraphs? we never show there is a case where Fels > InvFels, just where it's equal...
