@@ -441,6 +441,11 @@ For site split $\emptyset$,
                                               & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 +  w[x_1 + x_2][y_1 + y_2] + x_1y_1x_2y_2),
 \end{align*}
 and this probability is unchanged when $x_1$ is exchanged with $x_2$ and $y_1$ is exchanged with $y_2$.
+Similarly, for site split $\{1,3\}$,
+\[
+    \Pr(\siteSplitRV=\{1,3\}\mid \tau_1, t) & = \frac{1}{8} (1 + x_1x_2 +  y_1y_2 -  w[x_1 + x_2][y_1 + y_2] + x_1y_1x_2y_2),
+\]
+which also is invariant to exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
 
 All other generating probabilities differ only in the signs of each term (see Table~\ref{tab:gen-sitepatprob}).
 For example, for site split $\{1\}$ we have
@@ -451,8 +456,8 @@ and for site split $\{3\}$ we have
 \begin{align*}
     \Pr(\siteSplitRV=\{3\}\mid \tau_1, t) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[x_1 - x_2][y_1 + y_2] - x_1y_1x_2y_2)
 \end{align*}
-meaning if we exchange the values of $x_1$ and $x_2$ then these probabilities swap values.
-We show that for site splits $\{1\}$ and $\{3\}$, exchanging $x_1$ and $x_2$ also swaps the values of the conditional likelihood terms (Table~\ref{tab:farris_likelihoods}).
+meaning if we exchange the values of $x_1$ and $x_2$ then these probabilities swap values, regardless of what we do with $y_1$ and $y_2$.
+We show that for site splits $\{1\}$ and $\{3\}$, exchanging $x_1$ and $x_2$ also swaps the values of the conditional likelihood terms, again independent of what happens to $y_1$ and $y_2$ (Table~\ref{tab:farris_likelihoods}).
 Indeed, the corresponding possibilities for the conditional likelihood values are
 \begin{align*}
     \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2); \\
@@ -468,14 +473,19 @@ for site split $\{1\}$ and
     \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2);
 \end{align*}
 for site split $\{3\}$, which shows the likelihood remains unchanged if $x_1$ and $x_2$ are swapped.
-The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$
 %EM does this one need a different explanation now?
-as well as $\{1,2\}$ and $\{2,3\}$ by exchanging both $x_1$ with $x_2$ and $y_1$ with $y_2$.
-The split $\{1,3\}$ is unchanged by exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$.
-Exchanging $x_1$ and $x_2$ also does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$.
+%das: wrote out in more detail; I realize now I maybe took some of these intermediate steps for granted. Effectively we want to look at exchanging xs and ys together as well as separately, because they result in different arguments of symmetry, but still don't change the likelihood value.
+The same can be done for the splits $\{2\}$ and $\{1,2,3\}$ by exchanging $y_1$ and $y_2$ independent of what we do with $x_1$ and $x_2$.
 
-Thus, we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$.
-An analogous statement holds for $y_2 \ge y_1$, with these conditional likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
+For site splits $\{1,2\}$ and $\{2,3\}$ we see the following.
+By exchanging only $x_1$ with $x_2$, the generating probabilities and conditional likelihood values swap between these two site splits.
+The same is true of the generating probabilities if we exchange only $y_1$ and $y_2$, except, for the case of the conditional likelihood values, we look at the complement of the most likely ancestral state split.
+In other words, the function value for the conditional likelihood also swaps between site splits $\{1,2\}$ and $\{2,3\}$, though the most likely ancestral state split is different.
+Now, if we exchange both $x_1$ with $x_2$ and $y_1$ with $y_2$, we see these generating probabilities remain unchanged.
+Again, for the conditional likelihood values, we look at the complement of the most likely ancestral state split and see these values also remain unchanged.
+
+Exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$.
+Thus, we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$ and $y_2 \ge y_1$, with these conditional likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
 
 \begin{table}
 \centering
