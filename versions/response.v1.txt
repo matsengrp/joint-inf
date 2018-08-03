@@ -19,16 +19,11 @@ As pointed out by reviewer 4, this answers an open question, which has special r
 We provide some numerical results to confirm our derivations and to provide a comparison.
 
 %das: added
-This work is not the final word on the joint inference question from an applied perspective, as we now emphasize with an expanded Discussion section as well as the addition of these lines:
-"Examples with larger trees and more realistic mutation models fall within the scope of an extension to applied models.
-Further study is needed to determine the impact of these results on problems that are of interest to practitioners."
-
+This work is not the final word on the joint inference question from an applied perspective, as we now emphasize with an expanded Discussion section.
 Even if we were to greatly expand the sections doing numerical optimization, these results would only be for the binary symmetric model, which is never applied in practice.
 An investigation of these aspects deserves another paper.
 We have added clarification of these points to the discussion:
-"All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases.
-Examples with larger trees and more realistic mutation models fall within the scope of an extension to applied models.
-Further study is needed to determine the impact of these results on problems that are of interest to practitioners."
+"All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases, such as applied examples with larger trees or more realistic mutation models that are of interest to practitioners."
 
 
 > Finally, please pay VERY careful attention to improving your
@@ -240,7 +235,7 @@ We have clarified this with an explicit definition of A^p where we introduce A, 
 > what are they?
 
 We have made this more precise and directly referenced the inequalities:
-"In general, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities arising from taking maxima over ancestral state splits in Table~\ref{tab:farris_likelihoods} to obtain the likelihood term for each most likely ancestral state split, these terms depending on the unknown $(\tau, t)$.
+"In general, the functional form of \eqref{eq:profile_likelihood} is determined by inequalities arising from taking maxima over ancestral states (Table~\ref{tab:farris_likelihoods}) to obtain each conditional likelihood term, these terms depending on the unknown $(\tau, t)$.
 For this reason, in practice, the joint inference strategy estimates $\hat{\fullAncestralStates}_\nCols$ for a fixed $(\tau,t)$, then $(\hat{\tau}_\nCols,\hat{t}_\nCols)$ given $\hat{\fullAncestralStates}_\nCols$, maximizing each of these conditional objectives until convergence \citep{Sagulenko2018-xl}."
 
 > - l 118-124: clarify are tau1 and tau2 Farris and Felsenstein?
@@ -402,7 +397,7 @@ This expands on the empirical findings of poor estimation given long branches in
 This is an interesting suggestion but is different than our goal, which was to establish inconsistency.
 Moreover, in the revised manuscript we see cases where assigning ML ancestral states results in longer branches, not shorter ones (Lemma 3).
 We believe the inaccuracies have more to do with the specific choice of which ancestral state is maximal than asymmetries in the tree:
-"This is apparent in the ``long $x^*$, short $y^*$'' scenario as these are the cases in which $\emptyset$ is the most likely ancestral state split if we let $x_1=x_2=x^*$ and $y_1=y_2=y^*$ (Table~\ref{tab:likelihoods})."
+"This is apparent in the ``long $x^*$, short $y^*$'' scenario as these are the cases in which the most likely ancestral states are the same for each internal node letting $x_1=x_2=x^*$ and $y_1=y_2=y^*$ ($\boldsymbol\xi=\emptyset$ in Table~\ref{tab:likelihoods})."
 
 Asymmetries can drive these particular choices, but Fig. 3 in the revised manuscript shows that almost half of the parameter space results in an interior branch length being estimated as zero.
 We do not think providing an argument about accumulating inaccuracies would elucidate why such starkly-defined regions of inconsistency exist.
