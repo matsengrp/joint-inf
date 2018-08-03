@@ -425,9 +425,6 @@ t \mapsto m_t(\alignmentColumn).
 We need the first map to be measurable, which is evident since the domain $\alphabet^\nSiteRows$ of the mapping is a finite set, and so all subsets of the domain are also finite and thus measurable.
 Finally, we must have the the second mapping be upper-semicontinuous for almost all $\alignmentColumn$.
 For a fixed ancestral state split $t \mapsto m_t(\alignmentColumn)$ is continuous for all $\alignmentColumn$.
-%EM Do discontinuities occur? In my mind we are taking the maximum of continuous functions, which is continuous.
-%EM We don't think they occur.
-%das: done
 If we move about in $\mathcal{T}$, a different ancestral state split becomes more likely, though when we maximize over ancestral state splits we obtain a continuous function since the maximum over continuous functions is also continuous.
 This ensures the upper-semicontinuous property of this mapping, and shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)$.
 
@@ -587,9 +584,6 @@ Region where $\emptyset$ is the maximal ancestral state split for each site spli
 
 \begin{lemma}
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
-%EM Perhaps we can say something about how this is not a strong assumption.
-%EM see below "By the assumption of"
-%das: moved below
 For $0 < x^*, y^* < 1$ and $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
 \[
 \hat{t} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi_0)
@@ -716,8 +710,6 @@ This same process applied to the remaining variables shows the gradient of the f
 \]
 \end{proof}
 
-%EM Also here.
-%das: reworded
 Since $x^*, y^* < 1$, the assumption that $x_1,y_1,x_2 < 1$ does not contradict with the statement of Lemma~\ref{lemma:bounds}.
 We now prove the main result.
 
@@ -787,8 +779,6 @@ f(w) = \frac{p}{1/b + w} = \frac{p\cdot b}{1 + b\cdot w}
 with $0 \le p \le 1$.
 Assume $b_{\emptyset}^U, b_{2}^U, b_{1}^U, b_{12}^U < 1$, so that $-1 < b < 1$.
 Since $b > -1$ and $w\in(0,1]$, $1+b\cdot w > 0$ and, thus, each term in $\ell'_{L}(w)$ is a decreasing function in $w$.
-%EM I agree that this condition shows that the lower bound is increasing on the entire interval. But how do we get to a conclusion about $\ell(.)$ itself?
-%das: The derivative of \ell, i.e., \ell', is a decreasing function on [0,1]. The value of \ell' at 1 is positive, thus, \ell' > 0 on all of [0,1]. Since \ell' > 0 on all of [0,1], \ell is increasing on all of [0,1] (I think via MVT?).
 Thus, if $\ell'_{L}(1) > 0$, since $\ell'_{L}(w)$ is decreasing on $(0,1]$ then $\ell'_{L}(w) > 0$ for all $w\in (0,1]$.
 Since $\ell'(w) > \ell'_{L}(w)$ for $w\in(0,1]$, this implies $\ell'(w) > 0$, which further implies $\ell(w; \boldsymbol\xi_0)$ is increasing on the entire interval $(0,1]$, including at the boundary $w=1$, and $\hat{w} \equiv 1$.
 
@@ -805,10 +795,6 @@ Conditions $C1-C3$ are needed so that $\ell'_{L}(w)$ is a decreasing function on
 The set of $x^*,y^*$ satisfying conditions $C1-C4$ as well as those for $\emptyset$ being the most likely ancestral state split is given in Fig.~\ref{fig:incons-analytic}, giving the region of generating parameters where $\hat{w}\equiv 1$.
 \end{proof}
 
-%das: @EM did you say you wanted to get rid of these paragraphs? we never show there is a case where Fels > InvFels, just where it's equal...
-%EM It doesn't seem necessary to me. If we shrink the internal branch to zero, the two topologies match, right? It just seems like we need a sentence or two expressing that.
-%EM Thoughts here?
-%das: I kept the one paragraph showing they're equal, but maybe even that's too much?
 As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
 It is easy to see that assuming $\emptyset$ for each maximal ancestral state split results in the same conditional log-likelihood for $\tau_1$ and $\tau_2$.
 Moreover, if $w=1$, the internal branch becomes zero-length and the two topologies are indistinguishable.
