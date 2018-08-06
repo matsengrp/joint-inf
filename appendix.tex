@@ -432,6 +432,7 @@ This ensures the upper-semicontinuous property of this mapping, and shows $\hat{
 
 Consider the InvFels tree $\tau_1$ with arbitrary fidelities, i.e., $t=\{x_1,y_1,x_2,y_2,w\}$.
 Next we show that the likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$ remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
+Although this property should not be surprising due to symmetry, we write it out for completeness.
 Using the Hadamard transform, we calculate the generating probabilities on the InvFels tree.
 For site split $\emptyset$,
 \begin{align*}
@@ -497,8 +498,8 @@ By exchanging only $x_1$ with $x_2$, the generating probabilities and conditiona
 The same is true of the generating probabilities if we exchange only $y_1$ and $y_2$, except, for the case of the conditional likelihood values, we again look at the complement of the most likely ancestral state split as in the case of splits $\{2\}$ and $\{1,2,3\}$.
 Now, if we exchange both $x_1$ with $x_2$ and $y_1$ with $y_2$, we see these generating probabilities remain unchanged, and, for the conditional likelihood values, we look at the complement of the most likely ancestral state split and see these values also remain unchanged.
 
-Exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$.
-Thus, we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$ and $y_2 \ge y_1$, with these conditional likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
+Thus exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$.
+Therefore we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$ and $y_2 \ge y_1$, with these conditional likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
 
 \begin{table}
 \centering
@@ -628,7 +629,7 @@ By Gibbs' inequality, this function attains a unique maximum when
 \[
 \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)
 \]
-for all $j=1,\ldots,\nSiteSplits$ with $t^*=\{x^*,y^*,x^*,y^*,y^*\}$.
+for all $j=1,\ldots,\nSiteSplits$ with $t^*=\{x^*,y^*,x^*,y^*,y^*\}$ and $\tau^*$ being the InvFels tree $\tau_1$.
 We show that this implies $t=t^*$.
 Note that exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not affect the marginal log-likelihood, and, as it has a unique maximum, we have $x_1=x_2=x$ and $y_1=y_2=y$ at this maximum.
 Referring to the top of Table~\ref{tab:gen-sitepatprob}, we set up simultaneous equations as follows.
@@ -656,7 +657,7 @@ The marginal log-likelihood as a function of $x_1$ is
 \shannonDivergence(x_1) = \sum_j p_{\siteSplit_j} \log(c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1) - \log 8
 \end{align*}
 where $c_{x_1,\siteSplit_j}$ and $a_{x_1,\siteSplit_j}$ are functions of $y_1,x_2,y_2,$ and $w$.
-For example, reading from Table~\ref{tab:gen-sitepatprob},
+For example, reading from the middle panel of Table~\ref{tab:gen-sitepatprob},
 \[
 c_{x_1,\emptyset} = 1+y_1y_2+wx_2y_1+wx_2y_2
 \]
@@ -665,9 +666,12 @@ and
 a_{x_1,\emptyset} = x_2+wy_1+wy_2+x_2y_1y_2
 \]
 with similar definitions for the remaining site splits.
+
+%EM Could you restructure this paragraph with a topic-sentence statement of the assumption we want to make, then evidence that it's ok? It roves around a good bit.
 By the assumption of $0 < x^*, y^* < 1$, we have $p_{\siteSplit_j} > 0$ for $j=1,\ldots,\nSiteSplits$, therefore we assume $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 \neq 0$ for all $j$ otherwise we obtain a zero value for our likelihood, i.e., $\shannonDivergence\rightarrow -\infty$.
 In other words, we make the assumption that $x_1,y_1,x_2 < 1$, precluding all cases where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for some $j$.
 This assumption is reasonable as the likelihood is never maximized at these values where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$.
+
 Moreover, we have
 \[
 \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) = \frac{1}{8} (c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1),
@@ -708,6 +712,7 @@ $\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y
 \end{table}
 
 We now focus on the conditional log-likelihood.
+%EM These "Assume"s feel frightening to the reader. Can we replace with "Under our stated hypothesis"?
 Assume $\emptyset$ is the most likely ancestral state split for all site splits.
 In this case, the conditional log-likelihood has no ambiguity, and has terms given as the log of those in Table~\ref{tab:likelihoods-restricted}.
 We focus on the derivative with respect to $x_1$, aggregating all terms involving $x_2,y_1,y_2,$ and $w$ into a constant term.
@@ -742,6 +747,7 @@ with derivative with respect to $w$
 \frac{d}{dw} \ell^C(w; \boldsymbol\xi_0) = \frac{1}{1+w},
 \]
 which is positive for all $w \ge 0$.
+%EM Does the zero crossing need additional argument? I'm guessing that you get this from the gradient-is-zero thing from the unique-maximum argument above. But that's just that it's zero when we are doing maximization of all of the variables at once. Here aren't we wanting to make an argument for lots of x_i and y_i?
 As the gradient of the marginal log-likelihood is a decreasing function in $w$ and has a zero crossing at $y^*$, the addition of the derivative of the conditional log-likelihood makes the gradient of the full log-likelihood positive for all $w \le y^*$.
 The same argument holds for $y_2$, yielding the constraints
 \[
@@ -749,6 +755,7 @@ The same argument holds for $y_2$, yielding the constraints
 \]
 \end{proof}
 
+%EM Are we saying that Lemma 3 applies in this case? I think so but it could be more specific.
 Since $x^*, y^* < 1$, the assumption that $x_1,y_1,x_2 < 1$ does not contradict with the statement of Lemma~\ref{lemma:bounds}.
 We now prove the main result.
 
