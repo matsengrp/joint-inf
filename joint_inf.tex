@@ -90,7 +90,7 @@
 
 \allowdisplaybreaks
 
-\title{Joint maximum-likelihood of phylogenies and ancestral states is not consistent}
+\title{Joint maximum-likelihood of phylogeny and ancestral states is not consistent}
 
 \author[1]{David A. Shaw}
 \author[1]{Frederick A. Matsen IV\thanks{Corresponding author. Email: \url{matsen@fredhutch.org}}}
@@ -233,18 +233,19 @@ We show in the Appendix that $\hat{t}_\nCols \rightarrow \hat{t}$, allowing us t
 
 Our main theorem states that given data generated on $\tau_1$ there exist true nonzero branch lengths such that the estimator $\hat{t}$ maximizing the right-hand side of \eqref{eq:exp-log-lik} has an internal branch of length zero.
 %EM A funny thing: this theorem as stated is really under the hypothesis that the ancestral state is emptyset. We can combine this with the lemmas to remove this assumption, but it seems like we should do this for the reader. Time for a corollary?
+%das: ok, I reworded it a bit; let me know how you think it sounds.
 \begin{restatable}{theorem}{topoInconsist}
 \label{thm:main_theorem}
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
 %EM Can we say "open set" or "set of positive measure"?
-For $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$ there exists a set of $0 < x^*, y^* < 1$ such that the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
+There exists an open set of $0 < x^*, y^* < 1$ such that for some $\boldsymbol\xi$ the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
 \[
-\hat{t} = \arg\max_{t} \ \ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi_0)
+\hat{t} = \arg\max_{t} \ \ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)
 \]
 has the property $\hat{w}\equiv 1$.
 \end{restatable}
 
-This result implies an inconsistency as we estimate the interior branch length to be zero (i.e., interior branch fidelity is one).
+This result implies an inconsistency as we estimate the interior branch length to be zero (i.e., interior branch fidelity is one) in an open set of values for $x^*$ and $y^*$ (Fig.~\ref{fig:incons-analytic}).
 As we consider different topologies $\tau_1$ and $\tau_2$ for $\hat{t}$, the incorrect topology $\tau_2$ attains a likelihood value at its maximum equal to that of the true topology $\tau_1$ in the limit.
 In other words, if $w=1$ the objective functions $\ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)$ and $\ell_{\tau^*,t^*}(\tau_2, t; \boldsymbol\xi)$ are equivalent.
 We elaborate on this point in the Appendix.
@@ -330,7 +331,6 @@ Moreover, the inconsistency demonstrated by \citet{Felsenstein1978-rr} is attrib
 %das: yeah, it was kind of hand-wavy.
 This is not the case here; while analytically the inconsistency occurs when the top two branches are long and the bottom three are short, we see empirically that this inconsistency is present in roughly half of the entire parameter space, and occurs when the true branches generate data that more likely has no change along the interior branch.
 %EM Is this next sentence necessary given the previous one?
-This is especially apparent in the ``long $x^*$, short $y^*$'' case discussed previously.
 Additionally, we generate data on the InvFels tree $\tau_1$ while \citet{Felsenstein1978-rr} generates data on the Felsenstein tree $\tau_2$.
 Difficulties in phylogenetic estimation when generating data on the InvFels tree have been found by \citet{Siddall1998-hq}, though \citet{Swofford2001-hr} show that sequence length plays a major role in these issues.
 

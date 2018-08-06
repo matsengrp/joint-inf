@@ -534,7 +534,7 @@ $\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y
 \end{tabular}
 \caption{
 32 times conditional likelihood values on the InvFels tree $\tau_1$.
-Due to the symmetry of the likelihood, WLOG we assume $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral state splits to reduce the number of possible functional forms to consider.
+Due to the symmetry of the likelihood, WLOG we let $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral state splits to reduce the number of possible functional forms to consider.
 Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
 Because in 4 cases there are 3 possibilities for $\xi_j$, there are $3^4=81$ possible forms for the conditional likelihood.
 }
@@ -549,7 +549,7 @@ We first prove intermediate results to show the main result.
 
 \begin{lemma}
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
-There exists a set of $0 < x^*, y^* < 1$ such that $\emptyset$ is the maximal ancestral state split for all site splits given $\tau=\tau_1$.
+There exists an open set of $0 < x^*, y^* < 1$ such that $\emptyset$ is the maximal ancestral state split for all site splits given $\tau=\tau_1$.
 \label{lemma:ancestral-state}
 \end{lemma}
 
@@ -589,7 +589,7 @@ C_0(x^*, y^*) :=
     \shannonDivergence_{\tau^*,t^*}(\tau_1,\tilde{t}_{\boldsymbol\xi_0})
     + \ell^C_{\tau^*,t^*}(\tau_1, \tilde{t}_{\boldsymbol\xi_0}; \boldsymbol\xi_0),
 \]
-i.e., the lower bound assuming $\emptyset$ is the maximal ancestral state split for all site splits and $\tau=\tau_1$.
+i.e., the lower bound given $\emptyset$ is the maximal ancestral state split for all site splits and $\tau=\tau_1$.
 
 We need only consider the remaining possibilities for choices of ancestral state splits in Table~\ref{tab:likelihoods} upon excluding cases of infinite branch lengths (i.e., any of $x_1,y_1,x_2,y_2,w$ equal to zero) and the redundant cases of $x_1 > x_2$ and $y_1 > y_2$, i.e.,
 \[
@@ -667,16 +667,6 @@ a_{x_1,\emptyset} = x_2+wy_1+wy_2+x_2y_1y_2
 \]
 with similar definitions for the remaining site splits.
 
-%EM Could you restructure this paragraph with a topic-sentence statement of the assumption we want to make, then evidence that it's ok? It roves around a good bit.
-By the assumption of $0 < x^*, y^* < 1$, we have $p_{\siteSplit_j} > 0$ for $j=1,\ldots,\nSiteSplits$, therefore we assume $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 \neq 0$ for all $j$ otherwise we obtain a zero value for our likelihood, i.e., $\shannonDivergence\rightarrow -\infty$.
-In other words, we make the assumption that $x_1,y_1,x_2 < 1$, precluding all cases where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for some $j$.
-This assumption is reasonable as the likelihood is never maximized at these values where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$.
-
-Moreover, we have
-\[
-\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) = \frac{1}{8} (c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1),
-\]
-which, being a probability, is greater than or equal to zero.
 Consider the derivative with respect to $x_1$
 \begin{align*}
 \frac{d}{dx_1} \shannonDivergence(x_1) = \sum_j \frac{p_{\siteSplit_j}a_{x_1,\siteSplit_j}}{c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1}
@@ -685,9 +675,20 @@ and focus on the $j$th term in the summation
 \[
 f_j(x_1) := \frac{p_{\siteSplit_j}a_{x_1,\siteSplit_j}}{c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1}.
 \]
-%das: gah, had to roll back this line and add some stuff above since there are cases where some probabilities are 0. Maybe I'm being too careful? I don't think it's an issue, just an edge case that could induce wonkiness, so I included an assumption.
-Regardless of $a_{x_1,\siteSplit_j} \lessgtr 0$, $f_j$ is a decreasing function of $x_1$ as $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 > 0$.
+Regardless of $a_{x_1,\siteSplit_j} \lessgtr 0$, $f_j$ is a decreasing function of $x_1$ so long as $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 > 0$.
+We have
+\[
+\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) = \frac{1}{8} (c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1),
+\]
+which, being a probability, is greater than or equal to zero, so we focus on those fidelities where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$.
+
+To ensure each $f_j$ is decreasing, we assume that $x_1,y_1,x_2 < 1$; these are the only such cases where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for some $j$.
+In fact, since $0 < x^*, y^* < 1$---implying $p_{\siteSplit_j} > 0$ for all $j$---if $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for any $j$, we obtain a zero value for our likelihood, i.e., $\shannonDivergence\rightarrow -\infty$, and so the likelihood is never maximized when $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$
+Thus, each $f_j$ is decreasing no matter the value of $x_1,y_1,$ or $x_2$, though for some values of $x_1,y_1,$ or $x_2$ equal to one the log-likelihood diverges, and the gradient of the marginal log-likelihood is a decreasing function in $x_1$.
 The remaining variables follow similar arguments.
+
+%EM Could you restructure this paragraph with a topic-sentence statement of the assumption we want to make, then evidence that it's ok? It roves around a good bit.
+%das: it was a little confusing; I merged and rearranged a few things.
 
 \begin{table}
 \centering
@@ -706,14 +707,15 @@ $\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y
 \hline
 \end{tabular}
 \caption{
-32 times the maximal conditional likelihood values on the InvFels tree $\tau_1$ assuming $\emptyset$ is the most likely ancestral state split for each site split.
+32 times the maximal conditional likelihood values on the InvFels tree $\tau_1$ where $\emptyset$ is the most likely ancestral state split for each site split.
 }
 \label{tab:likelihoods-restricted}
 \end{table}
 
 We now focus on the conditional log-likelihood.
 %EM These "Assume"s feel frightening to the reader. Can we replace with "Under our stated hypothesis"?
-Assume $\emptyset$ is the most likely ancestral state split for all site splits.
+%das: got rid of some others in the text, too, that seemed like overkill
+By Lemma~\ref{lemma:ancestral-state}, we let $\emptyset$ be the most likely ancestral state split for all site splits.
 In this case, the conditional log-likelihood has no ambiguity, and has terms given as the log of those in Table~\ref{tab:likelihoods-restricted}.
 We focus on the derivative with respect to $x_1$, aggregating all terms involving $x_2,y_1,y_2,$ and $w$ into a constant term.
 The conditional log-likelihood
@@ -748,7 +750,9 @@ with derivative with respect to $w$
 \]
 which is positive for all $w \ge 0$.
 %EM Does the zero crossing need additional argument? I'm guessing that you get this from the gradient-is-zero thing from the unique-maximum argument above. But that's just that it's zero when we are doing maximization of all of the variables at once. Here aren't we wanting to make an argument for lots of x_i and y_i?
-As the gradient of the marginal log-likelihood is a decreasing function in $w$ and has a zero crossing at $y^*$, the addition of the derivative of the conditional log-likelihood makes the gradient of the full log-likelihood positive for all $w \le y^*$.
+%das: Yeah, I think how it was written before didn't state it correctly. The zero crossing is in all the variables, and we want to make a statement about all the variables at once (as stated in the lemma). We focus on a single variable at a time for the conditional likelihood (\ell^C) because it is separable in each variable, but the constraints are for the maximization over all variables.
+The gradient of the marginal log-likelihood has a zero crossing at $\{x^*,y^*,x^*,y^*,y^*\}$, and the gradient of the conditional log-likelihood is a function of only $w$.
+Moreover, the gradient of the marginal log-likelihood is decreasing in $w$, thus, the addition of the derivative of the conditional log-likelihood makes the gradient of the $w$ component of the full log-likelihood positive for all $w \le y^*$.
 The same argument holds for $y_2$, yielding the constraints
 \[
 \hat{x}_1,\hat{x}_2 \in (0, x^*], \ \hat{y}_1 \in (0, y^*], \text{and}\ \hat{y}_2,\hat{w} \in [y^*, 1].
@@ -756,7 +760,8 @@ The same argument holds for $y_2$, yielding the constraints
 \end{proof}
 
 %EM Are we saying that Lemma 3 applies in this case? I think so but it could be more specific.
-Since $x^*, y^* < 1$, the assumption that $x_1,y_1,x_2 < 1$ does not contradict with the statement of Lemma~\ref{lemma:bounds}.
+%das: I'm not quite sure I follow the question; I reworded it though because I think it was confusingly stated.
+Since $x^*, y^* < 1$, we see the bounds in Lemma~\ref{lemma:bounds} have the property that $x_1,y_1,x_2 < 1$.
 We now prove the main result.
 
 \topoInconsist*
@@ -764,12 +769,12 @@ We now prove the main result.
 \begin{proof}
 We proceed as in the previous proof by simplifying the constants in the log-likelihood.
 We analyze the derivative with respect to $w$, so we absorb all terms of only $x_1,y_1,x_2,$ and $y_2$ into a constant that disappears upon taking the derivative.
-The objective function is
+Using Lemma~\ref{lemma:ancestral-state}, the objective function is
 \begin{align*}
 \ell(w; \boldsymbol\xi_0) = \left(\sum_j p_{\siteSplit_j} \log(c_{w,\siteSplit_j} + a_{w,\siteSplit_j}w)\right) + \log(1+w) + C_w(x_1,y_1,x_2,y_2)
 \end{align*}
 where $c_{w,\siteSplit_j},a_{w,\siteSplit_j}$ and $C_w$ are functions of $x_1,y_1,x_2,$ and $y_2$.
-Using the middle panel of Table~\ref{tab:gen-sitepatprob}, we obtain
+From the middle panel of Table~\ref{tab:gen-sitepatprob}, we obtain
 \[
 c_{w,\emptyset} = 1+x_1x_2+y_1y_2+x_1y_1x_2y_2 = (1+x_1x_2)(1+y_1y_2)
 \]
@@ -836,7 +841,7 @@ C1-C3: b_{2}^U, b_{1}^U, b_{12}^U < 1,
 C4: -\frac{p_{13}b_{\emptyset}^U}{1-b_{\emptyset}^U} - \frac{p_{2}b_{2}^U}{1-b_{2}^U} - \frac{p_{1}b_{1}^U}{1-b_{1}^U} - \frac{p_{12}b_{12}^U}{1-b_{12}^U} + \frac{1}{2} > 0.
 \]
 Conditions $C1-C3$ are needed so that $\ell'_{L}(w)$ is a decreasing function on $(0,1]$, while condition $C4$ is the one on $\ell'_{L}(1) > 0$, i.e., so that $\ell'(w)$ is positive on $(0,1]$.
-The set of $x^*,y^*$ satisfying conditions $C1-C4$ as well as those for $\emptyset$ being the most likely ancestral state split is given in Fig.~\ref{fig:incons-analytic}, giving the region of generating parameters where $\hat{w}\equiv 1$.
+The open set of $x^*,y^*$ satisfying conditions $C1-C4$ as well as in Lemma~\ref{lemma:ancestral-state} is given in Fig.~\ref{fig:incons-analytic}, giving the region of generating parameters where $\hat{w}\equiv 1$.
 \end{proof}
 
 \begin{figure}
@@ -850,7 +855,7 @@ The set of $x^*,y^*$ satisfying conditions $C1-C4$ as well as those for $\emptys
 \end{figure}
 
 As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
-It is easy to see that assuming $\emptyset$ for each maximal ancestral state split results in the same conditional log-likelihood for $\tau_1$ and $\tau_2$.
+It is easy to see that letting $\emptyset$ be the maximal ancestral state split results in the same conditional log-likelihood for $\tau_1$ and $\tau_2$.
 Moreover, if $w=1$, the internal branch becomes zero-length and the two topologies are indistinguishable.
 Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the shaded region in Fig.~\ref{fig:incons-analytic}.
 We can see this results in the likelihood of both topologies being equal, i.e.,
