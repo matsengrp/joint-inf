@@ -680,15 +680,17 @@ We have
 \[
 \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) = \frac{1}{8} (c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1),
 \]
-which, being a probability, is greater than or equal to zero, so we focus on those fidelities where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$.
+which, being a probability, is greater than or equal to zero.
+We next exclude the situation of $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$.
 
-To ensure each $f_j$ is decreasing, we assume that $x_1,y_1,x_2 < 1$; these are the only such cases where $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for some $j$.
-In fact, since $0 < x^*, y^* < 1$---implying $p_{\siteSplit_j} > 0$ for all $j$---if $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for any $j$, we obtain a zero value for our likelihood, i.e., $\shannonDivergence\rightarrow -\infty$, and so the likelihood is never maximized when $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$
-Thus, each $f_j$ is decreasing no matter the value of $x_1,y_1,$ or $x_2$, though for some values of $x_1,y_1,$ or $x_2$ equal to one the log-likelihood diverges, and the gradient of the marginal log-likelihood is a decreasing function in $x_1$.
+To exclude this situation we assume that $x_1,y_1,x_2 < 1$; if this criterion does not hold we get zero likelihoods (which obviously are not maximal).
+In fact, since $0 < x^*, y^* < 1$---implying $p_{\siteSplit_j} > 0$ for all $j$---if $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for any $j$, we obtain a zero value for our likelihood, i.e., $\shannonDivergence\rightarrow -\infty$.
+Hence, the likelihood is never maximized when $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ and each $f_j$ is decreasing no matter the value of $x_1,y_1,$ or $x_2$, though for some values of $x_1,y_1,$ or $x_2$ equal to one the log-likelihood diverges, and the gradient of the marginal log-likelihood is a decreasing function in $x_1$.
 The remaining variables follow similar arguments.
 
 %EM Could you restructure this paragraph with a topic-sentence statement of the assumption we want to make, then evidence that it's ok? It roves around a good bit.
 %das: it was a little confusing; I merged and rearranged a few things.
+%EM I made a few further changes. Seem OK?
 
 \begin{table}
 \centering
@@ -715,6 +717,8 @@ $\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y
 We now focus on the conditional log-likelihood.
 %EM These "Assume"s feel frightening to the reader. Can we replace with "Under our stated hypothesis"?
 %das: got rid of some others in the text, too, that seemed like overkill
+%EM "we let $\emptyset$ be the most likely ancestral state split" still seems funny to me. We can't "let" it be something that is defined by being a maximum. How about saying that it is _a_ most likely...
+% By Lemma~\ref{lemma:ancestral-state}, $\emptyset$ is a most likely ancestral state split for all site splits.
 By Lemma~\ref{lemma:ancestral-state}, we let $\emptyset$ be the most likely ancestral state split for all site splits.
 In this case, the conditional log-likelihood has no ambiguity, and has terms given as the log of those in Table~\ref{tab:likelihoods-restricted}.
 We focus on the derivative with respect to $x_1$, aggregating all terms involving $x_2,y_1,y_2,$ and $w$ into a constant term.
@@ -751,6 +755,8 @@ with derivative with respect to $w$
 which is positive for all $w \ge 0$.
 %EM Does the zero crossing need additional argument? I'm guessing that you get this from the gradient-is-zero thing from the unique-maximum argument above. But that's just that it's zero when we are doing maximization of all of the variables at once. Here aren't we wanting to make an argument for lots of x_i and y_i?
 %das: Yeah, I think how it was written before didn't state it correctly. The zero crossing is in all the variables, and we want to make a statement about all the variables at once (as stated in the lemma). We focus on a single variable at a time for the conditional likelihood (\ell^C) because it is separable in each variable, but the constraints are for the maximization over all variables.
+%EM This is definitely an improvement, though I don't know if I get it yet. There is a single point at which we know it's zero. We also know that it's decreasing in w. It seems like if we combine these two facts we could still have a function that isn't positive for all $w \le y^*$ (if the level sets of the function are "tilted").
+%EM Also, a "zero crossing" at a single point of a multivariate function doesn't seem like the right terminology. Perhaps "vanishes"?
 The gradient of the marginal log-likelihood has a zero crossing at $\{x^*,y^*,x^*,y^*,y^*\}$, and the gradient of the conditional log-likelihood is a function of only $w$.
 Moreover, the gradient of the marginal log-likelihood is decreasing in $w$, thus, the addition of the derivative of the conditional log-likelihood makes the gradient of the $w$ component of the full log-likelihood positive for all $w \le y^*$.
 The same argument holds for $y_2$, yielding the constraints
@@ -759,8 +765,6 @@ The same argument holds for $y_2$, yielding the constraints
 \]
 \end{proof}
 
-%EM Are we saying that Lemma 3 applies in this case? I think so but it could be more specific.
-%das: I'm not quite sure I follow the question; I reworded it though because I think it was confusingly stated.
 Since $x^*, y^* < 1$, we see the bounds in Lemma~\ref{lemma:bounds} have the property that $x_1,y_1,x_2 < 1$.
 We now prove the main result.
 
@@ -855,6 +859,7 @@ The open set of $x^*,y^*$ satisfying conditions $C1-C4$ as well as in Lemma~\ref
 \end{figure}
 
 As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
+%EM "letting $\emptyset$ be the maximal ancestral state split" sounds a little funny-- either it is or it isn't maximal.
 It is easy to see that letting $\emptyset$ be the maximal ancestral state split results in the same conditional log-likelihood for $\tau_1$ and $\tau_2$.
 Moreover, if $w=1$, the internal branch becomes zero-length and the two topologies are indistinguishable.
 Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the shaded region in Fig.~\ref{fig:incons-analytic}.
