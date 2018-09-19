@@ -63,25 +63,22 @@ and
 The mapping $\patternToSplit$ operates by returning the tips labeled as $1$ in a site pattern to obtain a site split in $\mathcal{P}(\siteSplitSet)$ if the set of tips labeled $1$ is not in $\mathcal{P}(\siteSplitSet)$.
 The mapping $\ancestralToSplit$ is defined by whether the tip states have their complements taken or not: if the set of tips labeled $1$ in $\alignmentColumn$ is in $\mathcal{P}(\siteSplitSet)$, $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is the set of tips labeled $1$ in $\ancestralStateColumn$; otherwise, the set of tips labeled $1$ in $\overline{\alignmentColumn}$ necessarily is in $\mathcal{P}(\siteSplitSet)$ and so $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is $\overline{\ancestralStateColumn}$.
 
-For the $i$th factor of \eqref{eq:full_likelihood}, we decompose the likelihood into its marginal and conditional components as
-\[
-\Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) = \Pr(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t) \cdot \Pr(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t).
-\]
+We now consider the $i$th factor of \eqref{eq:full_likelihood}.
 As a consequence of assuming a binary symmetric model, for some $\siteSplit_j\in\mathcal{P}(\siteSplitSet)$ the mapping $\patternToSplit(\alignmentColumn_i)$ has the property
 \begin{align*}
-    \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) &= \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t)\\
-    &= \Pr(\alignmentColumnRV=\alignmentColumn_i \cup \overline{\alignmentColumnRV}=\alignmentColumn_i \mid \tau, t)\\
-    &= \Pr(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t) + \Pr(\overline{\alignmentColumnRV}=\alignmentColumn_i \mid \tau, t)\\
-    &= 2\cdot\Pr(\alignmentColumnRV=\alignmentColumn_i \mid \tau, t)
+    \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &= \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t)\\
+    &= \Pr(\alignmentColumnRV=\alignmentColumn_i \cup \overline{\alignmentColumnRV}=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t)\\
+    &= \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) + \Pr(\overline{\alignmentColumnRV}=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t)\\
+    &= 2\cdot\Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t)
 \end{align*}
 where $\overline{Y}$ is the complement of the site pattern--valued random variable $Y$ and has the same distribution as $Y$.
-Note
+Since
 \begin{align*}
-    \Pr(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t) &= \Pr(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t).
+    \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t),
 \end{align*}
-Thus given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t)$ such that $\xi_j\in\ancestralSplitPartition_j(\tau, t)$ satisfies
+given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t)$ such that $\xi_j\in\ancestralSplitPartition_j(\tau, t)$ satisfies
 \begin{align*}
-\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t) &= \Pr(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t).
+\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &= \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV = \xi_j \mid \tau, t).
 \end{align*}
 In other words, for the $j$th site split, $\ancestralSplitPartition_j(\tau, t)\subseteq\mathcal{P}(\ancestralSplitSet)$ is the set of most likely ancestral state splits for that particular site split, topology and set of branch lengths, i.e., $\ancestralSplitPartition_j(\tau, t)$ is a set of sets of most likely internal node labels.
 Here, $\xi_j$ is one of possibly many equiprobable ancestral state splits in $\ancestralSplitPartition_j(\tau, t)$.
@@ -90,9 +87,9 @@ This can be seen by using the definition of $\ancestralToSplit(\alignmentColumn_
 The same can be done for the case of $\alignmentColumn_{i,\nSiteRows}=1$, implying $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective.
 From this we have
 \begin{align*}
-    \max_{\ancestralStateColumn_i} \ \Pr(\ancestralStateColumnRV=\ancestralStateColumn_i \mid \alignmentColumnRV=\alignmentColumn_i, \tau, t) &= \max_{\ancestralStateColumn_i} \ \Pr(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t)\\
-    &= \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t)\\
-    &= \Pr(\ancestralSplitRV = \xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)
+    \max_{\ancestralStateColumn_i} \ \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= \max_{\ancestralStateColumn_i} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t)\\
+    &= \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t)\\
+    &= \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV = \xi_j \mid \tau, t)
 \end{align*}
 for some $j$.
 Thus, each term in the likelihood can be collapsed into terms relating only to site splits and ancestral state splits, indexed by $j$, as opposed to individual observations, indexed by $i$.
@@ -131,7 +128,7 @@ For example, we take both $\patternToSplit(0000)=\emptyset$ and $\patternToSplit
 Similarly, we have $\ancestralToSplit(0000, 00) = \emptyset$ and $\ancestralToSplit(1111, 11)=\emptyset$, needing to take the complement of all the characters present on the tree to identify splits.
 We cannot identify complements for ancestral states in the same way as tip states since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
 \[
-\Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\siteSplit, \tau, t)\neq \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\siteSplit, \tau, t)
+\Pr(\siteSplitRV=\siteSplit, \ancestralSplitRV=\emptyset \mid \tau, t)\neq \Pr(\siteSplitRV=\siteSplit, \ancestralSplitRV=\{1,2\} \mid \tau, t)
 \]
 in general.
 
@@ -140,39 +137,39 @@ A maximum occurs at one of possibly several ancestral state splits in $\mathcal{
 As a simple example, say all branch lengths correspond to a probability $p$ ($< 1/2$) of changing character along that branch, with $t=\{p,p,p,p,p\}$.
 The probabilities of observing ancestral state splits for $\siteSplit_1=\emptyset$ are
 \[
-\Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\emptyset, \tau, t) =
+\Pr(\siteSplitRV=\emptyset, \ancestralSplitRV=\emptyset \mid \tau, t) =
 (1-p)^5,
 \]
 \[
-\Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\emptyset, \tau, t) =
-\Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\emptyset, \tau, t) =
+\Pr(\siteSplitRV=\emptyset, \ancestralSplitRV=\{1\} \mid \tau, t) =
+\Pr(\siteSplitRV=\emptyset, \ancestralSplitRV=\{2\} \mid \tau, t) =
 p^3(1-p)^2,
 \]
 \[
-\Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\emptyset, \tau, t) =
+\Pr(\siteSplitRV=\emptyset, \ancestralSplitRV=\{1,2\} \mid \tau, t) =
 p^4(1-p).
 \]
 The set of most likely ancestral states contains a single element, here $\ancestralSplitPartition_1(\tau, t)=\{\emptyset\}$.
 Then, taking $\xi_1\in\ancestralSplitPartition_1(\tau, t)$ we have
 \[
-\Pr(\ancestralSplitRV=\xi_1 \mid \siteSplitRV=\emptyset, \tau, t) =
-\Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\emptyset, \tau, t) =
+\Pr(\siteSplitRV=\emptyset, \ancestralSplitRV=\xi_1 \mid \tau, t) =
+\Pr(\siteSplitRV=\emptyset, \ancestralSplitRV=\emptyset \mid \tau, t) =
 (1-p)^5.
 \]
 For $\siteSplit_5=\{1,2\}$ we have
 \[
-\Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1,2\}, \tau, t) =
-\Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1,2\}, \tau, t) =
+\Pr(\siteSplitRV=\{1,2\}, \ancestralSplitRV=\emptyset \mid \tau, t) =
+\Pr(\siteSplitRV=\{1,2\}, \ancestralSplitRV=\{1,2\} \mid \tau, t) =
 p^2(1-p)^3,
 \]
 \[
-\Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1,2\}, \tau, t) =
-\Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1,2\}, \tau, t) =
+\Pr(\siteSplitRV=\{1,2\}, \ancestralSplitRV=\{1\} \mid \tau, t) =
+\Pr(\siteSplitRV=\{1,2\}, \ancestralSplitRV=\{2\} \mid \tau, t) =
 p^3(1-p)^2.
 \]
 Here, the set of most likely ancestral states is $\ancestralSplitPartition_5(\tau, t)=\{\emptyset,\{1,2\}\}$, and, for $\xi_5\in\ancestralSplitPartition_5(\tau, t)$,
 \[
-\Pr(\ancestralSplitRV=\xi_5 \mid \siteSplitRV=\{1,2\}, \tau, t) =
+\Pr(\siteSplitRV=\{1,2\}, \ancestralSplitRV=\xi_5 \mid \tau, t) =
 p^2(1-p)^3.
 \]
 
@@ -184,44 +181,27 @@ L_\nCols'(\tau, t; \fullAlignment) &= \max_{\fullAncestralStates} \ L_\nCols(\ta
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \nonumber \\
                              &\propto \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \Pr(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \nonumber \\
                              &= \prod_{i=1}^{\nCols} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \max_{\ancestralStateColumn_i} \Pr(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \nonumber \\
-                             &= \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
+                             &= \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \nonumber \\
+                             &= \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
 for $\siteSplit_j\in\mathcal{P}(\siteSplitSet)$ and some $\xi_j\in\ancestralSplitPartition_j(\tau, t)$ with $1 \le j \le q$ where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ that project to site split $\siteSplit_j$.
 
 Let
 \[
-L_\nCols''(\tau, t; \fullAlignment) = \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) \cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)}
+L_\nCols''(\tau, t; \fullAlignment) = \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)}
 \]
 be the final product in \eqref{eq:site_pattern_likelihood}.
 Assume $\nCols$ observations are generated from a model with parameters $(\tau^*, t^*)$.
 We have
 \begin{equation*}
-\begin{split}
-&    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) \\
-&\qquad = \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t) \\
-&\qquad = \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot [\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) +
-            \log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
-\end{split}
+\frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) = \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)
 \end{equation*}
 so that, in the $\nCols\rightarrow\infty$ limit,
 \begin{equation}
 \begin{split}
 &    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) \\
-&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
+&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
 \end{split}
-\end{equation}
-Define the marginal log-likelihood
-\[
-\shannonDivergence_{\tau^*,t^*}(\tau,t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t)
-\]
-and the conditional log-likelihood
-\[
-\ell^C_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV = \siteSplit_j, \tau, t)
-\]
-with $\boldsymbol\xi = [\xi_j]_{j=1}^\nSiteSplits$ so that \eqref{eq:site_pattern_profile_likelihood_mean} is
-\begin{equation}
-    \label{eq:log_likelihood_simplified}
-    \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \ell^C_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
 \end{equation}
 
 \subsection*{Hadamard representation}
@@ -296,10 +276,10 @@ $\siteSplit_j$  & $p_{\siteSplit_j}$ &$8\cdot\Pr(\siteSplitRV=\siteSplit_j \mid 
 
 \subsection*{Likelihood computations}
 
-To compute the likelihood of observing a set of data, we need $\Pr(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau, t)$ for each $\ancestralSplit_k$ and $\siteSplit_j$.
+To compute the likelihood of observing a set of data, we need $\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t)$ for each $\ancestralSplit_k$ and $\siteSplit_j$.
 Using branch fidelities, the probability of a character change along a branch with fidelity parameter $x$ is $(1-x)/2$, while the probability of a character remaining the same is $(1+x)/2$.
 See Fig.~\ref{fig:example_likelihoods} for the parameters on an example site pattern on the InvFels tree.
-Conditional likelihood computations for all site splits and ancestral state splits are in Table~\ref{tab:farris_likelihoods} for the InvFels tree.
+Likelihood computations for all site splits and ancestral state splits are in Table~\ref{tab:farris_likelihoods} for the InvFels tree.
 
 \begin{figure}
 \centering
@@ -316,8 +296,8 @@ Conditional likelihood computations for all site splits and ancestral state spli
 \caption{
     Example likelihood computations on the InvFels tree $\tau_1$ for fidelities $t=\{x_1,y_1,x_2,y_2,w\}$.
     Edges labeled by the probability of substitution along that edge.
-    In (a), we compute the product to obtain $\Pr(\ancestralSplitRV=\emptyset\mid \siteSplitRV=\{2,3\},\tau_1,t) = (1+x_1)(1-x_2)(1+y_1)(1-y_2)(1+w)/32$.
-    In (b), the same process yields $\Pr(\ancestralSplitRV=\{1\}\mid \siteSplitRV=\{2,3\},\tau_1,t) = (1+x_1)(1-x_2)(1+y_1)(1-y_2)(1-w)/32$.
+    In (a), we compute the product to obtain $\Pr(\siteSplitRV=\{2,3\},\ancestralSplitRV=\emptyset\mid \tau_1,t) = (1+x_1)(1-x_2)(1+y_1)(1-y_2)(1+w)/32$.
+    In (b), the same process yields $\Pr(\siteSplitRV=\{2,3\},\ancestralSplitRV=\{1\}\mid \tau_1,t) = (1+x_1)(1-x_2)(1+y_1)(1-y_2)(1-w)/32$.
 }
 \label{fig:example_likelihoods}
 \end{figure}
@@ -326,7 +306,7 @@ Conditional likelihood computations for all site splits and ancestral state spli
 \centering
 \begin{tabular}{|l|ll|}
 \hline
-$\siteSplit_j$ & $\ancestralSplit_k$ & $32\cdot\Pr(\ancestralSplitRV=\ancestralSplit_k \mid \siteSplitRV=\siteSplit_j, \tau_1, t)$\\
+$\siteSplit_j$ & $\ancestralSplit_k$ & $32\cdot\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau_1, t)$\\
 \hline
 $\emptyset$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 &$\{1\}^*$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1-w)$             \\
@@ -370,9 +350,9 @@ $\{1,3\}$  &$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
 \hline
 \end{tabular}
 \caption{
-32 times conditional likelihood values for all site splits $\siteSplit_j$ and ancestral state splits $\ancestralSplit_k$ of the InvFels tree $\tau_1$.
+32 times likelihood values for all site splits $\siteSplit_j$ and ancestral state splits $\ancestralSplit_k$ of the InvFels tree $\tau_1$.
 Ancestral states with $^*$ are never maximal provided parameters are in $(0,1]$.
-By combinations of $\ancestralSplit_k$, there are $3^5\cdot 4^2=3,888$ possible forms for the conditional likelihood.
+By combinations of $\ancestralSplit_k$, there are $3^5\cdot 4^2=3,888$ possible forms for the likelihood.
 }
 \label{tab:farris_likelihoods}
 \end{table}
@@ -397,7 +377,7 @@ and
 \]
 Using the notation in Section 5.2.1 in \citet{van1998asymptotic}, we let
 \[
-m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot [\log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, t) + \log \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j , \tau, t)]
+m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot [\log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)]
 \]
 so that
 \[
@@ -457,55 +437,55 @@ and for site split $\{3\}$ we have
     \Pr(\siteSplitRV=\{3\}\mid \tau_1, t) & = \frac{1}{8} (1 - x_1x_2 +  y_1y_2 +  w[x_1 - x_2][y_1 + y_2] - x_1y_1x_2y_2)
 \end{align*}
 meaning if we exchange the values of $x_1$ and $x_2$ then these probabilities swap values, regardless of what we do with $y_1$ and $y_2$.
-We show that for site splits $\{1\}$ and $\{3\}$, exchanging $x_1$ and $x_2$ also swaps the values of the conditional likelihood terms, again independent of what happens to $y_1$ and $y_2$ (Table~\ref{tab:farris_likelihoods}).
-Indeed, the corresponding possibilities for the conditional likelihood values are
+We show that for site splits $\{1\}$ and $\{3\}$, exchanging $x_1$ and $x_2$ also swaps the values of the likelihood terms, again independent of what happens to $y_1$ and $y_2$ (Table~\ref{tab:farris_likelihoods}).
+Indeed, the corresponding possibilities for the likelihood values are
 \begin{align*}
-    \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2); \\
-    \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1+y_1)(1+y_2); \\
-    \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1-w)(1-y_1)(1-y_2); \\
-    \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1+w)(1-y_1)(1-y_2);
+    \Pr(\siteSplitRV=\{1\}, \ancestralSplitRV=\emptyset \mid \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1+y_1)(1+y_2); \\
+    \Pr(\siteSplitRV=\{1\}, \ancestralSplitRV=\{1\} \mid \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1+y_1)(1+y_2); \\
+    \Pr(\siteSplitRV=\{1\}, \ancestralSplitRV=\{2\} \mid \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1-w)(1-y_1)(1-y_2); \\
+    \Pr(\siteSplitRV=\{1\}, \ancestralSplitRV=\{1,2\} \mid \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1+w)(1-y_1)(1-y_2);
 \end{align*}
 for site split $\{1\}$ and
 \begin{align*}
-        \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1+w)(1+y_1)(1+y_2); \\
-    \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1-w)(1+y_1)(1+y_2); \\
-    \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2); \\
-    \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2);
+    \Pr(\siteSplitRV=\{3\}, \ancestralSplitRV=\emptyset \mid \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1+w)(1+y_1)(1+y_2); \\
+    \Pr(\siteSplitRV=\{3\}, \ancestralSplitRV=\{1\} \mid \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1-w)(1+y_1)(1+y_2); \\
+    \Pr(\siteSplitRV=\{3\}, \ancestralSplitRV=\{2\} \mid \tau_1, t) &= \frac{1}{32}(1+x_1)(1-x_2)(1-w)(1-y_1)(1-y_2); \\
+    \Pr(\siteSplitRV=\{3\}, \ancestralSplitRV=\{1,2\} \mid \tau_1, t) &= \frac{1}{32}(1-x_1)(1+x_2)(1+w)(1-y_1)(1-y_2);
 \end{align*}
 for site split $\{3\}$, which shows the likelihood remains unchanged if $x_1$ and $x_2$ are swapped.
 
 For site splits $\{2\}$ and $\{1,2,3\}$, exchanging $y_1$ and $y_2$ swaps the values of the generating probabilities, independent of what happens to $x_1$ and $x_2$.
-In the case of the conditional likelihood values, we see that the values for these site splits swap as well, though, we look at the complement of the most likely ancestral state split.
-In other words, the function value for the conditional likelihood also swaps between site splits $\{2\}$ and $\{1,2,3\}$, though the most likely ancestral state split is different.
+In the case of the likelihood values, we see that the values for these site splits swap as well, though, we look at the complement of the most likely ancestral state split.
+In other words, the function value for the likelihood also swaps between site splits $\{2\}$ and $\{1,2,3\}$, though the most likely ancestral state split is different.
 Indeed,
 \begin{align*}
-    \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{2\}, \tau_1, t) &= \frac{1}{32}(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w);\\
-    \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{2\}, \tau_1, t)     &= \frac{1}{32}(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1-w);\\
-    \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{2\}, \tau_1, t)     &= \frac{1}{32}(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1-w);\\
-    \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{2\}, \tau_1, t)   &= \frac{1}{32}(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1+w);
+    \Pr(\siteSplitRV=\{2\}, \ancestralSplitRV=\emptyset \mid \tau_1, t) &= \frac{1}{32}(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w);\\
+    \Pr(\siteSplitRV=\{2\}, \ancestralSplitRV=\{1\} \mid \tau_1, t)     &= \frac{1}{32}(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1-w);\\
+    \Pr(\siteSplitRV=\{2\}, \ancestralSplitRV=\{2\} \mid \tau_1, t)     &= \frac{1}{32}(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1-w);\\
+    \Pr(\siteSplitRV=\{2\}, \ancestralSplitRV=\{1,2\} \mid \tau_1, t)   &= \frac{1}{32}(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1+w);
 \end{align*}
 for site split $\{2\}$ and
 \begin{align*}
-    \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV=\{1,2,3\}, \tau_1, t) &= \frac{1}{32}(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w);\\
-    \Pr(\ancestralSplitRV=\{1\} \mid \siteSplitRV=\{1,2,3\}, \tau_1, t)     &= \frac{1}{32}(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w);\\
-    \Pr(\ancestralSplitRV=\{2\} \mid \siteSplitRV=\{1,2,3\}, \tau_1, t)     &= \frac{1}{32}(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1-w);\\
-    \Pr(\ancestralSplitRV=\{1,2\} \mid \siteSplitRV=\{1,2,3\}, \tau_1, t)   &= \frac{1}{32}(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w);
+    \Pr(\siteSplitRV=\{1,2,3\}, \ancestralSplitRV=\emptyset \mid \tau_1, t) &= \frac{1}{32}(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w);\\
+    \Pr(\siteSplitRV=\{1,2,3\}, \ancestralSplitRV=\{1\} \mid \tau_1, t)     &= \frac{1}{32}(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1-w);\\
+    \Pr(\siteSplitRV=\{1,2,3\}, \ancestralSplitRV=\{2\} \mid \tau_1, t)     &= \frac{1}{32}(1-x_1)(1+y_1)(1-x_2)(1-y_2)(1-w);\\
+    \Pr(\siteSplitRV=\{1,2,3\}, \ancestralSplitRV=\{1,2\} \mid \tau_1, t)   &= \frac{1}{32}(1+x_1)(1+y_1)(1+x_2)(1-y_2)(1+w);
 \end{align*}
 for site split $\{1,2,3\}$, which shows the likelihood remains unchanged if $y_1$ and $y_2$ are swapped.
 
 For site splits $\{1,2\}$ and $\{2,3\}$ we see the following.
-By exchanging only $x_1$ with $x_2$, the generating probabilities and conditional likelihood values swap between these two site splits.
-The same is true of the generating probabilities if we exchange only $y_1$ and $y_2$, except, for the case of the conditional likelihood values, we again look at the complement of the most likely ancestral state split as in the case of splits $\{2\}$ and $\{1,2,3\}$.
-Now, if we exchange both $x_1$ with $x_2$ and $y_1$ with $y_2$, we see these generating probabilities remain unchanged, and, for the conditional likelihood values, we look at the complement of the most likely ancestral state split and see these values also remain unchanged.
+By exchanging only $x_1$ with $x_2$, the generating probabilities and likelihood values swap between these two site splits.
+The same is true of the generating probabilities if we exchange only $y_1$ and $y_2$, except, for the case of the likelihood values, we again look at the complement of the most likely ancestral state split as in the case of splits $\{2\}$ and $\{1,2,3\}$.
+Now, if we exchange both $x_1$ with $x_2$ and $y_1$ with $y_2$, we see these generating probabilities remain unchanged, and, for the likelihood values, we look at the complement of the most likely ancestral state split and see these values also remain unchanged.
 
 Thus exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$.
-Therefore we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$ and $y_2 \ge y_1$, with these conditional likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
+Therefore we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$ and $y_2 \ge y_1$, with these likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
 
 \begin{table}
 \centering
 \begin{tabular}{|lll|l|}
 \hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_j$ & $32\cdot\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau_1,t)$\\
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_j$ & $32\cdot\Pr(\siteSplitRV=\siteSplit_j,\ancestralSplitRV=\xi_j \mid \tau_1,t)$\\
 \hline
 $\emptyset$&$\{\emptyset\}$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 
@@ -533,10 +513,10 @@ $\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y
 \hline
 \end{tabular}
 \caption{
-32 times conditional likelihood values on the InvFels tree $\tau_1$.
+32 times likelihood values on the InvFels tree $\tau_1$.
 Due to the symmetry of the likelihood, WLOG we let $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral state splits to reduce the number of possible functional forms to consider.
 Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
-Because in 4 cases there are 3 possibilities for $\xi_j$, there are $3^4=81$ possible forms for the conditional likelihood.
+Because in 4 cases there are 3 possibilities for $\xi_j$, there are $3^4=81$ possible forms for the likelihood.
 }
 \label{tab:likelihoods}
 \end{table}
@@ -545,158 +525,62 @@ Because in 4 cases there are 3 possibilities for $\xi_j$, there are $3^4=81$ pos
 
 %where data is generated on the InvFels tree with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$ (Fig.~\ref{fig:farris-fels-top}).
 
-We first prove intermediate results to show the main result.
+We begin with the branch length inconsistency.
 
-\begin{lemma}
-Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
-There exists an open set of $0 < x^*, y^* < 1$ such that $\emptyset$ is the maximal ancestral state split for all site splits given $\tau=\tau_1$.
-\label{lemma:ancestral-state}
-\end{lemma}
+\blInconsist*
 
 \begin{proof}
-Recall
+For a fixed, known $\boldsymbol\xi$, there exists a closed form solution to $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ solving
 \[
-\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) = \shannonDivergence_{\tau^*,t^*}(\tau,t) + \ell^C_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
+\hat{t}_{\boldsymbol\xi} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi).
 \]
-We obtain
-\[
-\max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) \le
-    \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-    + \ell^C_{\tau^*,t^*}(\tau, \tilde{t}; \boldsymbol\xi)
-\]
-as an upper bound for the joint maximum of \eqref{eq:log_likelihood_simplified} using Gibbs's inequality
-\[
-\shannonDivergence_{\tau^*,t^*}(\tau,t) \le \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-\]
-and
-\[
-\tilde{t} = \argmax_{t} \ \ell^C_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
-\]
-By straightforward calculus, the function $f(x)=a_1\log(1+x)+a_2\log(1-x)$ attains a maximum at $\hat{x} = (a_1-a_2)/(a_1+a_2)$, and so we have a closed form for each component of $\tilde{t}$.
-Using this estimate, we have the lower bound
-\[
-\max_{t} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) \ge
-    \shannonDivergence_{\tau^*,t^*}(\tau,\tilde{t})
-    + \ell^C_{\tau^*,t^*}(\tau, \tilde{t}; \boldsymbol\xi).
-\]
-Let $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$ and
-\[
-\tilde{t}_{\boldsymbol\xi} = \argmax_{t} \ \ell^C_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi).
-\]
-Define
-\[
-C_0(x^*, y^*) :=
-    \shannonDivergence_{\tau^*,t^*}(\tau_1,\tilde{t}_{\boldsymbol\xi_0})
-    + \ell^C_{\tau^*,t^*}(\tau_1, \tilde{t}_{\boldsymbol\xi_0}; \boldsymbol\xi_0),
-\]
-i.e., the lower bound given $\emptyset$ is the maximal ancestral state split for all site splits and $\tau=\tau_1$.
-
-We need only consider the remaining possibilities for choices of ancestral state splits in Table~\ref{tab:likelihoods} upon excluding cases of infinite branch lengths (i.e., any of $x_1,y_1,x_2,y_2,w$ equal to zero) and the redundant cases of $x_1 > x_2$ and $y_1 > y_2$, i.e.,
-\[
-C_1(x^*, y^*) :=
-    \shannonDivergence_{\tau^*,t^*}(\tau^*,t^*)
-    +  \max_{\boldsymbol\xi : \boldsymbol\xi \neq \boldsymbol\xi_0} \ \ell^C_{\tau^*,t^*}(\tau_1, \tilde{t}_{\boldsymbol\xi}; \boldsymbol\xi).
-\]
-We show in Fig.~\ref{fig:max-anc-state} the region where $C_0(x^*,y^*) > C_1(x^*,y^*)$.
-\end{proof}
-
-\begin{figure}
-\centering
-\includegraphics[width=.95\textwidth]{analytic-anc-state-inkscape}
-\caption{
-Region where $\emptyset$ is the maximal ancestral state split for each site split on the InvFels tree $\tau_1$.
-}
-\label{fig:max-anc-state}
-\end{figure}
-
-\begin{lemma}
-Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
-For $0 < x^*, y^* < 1$ and $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
-\[
-\hat{t} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi_0)
-\]
-is subject to the constraints $\hat{x}_1,\hat{x}_2 \in (0, x^*]$, $\hat{y}_1 \in (0, y^*]$, and $\hat{y}_2,\hat{w} \in [y^*, 1]$.
-\label{lemma:bounds}
-\end{lemma}
-
-\begin{proof}
-We proceed by analyzing the gradients of each component of the likelihood function.
-We first focus on the marginal log-likelihood
-\[
-\shannonDivergence_{\tau^*,t^*}(\tau_1,t) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t).
-\]
-By Gibbs' inequality, this function attains a unique maximum when
-\[
-\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1, t) = \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)
-\]
-for all $j=1,\ldots,\nSiteSplits$ with $t^*=\{x^*,y^*,x^*,y^*,y^*\}$ and $\tau^*$ being the InvFels tree $\tau_1$.
-We show that this implies $t=t^*$.
-Note that exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not affect the marginal log-likelihood, and, as it has a unique maximum, we have $x_1=x_2=x$ and $y_1=y_2=y$ at this maximum.
-Referring to the top of Table~\ref{tab:gen-sitepatprob}, we set up simultaneous equations as follows.
-The sum of generating probabilities for site splits $\{3\}$ and $\{1,2\}$ yields
-\[
-2-2(x^*)^2 = 2-2x^2
-\]
-and for $\{2\}$ and $\{1,2\}$ yields
-\[
-2-2(y^*)^2 = 2-2y^2.
-\]
-implying $x=x^*$ and $y=y^*$.
-Setting these parameters to their optima, the difference of generating probabilities for site splits $\emptyset$ and $\{1,3\}$ yields
-\[
-8x^*(y^*)^2 = 8x^*y^*w
-\]
-implying $w=y^*$.
-Thus the unique maximum is $\hat{t}=\{x^*,y^*,x^*,y^*,y^*\}$, and consequently
-\[
-\nabla_t \shannonDivergence_{\tau^*,t^*}(\tau_1,t) \mid_{t=t^*} = 0.
-\]
-We now show that the gradient of the marginal log-likelihood is a decreasing function on $(0,1]$ in each variable.
-The marginal log-likelihood as a function of $x_1$ is
+We show in this case that the log-likelihood $\ell$ attains a unique maximum at $\hat{t}_{\boldsymbol\xi}$.
+For fixed $\boldsymbol\xi$, the log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
 \begin{align*}
-\shannonDivergence(x_1) = \sum_j p_{\siteSplit_j} \log(c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1) - \log 8
+\ell_{\tau^*,t^*}(\tau^*, t) &= \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_2}(x_2)\\
+&\qquad + \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_2}(y_2)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,w}(w).
 \end{align*}
-where $c_{x_1,\siteSplit_j}$ and $a_{x_1,\siteSplit_j}$ are functions of $y_1,x_2,y_2,$ and $w$.
-For example, reading from the middle panel of Table~\ref{tab:gen-sitepatprob},
+Due to this additive form, all off-diagonal terms of the Hessian for this function are zero, so we show that the diagonal terms are nonpositive.
+Without loss of generality we focus on the variable $x_1$ and the log-likelihood proportional to
 \[
-c_{x_1,\emptyset} = 1+y_1y_2+wx_2y_1+wx_2y_2
+\ell(x_1) = \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_1}(x_1).
 \]
-and
+Doing calculation as in Figure~\ref{fig:example_likelihoods}, each functional form, suppressing constants with respect to $x_1$ and the initial $1/32$ constant, is
 \[
-a_{x_1,\emptyset} = x_2+wy_1+wy_2+x_2y_1y_2
+h_{j,x_1}(x_1) \propto (1+x_1)^{e_j}(1-x_1)^{1-e_j}
 \]
-with similar definitions for the remaining site splits.
+for $e_j\in\{0,1\}$, which, simplifying, results in
+\begin{align}
+\ell(x_1) &\propto \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(\sum_{j=1}^\nSiteSplits c_j(1-e_j)\right) \log (1-x_1)\\
+                  &= \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits c_je_j\right) \log (1-x_1). \label{eq:closed-form-x}
+\end{align}
+We have the second derivative
+\[
+\ell''(x_1) = -\left(\frac{\sum_j c_je_j}{(1+x_1)^2}+\frac{1-\sum_j c_je_j}{(1-x_1)^2}\right).
+\]
+As $x_1\in(0,1]$, we need only $0 \le \sum_j c_je_j \le 1$ to imply the diagonal terms of the Hessian are nonpositive.
+Since $\sum_j c_j = 1$ and $e_j\in\{0,1\}$, then $0 \le \sum_j c_je_j \le 1$ and $\ell''(x_1) \le 0$.
+Applying similar arguments to the other variables, the Hessian for the log-likelihood has nonpositive diagonal terms and off-diagonal terms equal to zero.
 
-Consider the derivative with respect to $x_1$
-\begin{align*}
-\frac{d}{dx_1} \shannonDivergence(x_1) = \sum_j \frac{p_{\siteSplit_j}a_{x_1,\siteSplit_j}}{c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1}
-\end{align*}
-and focus on the $j$th term in the summation
+Now, by straightforward calculus, we solve for the unique maximum $\hat{x}_1$ by setting the first derivative of \eqref{eq:closed-form-x} to zero to obtain
 \[
-f_j(x_1) := \frac{p_{\siteSplit_j}a_{x_1,\siteSplit_j}}{c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1}.
+\hat{x}_1 = 2\cdot\left(\sum_{j=1}^\nSiteSplits c_je_j\right) - 1
 \]
-Regardless of $a_{x_1,\siteSplit_j} \lessgtr 0$, $f_j$ is a decreasing function of $x_1$ so long as $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 > 0$.
-We have
+where
 \[
-\Pr(\siteSplitRV=\siteSplit_j \mid \tau_1,\{x_1,y_1,x_2,y_2,w\}) = \frac{1}{8} (c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1),
+\sum_{j=1}^\nSiteSplits c_je_j = \sum_{j=1}^\nSiteSplits \mathbf{1}\{\mbox{site split $j$ has term $(1+x_1)$}\} \cdot p_{\siteSplit_j}.
 \]
-which, being a probability, is greater than or equal to zero.
-We next exclude the situation of $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$.
-
-To exclude this situation we assume that $x_1,y_1,x_2 < 1$; if this criterion does not hold we get zero likelihoods (which obviously are not maximal).
-In fact, since $0 < x^*, y^* < 1$---implying $p_{\siteSplit_j} > 0$ for all $j$---if $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ for any $j$, we obtain a zero value for our likelihood, i.e., $\shannonDivergence\rightarrow -\infty$.
-Hence, the likelihood is never maximized when $c_{x_1,\siteSplit_j} + a_{x_1,\siteSplit_j}x_1 = 0$ and each $f_j$ is decreasing no matter the value of $x_1,y_1,$ or $x_2$, though for some values of $x_1,y_1,$ or $x_2$ equal to one the log-likelihood diverges, and the gradient of the marginal log-likelihood is a decreasing function in $x_1$.
-The remaining variables follow similar arguments.
-
-%EM Could you restructure this paragraph with a topic-sentence statement of the assumption we want to make, then evidence that it's ok? It roves around a good bit.
-%das: it was a little confusing; I merged and rearranged a few things.
-%EM I made a few further changes. Seem OK?
+As an example, Table~\ref{tab:likelihoods-restricted} shows the maximal ancestral state splits and corresponding likelihood values for $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$ and so, in this case,
+\[
+\sum_{j=1}^\nSiteSplits c_je_j = p_{\emptyset} + p_2 + p_3 + p_{23} = \frac{1}{2} + \frac{1}{2}x^*(y^*)^2
+\]
+and $\hat{x}_1 = x^*(y^*)^2$.
 
 \begin{table}
 \centering
 \begin{tabular}{|lll|l|}
 \hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_j$ & $32\cdot\Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j,\tau_1,t)$\\
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_j$ & $32\cdot\Pr(\siteSplitRV=\siteSplit_j,\ancestralSplitRV=\xi_j \mid \tau_1,t)$\\
 \hline
 $\emptyset$&$\{\emptyset\}$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 $\{1\}$    &$\{\emptyset\}$&$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
@@ -709,167 +593,76 @@ $\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y
 \hline
 \end{tabular}
 \caption{
-32 times the maximal conditional likelihood values on the InvFels tree $\tau_1$ where $\emptyset$ is the most likely ancestral state split for each site split.
+32 times the maximal likelihood values on the InvFels tree $\tau_1$ where $\emptyset$ is the most likely ancestral state split for each site split.
 }
 \label{tab:likelihoods-restricted}
 \end{table}
 
-We now focus on the conditional log-likelihood.
-%EM These "Assume"s feel frightening to the reader. Can we replace with "Under our stated hypothesis"?
-%das: got rid of some others in the text, too, that seemed like overkill
-%EM "we let $\emptyset$ be the most likely ancestral state split" still seems funny to me. We can't "let" it be something that is defined by being a maximum. How about saying that it is _a_ most likely...
-% By Lemma~\ref{lemma:ancestral-state}, $\emptyset$ is a most likely ancestral state split for all site splits.
-By Lemma~\ref{lemma:ancestral-state}, we let $\emptyset$ be the most likely ancestral state split for all site splits.
-In this case, the conditional log-likelihood has no ambiguity, and has terms given as the log of those in Table~\ref{tab:likelihoods-restricted}.
-We focus on the derivative with respect to $x_1$, aggregating all terms involving $x_2,y_1,y_2,$ and $w$ into a constant term.
-The conditional log-likelihood
+We show that solutions of this form never obtain $\hat{t} = t^*$ except in cases of zero or infinite branch length.
+Given Table~\ref{tab:gen-sitepatprob}, all solutions to $\hat{x}_1$ have the form
 \[
-\ell^C_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi_0) = \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)\cdot\log \Pr(\ancestralSplitRV=\emptyset \mid \siteSplitRV = \siteSplit_j, \tau_1, t),
+\hat{x}_1 = a_{x_1,0} + a_{x_1,1}(x^*)^2 + a_{x_1,2}(y^*)^2 + a_{x_1,3} x^*(y^*)^2 + a_{x_1,4}(x^*)^2(y^*)^2.
 \]
-using Tables~\ref{tab:gen-sitepatprob} and~\ref{tab:likelihoods-restricted}, is
-\begin{align*}
-\ell^C(x_1; \boldsymbol\xi_0) &= \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1)\\
-&\qquad + \left(\frac{1}{2}+\frac{1}{2}(y^*)^2\right)\log(1+y_1) + \left(\frac{1}{2}-\frac{1}{2}(y^*)^2\right)\log(1-y_1)\\
-&\qquad + \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_2) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_2)\\
-&\qquad + \log(1+y_2) + \log(1+w) - \log 32\\
-&:= \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1)\\
-&\qquad + C_{x_1}(x_2,y_1,y_2,w).
-\end{align*}
-where $C_{x_1}$ is a function of $y_1,x_2,y_2,$ and $w$.
-The derivative with respect to $x_1$ is
-\[
-\frac{d}{dx_1} \ell^C(x_1; \boldsymbol\xi_0) = \frac{-x_1+x^*(y^*)^2}{1-x_1^2},
-\]
-which is negative for all $x_1 \ge x^*$.
-This same process applied to $x_2$ and $y_1$ shows the gradient of the full likelihood is negative for $x_2 \ge x^*$ and $y_1 \ge y^*$.
-
-The variables $y_2$ and $w$ require the following.
-Consider the conditional log-likelihood with respect to $w$
-\[
-\ell^C(w; \boldsymbol\xi_0) := \log(1+w) + C_{w}(x_1,y_1,x_2,y_2)
-\]
-with derivative with respect to $w$
-\[
-\frac{d}{dw} \ell^C(w; \boldsymbol\xi_0) = \frac{1}{1+w},
-\]
-which is positive for all $w \ge 0$.
-%EM Does the zero crossing need additional argument? I'm guessing that you get this from the gradient-is-zero thing from the unique-maximum argument above. But that's just that it's zero when we are doing maximization of all of the variables at once. Here aren't we wanting to make an argument for lots of x_i and y_i?
-%das: Yeah, I think how it was written before didn't state it correctly. The zero crossing is in all the variables, and we want to make a statement about all the variables at once (as stated in the lemma). We focus on a single variable at a time for the conditional likelihood (\ell^C) because it is separable in each variable, but the constraints are for the maximization over all variables.
-%EM This is definitely an improvement, though I don't know if I get it yet. There is a single point at which we know it's zero. We also know that it's decreasing in w. It seems like if we combine these two facts we could still have a function that isn't positive for all $w \le y^*$ (if the level sets of the function are "tilted").
-%EM Also, a "zero crossing" at a single point of a multivariate function doesn't seem like the right terminology. Perhaps "vanishes"?
-The gradient of the marginal log-likelihood has a zero crossing at $\{x^*,y^*,x^*,y^*,y^*\}$, and the gradient of the conditional log-likelihood is a function of only $w$.
-Moreover, the gradient of the marginal log-likelihood is decreasing in $w$, thus, the addition of the derivative of the conditional log-likelihood makes the gradient of the $w$ component of the full log-likelihood positive for all $w \le y^*$.
-The same argument holds for $y_2$, yielding the constraints
-\[
-\hat{x}_1,\hat{x}_2 \in (0, x^*], \ \hat{y}_1 \in (0, y^*], \text{and}\ \hat{y}_2,\hat{w} \in [y^*, 1].
-\]
+where $a_{x_1,k}$ are constants independent of $x^*$ and $y^*$---in fact, $a_{x_1,k}$ takes values in the set $\{i/8 : i=-4,-3,\ldots,7,8\}$.
+The true branch fidelity for $x_1$ is $x^*$, and the only cases when we might have $\hat{x}_1=x^*$ are when $y^*=1$ or when $(x^*)^2=x^*$, i.e., one of the generating branch parameters is zero or infinite length; the same is true for $x_2$.
+A similar argument for $y_1,y_2,$ and $w$ shows that estimates can only be consistent when $(y^*)^2=y^*$, i.e., $y^*=0$ or $y^*=1$.
 \end{proof}
 
-Since $x^*, y^* < 1$, we see the bounds in Lemma~\ref{lemma:bounds} have the property that $x_1,y_1,x_2 < 1$.
-We now prove the main result.
+We now proceed to show there exist $x^*$ and $y^*$ such that the interior branch parameter $w$ is estimated as exactly one.
 
 \topoInconsist*
 
 \begin{proof}
-We proceed as in the previous proof by simplifying the constants in the log-likelihood.
-We analyze the derivative with respect to $w$, so we absorb all terms of only $x_1,y_1,x_2,$ and $y_2$ into a constant that disappears upon taking the derivative.
-Using Lemma~\ref{lemma:ancestral-state}, the objective function is
-\begin{align*}
-\ell(w; \boldsymbol\xi_0) = \left(\sum_j p_{\siteSplit_j} \log(c_{w,\siteSplit_j} + a_{w,\siteSplit_j}w)\right) + \log(1+w) + C_w(x_1,y_1,x_2,y_2)
-\end{align*}
-where $c_{w,\siteSplit_j},a_{w,\siteSplit_j}$ and $C_w$ are functions of $x_1,y_1,x_2,$ and $y_2$.
-From the middle panel of Table~\ref{tab:gen-sitepatprob}, we obtain
-\[
-c_{w,\emptyset} = 1+x_1x_2+y_1y_2+x_1y_1x_2y_2 = (1+x_1x_2)(1+y_1y_2)
-\]
-and
-\[
-a_{w,\emptyset} = x_1y_1+x_1y_2+x_2y_1+x_2y_2 = (x_1+x_2)(y_1+y_2)
-\]
-with similar definitions for the remaining site splits.
-We make a further simplification on our way to computing bounds on the likelihood.
+As we have a closed form solution to our likelihood problem, we compute the optimal solution given Table~\ref{tab:likelihoods}.
 Let
-\begin{align*}
-\ell(w; \boldsymbol\xi_0) &= \left(\sum_j p_{\siteSplit_j} \log(c_{w,\siteSplit_j} + a_{w,\siteSplit_j}w)\right) + \log(1+w) + C_w(x_1,y_1,x_2,y_2) \\
-        &= \left(\sum_j p_{\siteSplit_j} \log(c_{w,\siteSplit_j} + a_{w,\siteSplit_j}w) - p_{\siteSplit_j} \log(c_{w,\siteSplit_j})\right) + \log(1+w) \\
-        &\qquad + \left(C_w(x_1,y_1,x_2,y_2) + \sum_j p_{\siteSplit_j} \log(c_{w,\siteSplit_j})\right) \\
-        &=: \left(\sum_j p_{\siteSplit_j} \log(1 + b_{w,\siteSplit_j}w)\right) + \log(1+w) + C^*_w(x_1,y_1,x_2,y_2)
-\end{align*}
-where
 \[
-b_{\emptyset} := \frac{a_{w,\emptyset}}{c_{w,\emptyset}} = \frac{(x_1+x_2)(y_1+y_2)}{(1+x_1x_2)(1+y_1y_2)}
+\hat{t}_{\boldsymbol\xi} = \argmax_{t} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
 \]
-with similar definitions for the remaining site splits.
-The derivative with respect to $w$ of this function is
-\begin{align*}
-\ell'(w) := \frac{d}{dw} \ell(w; \boldsymbol\xi_0) =  \left(\sum_j \frac{p_{\siteSplit_j}b_{\siteSplit_j}}{1 + b_{\siteSplit_j}w}\right) + \frac{1}{1+w}.
-\end{align*}
-Using the fact that $b_{\emptyset} = -b_{13}$, $b_{1} = -b_{3}$, $b_{2} = -b_{123}$, and $b_{12} = -b_{23}$ in addition to $p_{1} = p_{3}$, $p_{2} = p_{123}$, and $p_{12} = p_{23}$, we simplify the derivative as
-\begin{align*}
-\ell'(w) &=  \frac{p_{\emptyset}b_{\emptyset}}{1 + b_{\emptyset}w} - \frac{p_{13}b_{\emptyset}}{1 - b_{\emptyset}w} + \frac{p_{2}b_{2}}{1 + b_{2}w} - \frac{p_{2}b_{2}}{1 - b_{2}w} \\
-         &\qquad + \frac{p_{1}b_{1}}{1 + b_{1}w} - \frac{p_{1}b_{1}}{1 - b_{1}w} + \frac{p_{12}b_{12}}{1 + b_{12}w} - \frac{p_{12}b_{12}}{1 - b_{12}w} + \frac{1}{1+w}.\\
-\end{align*}
-Using the bounds on $\hat{x}_1,\hat{y}_1,\hat{x}_2$, and $\hat{y}_2$ from Lemma~\ref{lemma:bounds} and our assumption of $y_2 \ge y_1 > 0$ and $x_2 \ge x_1 > 0$, we have
+be the closed form solution for $t$ for a fixed maximal ancestral state split $\boldsymbol\xi$.
+We need only consider the possibilities for choices of ancestral state splits in Table~\ref{tab:likelihoods} upon excluding cases of infinite branch lengths (i.e., any of $x_1,y_1,x_2,y_2,w$ equal to zero) and the redundant cases of $x_1 > x_2$ and $y_1 > y_2$, i.e.,
 \[
-0 < b_{\emptyset} \le \frac{2x^*}{1+(x^*)^2} =: b_{\emptyset}^U,
+\hat{\boldsymbol\xi} =
+    \argmax_{\boldsymbol\xi} \ \ell_{\tau^*,t^*}(\tau_1, \hat{t}_{\boldsymbol\xi}; \boldsymbol\xi).
 \]
-%das: The lower bound for b_{\emptyset} is strict because we assume x_1,...,w > 0, but for the other three they aren't strict since x_1 could equal x_2 and/or y_1 could equal y_2. This doesn't affect any later results, though, b/c b -> 0 just makes that term drop out.
-\[
-0 \le b_{2} \le \frac{2x^*}{1+(x^*)^2}\cdot\frac{1}{1-y^*} =: b_{2}^U,
-\]
-\[
-0 \le b_{1} \le \frac{x^*}{1-(x^*)^2} =: b_{1}^U,
-\]
-\[
-0 \le b_{12} \le \frac{x^*}{1-(x^*)^2}\cdot\frac{1}{1-y^*} =: b_{12}^U,
-\]
-so that $\ell'(w)$ has lower bound
-\[
-\ell'_{L}(w) :=  -\frac{p_{13}}{1/b_{\emptyset}^U - w} - \frac{p_{2}}{1/b_{2}^U - w} - \frac{p_{1}}{1/b_{1}^U - w} - \frac{p_{12}}{1/b_{12}^U - w} + \frac{1}{1+w}.
-\]
-Each term in $\ell'_{L}(w)$ is of the form
-\[
-f(w) = \frac{p}{1/b + w} = \frac{p\cdot b}{1 + b\cdot w}
-\]
-with $0 \le p \le 1$.
-Assume $b_{\emptyset}^U, b_{2}^U, b_{1}^U, b_{12}^U < 1$, so that $-1 < b < 1$.
-Since $b > -1$ and $w\in(0,1]$, $1+b\cdot w > 0$ and, thus, each term in $\ell'_{L}(w)$ is a decreasing function in $w$.
-Thus, if $\ell'_{L}(1) > 0$, since $\ell'_{L}(w)$ is decreasing on $(0,1]$ then $\ell'_{L}(w) > 0$ for all $w\in (0,1]$.
-Since $\ell'(w) > \ell'_{L}(w)$ for $w\in(0,1]$, this implies $\ell'(w) > 0$, which further implies $\ell(w; \boldsymbol\xi_0)$ is increasing on the entire interval $(0,1]$, including at the boundary $w=1$, and $\hat{w} \equiv 1$.
-
-We now construct the conditions on $x^*$ and $y^*$ that are required for $\hat{w}\equiv 1$:
-\[
-C1-C3: b_{2}^U, b_{1}^U, b_{12}^U < 1,
-\]
-\[
-C4: -\frac{p_{13}b_{\emptyset}^U}{1-b_{\emptyset}^U} - \frac{p_{2}b_{2}^U}{1-b_{2}^U} - \frac{p_{1}b_{1}^U}{1-b_{1}^U} - \frac{p_{12}b_{12}^U}{1-b_{12}^U} + \frac{1}{2} > 0.
-\]
-Conditions $C1-C3$ are needed so that $\ell'_{L}(w)$ is a decreasing function on $(0,1]$, while condition $C4$ is the one on $\ell'_{L}(1) > 0$, i.e., so that $\ell'(w)$ is positive on $(0,1]$.
-The open set of $x^*,y^*$ satisfying conditions $C1-C4$ as well as in Lemma~\ref{lemma:ancestral-state} is given in Fig.~\ref{fig:incons-analytic}, giving the region of generating parameters where $\hat{w}\equiv 1$.
-\end{proof}
+We show the maximal ancestral states in Fig.~\ref{fig:max-anc-state}.
 
 \begin{figure}
-\centering
-\includegraphics[width=.95\textwidth]{incons-analytic-inkscape}
+    \begin{minipage}{0.95\linewidth}
+        \centering
+        \includegraphics[width=.95\textwidth]{analytic-anc-state}
+        \label{ }
+    \end{minipage}
+    \begin{minipage}{0.95\linewidth}
+        \centering
+        \begin{tabular}{ll}
+        \hline
+        $\boldsymbol\xi_1$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset\}$\\
+        $\boldsymbol\xi_2$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \emptyset, \emptyset\}$\\
+        $\boldsymbol\xi_3$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \emptyset, \{1\}\}$\\
+        $\boldsymbol\xi_4$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \{1,2\}, \{1\}\}$\\
+        $\boldsymbol\xi_5$ & $\{\emptyset, \emptyset, \emptyset, \{1\}, \{1\}, \emptyset, \{1\}, \{1\}\}$
+        \end{tabular}
+    \end{minipage}
 \caption{
-    An analytically-derived region of inconsistency in terms of probabilities of a character change along a branch for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $p_{w^*} = p_{y^*}$ (in terms of fidelities, $w^*=y^*$).
-    Due to the looseness of the upper and lower bounds, the parameters in the white region do not necessarily indicate consistency, though all parameters in the shaded region result in an inconsistency.
+Region with maximal ancestral state splits on the InvFels tree $\tau_1$.
 }
-\label{fig:incons-analytic}
+\label{fig:max-anc-state}
 \end{figure}
 
-As the region in Fig.~\ref{fig:incons-analytic} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
+Mapping each maximal ancestral state split to each likelihood value, we see that $\hat{w}\equiv 1$ if $\boldsymbol\xi=\boldsymbol\xi_1$ or $\boldsymbol\xi=\boldsymbol\xi_2$, which encompasses the bottom-right region of Figure~\ref{fig:max-anc-state}.
+This is an analytically-derived region of inconsistency in terms of probabilities of a character change along a branch for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $p_{w^*} = p_{y^*}$ (in terms of fidelities, $w^*=y^*$).
+\end{proof}
+
+As the region of degeneracy in Fig.~\ref{fig:max-anc-state} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
 %EM "letting $\emptyset$ be the maximal ancestral state split" sounds a little funny-- either it is or it isn't maximal.
-It is easy to see that letting $\emptyset$ be the maximal ancestral state split results in the same conditional log-likelihood for $\tau_1$ and $\tau_2$.
+It is easy to see that when $\emptyset$ is the maximal ancestral state split, we have the same log-likelihood for $\tau_1$ and $\tau_2$.
 Moreover, if $w=1$, the internal branch becomes zero-length and the two topologies are indistinguishable.
-Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the shaded region in Fig.~\ref{fig:incons-analytic}.
+Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the shaded region in Fig.~\ref{fig:max-anc-state}.
 We can see this results in the likelihood of both topologies being equal, i.e.,
 \begin{align*}
 \max_{t : t^*\in\mathcal{T}_0} & \ \ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)\\
-&= \max_{t: \boldsymbol\xi=\boldsymbol\xi_0, w=1, \tau=\tau_1} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
-&\qquad + \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, \{x_1,y_1,x_2,y_2,w\})\\
-&= \max_{t: \boldsymbol\xi=\boldsymbol\xi_0, w=1, \tau=\tau_2} \ \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j \mid \tau, \{x_1,y_1,x_2,y_2,w\}) \\
-&\qquad + \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, \{x_1,y_1,x_2,y_2,w\}).
+&= \max_{t: \boldsymbol\xi=\boldsymbol\xi_0, w=1, \tau=\tau_1} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
+&= \max_{t: \boldsymbol\xi=\boldsymbol\xi_0, w=1, \tau=\tau_2} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, \{x_1,y_1,x_2,y_2,w\}).
 \end{align*}
 
 %~~~
