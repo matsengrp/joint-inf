@@ -1,0 +1,102 @@
+#!/usr/bin/env scons
+
+import os
+
+from os.path import join
+from nestly.scons import SConsWrap
+from nestly import Nest
+from SCons.Script import Environment
+from SCons.Script import AddOption
+
+env = Environment(ENV=os.environ)
+
+nest = SConsWrap(Nest(), '_output', alias_environment=env)
+
+nest.add(
+    'plot_type',
+    [
+        'ancestral_state_conditions',
+        'joint_empirical',
+        'marginal_empirical',
+    ],
+)
+
+nest.add(
+    'bias',
+    [
+        True,
+        False,
+    ],
+)
+
+nest.add(
+    'generating_topology',
+    [
+        'invfels',
+    ],
+)
+
+@nest.add_target_with_env(env)
+def run(env, outdir, c):
+    delta = .01
+    if c['plot_type'] == 'ancestral_state_conditions':
+        delta = .001
+        if c['bias']:
+            return
+        out_plot = join(outdir, 'out.png')
+    else:
+        out_plot = join(outdir, 'out.svg')
+    if c['bias']:
+        delta = .01 / 5
+    cmd = [
+        'python',
+        'joint_inf_plot.py',
+        '--n-jobs',
+        16,
+        '--delta',
+        delta,
+        '--plot-type',
+        c['plot_type'],
+        '--generating-topology',
+        c['generating_topology'],
+        '--out-pkl-name',
+        '${TARGETS[0]}',
+        '--plot-name',
+        '${TARGETS[1]}',
+    ]
+
+    if c['bias']:
+        cmd += [
+            '--bias',
+            '--cutoff 0.1',
+        ]
+
+    return env.Command(
+        [join(outdir, 'out.pkl'), out_plot],
+        [],
+        ' '.join(map(str, cmd)))
+
+# kind of hack so i don't have to keep rerunning everything---can just delete plot.svg after i change code...
+@nest.add_target_with_env(env)
+def run_on_pkls(env, outdir, c):
+    if c['plot_type'] == 'ancestral_state_conditions':
+        if c['bias']:
+            return
+        out_plot = join(outdir, 'plot.png')
+    else:
+        out_plot = join(outdir, 'plot.svg')
+    cmd = [
+        'python',
+        'joint_inf_plot.py',
+        '--n-jobs',
+        16,
+        '--in-pkl-name',
+        '${SOURCES[0]}',
+        '--plot-name',
+        '${TARGETS[0]}',
+    ]
+
+    return env.Command(
+        [out_plot],
+        c['run'],
+        ' '.join(map(str, cmd)))
