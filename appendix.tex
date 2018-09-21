@@ -67,14 +67,14 @@ We now consider the $i$th factor of \eqref{eq:full_likelihood}.
 As a consequence of assuming a binary symmetric model, for some $\siteSplit_j\in\mathcal{P}(\siteSplitSet)$ the mapping $\patternToSplit(\alignmentColumn_i)$ has the property
 \begin{align*}
     \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &= \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t)\\
-    &= \Pr(\alignmentColumnRV=\alignmentColumn_i \cup \overline{\alignmentColumnRV}=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t)\\
-    &= \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) + \Pr(\overline{\alignmentColumnRV}=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t)\\
+    &= \Pr((\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i) \cup (\overline{\alignmentColumnRV}=\alignmentColumn_i, \overline{\ancestralStateColumnRV}=\ancestralStateColumn_i) \mid \tau, t)\\
+    &= \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) + \Pr(\overline{\alignmentColumnRV}=\alignmentColumn_i, \overline{\ancestralStateColumnRV}=\ancestralStateColumn_i \mid \tau, t)\\
     &= 2\cdot\Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t)
 \end{align*}
-where $\overline{Y}$ is the complement of the site pattern--valued random variable $Y$ and has the same distribution as $Y$.
+where $\overline{\alignmentColumnRV}$ is the complement of the site pattern--valued random variable $\alignmentColumnRV$ and has the same distribution as $\alignmentColumnRV$ (similarly for $\ancestralStateColumnRV$).
 Since
 \begin{align*}
-    \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t),
+    2\cdot\Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t),
 \end{align*}
 given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t)$ such that $\xi_j\in\ancestralSplitPartition_j(\tau, t)$ satisfies
 \begin{align*}
@@ -87,7 +87,7 @@ This can be seen by using the definition of $\ancestralToSplit(\alignmentColumn_
 The same can be done for the case of $\alignmentColumn_{i,\nSiteRows}=1$, implying $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective.
 From this we have
 \begin{align*}
-    \max_{\ancestralStateColumn_i} \ \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= \max_{\ancestralStateColumn_i} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t)\\
+    \max_{\ancestralStateColumn_i} \ 2\cdot\Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= \max_{\ancestralStateColumn_i} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t)\\
     &= \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t)\\
     &= \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV = \xi_j \mid \tau, t)
 \end{align*}
@@ -108,7 +108,7 @@ Symmetry allows us to group adjacent pairs in $\mathcal{P}(\{1,2,3,4\})$ into eq
 The unique site splits, collapsing complements, are
 \begin{align*}
     \mathcal{P}(\siteSplitSet) &= \{\emptyset, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\} \\
-& := \{\siteSplit_1, \ldots, \siteSplit_8\}.
+& =: \{\siteSplit_1, \ldots, \siteSplit_8\}.
 \end{align*}
 Since we identify character complements, we do not consider the additional splits
 \begin{equation*}
@@ -179,9 +179,8 @@ The likelihood in \eqref{eq:profile_likelihood} can be written as
 \begin{align}
 L_\nCols'(\tau, t; \fullAlignment) &= \max_{\fullAncestralStates} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates) \nonumber \\
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \nonumber \\
-                             &\propto \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \Pr(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \nonumber \\
-                             &= \prod_{i=1}^{\nCols} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i) \mid \tau, t) \cdot \max_{\ancestralStateColumn_i} \Pr(\ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \siteSplitRV=\patternToSplit(\alignmentColumn_i), \tau, t) \nonumber \\
-                             &= \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j \mid \tau, t)\cdot \Pr(\ancestralSplitRV=\xi_j \mid \siteSplitRV=\siteSplit_j, \tau, t)\right] ^{\nCols_j(\fullAlignment)} \nonumber \\
+                             &\propto \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t) \nonumber \\
+                             &= \prod_{i=1}^{\nCols} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t) \nonumber \\
                              &= \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
 for $\siteSplit_j\in\mathcal{P}(\siteSplitSet)$ and some $\xi_j\in\ancestralSplitPartition_j(\tau, t)$ with $1 \le j \le q$ where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ that project to site split $\siteSplit_j$.
@@ -200,7 +199,7 @@ so that, in the $\nCols\rightarrow\infty$ limit,
 \begin{equation}
 \begin{split}
 &    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) \\
-&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot [\log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)]. \label{eq:site_pattern_profile_likelihood_mean}
+&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t). \label{eq:site_pattern_profile_likelihood_mean}
 \end{split}
 \end{equation}
 
@@ -377,7 +376,7 @@ and
 \]
 Using the notation in Section 5.2.1 in \citet{van1998asymptotic}, we let
 \[
-m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot [\log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)]
+m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)
 \]
 so that
 \[
@@ -411,8 +410,9 @@ This ensures the upper-semicontinuous property of this mapping, and shows $\hat{
 \subsection*{Properties of the joint objective function}
 
 Consider the InvFels tree $\tau_1$ with arbitrary fidelities, i.e., $t=\{x_1,y_1,x_2,y_2,w\}$.
-Next we show that the likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$ remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
+Next we show that the likelihood $\ell_{\tau_1,t}(\tau_1, t; \boldsymbol\xi)$ remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
 Although this property should not be surprising due to symmetry, we write it out for completeness.
+This holds for a general $t$, and thus holds setting $t=t^*$.
 Using the Hadamard transform, we calculate the generating probabilities on the InvFels tree.
 For site split $\emptyset$,
 \begin{align*}
@@ -478,7 +478,7 @@ By exchanging only $x_1$ with $x_2$, the generating probabilities and likelihood
 The same is true of the generating probabilities if we exchange only $y_1$ and $y_2$, except, for the case of the likelihood values, we again look at the complement of the most likely ancestral state split as in the case of splits $\{2\}$ and $\{1,2,3\}$.
 Now, if we exchange both $x_1$ with $x_2$ and $y_1$ with $y_2$, we see these generating probabilities remain unchanged, and, for the likelihood values, we look at the complement of the most likely ancestral state split and see these values also remain unchanged.
 
-Thus exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t^*}(\tau_1, t; \boldsymbol\xi)$.
+Thus exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t}(\tau_1, t; \boldsymbol\xi)$.
 Therefore we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$ and $y_2 \ge y_1$, with these likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
 
 \begin{table}
@@ -525,7 +525,7 @@ Because in 4 cases there are 3 possibilities for $\xi_j$, there are $3^4=81$ pos
 
 %where data is generated on the InvFels tree with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$ (Fig.~\ref{fig:farris-fels-top}).
 
-We begin with the branch length inconsistency.
+We begin by showing an inconsistency in branch length estimation on the InvFels tree.
 
 \blInconsist*
 
@@ -537,7 +537,7 @@ For a fixed, known $\boldsymbol\xi$, there exists a closed form solution to $\ha
 We show in this case that the log-likelihood $\ell$ attains a unique maximum at $\hat{t}_{\boldsymbol\xi}$.
 For fixed $\boldsymbol\xi$, the log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
 \begin{align*}
-\ell_{\tau^*,t^*}(\tau^*, t) &= \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_2}(x_2)\\
+\ell_{\tau^*,t^*}(\tau^*, t, \boldsymbol\xi) &= \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_2}(x_2)\\
 &\qquad + \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_2}(y_2)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,w}(w).
 \end{align*}
 Due to this additive form, all off-diagonal terms of the Hessian for this function are zero, so we show that the diagonal terms are nonpositive.
@@ -552,15 +552,15 @@ h_{j,x_1}(x_1) \propto (1+x_1)^{e_j}(1-x_1)^{1-e_j}
 for $e_j\in\{0,1\}$, which, simplifying, results in
 \begin{align}
 \ell(x_1) &\propto \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(\sum_{j=1}^\nSiteSplits c_j(1-e_j)\right) \log (1-x_1)\\
-                  &= \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits c_je_j\right) \log (1-x_1). \label{eq:closed-form-x}
+                  &= \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits c_je_j\right) \log (1-x_1), \label{eq:closed-form-x}
 \end{align}
-We have the second derivative
+which has second derivative
 \[
 \ell''(x_1) = -\left(\frac{\sum_j c_je_j}{(1+x_1)^2}+\frac{1-\sum_j c_je_j}{(1-x_1)^2}\right).
 \]
 As $x_1\in(0,1]$, we need only $0 \le \sum_j c_je_j \le 1$ to imply the diagonal terms of the Hessian are nonpositive.
 Since $\sum_j c_j = 1$ and $e_j\in\{0,1\}$, then $0 \le \sum_j c_je_j \le 1$ and $\ell''(x_1) \le 0$.
-Applying similar arguments to the other variables, the Hessian for the log-likelihood has nonpositive diagonal terms and off-diagonal terms equal to zero.
+Applying similar arguments to the other variables, the Hessian for the log-likelihood has nonpositive diagonal terms and off-diagonal terms equal to zero, and $\hat{t}$ uniquely maximizes $\ell$.
 
 Now, by straightforward calculus, we solve for the unique maximum $\hat{x}_1$ by setting the first derivative of \eqref{eq:closed-form-x} to zero to obtain
 \[
@@ -570,7 +570,8 @@ where
 \[
 \sum_{j=1}^\nSiteSplits c_je_j = \sum_{j=1}^\nSiteSplits \mathbf{1}\{\mbox{site split $j$ has term $(1+x_1)$}\} \cdot p_{\siteSplit_j}.
 \]
-As an example, Table~\ref{tab:likelihoods-restricted} shows the maximal ancestral state splits and corresponding likelihood values for $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$ and so, in this case,
+As an example, Table~\ref{tab:likelihoods-restricted} shows the maximal ancestral state splits and corresponding likelihood values for $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$.
+In this case,
 \[
 \sum_{j=1}^\nSiteSplits c_je_j = p_{\emptyset} + p_2 + p_3 + p_{23} = \frac{1}{2} + \frac{1}{2}x^*(y^*)^2
 \]
@@ -604,22 +605,23 @@ Given Table~\ref{tab:gen-sitepatprob}, all solutions to $\hat{x}_1$ have the for
 \hat{x}_1 = a_{x_1,0} + a_{x_1,1}(x^*)^2 + a_{x_1,2}(y^*)^2 + a_{x_1,3} x^*(y^*)^2 + a_{x_1,4}(x^*)^2(y^*)^2.
 \]
 where $a_{x_1,k}$ are constants independent of $x^*$ and $y^*$---in fact, $a_{x_1,k}$ takes values in the set $\{i/8 : i=-4,-3,\ldots,7,8\}$.
-The true branch fidelity for $x_1$ is $x^*$, and the only cases when we might have $\hat{x}_1=x^*$ are when $y^*=1$ or when $(x^*)^2=x^*$, i.e., one of the generating branch parameters is zero or infinite length; the same is true for $x_2$.
+The true branch fidelity for $x_1$ is $x^*$, and the only cases to possibly obtain $\hat{x}_1=x^*$ are when $y^*=1$ or when $(x^*)^2=x^*$, i.e., one of the generating branch parameters is zero or infinite length; the same is true for $x_2$.
 A similar argument for $y_1,y_2,$ and $w$ shows that estimates can only be consistent when $(y^*)^2=y^*$, i.e., $y^*=0$ or $y^*=1$.
 \end{proof}
 
-We now proceed to show there exist $x^*$ and $y^*$ such that the interior branch parameter $w$ is estimated as exactly one.
+We now proceed to show there exist $x^*$ and $y^*$ such that the interior branch parameter $w$ is estimated as exactly one, indicating convergence to a multifurcating topology.
 
 \topoInconsist*
 
 \begin{proof}
-As we have a closed form solution to our likelihood problem, we compute the optimal solution given Table~\ref{tab:likelihoods}.
+As we have a closed form solution to our likelihood problem, we compute the optimal solution given Table~\ref{tab:farris_likelihoods}.
 Let
 \[
 \hat{t}_{\boldsymbol\xi} = \argmax_{t} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
 \]
 be the closed form solution for $t$ for a fixed maximal ancestral state split $\boldsymbol\xi$.
-We need only consider the possibilities for choices of ancestral state splits in Table~\ref{tab:likelihoods} upon excluding cases of infinite branch lengths (i.e., any of $x_1,y_1,x_2,y_2,w$ equal to zero) and the redundant cases of $x_1 > x_2$ and $y_1 > y_2$, i.e.,
+We need only consider the possibilities for choices of ancestral state splits in Table~\ref{tab:likelihoods} as opposed to Table~\ref{tab:farris_likelihoods}.
+Upon excluding cases of infinite branch lengths (i.e., any of $x_1,y_1,x_2,y_2,w$ equal to zero) and the redundant cases of $x_1 > x_2$ and $y_1 > y_2$, we obtain
 \[
 \hat{\boldsymbol\xi} =
     \argmax_{\boldsymbol\xi} \ \ell_{\tau^*,t^*}(\tau_1, \hat{t}_{\boldsymbol\xi}; \boldsymbol\xi).
@@ -636,38 +638,37 @@ We show the maximal ancestral states in Fig.~\ref{fig:max-anc-state}.
         \centering
         \begin{tabular}{ll}
         \hline
-        $\boldsymbol\xi_1$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset\}$\\
-        $\boldsymbol\xi_2$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \emptyset, \emptyset\}$\\
-        $\boldsymbol\xi_3$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \emptyset, \{1\}\}$\\
-        $\boldsymbol\xi_4$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \{1,2\}, \{1\}\}$\\
-        $\boldsymbol\xi_5$ & $\{\emptyset, \emptyset, \emptyset, \{1\}, \{1\}, \emptyset, \{1\}, \{1\}\}$
+        $\hat{\boldsymbol\xi_1}$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset\}$\\
+        $\hat{\boldsymbol\xi_2}$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \emptyset, \emptyset\}$\\
+        $\hat{\boldsymbol\xi_3}$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \emptyset, \{1\}\}$\\
+        $\hat{\boldsymbol\xi_4}$ & $\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \{1,2\}, \{1\}\}$\\
+        $\hat{\boldsymbol\xi_5}$ & $\{\emptyset, \emptyset, \emptyset, \{1\}, \{1\}, \emptyset, \{1\}, \{1\}\}$
         \end{tabular}
     \end{minipage}
 \caption{
-Region with maximal ancestral state splits on the InvFels tree $\tau_1$.
+Regions of maximal ancestral state splits on the InvFels tree $\tau_1$.
 }
 \label{fig:max-anc-state}
 \end{figure}
 
-Mapping each maximal ancestral state split to each likelihood value, we see that $\hat{w}\equiv 1$ if $\boldsymbol\xi=\boldsymbol\xi_1$ or $\boldsymbol\xi=\boldsymbol\xi_2$, which encompasses the bottom-right region of Figure~\ref{fig:max-anc-state}.
-This is an analytically-derived region of inconsistency in terms of probabilities of a character change along a branch for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $p_{w^*} = p_{y^*}$ (in terms of fidelities, $w^*=y^*$).
+Mapping each maximal ancestral state split to each likelihood value, we see that $\hat{w}\equiv 1$ if $\hat{\boldsymbol\xi}=\hat{\boldsymbol\xi}_1$ or $\hat{\boldsymbol\xi}=\hat{\boldsymbol\xi}_2$, which encompasses the bottom-right region of Figure~\ref{fig:max-anc-state}.
 \end{proof}
 
+The regions in Fig.~\ref{fig:max-anc-state} are analytically-derived regions of inconsistency in terms of probabilities of a character change along a branch for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $p_{w^*} = p_{y^*}$ (in terms of fidelities, $w^*=y^*$).
 As the region of degeneracy in Fig.~\ref{fig:max-anc-state} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
 %EM "letting $\emptyset$ be the maximal ancestral state split" sounds a little funny-- either it is or it isn't maximal.
 It is easy to see that when $\emptyset$ is the maximal ancestral state split, we have the same log-likelihood for $\tau_1$ and $\tau_2$.
 Moreover, if $w=1$, the internal branch becomes zero-length and the two topologies are indistinguishable.
-Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the shaded region in Fig.~\ref{fig:max-anc-state}.
+Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the region in Fig.~\ref{fig:max-anc-state} where $\hat{\boldsymbol\xi}=\hat{\boldsymbol\xi}_1$.
 We can see this results in the likelihood of both topologies being equal, i.e.,
 \begin{align*}
 \max_{t : t^*\in\mathcal{T}_0} & \ \ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)\\
-&= \max_{t: \boldsymbol\xi=\boldsymbol\xi_0, w=1, \tau=\tau_1} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
-&= \max_{t: \boldsymbol\xi=\boldsymbol\xi_0, w=1, \tau=\tau_2} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, \{x_1,y_1,x_2,y_2,w\}).
+&= \max_{t: \boldsymbol\xi=\hat{\boldsymbol\xi}_1, w=1, \tau=\tau_1} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
+&= \max_{t: \boldsymbol\xi=\hat{\boldsymbol\xi}_1, w=1, \tau=\tau_2} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, \{x_1,y_1,x_2,y_2,w\}).
 \end{align*}
 
 %~~~
 % Figures mentioned in main section of manuscript
-
 
 \begin{figure}
 \centering
