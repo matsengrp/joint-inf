@@ -436,7 +436,7 @@ def main(args=sys.argv[1:]):
         cnt = 1
         for idx, anc_state in enumerate(product('012', repeat=4)):
             if idx in uniques:
-                legendtext.append(r'$\xi_%d$' % cnt)
+                legendtext.append(r'$\hat{\xi}_%d$' % cnt)
                 cnt += 1
         move_legend = True
     elif args.plot_type == 'joint_empirical':
