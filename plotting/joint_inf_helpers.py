@@ -1,13 +1,9 @@
+"""
+Code to print generating probabilities and likelihoods for Felsenstein and
+inverse Felsenstein trees.
+"""
+
 from __future__ import unicode_literals
-import matplotlib
-matplotlib.use('SVG')
-matplotlib.rcParams['text.usetex'] = True
-matplotlib.rcParams['text.latex.unicode'] = True
-matplotlib.rcParams['figure.autolayout'] = True
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-import seaborn as sns
-import numpy as np
 import argparse
 import sys
 import collections

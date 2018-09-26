@@ -1,9 +1,14 @@
-from __future__ import unicode_literals
+"""
+Code to generate plots in manuscript (Figs. 2, 3, S2 and S3).
+"""
+
 import matplotlib
 matplotlib.use('SVG')
 matplotlib.rcParams['text.usetex'] = True
 matplotlib.rcParams['text.latex.unicode'] = True
 matplotlib.rcParams['figure.autolayout'] = True
+matplotlib.rcParams['text.latex.preamble']=["\usepackage{amsmath}"]
+
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import seaborn as sns
@@ -21,6 +26,8 @@ from joint_inf_helpers import ALL_PATTERNS
 
 sns.set_style('white')
 sns.set_style('ticks')
+
+plt.rcParams['hatch.color'] = '#cdcdcd'
 
 # ~~~~~~~~~
 # global variables
@@ -339,16 +346,15 @@ def make_plot(plottitle, plotname, legendtext=None, ct=None, scale=1, plotbar=Fa
     plt.ylabel(r'$p_{y^*}$', fontsize=FONT_SIZE-4)
     ttl = plt.title(plottitle, fontsize=FONT_SIZE+2)
     ttl.set_position([.5, 1.05])
-    if ct is not None:
-        ct.ax.tick_params(labelsize=FONT_SIZE-2)
-        x = np.concatenate(([0.], [cutoff], [cutoff]))
-        y = np.concatenate(([cutoff], [cutoff], [0.]))
-        plt.plot(x, y, '-', alpha=.15, lw=.5)
     if legendtext is not None:
         if move_legend:
             artists, labels = ct.legend_elements()
+            for artist in artists:
+                artist.set_alpha(1.0)
+                artist.set_edgecolor('black')
+                artist.set_linewidth(1)
             plt.legend(artists, legendtext,
-                bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=FONT_SIZE-4, mode='expand')
+                bbox_to_anchor=(1.05, 1), loc=2, fontsize=FONT_SIZE-4)
         else:
             plt.legend([Legend()], [legendtext], loc=2,
                 handler_map={Legend: LegendHandler()}, fontsize=FONT_SIZE-4)
@@ -363,17 +369,17 @@ def make_plot(plottitle, plotname, legendtext=None, ct=None, scale=1, plotbar=Fa
         ax.set_yticks(np.arange(0, cutoff/scale+scale, cutoff/(scale*5)))
 
     if cutoff == .5:
-        round_val = 1
+        lab_str = r'$%.01f$'
     else:
-        round_val = 2
-    labels = [r'$%s$' % str(val) for val in [round(val, round_val) for val in np.arange(0, cutoff+.01, cutoff/5)]]
+        lab_str = r'$%.02f$'
+    labels = [lab_str % val for val in np.arange(0, cutoff+.01, cutoff/5)]
     ax.set_xticklabels(labels, fontsize=FONT_SIZE-2)
     ax.set_yticklabels(labels, fontsize=FONT_SIZE-2)
     sns.despine()
     if plotbar:
         cbar = plt.colorbar()
         cbar.ax.tick_params(labelsize=FONT_SIZE-2)
-    plt.savefig(plotname)
+    plt.savefig(plotname, dpi=200)
     plt.close()
 
 class Obj(object):
@@ -419,8 +425,8 @@ def main(args=sys.argv[1:]):
     # Plot output
     if args.plot_type == 'ancestral_state_conditions':
         uniques = np.unique(Z)
-        plt.contour(PX, PY, Z, uniques, colors='k', linestyles='-', linewidths=.5)
-        ct = plt.contourf(PX, PY, Z, uniques, colors='none', hatches=[None, 'x', '|', '\\', '/'])
+        plt.contour(PX, PY, Z, uniques, colors='k', linestyles='-', linewidths=1)
+        ct = plt.contourf(PX, PY, Z, uniques, hatches=[None, '---', '|||', '\\\\\\', '///'], alpha=0.0)
     else:
         plt.imshow(Z, cmap=plt.cm.gray_r, origin='lower')
         ct = None
@@ -436,7 +442,7 @@ def main(args=sys.argv[1:]):
         cnt = 1
         for idx, anc_state in enumerate(product('012', repeat=4)):
             if idx in uniques:
-                legendtext.append(r'$\hat{\xi}_%d$' % cnt)
+                legendtext.append(r'$\hat{\boldsymbol\xi}_%d$' % cnt)
                 cnt += 1
         move_legend = True
     elif args.plot_type == 'joint_empirical':

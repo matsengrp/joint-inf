@@ -39,13 +39,12 @@ nest.add(
 @nest.add_target_with_env(env)
 def run(env, outdir, c):
     delta = .01
+    out_plot = join(outdir, 'out.svg')
     if c['plot_type'] == 'ancestral_state_conditions':
         delta = .001
         if c['bias']:
             return
         out_plot = join(outdir, 'out.png')
-    else:
-        out_plot = join(outdir, 'out.svg')
     if c['bias']:
         delta = .01 / 5
     cmd = [
@@ -79,12 +78,11 @@ def run(env, outdir, c):
 # kind of hack so i don't have to keep rerunning everything---can just delete plot.svg after i change code...
 @nest.add_target_with_env(env)
 def run_on_pkls(env, outdir, c):
+    out_plot = join(outdir, 'plot.svg')
     if c['plot_type'] == 'ancestral_state_conditions':
         if c['bias']:
             return
         out_plot = join(outdir, 'plot.png')
-    else:
-        out_plot = join(outdir, 'plot.svg')
     cmd = [
         'python',
         'joint_inf_plot.py',
