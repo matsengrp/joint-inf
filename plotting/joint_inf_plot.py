@@ -22,7 +22,7 @@ from multiprocessing import Pool
 from scipy.optimize import minimize
 from itertools import product
 
-from joint_inf_helpers import ALL_PATTERNS
+from joint_inf_helpers import *
 
 sns.set_style('white')
 sns.set_style('ticks')
@@ -37,7 +37,7 @@ FONT_SIZE = 20
 # constants to slightly speed up computation
 LOG2 = np.log(2)
 LOG32 = np.log(32)
-ANC_STATE_DICT = {'0': (0,0), '1': (1,0), '2': (1,1), '3': (0,1)}
+ANC_STATE_DICT = {'0': '00', '1': '10', '2': '11', '3': '01'}
 
 
 class Legend(object):
@@ -121,41 +121,16 @@ def parse_args():
         help='file name for where to save output for time saving',
         default='output.pkl',
     )
+    parser.add_argument(
+        '--output-file',
+        type=str,
+        help='file name for where to save log file',
+        default='output.txt',
+    )
 
     args = parser.parse_args()
 
     return args
-
-# ~~~~~~~~~
-# Functions for exact likelihood bounds
-
-
-def get_generating_probability(theta0, site_pattern, generating_topology='invfels'):
-    """
-    Site pattern frequencies for inverse Felsenstein tree
-    """
-    # fifth branch will always be positive
-    theta = [-t if s=='1' else t \
-            for t,s in zip(theta0, site_pattern+'0')]
-    if generating_topology == 'invfels':
-        prob = 0.125 * (1 + \
-            theta[0]*theta[2] + \
-            theta[1]*theta[3] + \
-            theta[0]*theta[1]*theta[4] + \
-            theta[0]*theta[3]*theta[4] + \
-            theta[1]*theta[2]*theta[4] + \
-            theta[2]*theta[3]*theta[4] + \
-            theta[0]*theta[1]*theta[2]*theta[3])
-    else:
-        prob = 0.125 * (1 + \
-            theta[0]*theta[1] + \
-            theta[2]*theta[3] + \
-            theta[0]*theta[2]*theta[4] + \
-            theta[1]*theta[2]*theta[4] + \
-            theta[0]*theta[3]*theta[4] + \
-            theta[1]*theta[3]*theta[4] + \
-            theta[0]*theta[1]*theta[2]*theta[3])
-    return prob
 
 # ~~~~~~~~~
 # Functions for empirical plot
@@ -172,26 +147,12 @@ def marginal_likelihood(theta, theta_hat, generating_topology='invfels'):
     Marginal likelihood given generating theta and estimated theta_hat
     """
     probs = {pattern: get_generating_probability(theta, pattern, generating_topology=generating_topology) for pattern in ALL_PATTERNS}
-    all_terms = []
-    likelihood = 0.
-    for t in theta_hat:
-        all_terms.append([1+t, 1-t])
 
+    likelihood = 0.
     for pattern in ALL_PATTERNS:
         curr_sum = 0.
         for anc_state_idx, anc_state in ANC_STATE_DICT.iteritems():
-            curr_prod = 1.
-            anc_state = ANC_STATE_DICT[anc_state_idx]
-
-            # w term is just whether or not ancestral states are equal
-            curr_prod *= all_terms[4][int(anc_state_idx) % 2]
-
-            # remaining terms depend on topology and tip states
-            for idx, sub_pattern in enumerate(pattern):
-                # the ancestral state index depends on topology
-                offset_idx = int(idx % 2) if generating_topology == 'invfels' else int(idx / 2)
-                curr_prod *= all_terms[idx][(anc_state[offset_idx]+int(sub_pattern)) % 2]
-            curr_sum += curr_prod
+            curr_sum += get_likelihood(theta, pattern, anc_state, generating_topology=generating_topology)
         likelihood += safe_p_logq(probs[pattern], safe_log(curr_sum))
 
     likelihood -= LOG32
@@ -206,10 +167,10 @@ def get_log_coefficients(theta, anc_states, estimating_topology='invfels', gener
     # unambiguous ancestral states
     if estimating_topology == 'invfels' and generating_topology == 'invfels':
         unamb_patterns = ['0000', '1000', '0100', '1100']
-        amb_patterns = ['0010', '1110', '0110', '1010']
+        amb_patterns = ['0010', '1110', '1010', '0110']
     else:
         unamb_patterns = ['0000']
-        amb_patterns = ['1000', '0010', '1010', '0100', '1110', '1100', '0110']
+        amb_patterns = ['1000', '0100', '0010', '1110', '1100', '0110', '1010']
 
     for pattern in unamb_patterns:
         all_terms[4][0] += probs[pattern]
@@ -222,7 +183,7 @@ def get_log_coefficients(theta, anc_states, estimating_topology='invfels', gener
         all_terms[4][int(anc_state_idx) % 2] += probs[pattern]
         for idx, sub_pattern in enumerate(pattern):
             offset_idx = int(idx % 2) if estimating_topology == 'invfels' else int(idx / 2)
-            all_terms[idx][(amb_anc_state[offset_idx]+int(sub_pattern)) % 2] += probs[pattern]
+            all_terms[idx][(int(amb_anc_state[offset_idx])+int(sub_pattern)) % 2] += probs[pattern]
     return all_terms
 
 def likelihood(theta, anc_states='0000', estimating_topology='invfels', generating_topology='invfels'):
@@ -395,6 +356,9 @@ def main(args=sys.argv[1:]):
 
     st_time = time.time()
 
+    with open(args.output_file, 'w') as f:
+        f.write('Joint inf log\n')
+
     # Compute output or load previously computed output from pickle
     if args.in_pkl_name is None:
         px_range = np.arange(0., args.cutoff+args.delta, args.delta)
@@ -420,7 +384,8 @@ def main(args=sys.argv[1:]):
 
     # Print error range for bias
     if args.bias:
-        print "Error range (p < %.2f) [%.0E, %.0E], Mean: %.2E" % (args.cutoff, np.nanmin(Z), np.nanmax(Z), np.nanmean(Z))
+        with open(args.output_file, 'a') as f:
+            f.write("Error range (p < %.2f) [%.0E, %.0E], Mean: %.2E\n" % (args.cutoff, np.nanmin(Z), np.nanmax(Z), np.nanmean(Z)))
 
     # Plot output
     if args.plot_type == 'ancestral_state_conditions':
@@ -437,14 +402,29 @@ def main(args=sys.argv[1:]):
     scale = 1
     legendtext = None
     if args.plot_type == 'ancestral_state_conditions':
+        assert(args.generating_topology == 'invfels')
         plottitle = 'Maximal ancestral state splits'
         legendtext = []
         cnt = 1
-        for idx, anc_state in enumerate(product('012', repeat=4)):
-            if idx in uniques:
-                legendtext.append(r'$\hat{\boldsymbol\xi}_%d$' % cnt)
-                cnt += 1
-        move_legend = True
+        unamb_patterns = ['0000', '1000', '0100', '1100']
+        with open(args.output_file, 'a') as f:
+            f.write('Maximal ancestral states')
+            for idx, anc_state in enumerate(product('012', repeat=4)):
+                if idx in uniques:
+                    # get all ancestral states for Table ...
+                    all_anc_states = []
+                    anc_cnt = 0
+                    for pattern in ALL_PATTERNS:
+                        if pattern in unamb_patterns:
+                            all_anc_states.append('$\emptyset$')
+                        else:
+                            all_anc_states.append(ANC2SPLIT[ANC_STATE_DICT[anc_state[anc_cnt]]])
+                            anc_cnt += 1
+                    legendtext.append(r'$\hat{\boldsymbol\xi}_%d$' % cnt)
+                    f.write(r'$\hat{\boldsymbol\xi}_%d$ = \{%s\}' % (cnt, ','.join(all_anc_states)))
+                    f.write('\n')
+                    cnt += 1
+            move_legend = True
     elif args.plot_type == 'joint_empirical':
         if args.bias:
             plottitle = r'Bias: $\hat{p}_w-p_{y^*}$'
@@ -462,7 +442,8 @@ def main(args=sys.argv[1:]):
 
     make_plot(plottitle, args.plot_name, legendtext=legendtext, ct=ct, scale=scale, plotbar=plotbar, cutoff=args.cutoff, move_legend=move_legend)
 
-    print "Completed! Time: %s" % str(time.time() - st_time)
+    with open(args.output_file, 'a') as f:
+        f.write('Completed! Time: %s' % str(time.time() - st_time))
 
 if __name__ == "__main__":
     main(sys.argv[1:])

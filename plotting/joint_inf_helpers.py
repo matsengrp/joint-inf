@@ -8,6 +8,10 @@ import argparse
 import sys
 import collections
 
+from sympy import sympify, expand
+from operator import mul
+from numpy import isclose
+
 # ~~~~~~~~~
 # global variables
 
@@ -58,14 +62,22 @@ def parse_args():
         help='general branch lengths probabilities',
     )
     parser.add_argument(
-        '--fels',
+        '--true-branch-lengths',
         action="store_true",
-        help='felsenstein topology probabilities',
+        help='true branch lengths probabilities',
     )
     parser.add_argument(
-        '--invfels',
-        action="store_true",
-        help='inverse felsenstein topology probabilities',
+        '--generating-topology',
+        type=str,
+        choices=('invfels', 'fels'),
+        default='invfels',
+        help='which topology generated the data',
+    )
+    parser.add_argument(
+        '--output-file',
+        type=str,
+        default='_output/out.txt',
+        help='text file to output probabilities and likelihoods',
     )
 
     args = parser.parse_args()
@@ -75,136 +87,115 @@ def parse_args():
 # ~~~~~~~~~
 # global functions for exact likelihood computation
 
-def P_FELS(theta, site_pattern):
+def get_generating_probability(theta, site_pattern, generating_topology='invfels', symbolic=False):
     """
-    Site pattern frequencies for Felsenstein tree
-    """
-    # fifth branch will always be positive
-    theta_sgn = [-1 if s=='1' else 1 for s in site_pattern+'0']
-    prob_list = [
-        [theta[0], theta[1]],
-        [theta[2], theta[3]],
-        [theta[0], theta[2], theta[4]],
-        [theta[1], theta[2], theta[4]],
-        [theta[0], theta[3], theta[4]],
-        [theta[1], theta[3], theta[4]],
-        [theta[0], theta[1], theta[2], theta[3]],
-    ]
-    sgn_list = [
-        theta_sgn[0]*theta_sgn[1],
-        theta_sgn[2]*theta_sgn[3],
-        theta_sgn[0]*theta_sgn[2]*theta_sgn[4],
-        theta_sgn[1]*theta_sgn[2]*theta_sgn[4],
-        theta_sgn[0]*theta_sgn[3]*theta_sgn[4],
-        theta_sgn[1]*theta_sgn[3]*theta_sgn[4],
-        theta_sgn[0]*theta_sgn[1]*theta_sgn[2]*theta_sgn[3],
-    ]
-    new_prob_list = [resolve_exp(p, pad=False) for p in prob_list]
-    out_str = ''.join(['+'+p if s > 0 else '-'+p for p,s in zip(new_prob_list, sgn_list)])
-
-    return PATT2SPLIT[site_pattern] + '&' + '(1'+out_str+')' + '\\\\'
-
-def L_FELS(theta, site_pattern):
-    """
-    Likelihood for Felsenstein topology
-    """
-    all_likes = []
-    all_likes += [''.join(['(1+'+t+')' if s=='0' else '(1-'+t+')' for t,s in zip(theta, site_pattern+'0')])]
-    all_likes += [''.join(['(1+'+t+')' if s=='0' and i < 2 or s=='1' and i >= 2 else '(1-'+t+')' for i,(t,s) in enumerate(zip(theta, site_pattern+'0'))])]
-    all_likes += [''.join(['(1+'+t+')' if s=='1' and i < 2 or s=='0' and i >= 2 else '(1-'+t+')' for i,(t,s) in enumerate(zip(theta, site_pattern+'1'))])]
-    all_likes += [''.join(['(1+'+t+')' if s=='1' else '(1-'+t+')' for t,s in zip(theta, site_pattern+'1')])]
-
-    out_str = PATT2SPLIT[site_pattern]
-    for anc_state, split in zip(ALL_ANC_STATES, all_likes):
-        out_str += '&' + ANC2SPLIT[anc_state] + '&$' + split + '$\\\\\n'
-    return out_str
-
-def P_INVFELS(theta, site_pattern):
-    """
-    Site pattern frequencies for inverse Felsenstein tree
+    Site pattern frequencies
     """
     # fifth branch will always be positive
     theta_sgn = [-1 if s=='1' else 1 for s in site_pattern+'0']
-    prob_list = [
-        [theta[0], theta[2]],
-        [theta[1], theta[3]],
-        [theta[0], theta[1], theta[4]],
-        [theta[0], theta[3], theta[4]],
-        [theta[1], theta[2], theta[4]],
-        [theta[2], theta[3], theta[4]],
-        [theta[0], theta[1], theta[2], theta[3]],
-    ]
-    sgn_list = [
-        theta_sgn[0]*theta_sgn[2],
-        theta_sgn[1]*theta_sgn[3],
-        theta_sgn[0]*theta_sgn[1]*theta_sgn[4],
-        theta_sgn[0]*theta_sgn[3]*theta_sgn[4],
-        theta_sgn[1]*theta_sgn[2]*theta_sgn[4],
-        theta_sgn[2]*theta_sgn[3]*theta_sgn[4],
-        theta_sgn[0]*theta_sgn[1]*theta_sgn[2]*theta_sgn[3],
-    ]
-    new_prob_list = [resolve_exp(p, pad=False) for p in prob_list]
-    out_str = ''.join(['+'+p if s > 0 else '-'+p for p,s in zip(new_prob_list, sgn_list)])
+    # Hadamard representation; see Semple and Steel for where these groupings come from
+    if generating_topology == 'invfels':
+        groupings = [(0,2), (1,3), (0,1,4), (0,3,4), (1,2,4), (2,3,4), (0,1,2,3)]
+    else:
+        groupings = [(0,1), (2,3), (0,2,4), (1,2,4), (0,3,4), (1,3,4), (0,1,2,3)]
 
-    return PATT2SPLIT[site_pattern] + '&' + '(1'+out_str+')' + '\\\\'
+    prob_list = ['1']
+    for idx_tuple in groupings:
+        probs = '*'.join([str(theta[idx]) for idx in idx_tuple])
+        if reduce(mul, [theta_sgn[idx] for idx in idx_tuple]) < 0:
+            probs += '*(-1)'
+        prob_list.append(probs)
 
-def L_INVFELS(theta, site_pattern):
-    """
-    Likelihood for inverse Felsenstein topology
-    """
-    all_likes = []
-    all_likes += [''.join(['(1+'+t+')' if s=='0' else '(1-'+t+')' for t,s in zip(theta, site_pattern+'0')])]
-    all_likes += [''.join(['(1+'+t+')' if s=='0' and i % 2 or s=='1' and not i % 2 else '(1-'+t+')' for i,(t,s) in enumerate(zip(theta, site_pattern+'0'))])]
-    all_likes += [''.join(['(1+'+t+')' if s=='1' and i % 2 or s=='0' and not i % 2 else '(1-'+t+')' for i,(t,s) in enumerate(zip(theta, site_pattern+'1'))])]
-    all_likes += [''.join(['(1+'+t+')' if s=='1' else '(1-'+t+')' for t,s in zip(theta, site_pattern+'1')])]
+    if not symbolic:
+        return 0.125 * eval('+'.join(prob_list))
+    else:
+        return '+'.join(prob_list)
 
-    out_str = PATT2SPLIT[site_pattern]
-    for anc_state, split in zip(ALL_ANC_STATES, all_likes):
-        out_str += '&' + ANC2SPLIT[anc_state] + '&$' + split + '$\\\\\n'
-    return out_str
+def get_likelihood(theta, site_pattern, ancestral_pattern, generating_topology='invfels', symbolic=False):
+    """
+    Likelihoods
+    """
+    # the not (i == 4) is needed to have the correct sign for the interior branch
+    if generating_topology == 'invfels':
+        pat_fn = lambda i: not (i % 2) and not (i == 4)
+    else:
+        pat_fn = lambda i: (i < 2) and not (i == 4)
 
-def resolve_exp(term_list, pad=True):
-    """
-    take list of things like ['x', 'y', 'y'] and turn it into 'xy^2'
-    """
-    counted = collections.Counter(term_list)
-    out_str = ''
-    for k in sorted(counted, key=len):
-        if counted[k] > 1:
-            out_str += k+'^'+str(counted[k])
-            if pad:
-                out_str += '   '
-        else:
-            out_str += k
-    return out_str
+    if ancestral_pattern == '00':
+        out_like = \
+            '*'.join(['(1+'+str(t)+')' if s=='0' \
+            else '(1-'+str(t)+')' \
+            for t,s in zip(theta, site_pattern+'0')])
+    if ancestral_pattern == '01':
+        out_like = \
+            '*'.join(['(1+'+str(t)+')' if s=='0' and pat_fn(i) or s=='1' and not pat_fn(i) \
+            else '(1-'+str(t)+')' \
+            for i,(t,s) in enumerate(zip(theta, site_pattern+'0'))])
+    if ancestral_pattern == '10':
+        out_like = \
+            '*'.join(['(1+'+str(t)+')' if s=='1' and pat_fn(i) or s=='0' and not pat_fn(i) \
+            else '(1-'+str(t)+')' \
+            for i,(t,s) in enumerate(zip(theta, site_pattern+'1'))])
+    if ancestral_pattern == '11':
+        out_like = \
+            '*'.join(['(1+'+str(t)+')' if s=='1' \
+            else '(1-'+str(t)+')' \
+            for t,s in zip(theta, site_pattern+'1')])
+
+    if not symbolic:
+        return 0.03125 * eval(out_like)
+    else:
+        return out_like
 
 def main(args=sys.argv[1:]):
     args = parse_args()
 
     if args.general_branch_lengths:
-        pref = 'General'
         theta = ['x_1', 'y_1', 'x_2', 'y_2', 'w']
+        symbolic = True
+    elif args.true_branch_lengths:
+        theta = ['x', 'y', 'x', 'y', 'y']
+        symbolic = True
     else:
-        pref = 'True'
-        theta = ['x*', 'y*', 'x*', 'y*', 'y*']
+        # for testing evaluation
+        theta = [.9, .1, .9, .1, .1]
+        symbolic = False
 
-    if args.fels:
-        pref += ' Fels'
-        p = lambda x,y: P_FELS(x, y)
-        ell = lambda x,y: L_FELS(x, y)
+    with open(args.output_file, 'w') as f:
+        f.write('Topology = ')
+        f.write(args.generating_topology)
+        f.write('\n')
+        f.write('Theta = ')
+        f.write(','.join([str(t) for t in theta]))
+        f.write('\n')
+        f.write('\n')
+        f.write('Generating probabilities\n')
+        all_ps = []
+        for site_pattern in ALL_PATTERNS:
+            p = get_generating_probability(theta, site_pattern, args.generating_topology, symbolic=symbolic)
+            all_ps.append(p)
+            f.write('\t'.join([PATT2SPLIT[site_pattern], str(sympify(p))]))
+            f.write('\n')
+
+
+        f.write('\n')
+        f.write('Likelihoods\n')
+        all_ells = []
+        for site_pattern in ALL_PATTERNS:
+            f.write(PATT2SPLIT[site_pattern] + '\n')
+            for ancestral_pattern in ALL_ANC_STATES:
+                ell = get_likelihood(theta, site_pattern, ancestral_pattern, args.generating_topology, symbolic=symbolic)
+                f.write('\t'.join(['', ANC2SPLIT[ancestral_pattern], str(ell)]))
+                f.write('\n')
+                all_ells.append(ell)
+
+    # verify they are probabilities
+    if symbolic:
+        assert(isclose(.125 * float(sympify('+'.join(all_ps))), 1.0))
+        assert(isclose(.03125 * float(sympify(expand('+'.join(all_ells)))), 1.0))
     else:
-        pref += ' InvFels'
-        p = lambda x,y: P_INVFELS(x, y)
-        ell = lambda x,y: L_INVFELS(x, y)
-
-    print pref
-    print 'Probabilities:'
-    for site_pattern in ALL_PATTERNS:
-        print p(theta, site_pattern)
-    print '\n'
-    print 'Likelihoods:'
-    for site_pattern in ALL_PATTERNS:
-        print ell(theta, site_pattern)
+        assert(isclose(sum(all_ps), 1.0))
+        assert(isclose(sum(all_ells), 1.0))
 
 if __name__ == "__main__":
     main(sys.argv[1:])

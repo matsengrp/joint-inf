@@ -13,6 +13,45 @@ env = Environment(ENV=os.environ)
 nest = SConsWrap(Nest(), '_output', alias_environment=env)
 
 nest.add(
+    'generating_topology',
+    [
+        'invfels',
+        'fels',
+    ],
+)
+
+nest.add(
+    'prob_type',
+    [
+        'general',
+        'truth',
+        'example',
+    ],
+)
+
+@nest.add_target_with_env(env)
+def verify(env, outdir, c):
+    cmd = [
+        'python',
+        'joint_inf_helpers.py',
+        '--generating-topology',
+        c['generating_topology'],
+        '--output-file',
+        '${TARGETS[0]}',
+    ]
+    if c['prob_type'] == 'general':
+        cmd += ['--general-branch-lengths']
+    if c['prob_type'] == 'truth':
+        cmd += ['--true-branch-lengths']
+
+    return env.Command(
+        [join(outdir, 'out.txt')],
+        [],
+        ' '.join(map(str, cmd)))
+
+nest.pop('prob_type')
+
+nest.add(
     'plot_type',
     [
         'ancestral_state_conditions',
@@ -27,19 +66,15 @@ nest.add(
         True,
         False,
     ],
-)
-
-nest.add(
-    'generating_topology',
-    [
-        'invfels',
-    ],
+    label_func=lambda c: 'bias' if c else 'non-bias',
 )
 
 @nest.add_target_with_env(env)
 def run(env, outdir, c):
     delta = .01
     out_plot = join(outdir, 'out.svg')
+    if c['generating_topology'] == 'fels':
+        return
     if c['plot_type'] == 'ancestral_state_conditions':
         delta = .001
         if c['bias']:
@@ -62,6 +97,8 @@ def run(env, outdir, c):
         '${TARGETS[0]}',
         '--plot-name',
         '${TARGETS[1]}',
+        '--output-file',
+        '${TARGETS[2]}',
     ]
 
     if c['bias']:
@@ -71,7 +108,7 @@ def run(env, outdir, c):
         ]
 
     return env.Command(
-        [join(outdir, 'out.pkl'), out_plot],
+        [join(outdir, 'out.pkl'), out_plot, join(outdir, 'out.txt')],
         [],
         ' '.join(map(str, cmd)))
 
@@ -79,6 +116,8 @@ def run(env, outdir, c):
 @nest.add_target_with_env(env)
 def run_on_pkls(env, outdir, c):
     out_plot = join(outdir, 'plot.svg')
+    if c['generating_topology'] == 'fels':
+        return
     if c['plot_type'] == 'ancestral_state_conditions':
         if c['bias']:
             return
@@ -92,9 +131,11 @@ def run_on_pkls(env, outdir, c):
         '${SOURCES[0]}',
         '--plot-name',
         '${TARGETS[0]}',
+        '--output-file',
+        '${TARGETS[1]}',
     ]
 
     return env.Command(
-        [out_plot],
+        [out_plot, join(outdir, 'log.txt')],
         c['run'],
         ' '.join(map(str, cmd)))
