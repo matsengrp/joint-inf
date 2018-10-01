@@ -76,12 +76,12 @@ Since
 \begin{align*}
     2\cdot\Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t),
 \end{align*}
-given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t)$ such that $\xi_j\in\ancestralSplitPartition_j(\tau, t)$ satisfies
+given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\ldots,\ancestralSplitPartition_\nSiteSplits(\tau, t)$ such that $\xi_{\siteSplit_j}\in\ancestralSplitPartition_j(\tau, t)$ satisfies
 \begin{align*}
-\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &= \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV = \xi_j \mid \tau, t).
+\max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &= \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV = \xi_{\siteSplit_j} \mid \tau, t).
 \end{align*}
 In other words, for the $j$th site split, $\ancestralSplitPartition_j(\tau, t)\subseteq\mathcal{P}(\ancestralSplitSet)$ is the set of most likely ancestral state splits for that particular site split, topology and set of branch lengths, i.e., $\ancestralSplitPartition_j(\tau, t)$ is a set of sets of most likely internal node labels.
-Here, $\xi_j$ is one of possibly many equiprobable ancestral state splits in $\ancestralSplitPartition_j(\tau, t)$.
+Here, $\xi_{\siteSplit_j}$ is one of possibly many equiprobable ancestral state splits in $\ancestralSplitPartition_j(\tau, t)$.
 For each $\alignmentColumn_i$, $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective as it can map values from $\alphabet^\nAncestralStateRows$ to all elements in $\mathcal{P}(\ancestralSplitSet)$.
 This can be seen by using the definition of $\ancestralToSplit(\alignmentColumn_i, \cdot)$ and assuming $\alignmentColumn_{i,\nSiteRows}=0$, where in this case each of the $2^\nAncestralStateRows$ values of $\ancestralStateColumn$ correspond to each of the $2^\nAncestralStateRows$ elements of $\mathcal{P}(\{1,\ldots,\nAncestralStateRows\})$.
 The same can be done for the case of $\alignmentColumn_{i,\nSiteRows}=1$, implying $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective.
@@ -89,7 +89,7 @@ From this we have
 \begin{align*}
     \max_{\ancestralStateColumn_i} \ 2\cdot\Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) &= \max_{\ancestralStateColumn_i} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t)\\
     &= \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t)\\
-    &= \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV = \xi_j \mid \tau, t)
+    &= \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV = \xi_{\siteSplit_j} \mid \tau, t)
 \end{align*}
 for some $j$.
 Thus, each term in the likelihood can be collapsed into terms relating only to site splits and ancestral state splits, indexed by $j$, as opposed to individual observations, indexed by $i$.
@@ -150,9 +150,9 @@ p^3(1-p)^2,
 p^4(1-p).
 \]
 The set of most likely ancestral states contains a single element, here $\ancestralSplitPartition_1(\tau, t)=\{\emptyset\}$.
-Then, taking $\xi_1\in\ancestralSplitPartition_1(\tau, t)$ we have
+Then, taking $\xi_{\emptyset}\in\ancestralSplitPartition_1(\tau, t)$ we have
 \[
-\Pr(\siteSplitRV=\emptyset, \ancestralSplitRV=\xi_1 \mid \tau, t) =
+\Pr(\siteSplitRV=\emptyset, \ancestralSplitRV=\xi_{\emptyset} \mid \tau, t) =
 \Pr(\siteSplitRV=\emptyset, \ancestralSplitRV=\emptyset \mid \tau, t) =
 (1-p)^5.
 \]
@@ -167,9 +167,9 @@ p^2(1-p)^3,
 \Pr(\siteSplitRV=\{1,2\}, \ancestralSplitRV=\{2\} \mid \tau, t) =
 p^3(1-p)^2.
 \]
-Here, the set of most likely ancestral states is $\ancestralSplitPartition_5(\tau, t)=\{\emptyset,\{1,2\}\}$, and, for $\xi_5\in\ancestralSplitPartition_5(\tau, t)$,
+Here, the set of most likely ancestral states is $\ancestralSplitPartition_5(\tau, t)=\{\emptyset,\{1,2\}\}$, and, for $\xi_{12}\in\ancestralSplitPartition_5(\tau, t)$,
 \[
-\Pr(\siteSplitRV=\{1,2\}, \ancestralSplitRV=\xi_5 \mid \tau, t) =
+\Pr(\siteSplitRV=\{1,2\}, \ancestralSplitRV=\xi_{12} \mid \tau, t) =
 p^2(1-p)^3.
 \]
 
@@ -180,26 +180,26 @@ The likelihood in \eqref{eq:profile_likelihood} can be written as
 L_\nCols'(\tau, t; \fullAlignment) &= \max_{\fullAncestralStates} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates) \nonumber \\
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \nonumber \\
                              &\propto \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t) \nonumber \\
-                             &= \prod_{i=1}^{\nCols} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t) \nonumber \\
-                             &= \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
+                             &= \prod_{i=1}^{\nCols} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t) \nonumber \\
+                             &= \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
 \end{align}
-for $\siteSplit_j\in\mathcal{P}(\siteSplitSet)$ and some $\xi_j\in\ancestralSplitPartition_j(\tau, t)$ with $1 \le j \le q$ where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ that project to site split $\siteSplit_j$.
+for $\siteSplit_j\in\mathcal{P}(\siteSplitSet)$ and some $\xi_{\siteSplit_j}\in\ancestralSplitPartition_j(\tau, t)$ with $1 \le j \le q$ where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ that project to site split $\siteSplit_j$.
 
 Let
 \[
-L_\nCols''(\tau, t; \fullAlignment) = \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)}
+L_\nCols''(\tau, t; \fullAlignment) = \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)}
 \]
 be the final product in \eqref{eq:site_pattern_likelihood}.
 Assume $\nCols$ observations are generated from a model with parameters $(\tau^*, t^*)$.
 We have
 \begin{equation*}
-\frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) = \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)
+\frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) = \sum_{j=1}^\nSiteSplits \frac{\nCols_j(\fullAlignment)}{\nCols}\cdot  \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t)
 \end{equation*}
 so that, in the $\nCols\rightarrow\infty$ limit,
 \begin{equation}
 \begin{split}
 &    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) \\
-&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t). \label{eq:site_pattern_profile_likelihood_mean}
+&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t). \label{eq:site_pattern_profile_likelihood_mean}
 \end{split}
 \end{equation}
 
@@ -376,7 +376,7 @@ and
 \]
 Using the notation in Section 5.2.1 in \citet{van1998asymptotic}, we let
 \[
-m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, t)
+m_t(\alignmentColumn) = \sum_{j=1}^\nSiteSplits 1\{\patternToSplit(\alignmentColumn)=\siteSplit_j\} \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t)
 \]
 so that
 \[
@@ -485,7 +485,7 @@ Therefore we can reduce the number of candidate likelihoods we need to search by
 \centering
 \begin{tabular}{|lll|l|}
 \hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_j$ & $32\cdot\Pr(\siteSplitRV=\siteSplit_j,\ancestralSplitRV=\xi_j \mid \tau_1,t)$\\
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_{\siteSplit_j}$ & $32\cdot\Pr(\siteSplitRV=\siteSplit_j,\ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau_1,t)$\\
 \hline
 $\emptyset$&$\{\emptyset\}$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 
@@ -516,7 +516,7 @@ $\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y
 32 times likelihood values on the InvFels tree $\tau_1$.
 Due to the symmetry of the likelihood, WLOG we let $x_2 \ge x_1$ and $y_2 \ge y_1$ and maximize over ancestral state splits to reduce the number of possible functional forms to consider.
 Likelihoods with multiple entries have maxima determined by unknown branch length parameters.
-Because in 4 cases there are 3 possibilities for $\xi_j$, there are $3^4=81$ possible forms for the likelihood.
+Because in 4 cases there are 3 possibilities for $\xi_{\siteSplit_j}$, there are $3^4=81$ possible forms for the likelihood.
 }
 \label{tab:likelihoods}
 \end{table}
@@ -581,7 +581,7 @@ and $\hat{x}_1 = x^*(y^*)^2$.
 \centering
 \begin{tabular}{|lll|l|}
 \hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_j$ & $32\cdot\Pr(\siteSplitRV=\siteSplit_j,\ancestralSplitRV=\xi_j \mid \tau_1,t)$\\
+$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_{\siteSplit_j}$ & $32\cdot\Pr(\siteSplitRV=\siteSplit_j,\ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau_1,t)$\\
 \hline
 $\emptyset$&$\{\emptyset\}$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
 $\{1\}$    &$\{\emptyset\}$&$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
@@ -639,10 +639,12 @@ We show the maximal ancestral states in Fig.~\ref{fig:max-anc-state}.
         Maximal ancestral state split definitions
         \begin{tabular}{l}
         \hline
+        $\hat{\boldsymbol\xi}=\{\xi_{\emptyset}, \xi_{1}, \xi_{2}, \xi_{3}, \xi_{123}, \xi_{12}, \xi_{23}, \xi_{13}\}$\\
+        \hline
         $\hat{\boldsymbol\xi}_1=\{\emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset\}$\\
         $\hat{\boldsymbol\xi}_2=\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \emptyset, \emptyset\}$\\
-        $\hat{\boldsymbol\xi}_3=\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \emptyset, \{1\}\}$\\
-        $\hat{\boldsymbol\xi}_4=\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \{1,2\}, \{1\}\}$\\
+        $\hat{\boldsymbol\xi}_3=\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \{1\}, \emptyset\}$\\
+        $\hat{\boldsymbol\xi}_4=\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \{1,\}, \{1,2\}\}$\\
         $\hat{\boldsymbol\xi}_5=\{\emptyset, \emptyset, \emptyset, \{1\}, \{1\}, \emptyset, \{1\}, \{1\}\}$\\
         \hline
         \end{tabular}
@@ -665,8 +667,8 @@ Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mat
 We can see this results in the likelihood of both topologies being equal, i.e.,
 \begin{align*}
 \max_{t : t^*\in\mathcal{T}_0} & \ \ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)\\
-&= \max_{t: \boldsymbol\xi=\hat{\boldsymbol\xi}_1, w=1, \tau=\tau_1} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
-&= \max_{t: \boldsymbol\xi=\hat{\boldsymbol\xi}_1, w=1, \tau=\tau_2} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_j \mid \tau, \{x_1,y_1,x_2,y_2,w\}).
+&= \max_{t: \boldsymbol\xi=\hat{\boldsymbol\xi}_1, w=1, \tau=\tau_1} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
+&= \max_{t: \boldsymbol\xi=\hat{\boldsymbol\xi}_1, w=1, \tau=\tau_2} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, \{x_1,y_1,x_2,y_2,w\}).
 \end{align*}
 
 %~~~
