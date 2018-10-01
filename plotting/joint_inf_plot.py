@@ -39,6 +39,9 @@ LOG2 = np.log(2)
 LOG32 = np.log(32)
 ANC_STATE_DICT = {'0': '00', '1': '10', '2': '11', '3': '01'}
 
+# unambiguous patterns for invfels (Table S3)
+INVFELS_UNAMB_PATTERNS = ['0000', '1000', '0100', '1100']
+
 
 class Legend(object):
     pass
@@ -87,9 +90,9 @@ def parse_args():
         type=str,
         help="""
              choices:
-             ancestral_state_conditions-- ,
-             joint_empirical-- plot empirical estimate of \hat{w} for joint inference (Fig. 3),
-             marginal_empirical-- plot empirical estimate of \hat{w} for marginal inference (Fig. S4),
+             ancestral_state_conditions-- plot analytic regions of maximal ancestral states (Fig. S2),
+             joint_empirical-- plot empirical estimate of \hat{w} for joint inference (Fig. 2),
+             marginal_empirical-- plot empirical estimate of \hat{w} for marginal inference (Fig. S3),
              """,
         choices=(
              'ancestral_state_conditions',
@@ -100,7 +103,7 @@ def parse_args():
     parser.add_argument(
         '--bias',
         action="store_true",
-        help='plot and print bias instead of parameter estimate (Fig. S3)',
+        help='plot and print bias instead of parameter estimate (Fig. 3)',
     )
     parser.add_argument(
         '--generating-topology',
@@ -166,8 +169,9 @@ def get_log_coefficients(theta, anc_states, estimating_topology='invfels', gener
 
     # unambiguous ancestral states
     if estimating_topology == 'invfels' and generating_topology == 'invfels':
-        unamb_patterns = ['0000', '1000', '0100', '1100']
-        amb_patterns = ['0010', '1110', '1010', '0110']
+        unamb_patterns = INVFELS_UNAMB_PATTERNS
+        # need to preserve order so can't use set()
+        amb_patterns = [pattern for pattern in ALL_PATTERNS if pattern not in unamb_patterns]
     else:
         unamb_patterns = ['0000']
         amb_patterns = ['1000', '0100', '0010', '1110', '1100', '0110', '1010']
@@ -406,7 +410,6 @@ def main(args=sys.argv[1:]):
         plottitle = 'Maximal ancestral state splits'
         legendtext = []
         cnt = 1
-        unamb_patterns = ['0000', '1000', '0100', '1100']
         with open(args.output_file, 'a') as f:
             f.write('Maximal ancestral states')
             for idx, anc_state in enumerate(product('012', repeat=4)):
@@ -415,7 +418,7 @@ def main(args=sys.argv[1:]):
                     all_anc_states = []
                     anc_cnt = 0
                     for pattern in ALL_PATTERNS:
-                        if pattern in unamb_patterns:
+                        if pattern in INVFELS_UNAMB_PATTERNS:
                             all_anc_states.append('$\emptyset$')
                         else:
                             all_anc_states.append(ANC2SPLIT[ANC_STATE_DICT[anc_state[anc_cnt]]])
