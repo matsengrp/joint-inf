@@ -599,15 +599,30 @@ $\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y
 \label{tab:likelihoods-restricted}
 \end{table}
 
-We show that solutions of this form never obtain $\hat{t} = t^*$ except in cases of zero or infinite branch length.
-Given Table~\ref{tab:gen-sitepatprob}, all solutions to $\hat{x}_1$ have the form
+We show that solutions of this form never obtain $\hat{t} = t^*$ except on a set of measure zero.
+Given Table~\ref{tab:gen-sitepatprob}, all solutions $\hat{x}_1$ have the form
 \[
 \hat{x}_1 = a_{x_1,0} + a_{x_1,1}(x^*)^2 + a_{x_1,2}(y^*)^2 + a_{x_1,3} x^*(y^*)^2 + a_{x_1,4}(x^*)^2(y^*)^2.
 \]
 where $a_{x_1,k}$ are constants independent of $x^*$ and $y^*$---in fact, $a_{x_1,k}$ takes values in the set $\{i/8 : i=-4,-3,\ldots,7,8\}$.
-The true branch fidelity for $x_1$ is $x^*$, and the only cases to possibly obtain $\hat{x}_1=x^*$ are when $y^*=1$ or when $(x^*)^2=x^*$, i.e., one of the generating branch parameters is zero or infinite length; the same is true for $x_2$.
-A similar argument for $y_1,y_2,$ and $w$ shows that estimates can only be consistent when $(y^*)^2=y^*$, i.e., $y^*=0$ or $y^*=1$.
+The true branch fidelity for $x_1$ is $x^*$.
+It is possible to obtain $\hat{x}_1=x^*$, such as when $y^*=1$ or when $(x^*)^2=x^*$, i.e., one of the generating branch parameters is zero or infinite length, but we cannot have $\hat{x}_1=x^*$ for all $x^*$.
+The same is true for $x_2$.
+A similar argument for $y_1,y_2,$ and $w$ shows that estimates can only be consistent on a set of measure zero.
 \end{proof}
+
+Examples of generating parameters resulting in consistency of joint inference occur in the following.
+Let $x^*$ and $y^*$ be such that the estimate for $\hat{x}_1$ is
+\[
+\hat{x}_1 = 2 \cdot \left(p_{\emptyset} + p_2 + p_{123} + p_{13}\right) - 1 = (x^*)^2.
+\]
+There may be no $x^*$ and $y^*$ that yield this maximum (Fig.~\ref{fig:max-anc-state}), though it is a feasible solution to the general joint inference problem.
+In this case, $\hat{x}_1 = x^*$ implies consistency only when $x^*=0$ or $x^*=1$.
+Another case,
+\[
+\hat{x}_1 = 2 \cdot \left(p_{\emptyset} + p_2 + p_{3} + p_{123} + p_{23} + p_{13}\right) - 1 = \frac{1}{2} + \frac{1}{2}(x^*)^2
+\]
+shows $\hat{x}_1 = x^*$ implies consistency only when $x^*=1$.
 
 We now proceed to show there exist $x^*$ and $y^*$ such that the interior branch parameter $w$ is estimated as exactly one, indicating convergence to a multifurcating topology.
 
@@ -671,6 +686,28 @@ We can see this results in the likelihood of both topologies being equal, i.e.,
 &= \max_{t: \boldsymbol\xi=\hat{\boldsymbol\xi}_1, w=1, \tau=\tau_1} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
 &= \max_{t: \boldsymbol\xi=\hat{\boldsymbol\xi}_1, w=1, \tau=\tau_2} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, \{x_1,y_1,x_2,y_2,w\}).
 \end{align*}
+
+The boundaries determining maximal ancestral state splits (Fig.~\ref{fig:max-anc-state}) are obtained through maximizing over 81 separate functional values (Table~\ref{tab:likelihoods}).
+Using the notation in the proof of Theorem~\ref{thm:bl_theorem}, we see that, in general, our likelihood given in~\eqref{eq:site_pattern_profile_likelihood_mean} has an exact, closed form maximum of
+\begin{align}
+\ell_{\tau^*,t^*}(\tau_1, \hat{t}; \boldsymbol\xi) &= \frac{1+\hat{x}_1}{2}\log(1+\hat{x}_1) + \frac{1-\hat{x}_1}{2}\log(1-\hat{x}_1)\nonumber\\
+&\qquad + \frac{1+\hat{y}_1}{2}\log(1+\hat{y}_1) + \frac{1-\hat{y}_1}{2}\log(1-\hat{y}_1)\nonumber\\
+&\qquad + \frac{1+\hat{x}_2}{2}\log(1+\hat{x}_2) + \frac{1-\hat{x}_2}{2}\log(1-\hat{x}_2)\nonumber\\
+&\qquad + \frac{1+\hat{y}_2}{2}\log(1+\hat{y}_2) + \frac{1-\hat{y}_2}{2}\log(1-\hat{y}_2)\nonumber\\
+&\qquad + \frac{1+\hat{w}}{2}\log(1+\hat{w}) + \frac{1-\hat{w}}{2}\log(1-\hat{w}).
+\end{align}
+For example, in the lower right region of Fig.~\ref{fig:max-anc-state}, the maximal ancestral state split is $\hat{\boldsymbol\xi}_1 = \{\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset\}$ so that
+\[
+\{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\} = \{x^*(y^*)^2,(y^*)^2,x^*(y^*)^2,1,1\}
+\]
+and the exact, closed form value of the likelihood is
+\begin{align}
+\ell_{U,1}(x^*,y^*) &= (1+x^*(y^*)^2)\log(1+x^*(y^*)^2) + (1-x^*(y^*)^2)\log(1-x^*(y^*)^2)\nonumber\\
+&\qquad + \frac{1+(y^*)^2}{2}\log(1+(y^*)^2) + \frac{1-(y^*)^2}{2}\log(1-(y^*)^2)\nonumber\\
+&\qquad + 2\log(2).
+\end{align}
+We obtain similar maximal values as functions of $x^*$ and $y^*$ for each ancestral state split.
+The curves delineating maximal ancestral state splits (Fig.~\ref{fig:max-anc-state}) are determined by these 81 functions.
 
 %~~~
 % Figures mentioned in main section of manuscript

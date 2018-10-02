@@ -114,7 +114,7 @@ Recently, a computationally-efficient approach has been proposed to jointly maxi
 Although this method of joint maximum likelihood estimation can obtain estimates more quickly, its properties as an estimator are not yet clear.
 We show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
 We find a set of parameters that generate data under a four-taxon tree for which this joint method estimates a multifurcating topology in the limit of infinite-length sequences by estimating one or more branches to be zero length.
-For branch length estimation on the correct topology, we show that this joint method cannot estimate consistent branch lengths except in degenerate cases, and we provide extensive empirical results for outlining the consistent bias in this setting.
+For branch length estimation on the correct topology, we show that this joint method cannot estimate consistent branch lengths except on a set of measure zero, and we provide extensive empirical results for outlining the consistent bias in this setting.
 \end{abstract}
 
 \newpage
@@ -137,7 +137,7 @@ In particular, one would like to know when this approximate technique breaks dow
 
 In this paper, we show that jointly inferring trees and ancestral sequences is not consistent in general.
 To do so, we use a binary symmetric model with data generated on a four-taxon tree: we compute closed form solutions to the joint objective function and demarcate a sizeable area of branch lengths in which joint inference is guaranteed to give a multifurcating tree in the case of perfect sequence data with an infinite number of sites by estimating one or more branch lengths to be zero.
-We show that, when the topology is known and fixed, joint inference cannot be consistent except in cases of zero or infinite branch length, and we find similar areas through empirical means where joint inference consistently underestimates interior branch lengths.
+We show that, when the topology is known and fixed, joint inference cannot be consistent except on a set of measure zero, such as in cases of zero or infinite branch length, and we find similar areas through empirical means where joint inference consistently underestimates interior branch lengths.
 
 \section*{Phylogenetic maximum likelihood}
 
@@ -235,20 +235,23 @@ We show in the Appendix that $\hat{t}_\nCols \rightarrow \hat{t}$, allowing us t
 
 \subsection*{Inconsistent branch length estimation}
 
-When the topology is known and fixed and we estimate only branch lengths, we show the following, i.e., that for all $x^*$ and $y^*$ in $(0,1)$ any branch length estimate is consistently biased.
+When the topology is known and fixed and we estimate only branch lengths, we show the following, i.e., that for almost all $x^*$ and $y^*$ in $(0,1)$ any branch length estimate is consistently biased.
 
 \begin{restatable}{theorem}{blInconsist}
 \label{thm:bl_theorem}
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
-For all $0 < x^*, y^* < 1$, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
+For $0 < x^*, y^* < 1$, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ given by
 \[
 \hat{t} = \arg\max_{t} \ \max_{\boldsymbol\xi} \ \ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)
 \]
-has the property $\hat{t} \neq t^*$.
+has the property $\hat{t} \neq t^*$ everywhere except a set of measure zero.
 \end{restatable}
 
-In words, the joint estimation procedure never recovers the true generating $t^*$ except in cases of zero or infinite branch length.
+In words, the joint estimation procedure never recovers the true generating $t^*$ almost everywhere in the space of generating parameters.
 This is apparent given Table~\ref{tab:gen-sitepatprob}, as the solution $\hat{t}$ is a linear combination of $p_{\siteSplit_j}$ values, and no generating probability contains an $x^*$ or $y^*$ term.
+We may have special cases where certain $x^*$ and $y^*$ values yield consistent estimates for $\hat{t}$, but consistency does not hold in general.
+We give an example in the Appendix following the proof of Theorem~\ref{thm:bl_theorem}.
+Thus, inconsistency is guaranteed for almost all $x^*$ and $y^*$, though not all $x^*$ and $y^*$.
 
 \subsection*{Convergence to degenerate topology}
 
@@ -333,14 +336,14 @@ Even in regions with short branch length ($p_{x^*}, p_{y^*} \le .1$) where joint
 \section*{Discussion}
 
 We have shown that jointly inferring ancestral states and phylogenetic parameters \citep{Sagulenko2018-xl} is not consistent in general.
-Specifically, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in a type of topological inconsistency: the joint inference procedure estimates zero-length branches, which can be considered as a multifurcating topology.
+Specifically, we have shown there are no sets of generating parameters other than ones of measure zero that yield consistent branch length estimates given the fixed, correct topology.
+In addition, in the case of four-taxon trees with infinite data, we have obtained nontrivial regions of generating parameters that result in a type of topological inconsistency: the joint inference procedure estimates zero-length branches, which can be considered as a multifurcating topology.
 Also, the incorrect topology attains the same likelihood as the topology that generated the data by fixing this branch to have zero length.
 Since the parameters with the highest likelihood given the generating topology include a zero-length branch, we cannot exclude the possibility that the incorrect topology with this branch having nonzero length is more likely to be observed, though we have not found regions where this is the case.
 The regions of inconsistency we found arise when the top two branches of the generating trees are ``long,'' that is, when the top branch fidelities tend to be small, and when the lower branches are ``short,'' i.e., have large fidelities.
 We see that this inconsistency occurs even if some branches are short.
 This expands on the empirical findings of poor estimation given long branches in \citet{Sagulenko2018-xl} (their Figures~2 and~3).
 However, the problems are not just for long branches as \citet{Sagulenko2018-xl} imply: even when all branches are short there is a consistent bias, and the bias is on the same order as the magnitude of the parameters (Fig.~\ref{fig:empirical-bias}).
-In addition, we have shown there are no nontrivial generating parameters that yield consistent branch length estimates.
 
 Joint inference of tree parameters and ancestral sequences is a type of profile likelihood, a well-studied subject in statistics \citep{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., the method of sieves \citep{Geman1982}.
