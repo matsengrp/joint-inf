@@ -631,6 +631,7 @@ We show the maximal ancestral states in Fig.~\ref{fig:max-anc-state}.
 \begin{figure}
     \begin{minipage}{\linewidth}
         \centering
+        %file: plotting/_output/invfels/ancestral_state_conditions/non-bias/plot.png
         \includegraphics[width=.95\textwidth]{analytic-anc-state}
         \label{ }
     \end{minipage}
@@ -639,13 +640,13 @@ We show the maximal ancestral states in Fig.~\ref{fig:max-anc-state}.
         Maximal ancestral state split definitions
         \begin{tabular}{l}
         \hline
-        $\hat{\boldsymbol\xi}=\{\xi_{\emptyset}, \xi_{1}, \xi_{2}, \xi_{3}, \xi_{123}, \xi_{12}, \xi_{23}, \xi_{13}\}$\\
+        $\hat{\boldsymbol\xi} = \{\xi_{\emptyset},\xi_{1},\xi_{2},\xi_{3},\xi_{123},\xi_{12},\xi_{23},\xi_{13}\}$\\
         \hline
-        $\hat{\boldsymbol\xi}_1=\{\emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset, \emptyset\}$\\
-        $\hat{\boldsymbol\xi}_2=\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \emptyset, \emptyset\}$\\
-        $\hat{\boldsymbol\xi}_3=\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \{1\}, \emptyset\}$\\
-        $\hat{\boldsymbol\xi}_4=\{\emptyset, \emptyset, \emptyset, \emptyset, \{1,2\}, \emptyset, \{1,\}, \{1,2\}\}$\\
-        $\hat{\boldsymbol\xi}_5=\{\emptyset, \emptyset, \emptyset, \{1\}, \{1\}, \emptyset, \{1\}, \{1\}\}$\\
+        $\hat{\boldsymbol\xi}_1 = \{\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset\}$\\
+        $\hat{\boldsymbol\xi}_2 = \{\emptyset,\emptyset,\emptyset,\emptyset,\{1,2\},\emptyset,\emptyset,\emptyset\}$\\
+        $\hat{\boldsymbol\xi}_3 = \{\emptyset,\emptyset,\emptyset,\emptyset,\{1,2\},\emptyset,\emptyset,\{1\}\}$\\
+        $\hat{\boldsymbol\xi}_4 = \{\emptyset,\emptyset,\emptyset,\emptyset,\{1,2\},\emptyset,\{1,2\},\{1\}\}$\\
+        $\hat{\boldsymbol\xi}_5 = \{\emptyset,\emptyset,\emptyset,\{1\},\{1\},\emptyset,\{1\},\{1\}\}$\\
         \hline
         \end{tabular}
     \end{minipage}
@@ -676,21 +677,10 @@ We can see this results in the likelihood of both topologies being equal, i.e.,
 
 \begin{figure}
 \centering
+%file: plotting/_output/invfels/marginal_empirical/non-bias/plot.svg
 \includegraphics[width=\textwidth]{empirical-marginal}
 \caption{
     Estimates for $\hat{p}_w$ when computing $(\hat{x}_1, \hat{y}_1, \hat{x}_2, \hat{y}_2, \hat{w})$ using L-BFGS-B optimizing the classical integrated likelihood \eqref{eq:marginal_likelihood} rather than a joint optimization procedure.
 }
 \label{fig:bl-general-marginal}
 \end{figure}
-%
-%\begin{figure}
-%\centering
-%\includegraphics[width=.95\textwidth]{empirical-incons-intuition}
-%\caption{
-%Inconsistency in joint inference with intuitive curves.
-%The white curve is our condition on the gradients.
-%The blue curve is a condition on $x^*$ and $y^*$ such that $\emptyset$ is the most likely ancestral state.
-%}
-%\label{fig:empirical-incons-intuition}
-%\end{figure}
-

@@ -22,8 +22,8 @@ ALL_PATTERNS = [
     '0010',
     '1110',
     '1100',
+    '0110',
     '1010',
-    '0110'
 ]
 
 ALL_ANC_STATES = [
@@ -34,21 +34,32 @@ ALL_ANC_STATES = [
 ]
 
 PATT2SPLIT = {
-    '0000': '$\emptyset$',
-    '1000': '$\{1\}$    ',
-    '0100': '$\{2\}$    ',
-    '0010': '$\{3\}$    ',
-    '1110': '$\{1,2,3\}$',
-    '1100': '$\{1,2\}$  ',
-    '1010': '$\{1,3\}$  ',
-    '0110': '$\{2,3\}$  ',
+    '0000': '\emptyset',
+    '1000': '\{1\}',
+    '0100': '\{2\}',
+    '0010': '\{3\}',
+    '1110': '\{1,2,3\}',
+    '1100': '\{1,2\}',
+    '0110': '\{2,3\}',
+    '1010': '\{1,3\}',
+}
+
+PATT2SUBSCRIPT = {
+    '0000': '\emptyset',
+    '1000': '1',
+    '0100': '2',
+    '0010': '3',
+    '1110': '123',
+    '1100': '12',
+    '0110': '23',
+    '1010': '13',
 }
 
 ANC2SPLIT = {
-    '00': '$\emptyset$',
-    '10': '$\{1\}$    ',
-    '01': '$\{2\}$    ',
-    '11': '$\{1,2\}$  ',
+    '00': '\emptyset',
+    '10': '\{1\}',
+    '01': '\{2\}',
+    '11': '\{1,2\}',
 }
 
 # ~~~~~~~~~
@@ -174,7 +185,7 @@ def main(args=sys.argv[1:]):
         for site_pattern in ALL_PATTERNS:
             p = get_generating_probability(theta, site_pattern, args.generating_topology, symbolic=symbolic)
             all_ps.append(p)
-            f.write('\t'.join([PATT2SPLIT[site_pattern], str(sympify(p))]))
+            f.write('\t'.join([format('$%s$' % PATT2SPLIT[site_pattern], '<11'), '$%s$' % str(sympify(p))]))
             f.write('\n')
 
 
@@ -182,10 +193,10 @@ def main(args=sys.argv[1:]):
         f.write('Likelihoods\n')
         all_ells = []
         for site_pattern in ALL_PATTERNS:
-            f.write(PATT2SPLIT[site_pattern] + '\n')
+            f.write('$%s$' % PATT2SPLIT[site_pattern] + '\n')
             for ancestral_pattern in ALL_ANC_STATES:
                 ell = get_likelihood(theta, site_pattern, ancestral_pattern, args.generating_topology, symbolic=symbolic)
-                f.write('\t'.join(['', ANC2SPLIT[ancestral_pattern], str(ell)]))
+                f.write('\t'.join(['', format('$%s$' % ANC2SPLIT[ancestral_pattern], '<11'), '$%s$' % str(ell)]))
                 f.write('\n')
                 all_ells.append(ell)
 
