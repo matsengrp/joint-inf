@@ -233,9 +233,6 @@ We show in the Appendix that $\hat{t}_\nCols \rightarrow \hat{t}$, allowing us t
 %To do so, we construct an upper bound $C_0(x^*, y^*)$ for the likelihood given the InvFels topology as a function of $x^*$ and $y^*$ and, similarly, a lower bound $C_1(x^*, y^*)$ for the likelihood given the Felsenstein topology.
 %When $C_0(x^*, y^*) < C_1(x^*, y^*)$, the likelihood in the Felsenstein case is larger than the likelihood in the InvFels case, demonstrating inconsistency (Fig.~\ref{fig:inconsistency-farris}).
 
-%EM Starting here, we only talk about branch lengths and don't mention fidelities, whereas just above we say "estimate a topology and branch fidelities using this"...
-%EM At least remind the reader that we're actually talking about fidelities as the variables.
-%das: clarification
 \subsection*{Inconsistent branch parameter estimation}
 When the topology is known and fixed and we estimate only the branch parameters, we show that for almost all generating parameter values, any branch parameter estimate is consistently biased.
 For the branch parameter, we use branch fidelities (discussed earlier) in all statements and proofs, though these trivially extend to branch lengths via transformation.
@@ -251,10 +248,7 @@ has the property $\hat{t} \neq t^*$ everywhere except a set of measure zero.
 \end{restatable}
 
 In words, the joint estimation procedure does not recover the true generating $t^*$ almost everywhere in the space of generating parameters.
-%EM Totally confused here!
-%EM 1. The generating probabilities do contain x* and y*.
-%EM 2. "This is apparent" makes it sound like it should follow directly and that it doesn't require a proof.
-%das: ok, took a stab at clarifying
+The proof can be seen intuitively as being unable to isolate individual generating parameters using estimators that are inherently linear.
 For example, in estimating $x_1$, $\hat{x}_1$ is a linear combination of $p_{\siteSplit_j}$ values.
 For the generating probabilities (top panel of Table~\ref{tab:gen-sitepatprob}), there is no linear combination that results in an isolated $x^*$ term, as all terms are either quadratic, i.e., $(x^*)^2$ or $(x^*)^2(y^*)^2$, or have both $x^*$ and $y^*$, i.e., $x^*(y^*)^2$.
 Thus, we cannot obtain a linear combination that in the general case yields $x^*$.
@@ -273,8 +267,6 @@ There exists an open set of $0 < x^*, y^* < 1$ such that the solution $\hat{t} :
 has the property $\hat{w}\equiv 1$.
 \end{restatable}
 
-%EM Is this the right figure reference? It seems strange-- it's about the max ancestral states.
-%das: ha oops! you're right
 This result implies an inconsistency as we estimate the interior branch length to be zero (i.e., interior branch fidelity is one) in an open set of values for $x^*$ and $y^*$ (Fig.~\ref{fig:bl-general-inconsistency}).
 As we consider different topologies $\tau_1$ and $\tau_2$ for $\hat{t}$, the incorrect topology $\tau_2$ attains a likelihood value at its maximum equal to that of the true topology $\tau_1$ in the limit.
 In other words, if $w=1$ the objective functions $\ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)$ and $\ell_{\tau^*,t^*}(\tau_2, t; \boldsymbol\xi)$ are equivalent.
