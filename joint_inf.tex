@@ -114,7 +114,7 @@ Recently, a computationally-efficient approach has been proposed to jointly maxi
 Although this method of joint maximum likelihood estimation can obtain estimates more quickly, its properties as an estimator are not yet clear.
 We show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
 We find a set of parameters that generate data under a four-taxon tree for which this joint method estimates a multifurcating topology in the limit of infinite-length sequences by estimating one or more branches to be zero length.
-For branch length estimation on the correct topology, we show that this joint method cannot estimate consistent branch lengths except on a set of measure zero, and we provide extensive empirical results for outlining the consistent bias in this setting.
+For branch length estimation on the correct topology, we show that this joint method cannot correctly estimate branch lengths except on a set of measure zero, and we provide extensive empirical results for branch length bias in this setting.
 \end{abstract}
 
 \newpage
@@ -137,7 +137,7 @@ In particular, one would like to know when this approximate technique breaks dow
 
 In this paper, we show that jointly inferring trees and ancestral sequences is not consistent in general.
 To do so, we use a binary symmetric model with data generated on a four-taxon tree: we compute closed form solutions to the joint objective function and demarcate a sizeable area of branch lengths in which joint inference is guaranteed to give a multifurcating tree in the case of perfect sequence data with an infinite number of sites by estimating one or more branch lengths to be zero.
-We show that, when the topology is known and fixed, joint inference cannot be consistent except on a set of measure zero, such as in cases of zero or infinite branch length, and we find similar areas through empirical means where joint inference consistently underestimates interior branch lengths.
+We show that, when the topology is known and fixed, joint inference for branch length estimation cannot be consistent except on a set of measure zero, such as in cases of zero or infinite branch length, and we find similar areas through empirical means where joint inference consistently underestimates interior branch lengths.
 
 \section*{Phylogenetic maximum likelihood}
 
@@ -233,8 +233,9 @@ We show in the Appendix that $\hat{t}_\nCols \rightarrow \hat{t}$, allowing us t
 %To do so, we construct an upper bound $C_0(x^*, y^*)$ for the likelihood given the InvFels topology as a function of $x^*$ and $y^*$ and, similarly, a lower bound $C_1(x^*, y^*)$ for the likelihood given the Felsenstein topology.
 %When $C_0(x^*, y^*) < C_1(x^*, y^*)$, the likelihood in the Felsenstein case is larger than the likelihood in the InvFels case, demonstrating inconsistency (Fig.~\ref{fig:inconsistency-farris}).
 
+%EM Starting here, we only talk about branch lengths and don't mention fidelities, whereas just above we say "estimate a topology and branch fidelities using this"...
+%EM At least remind the reader that we're actually talking about fidelities as the variables.
 \subsection*{Inconsistent branch length estimation}
-
 When the topology is known and fixed and we estimate only branch lengths, we show the following, i.e., that for almost all $x^*$ and $y^*$ in $(0,1)$ any branch length estimate is consistently biased.
 
 \begin{restatable}{theorem}{blInconsist}
@@ -247,18 +248,16 @@ For $0 < x^*, y^* < 1$, the solution $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2
 has the property $\hat{t} \neq t^*$ everywhere except a set of measure zero.
 \end{restatable}
 
-In words, the joint estimation procedure never recovers the true generating $t^*$ almost everywhere in the space of generating parameters.
+In words, the joint estimation procedure does not recover the true generating $t^*$ almost everywhere in the space of generating parameters.
+%EM Totally confused here!
+%EM 1. The generating probabilities do contain x* and y*.
+%EM 2. "This is apparent" makes it sound like it should follow directly and that it doesn't require a proof.
 This is apparent given Table~\ref{tab:gen-sitepatprob}, as the solution $\hat{t}$ is a linear combination of $p_{\siteSplit_j}$ values, and no generating probability contains an $x^*$ or $y^*$ term.
 We may have special cases where certain $x^*$ and $y^*$ values yield consistent estimates for $\hat{t}$, but consistency does not hold in general.
 We give an example of consistency in a degenerate case in the Appendix following the proof of Theorem~\ref{thm:bl_theorem}.
 
-\subsection*{Convergence to degenerate topology}
-
+\subsection*{Convergence to the degenerate topology}
 Given data generated on $\tau_1$ there exist true nonzero branch lengths such that the estimator $\hat{t}$ maximizing the right-hand side of \eqref{eq:exp-log-lik} has an internal branch of length zero.
-%EM A funny thing: this theorem as stated is really under the hypothesis that the ancestral state is emptyset. We can combine this with the lemmas to remove this assumption, but it seems like we should do this for the reader. Time for a corollary?
-%das: ok, I reworded it a bit; let me know how you think it sounds.
-%EM This is better, but the notation still seems a little funny. Namely, xi is really something that's determined by Y, but the notation seems to hint that it can be specified a priori. The point is that the ML xi has problems, not that there exists a xi that has problems.
-%das: ok, edited
 \begin{restatable}{theorem}{topoInconsist}
 \label{thm:topo_theorem}
 Let $\tau^*=\tau_1$, $t^*=\{x^*, y^*, x^*, y^*, y^*\}$, and $t=\{x_1, y_1, x_2, y_2, w\}$ with $x_1, y_1, x_2, y_2, w > 0$.
@@ -269,16 +268,12 @@ There exists an open set of $0 < x^*, y^* < 1$ such that the solution $\hat{t} :
 has the property $\hat{w}\equiv 1$.
 \end{restatable}
 
+%EM Is this the right figure reference? It seems strange-- it's about the max ancestral states.
 This result implies an inconsistency as we estimate the interior branch length to be zero (i.e., interior branch fidelity is one) in an open set of values for $x^*$ and $y^*$ (Fig.~\ref{fig:max-anc-state}).
 As we consider different topologies $\tau_1$ and $\tau_2$ for $\hat{t}$, the incorrect topology $\tau_2$ attains a likelihood value at its maximum equal to that of the true topology $\tau_1$ in the limit.
 In other words, if $w=1$ the objective functions $\ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)$ and $\ell_{\tau^*,t^*}(\tau_2, t; \boldsymbol\xi)$ are equivalent.
 We elaborate on this point in the Appendix.
 The proof is through analytically reducing the general case to 81 separate cases (Table~\ref{tab:likelihoods}) to obtain a closed form maximal value for each.
-
-%EM I'm going to suggest that we move this to the appendix. The theorem says that there's a set, and we want people to nod then look at the current Figure 3.
-%das: good idea; I think this will also appease reviewer 1.
-%EM On the other hand we should still refer to it in the text around here.
-%das: it's referred to in the first sentence of above paragraph---good?
 
 We provide the following as an intuition for the theoretical development.
 For a particular site pattern, to obtain the joint maximum likelihood function we maximize over ancestral states.
@@ -355,8 +350,6 @@ Previous work in phylogenetics has developed consistency counterexamples using s
 In this previous work, when simulating data under the Felsenstein topology $\tau_2$, as the number of observations increases, the InvFels topology $\tau_1$ becomes more likely when performing a particular estimation procedure.
 We have shown cases in which, when generating from the InvFels topology, we converge to a multifurcating topology, with one or more branch lengths estimated to be zero.
 Moreover, the inconsistency demonstrated by \citet{Felsenstein1978-rr} is attributed to long branch attraction, i.e., the fact that there may be multiple long branches where parallel changes are more likely than a single change along a short branch.
-%EM I don't follow here. This doesn't seem like the long branch attraction region of parameter space-- isn't that on the Felsenstein tree, not the InvFels tree?
-%das: yeah, it was kind of hand-wavy. edited
 This is not the case here; while analytically the inconsistency occurs when the top two branches are long and the bottom three are short, we see empirically that this inconsistency is present in roughly half of the entire parameter space, and occurs when the true branches generate data that more likely has no change along the interior branch.
 Additionally, we generate data on the InvFels tree $\tau_1$ while \citet{Felsenstein1978-rr} generates data on the Felsenstein tree $\tau_2$.
 Difficulties in phylogenetic estimation when generating data on the InvFels tree have been found by \citet{Siddall1998-hq}, though \citet{Swofford2001-hr} show that sequence length plays a major role in these issues.

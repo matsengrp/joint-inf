@@ -366,6 +366,7 @@ By combinations of $\ancestralSplit_k$, there are $3^5\cdot 4^2=3,888$ possible 
 %Also I don't think the compactness condition holds---tree space isn't compact is it?
 %However we now have a potential snag in that we are doing what Yang (1994) in his intro says is bad, i.e., doing ML for fixed, separate topologies and comparing them.
 %We still have the behavior in the plots and the proofs, since they all assumed a fixed topology, and I think everything's fine with the arguments about Fels vs InvFels, but maybe you can let me know what you think?
+%EM @das I think that ^ is all resolved, right?
 For a fixed $\tau$, we show that $\hat{t}_\nCols \rightarrow \hat{t}$ for
 \[
 \hat{t}_\nCols = \arg\max_{t\in\mathcal{T}} \ \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment)
@@ -676,7 +677,6 @@ Mapping each maximal ancestral state split to each likelihood value, we see that
 
 The regions in Fig.~\ref{fig:max-anc-state} are analytically-derived regions of inconsistency in terms of probabilities of a character change along a branch for ``perfect'' data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}) with $p_{w^*} = p_{y^*}$ (in terms of fidelities, $w^*=y^*$).
 As the region of degeneracy in Fig.~\ref{fig:max-anc-state} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
-%EM "letting $\emptyset$ be the maximal ancestral state split" sounds a little funny-- either it is or it isn't maximal.
 It is easy to see that when $\emptyset$ is the maximal ancestral state split, we have the same log-likelihood for $\tau_1$ and $\tau_2$.
 Moreover, if $w=1$, the internal branch becomes zero-length and the two topologies are indistinguishable.
 Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the region in Fig.~\ref{fig:max-anc-state} where $\hat{\boldsymbol\xi}=\hat{\boldsymbol\xi}_1$.
