@@ -72,14 +72,9 @@ The term "Farris zone" has almost 7 times as many citations as the term "inverse
 > arguments. For most readers, out of Fig 3 and Fig 5, only Fig 5 is of
 > interest.
 
-As described above, our intent is to mathematically establish inconsistency and poor estimation.
-This must be done with analytic arguments rather than optimization.
-We could have only shown this bad behavior in a very small area to establish that it happens.
-In contrast to this reviewer, we believe that Fig 5 is optional to this line of argument, and we provide it just for interest.
-A true investigation into the practical implications of our work will require another paper.
-We have clarified this in the Discussion section with:
-"Our aim is to analytically demonstrate joint inference is inconsistent, and, while this indicates an issue with this inference procedure, there is substantial scope for future work to make these results more precise and more general.
-The techniques used to obtain upper and lower bounds for the likelihoods in Lemma 3 provide relatively loose bounds, though how loose they are remain unknown without either further analysis or verification through simulation."
+Thank you for the opportunity to improve on our analytically-derived regions of inconsistency.
+Indeed, obtaining these regions in closed form is feasible, though it involves comparing a large number of two-variables functions to one another.
+Fig. S2 shows the regions where a particular likelihood equation will be maximal, and allows us to compute---in closed form---the value of the branch parameter in Fig. 2.
 
 > Getting exact regions is what I think the authors should do. The
 > approach used to obtain Fig 5 is generally applicable. Explicit,
@@ -110,16 +105,9 @@ The techniques used to obtain upper and lower bounds for the likelihoods in Lemm
 > to grid approximation) region of topological inconsistency and Figs
 > 3-5 with heat maps of limiting (x,y,w) for tau_1.
 
-Please see above for our response.
-%das: I added some stuff below to maybe alleviate some confusion and to show why what this reviewer thinks we should do won't work, but not sure how much is necessary.
-It is true that the form given above for l(x,y,w) has an explicit and simple maximizer.
-However, the long-run log-likelihood is more complicated than this function, as seen in equation (9).
-For both topologies, we have a number of equations of this form that we would need to maximize in a grid search.
-The function of the form in l(x,y,w) above was our approximation to the upper and lower bounds of the log-likelihood, and was our choice for these bounds precisely because it has an explicit and simple maximizer.
-Doing a grid search over all ancestral states would not be trivial, and we would need to perform numerical optimization for all possible ancestral states to compute the maximum.
-Moreover, not assuming x_1=x_2 and y_1=y_2 (see below) results in an explosion of functions to perform a grid search over, with none of these functions being guaranteed concave.
-The analytic bounds we have provided were devised specifically to sidestep this nonconcavity.
-
+Another thanks for this suggestion.
+As noted, we can in fact get exact regions, and have done so.
+Our line of argument starting on page 25, line 541 in the section "Properties of the joint objective function" allows us to pare down the 4^8 possible ancestral states to just 81, and we obtain exact, analytic results in a reasonable amount of time.
 
 > The other main concern that I have is with the restriction that
 > t=(x,y,x,y,w) in estimation rather than t=(t_1,...,t_5). On the one
@@ -139,7 +127,6 @@ The analytic bounds we have provided were devised specifically to sidestep this 
 > estimation. The issue deserves discussion because I don't think it is
 > transparent.
 
-TODO: make the argument more clear in the main text.
 %das: BIIIIG update
 We thank this reviewer for highlighting an omission in our argument.
 We had initially simplified the results by making the erroneous assumption that t_1=t_3 and t_2=t_4.
@@ -225,7 +212,7 @@ As noted inline we have revised the text accordingly.
 > – line 85 some cut/paste or sentence issue
 
 We have added the definition of a "generating probability" to ease confusion in this sentence:
-"As data becomes plentiful, we use the Hadamard transform (see (9) in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form."
+"As data becomes plentiful, we use the Hadamard transform (see (8) in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form."
 
 > - line 97 below (2) define A^p
 
@@ -254,6 +241,7 @@ We have reformulated this sentence to avoid the comparison:
 
 TODO: this is changed, but I don't see this being a lot clearer.
 %das: I believe this is clear now; lmk
+%das: @EM bump
 We have clarified the intuition in this sentence:
 "For the internal branch---the branch between the two internal nodes---we have a choice of $(1+w)$ or $(1-w)$ in each of our likelihood terms depending on which ancestral state split corresponds to the highest conditional log-likelihood.
 As $(1+w) > (1-w)$, a maximization procedure tends to prefer the $(1+w)$ term, though this is not guaranteed because the maximum depends on the values of the unknown branch parameters $t$.
@@ -267,7 +255,6 @@ We have added clarifying sentence:
 
 > L 334 missing “the”
 
-Fixed via simpler language.
 We removed the sentence following the semicolon entirely, as we feel it did not add anything:
 "Since we have a finite character alphabet, for a given column $i$ there are a finite number of possible assignments of characters to tips $\alignmentColumn_i$ or internal nodes $\ancestralStateColumn_i$."
 
@@ -311,7 +298,7 @@ Thanks for reminding us to define p(e), which is now described as "where $p(e)$ 
 > generator?
 
 We have updated the text to explicitly define "generating probability."
-"As data becomes plentiful, we use the Hadamard transform (see (9) in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form."
+"As data becomes plentiful, we use the Hadamard transform (see (8) in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form."
 
 Background for equation (8) can be found in Section 8.6 in the Semple and Steel text.
 This is referenced at the beginning of the section:
@@ -356,7 +343,7 @@ The TreeTime paper says that its use is appropriate when "ancestral sequence inf
 TODO we should make some changes to at least say that we've further clarified the implications of our results.
 %das: I believe this is done
 We clarify our aim and warnings from Sagulenko et al. (2017) in the Introduction:
-"Although the software described in \citet{Sagulenko2018-xl} fits on a user-supplied topology and the authors explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference.
+"Although \citet{Sagulenko2018-xl} explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference.
 In particular, one would like to know when this approximate technique breaks down for both topology and branch length inference, even when sequence data is ``perfect,'' i.e., is generated without sampling error according to the exact model used for inference."
 
 Additionally, we refer to how our work extends that from Sagulenko et al. (2017) in the Discussion:
@@ -395,11 +382,11 @@ This expands on the empirical findings of poor estimation given long branches in
 > will fail if branches are long.
 
 This is an interesting suggestion but is different than our goal, which was to establish inconsistency.
-Moreover, in the revised manuscript we see cases where assigning ML ancestral states results in longer branches, not shorter ones (Lemma 3).
+Moreover, in the revised manuscript we see cases where assigning ML ancestral states results in longer branches, not shorter ones (see the discussion after the proof of Theorem 1, page 31, line 627).
 We believe the inaccuracies have more to do with the specific choice of which ancestral state is maximal than asymmetries in the tree:
 "This is apparent in the ``long $x^*$, short $y^*$'' scenario as these are the cases in which the most likely ancestral states are the same for each internal node letting $x_1=x_2=x^*$ and $y_1=y_2=y^*$ ($\boldsymbol\xi=\emptyset$ in Table~\ref{tab:likelihoods})."
 
-Asymmetries can drive these particular choices, but Fig. 3 in the revised manuscript shows that almost half of the parameter space results in an interior branch length being estimated as zero.
+Asymmetries can drive these particular choices, but Fig. 2 in the revised manuscript shows that almost half of the parameter space results in an interior branch length being estimated as zero.
 We do not think providing an argument about accumulating inaccuracies would elucidate why such starkly-defined regions of inconsistency exist.
 For reasonable parameter settings, one could investigate the error accumulation given fixed ancestral states, but this was not our goal and will require another paper.
 
@@ -435,8 +422,7 @@ As the true generating parameters change, we become more likely to choose a diff
 We have added the following:
 "There are discontinuities in the fit (Fig.~\ref{fig:bl-general-inconsistency}) due to the choice of which ancestral state splits are maximal."
 
-The analytical bound is a coarse estimate of where inconsistency arises.
-In the revised manuscript, we fix the maximal ancestral state to simplify the argument, and comparing the analytical with the empirical would not provide much added benefit to the analysis.
+In the revised manuscript, all region bounds are analytical as we have determined a closed form solution for the joint inference problem in this case.
 
 >  - It would be nice if the abstract pointed out that these
 >  inconsistencies arise when branch lengths are long and that the
@@ -449,7 +435,7 @@ In the revised manuscript, we fix the maximal ancestral state to simplify the ar
 TODO we should do some change, but make it clear that it's consistently biased even for short branches.
 %das: I believe this is done
 We have added the line:
-"Although the software described in \citet{Sagulenko2018-xl} fits on a user-supplied topology and the authors explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference."
+"Although \citet{Sagulenko2018-xl} explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference."
 
 We believe it's important not to mischaracterize the suggested use of joint inference, though we would like to emphasize to the reader that problems are apparent in large regions of the parameter space.
 We think the current discussion treats this optimization procedure as fairly as possible.
@@ -518,6 +504,7 @@ and Discussion sections:
 %Here he only talks about how parsimony is inconsistent because it may result in equally parsimonious trees (this is the last paragraph of the example section).
 %It's not until the bottom of page 356 that he punts the inconsistency to Felsenstein and Hendy/Penny, and the bottom of page 357 where he wonders how small branch lengths have to be for parsimony to be consistent in general.
 
+%das: @EM let me know if, given these notes, you think the discussion in the text is reasonable
 
 ---
 
