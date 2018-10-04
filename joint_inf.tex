@@ -235,8 +235,10 @@ We show in the Appendix that $\hat{t}_\nCols \rightarrow \hat{t}$, allowing us t
 
 %EM Starting here, we only talk about branch lengths and don't mention fidelities, whereas just above we say "estimate a topology and branch fidelities using this"...
 %EM At least remind the reader that we're actually talking about fidelities as the variables.
-\subsection*{Inconsistent branch length estimation}
-When the topology is known and fixed and we estimate only branch lengths, we show the following, i.e., that for almost all $x^*$ and $y^*$ in $(0,1)$ any branch length estimate is consistently biased.
+%das: clarification
+\subsection*{Inconsistent branch parameter estimation}
+When the topology is known and fixed and we estimate only the branch parameters, we show that for almost all generating parameter values, any branch parameter estimate is consistently biased.
+For the branch parameter, we use branch fidelities (discussed earlier) in all statements and proofs, though these trivially extend to branch lengths via transformation.
 
 \begin{restatable}{theorem}{blInconsist}
 \label{thm:bl_theorem}
@@ -252,7 +254,10 @@ In words, the joint estimation procedure does not recover the true generating $t
 %EM Totally confused here!
 %EM 1. The generating probabilities do contain x* and y*.
 %EM 2. "This is apparent" makes it sound like it should follow directly and that it doesn't require a proof.
-This is apparent given Table~\ref{tab:gen-sitepatprob}, as the solution $\hat{t}$ is a linear combination of $p_{\siteSplit_j}$ values, and no generating probability contains an $x^*$ or $y^*$ term.
+%das: ok, took a stab at clarifying
+For example, in estimating $x_1$, $\hat{x}_1$ is a linear combination of $p_{\siteSplit_j}$ values.
+For the generating probabilities (top panel of Table~\ref{tab:gen-sitepatprob}), there is no linear combination that results in an isolated $x^*$ term, as all terms are either quadratic---$(x^*)^2$ and $(x^*)^2(y^*)^2$---or have both $x^*$ and $y^*$---$x^*(y^*)^2$.
+Thus, we cannot obtain a linear combination that in the general case yields $x^*$.
 We may have special cases where certain $x^*$ and $y^*$ values yield consistent estimates for $\hat{t}$, but consistency does not hold in general.
 We give an example of consistency in a degenerate case in the Appendix following the proof of Theorem~\ref{thm:bl_theorem}.
 
@@ -269,7 +274,8 @@ has the property $\hat{w}\equiv 1$.
 \end{restatable}
 
 %EM Is this the right figure reference? It seems strange-- it's about the max ancestral states.
-This result implies an inconsistency as we estimate the interior branch length to be zero (i.e., interior branch fidelity is one) in an open set of values for $x^*$ and $y^*$ (Fig.~\ref{fig:max-anc-state}).
+%das: ha oops! you're right
+This result implies an inconsistency as we estimate the interior branch length to be zero (i.e., interior branch fidelity is one) in an open set of values for $x^*$ and $y^*$ (Fig.~\ref{fig:bl-general-inconsistency}).
 As we consider different topologies $\tau_1$ and $\tau_2$ for $\hat{t}$, the incorrect topology $\tau_2$ attains a likelihood value at its maximum equal to that of the true topology $\tau_1$ in the limit.
 In other words, if $w=1$ the objective functions $\ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)$ and $\ell_{\tau^*,t^*}(\tau_2, t; \boldsymbol\xi)$ are equivalent.
 We elaborate on this point in the Appendix.
@@ -295,7 +301,7 @@ As before, the region of inconsistency encompasses almost half of the branch fid
 \includegraphics[width=\textwidth]{empirical-estimate}
 \caption{
     Estimates for $\hat{p}_w=(1-\hat{w})/2$ when optimizing \eqref{eq:profile_likelihood}, where the true value for $p_w$ is $p_{y^*}$.
-    Data generated as in Fig.~\ref{fig:max-anc-state}.
+    Regions derived in terms of probabilities of a character change along a branch for ``perfect''data generated on the InvFels topology (Fig.~\ref{fig:farris-fels-top}a).
     The white region in the lower right highlights which values of $x^*$ and $y^*$ result in an interior branch being estimated as length zero, resulting in an inconsistency.
 }
 \label{fig:bl-general-inconsistency}

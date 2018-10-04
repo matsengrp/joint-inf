@@ -367,6 +367,7 @@ By combinations of $\ancestralSplit_k$, there are $3^5\cdot 4^2=3,888$ possible 
 %However we now have a potential snag in that we are doing what Yang (1994) in his intro says is bad, i.e., doing ML for fixed, separate topologies and comparing them.
 %We still have the behavior in the plots and the proofs, since they all assumed a fixed topology, and I think everything's fine with the arguments about Fels vs InvFels, but maybe you can let me know what you think?
 %EM @das I think that ^ is all resolved, right?
+%das: I think to be fair I should add that we don't actually show a real inconsistency in topology because we haven't shown this functional convergence for it, only for branch lengths with a fixed topology. I added a paragraph hedging a bit. Let me know what you think.
 For a fixed $\tau$, we show that $\hat{t}_\nCols \rightarrow \hat{t}$ for
 \[
 \hat{t}_\nCols = \arg\max_{t\in\mathcal{T}} \ \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment)
@@ -407,6 +408,21 @@ Finally, we must have the the second mapping be upper-semicontinuous for almost 
 For a fixed ancestral state split $t \mapsto m_t(\alignmentColumn)$ is continuous for all $\alignmentColumn$.
 If we move about in $\mathcal{T}$, a different ancestral state split becomes more likely, though when we maximize over ancestral state splits we obtain a continuous function since the maximum over continuous functions is also continuous.
 This ensures the upper-semicontinuous property of this mapping, and shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)$.
+
+This Wald-type consistency does not extend readily to convergence of topology, i.e., we cannot use the above arguments to say that, for
+\[
+(\hat{\tau}_\nCols, \hat{t}_\nCols) = \arg\max_{\tau, t} \ \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment)
+\]
+and
+\[
+(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)
+\]
+then
+\[
+(\hat{\tau}_\nCols, \hat{t}_\nCols) \rightarrow (\hat{\tau}, \hat{t})
+\]
+as we did for $\hat{t}_\nCols$ with $\tau$ fixed due to the properties of tree space \citep{Yang1994}.
+For this reason we do not claim joint inference is inconsistent in estimating topology, only that there exist parameters that yield degenerate maxima when performing joint optimization.
 
 \subsection*{Properties of the joint objective function}
 
@@ -668,6 +684,7 @@ We show the maximal ancestral states in Fig.~\ref{fig:max-anc-state}.
     \end{minipage}
 \caption{
 Regions of maximal ancestral state splits on the InvFels tree $\tau_1$.
+Data generated as in Fig.~\ref{fig:bl-general-inconsistency}.
 }
 \label{fig:max-anc-state}
 \end{figure}
