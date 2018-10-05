@@ -13,6 +13,7 @@ Define the complement of $\alignmentColumn$ as $\overline{\alignmentColumn}$, an
 We define the site split $\siteSplit$ for a $\alignmentColumn_i$ as the set of tips labeled with $1$ in $\alignmentColumn_i$ if the $\nSiteRows$th tip is not labeled with $1$, and as the set of tips labeled with $1$ in $\overline{\alignmentColumn}_i$ if the $\nSiteRows$th tip is labeled with $1$.
 Taking such a complement simplifies but does not change the result of likelihood computation because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model.
 
+%EM This is very minor compared to the below comments, so address it second in a separate commit, please, if you wish to address it. Curly braces are really for unordered sets, right? I suggest round parensI suggest round parens.
 For a fixed topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization $\ancestralStateColumn_i$.
 In this case we cannot use the same complement trick as before: the probability of observing an ancestral state split conditional on a site split is not invariant to taking its complement.
 We thus define an ``ancestral state split'' $\ancestralSplit$ for an internal node $\ancestralStateColumn_i$ to be the set of internal nodes labeled with $1$ if the $\nSiteRows$th tip is not labeled with $1$, and as the set of internal nodes labeled with $1$ in $\overline{\ancestralStateColumn}_i$ if the $\nSiteRows$th tip is labeled with $1$.
@@ -80,7 +81,7 @@ given $(\tau, t)$, there exist sets $\ancestralSplitPartition_1(\tau, t),\ldots,
 \begin{align*}
 \max_{\ancestralSplit_k\in\mathcal{P}(\ancestralSplitSet)} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\ancestralSplit_k \mid \tau, t) &= \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV = \xi_{\siteSplit_j} \mid \tau, t).
 \end{align*}
-In other words, for the $j$th site split, $\ancestralSplitPartition_j(\tau, t)\subseteq\mathcal{P}(\ancestralSplitSet)$ is the set of most likely ancestral state splits for that particular site split, topology and set of branch lengths, i.e., $\ancestralSplitPartition_j(\tau, t)$ is a set of sets of most likely internal node labels.
+In other words, for the $j$th site split, $\ancestralSplitPartition_j(\tau, t)\subseteq\mathcal{P}(\ancestralSplitSet)$ is the set of most likely ancestral state splits for that particular site split, topology and set of branch lengths, i.e., $\ancestralSplitPartition_j(\tau, t)$ is a set of sets of most likely internal node states.
 Here, $\xi_{\siteSplit_j}$ is one of possibly many equiprobable ancestral state splits in $\ancestralSplitPartition_j(\tau, t)$.
 For each $\alignmentColumn_i$, $\ancestralToSplit(\alignmentColumn_i, \cdot)$ is surjective as it can map values from $\alphabet^\nAncestralStateRows$ to all elements in $\mathcal{P}(\ancestralSplitSet)$.
 This can be seen by using the definition of $\ancestralToSplit(\alignmentColumn_i, \cdot)$ and assuming $\alignmentColumn_{i,\nSiteRows}=0$, where in this case each of the $2^\nAncestralStateRows$ values of $\ancestralStateColumn$ correspond to each of the $2^\nAncestralStateRows$ elements of $\mathcal{P}(\{1,\ldots,\nAncestralStateRows\})$.
@@ -553,6 +554,7 @@ For a fixed, known $\boldsymbol\xi$, there exists a closed form solution to $\ha
 \]
 We show in this case that the log-likelihood $\ell$ attains a unique maximum at $\hat{t}_{\boldsymbol\xi}$.
 For fixed $\boldsymbol\xi$, the log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
+%EM These c_j's and their properties need to be explained a lot more clearly. What are they, how can we know that the likelihood has this form, and why they have the properties below.
 \begin{align*}
 \ell_{\tau^*,t^*}(\tau^*, t, \boldsymbol\xi) &= \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_2}(x_2)\\
 &\qquad + \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_2}(y_2)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,w}(w).
@@ -568,6 +570,7 @@ h_{j,x_1}(x_1) \propto (1+x_1)^{e_j}(1-x_1)^{1-e_j}
 \]
 for $e_j\in\{0,1\}$, which, simplifying, results in
 \begin{align}
+%EM Here's this propto thing again. It's up to a constant, not propto, right?
 \ell(x_1) &\propto \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(\sum_{j=1}^\nSiteSplits c_j(1-e_j)\right) \log (1-x_1)\\
                   &= \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits c_je_j\right) \log (1-x_1), \label{eq:closed-form-x}
 \end{align}
@@ -576,6 +579,7 @@ which has second derivative
 \ell''(x_1) = -\left(\frac{\sum_j c_je_j}{(1+x_1)^2}+\frac{1-\sum_j c_je_j}{(1-x_1)^2}\right).
 \]
 As $x_1\in(0,1]$, we need only $0 \le \sum_j c_je_j \le 1$ to imply the diagonal terms of the Hessian are nonpositive.
+%EM We need to hear why both of these properties hold.
 Since $\sum_j c_j = 1$ and $e_j\in\{0,1\}$, then $0 \le \sum_j c_je_j \le 1$ and $\ell''(x_1) \le 0$.
 Applying similar arguments to the other variables, the Hessian for the log-likelihood has nonpositive diagonal terms and off-diagonal terms equal to zero, and $\hat{t}$ uniquely maximizes $\ell$.
 
@@ -594,6 +598,7 @@ In this case,
 \]
 and $\hat{x}_1 = x^*(y^*)^2$.
 
+%EM Isn't this table redundant given Table S3?
 \begin{table}
 \centering
 \begin{tabular}{|lll|l|}
@@ -623,11 +628,14 @@ Given Table~\ref{tab:gen-sitepatprob}, all solutions $\hat{x}_1$ have the form
 \]
 where $a_{x_1,k}$ are constants independent of $x^*$ and $y^*$---in fact, $a_{x_1,k}$ takes values in the set $\{i/8 : i=-4,-3,\ldots,7,8\}$.
 The true branch fidelity for $x_1$ is $x^*$.
-It is possible to obtain $\hat{x}_1=x^*$, such as when $y^*=1$ or when $(x^*)^2=x^*$, i.e., one of the generating branch parameters is zero or infinite length, but we cannot have $\hat{x}_1=x^*$ for all $x^*$.
+%EM The following sentence falls short of getting us rigorously to where we need to go, which is the measure zero statement. Doesn't that just follow from the number of zeros of a polynomial being finite?
+It is possible to obtain $\hat{x}_1=x^*$, such as when $y^*=1$ or when $(x^*)^2=x^*$, i.e., one of the generating branch lengths is zero or infinite, but we cannot have $\hat{x}_1=x^*$ for all $x^*$.
 The same is true for $x_2$.
 A similar argument for $y_1,y_2,$ and $w$ shows that estimates can only be consistent on a set of measure zero.
 \end{proof}
 
+%EM I don't see this paragraph being helpful.
+%EM It's a confusing read. First you say that we're going to look at examples, but then perhaps you cast doubt on if the examples exist "There may be no..."
 Examples of generating parameters resulting in consistency of joint inference occur in the following.
 Let $x^*$ and $y^*$ be such that the estimate for $\hat{x}_1$ is
 \[
@@ -696,6 +704,7 @@ The regions in Fig.~\ref{fig:max-anc-state} are analytically-derived regions of 
 As the region of degeneracy in Fig.~\ref{fig:max-anc-state} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
 It is easy to see that when $\emptyset$ is the maximal ancestral state split, we have the same log-likelihood for $\tau_1$ and $\tau_2$.
 Moreover, if $w=1$, the internal branch becomes zero-length and the two topologies are indistinguishable.
+%EM The rest of this paragraph is obvious, no?
 Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the region in Fig.~\ref{fig:max-anc-state} where $\hat{\boldsymbol\xi}=\hat{\boldsymbol\xi}_1$.
 We can see this results in the likelihood of both topologies being equal, i.e.,
 \begin{align*}
@@ -705,6 +714,7 @@ We can see this results in the likelihood of both topologies being equal, i.e.,
 \end{align*}
 
 The boundaries determining maximal ancestral state splits (Fig.~\ref{fig:max-anc-state}) are obtained through maximizing over 81 separate functional values (Table~\ref{tab:likelihoods}).
+%EM Are you saying that we should be able to obtain this next display equation by maximizing over the entries in Table S3? I think this needs more explanation.
 Using the notation in the proof of Theorem~\ref{thm:bl_theorem}, we see that, in general, our likelihood given in~\eqref{eq:site_pattern_profile_likelihood_mean} has an exact, closed form maximum of
 \begin{align}
 \ell_{\tau^*,t^*}(\tau_1, \hat{t}; \boldsymbol\xi) &= \frac{1+\hat{x}_1}{2}\log(1+\hat{x}_1) + \frac{1-\hat{x}_1}{2}\log(1-\hat{x}_1)\nonumber\\
@@ -719,6 +729,7 @@ For example, in the lower right region of Fig.~\ref{fig:max-anc-state}, the maxi
 \]
 and the exact, closed form value of the likelihood is
 \begin{align}
+%EM I wouldn't introduce the \ell_{U,1} notation unless it's really needed for some reason I don't see yet.
 \ell_{U,1}(x^*,y^*) &= (1+x^*(y^*)^2)\log(1+x^*(y^*)^2) + (1-x^*(y^*)^2)\log(1-x^*(y^*)^2)\nonumber\\
 &\qquad + \frac{1+(y^*)^2}{2}\log(1+(y^*)^2) + \frac{1-(y^*)^2}{2}\log(1-(y^*)^2)\nonumber\\
 &\qquad + 2\log(2).
