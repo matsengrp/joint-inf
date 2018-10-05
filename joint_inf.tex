@@ -249,7 +249,7 @@ has the property that $\hat{t} \neq t^*$ everywhere except a set of measure zero
 \end{restatable}
 
 In words, the joint estimation procedure does not recover the true generating $t^*$ almost everywhere in the space of generating parameters.
-The proof can be seen intuitively through the fact that the estimator for a given branch fidelity cannot isolate the individual generating parameter as a linear term since the estimator itself is a combination of nonlinear functions (in $(x^*,y^*)$) of generating fidelities.
+The proof can be seen intuitively through the fact that the estimator for a given branch fidelity cannot isolate the individual generating parameter as a linear term since the estimator itself is a combination of nonlinear functions in $(x^*,y^*)$ of generating fidelities.
 For example, in estimating $x_1$, $\hat{x}_1$ is a linear combination of $p_{\siteSplit_j}$ values.
 For the generating probabilities (top panel of Table~\ref{tab:gen-sitepatprob}), there is no linear combination that results in an isolated $x^*$ term, as all terms are either quadratic, i.e., $(x^*)^2$ or $(x^*)^2(y^*)^2$, or have both $x^*$ and $y^*$, i.e., $x^*(y^*)^2$.
 Thus, we cannot obtain a linear combination that in the general case yields $x^*$.
@@ -269,6 +269,7 @@ has the property $\hat{w}\equiv 1$.
 \end{restatable}
 
 This result implies an inconsistency as we estimate the interior branch length to be zero (i.e., interior branch fidelity is one) in an open set of values for $x^*$ and $y^*$ (Fig.~\ref{fig:bl-general-inconsistency}).
+Although the regions seem coarse, $\hat{w}$ has a closed form in the entire space of $x^*$ and $y^*$ (table in bottom panel of Fig.~\ref{fig:max-anc-state}).
 As we consider different topologies $\tau_1$ and $\tau_2$ for $\hat{t}$, the incorrect topology $\tau_2$ attains a likelihood value at its maximum equal to that of the true topology $\tau_1$ in the limit.
 In other words, if $w=1$ the objective functions $\ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)$ and $\ell_{\tau^*,t^*}(\tau_2, t; \boldsymbol\xi)$ are equivalent.
 We elaborate on this point in the Appendix.
@@ -309,8 +310,8 @@ As data are generated with parameters $\{x^*, y^*, x^*, y^*, y^*\}$, the true va
 There are discontinuities in the fit (Fig.~\ref{fig:bl-general-inconsistency}) due to the choice of which ancestral state splits are maximal, so we investigate the bias in the region where $p_{x^*}$ and $p_{y^*}$ are both small, i.e., $p_{x^*}, p_{y^*} \le .1$, as these short-branch cases should be the best settings for joint optimization \citep{Sagulenko2018-xl}.
 Although the estimates for $\hat{p}_w$ are better than the estimates when $p_{y^*}$ is small and $p_{x^*}$ is large (Fig.~\ref{fig:bl-general-inconsistency}), joint inference still predictably underestimates the interior branch length.
 %EM I don't feel like this "range" is a very strong statement. What if we just repeat that the bias is of the same order as the branch lengths and give an example?
-Additionally, the bias estimates $\hat{p}_w-p_{y^*}$ given $p_{x^*}, p_{y^*} \le .1$ range from $[-4\times 10^{-2}, 3\times 10^{-3}]$.
-showing that even in cases where joint inference is supposed to do well, it still fails to achieve a low error from truth.
+%das: that works, though I'm not too clear on what kind of example you're talking about. Maybe Fig. 3 is enough?
+Additionally, the bias estimates $\hat{p}_w-p_{y^*}$ given $p_{x^*}, p_{y^*} \le .1$ are on the same order as the branch lengths (Fig.~\ref{fig:empirical-bias}), showing that even in cases where joint inference is supposed to do well, it still fails to achieve a low error from truth.
 
 In contrast, inference on the integrated likelihood performs as expected, such that $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$ (Fig.~\ref{fig:bl-general-marginal}).
 The errors in this case \eqref{eq:marginal_likelihood} via optimization with L-BFGS-B are lower than machine tolerance.

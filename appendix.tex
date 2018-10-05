@@ -14,6 +14,7 @@ We define the site split $\siteSplit$ for a $\alignmentColumn_i$ as the set of t
 Taking such a complement simplifies but does not change the result of likelihood computation because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model.
 
 %EM This is very minor compared to the below comments, so address it second in a separate commit, please, if you wish to address it. Curly braces are really for unordered sets, right? I suggest round parensI suggest round parens.
+%das: TODO
 For a fixed topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization $\ancestralStateColumn_i$.
 In this case we cannot use the same complement trick as before: the probability of observing an ancestral state split conditional on a site split is not invariant to taking its complement.
 We thus define an ``ancestral state split'' $\ancestralSplit$ for an internal node $\ancestralStateColumn_i$ to be the set of internal nodes labeled with $1$ if the $\nSiteRows$th tip is not labeled with $1$, and as the set of internal nodes labeled with $1$ in $\overline{\ancestralStateColumn}_i$ if the $\nSiteRows$th tip is labeled with $1$.
@@ -555,99 +556,85 @@ For a fixed, known $\boldsymbol\xi$, there exists a closed form solution to $\ha
 We show in this case that the log-likelihood $\ell$ attains a unique maximum at $\hat{t}_{\boldsymbol\xi}$.
 For fixed $\boldsymbol\xi$, the log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
 %EM These c_j's and their properties need to be explained a lot more clearly. What are they, how can we know that the likelihood has this form, and why they have the properties below.
+%das: heh they must have been carried over---they're actually p_yj's
 \begin{align*}
-\ell_{\tau^*,t^*}(\tau^*, t, \boldsymbol\xi) &= \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_2}(x_2)\\
-&\qquad + \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,y_2}(y_2)+\sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,w}(w).
+\ell_{\tau^*,t^*}(\tau^*, t, \boldsymbol\xi) &= \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_2}(x_2)\\
+&\qquad + \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,y_2}(y_2)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,w}(w).
 \end{align*}
 Due to this additive form, all off-diagonal terms of the Hessian for this function are zero, so we show that the diagonal terms are nonpositive.
-Without loss of generality we focus on the variable $x_1$ and the log-likelihood proportional to
+Without loss of generality we focus on the variable $x_1$ and the function
 \[
-\ell(x_1) = \sum_{j=1}^\nSiteSplits c_j\cdot\log h_{j,x_1}(x_1).
+\ell(x_1) \sim \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_1}(x_1).
 \]
+where $\sim$ denotes equality up to an additive constant.
 Doing calculation as in Figure~\ref{fig:example_likelihoods}, each functional form, suppressing constants with respect to $x_1$ and the initial $1/32$ constant, is
 \[
-h_{j,x_1}(x_1) \propto (1+x_1)^{e_j}(1-x_1)^{1-e_j}
+h_{j,x_1}(x_1) = (1+x_1)^{e_j}(1-x_1)^{1-e_j}
 \]
 for $e_j\in\{0,1\}$, which, simplifying, results in
 \begin{align}
 %EM Here's this propto thing again. It's up to a constant, not propto, right?
-\ell(x_1) &\propto \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(\sum_{j=1}^\nSiteSplits c_j(1-e_j)\right) \log (1-x_1)\\
-                  &= \left(\sum_{j=1}^\nSiteSplits c_je_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits c_je_j\right) \log (1-x_1), \label{eq:closed-form-x}
+%das: right---reverted to \sim
+\ell(x_1) &\sim \left(\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) \log(1+x_1) + \left(\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}(1-e_j)\right) \log (1-x_1)\\
+                  &= \left(\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) \log (1-x_1), \label{eq:closed-form-x}
 \end{align}
 which has second derivative
 \[
-\ell''(x_1) = -\left(\frac{\sum_j c_je_j}{(1+x_1)^2}+\frac{1-\sum_j c_je_j}{(1-x_1)^2}\right).
+\ell''(x_1) = -\left(\frac{\sum_j p_{\siteSplit_j}e_j}{(1+x_1)^2}+\frac{1-\sum_j p_{\siteSplit_j}e_j}{(1-x_1)^2}\right).
 \]
-As $x_1\in(0,1]$, we need only $0 \le \sum_j c_je_j \le 1$ to imply the diagonal terms of the Hessian are nonpositive.
+As $x_1\in(0,1]$, we need only $0 \le \sum_j p_{\siteSplit_j}e_j \le 1$ to imply the diagonal terms of the Hessian are nonpositive.
 %EM We need to hear why both of these properties hold.
-Since $\sum_j c_j = 1$ and $e_j\in\{0,1\}$, then $0 \le \sum_j c_je_j \le 1$ and $\ell''(x_1) \le 0$.
+%das: now that c_j is changed to the probability maybe it's more clear? e_j in {0,1} is by definition above
+Since $p_{\siteSplit_j}$ are probabilities, then $\sum_j p_{\siteSplit_j} = 1$.
+As $e_j\in\{0,1\}$ by definition, this implies $0 \le \sum_j p_{\siteSplit_j}e_j \le 1$ and $\ell''(x_1) \le 0$.
 Applying similar arguments to the other variables, the Hessian for the log-likelihood has nonpositive diagonal terms and off-diagonal terms equal to zero, and $\hat{t}$ uniquely maximizes $\ell$.
 
 Now, by straightforward calculus, we solve for the unique maximum $\hat{x}_1$ by setting the first derivative of \eqref{eq:closed-form-x} to zero to obtain
 \[
-\hat{x}_1 = 2\cdot\left(\sum_{j=1}^\nSiteSplits c_je_j\right) - 1
+\hat{x}_1 = 2\cdot\left(\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) - 1
 \]
 where
 \[
-\sum_{j=1}^\nSiteSplits c_je_j = \sum_{j=1}^\nSiteSplits \mathbf{1}\{\mbox{site split $j$ has term $(1+x_1)$}\} \cdot p_{\siteSplit_j}.
+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j = \sum_{j=1}^\nSiteSplits \mathbf{1}\{\mbox{site split $j$ has term $(1+x_1)$}\} \cdot p_{\siteSplit_j}.
 \]
-As an example, Table~\ref{tab:likelihoods-restricted} shows the maximal ancestral state splits and corresponding likelihood values for $\boldsymbol\xi_0 = [\emptyset]_{j=1}^\nSiteSplits$.
-In this case,
-\[
-\sum_{j=1}^\nSiteSplits c_je_j = p_{\emptyset} + p_2 + p_3 + p_{23} = \frac{1}{2} + \frac{1}{2}x^*(y^*)^2
-\]
-and $\hat{x}_1 = x^*(y^*)^2$.
 
 %EM Isn't this table redundant given Table S3?
-\begin{table}
-\centering
-\begin{tabular}{|lll|l|}
-\hline
-$\siteSplit_j$ & $\ancestralSplitPartition_j(\tau_1, t)$ & $\xi_{\siteSplit_j}$ & $32\cdot\Pr(\siteSplitRV=\siteSplit_j,\ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau_1,t)$\\
-\hline
-$\emptyset$&$\{\emptyset\}$&$\emptyset$&$(1+x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
-$\{1\}$    &$\{\emptyset\}$&$\emptyset$&$(1-x_1)(1+y_1)(1+x_2)(1+y_2)(1+w)$\\
-$\{2\}$    &$\{\emptyset\}$&$\emptyset$&$(1+x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
-$\{3\}$    &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1+x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
-$\{1,2,3\}$&$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
-$\{1,2\}$  &$\{\emptyset\}$&$\emptyset$&$(1-x_1)(1-y_1)(1+x_2)(1+y_2)(1+w)$\\
-$\{2,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1+x_1)(1-y_1)(1-x_2)(1+y_2)(1+w)$\\
-$\{1,3\}$  &$\{\emptyset,\{1\},\{1,2\}\}$&$\emptyset$&$(1-x_1)(1+y_1)(1-x_2)(1+y_2)(1+w)$\\
-\hline
-\end{tabular}
-\caption{
-32 times the maximal likelihood values on the InvFels tree $\tau_1$ where $\emptyset$ is the most likely ancestral state split for each site split.
-}
-\label{tab:likelihoods-restricted}
-\end{table}
+%das: I wrote out the likelihood in the example after the proof
 
 We show that solutions of this form never obtain $\hat{t} = t^*$ except on a set of measure zero.
 Given Table~\ref{tab:gen-sitepatprob}, all solutions $\hat{x}_1$ have the form
 \[
-\hat{x}_1 = a_{x_1,0} + a_{x_1,1}(x^*)^2 + a_{x_1,2}(y^*)^2 + a_{x_1,3} x^*(y^*)^2 + a_{x_1,4}(x^*)^2(y^*)^2.
+\hat{x}_1(x^*,y^*) = a_{x_1,0} + a_{x_1,1}(x^*)^2 + a_{x_1,2}(y^*)^2 + a_{x_1,3} x^*(y^*)^2 + a_{x_1,4}(x^*)^2(y^*)^2,
 \]
 where $a_{x_1,k}$ are constants independent of $x^*$ and $y^*$---in fact, $a_{x_1,k}$ takes values in the set $\{i/8 : i=-4,-3,\ldots,7,8\}$.
-The true branch fidelity for $x_1$ is $x^*$.
+The true branch fidelity for $x_1$ is $x^*$, and so we have consistency when
+\[
+f_{y^*}(x^*) = \hat{x}_1(x^*,y^*) - x^*
+\]
+is zero.
+As the number of zeros of $f_{y^*}(x^*)$ is finite for $0 < x^*, y^* < 1$, consistency holds only on a set of measure zero.
 %EM The following sentence falls short of getting us rigorously to where we need to go, which is the measure zero statement. Doesn't that just follow from the number of zeros of a polynomial being finite?
-It is possible to obtain $\hat{x}_1=x^*$, such as when $y^*=1$ or when $(x^*)^2=x^*$, i.e., one of the generating branch lengths is zero or infinite, but we cannot have $\hat{x}_1=x^*$ for all $x^*$.
-The same is true for $x_2$.
-A similar argument for $y_1,y_2,$ and $w$ shows that estimates can only be consistent on a set of measure zero.
+%das: fixed
+The same is true for $x_2$, and a similar argument for $y_1,y_2,$ and $w$ shows that estimates can only be consistent on a set of measure zero.
 \end{proof}
 
 %EM I don't see this paragraph being helpful.
 %EM It's a confusing read. First you say that we're going to look at examples, but then perhaps you cast doubt on if the examples exist "There may be no..."
-Examples of generating parameters resulting in consistency of joint inference occur in the following.
-Let $x^*$ and $y^*$ be such that the estimate for $\hat{x}_1$ is
+%das: moved some things around so the example is outside of the proof
+As an example solution for maximizing $x_1$, the maximal ancestral state splits for $\hat{\boldsymbol\xi}_1 = \{\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset\}$ (Table~\ref{tab:likelihoods}) yields the log-likelihood
+\begin{align*}
+\ell_{\tau^*,t^*}(x_1; \hat{\boldsymbol\xi}_1) &= \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1)\\
+&\qquad + \left(\frac{1}{2}+\frac{1}{2}(y^*)^2\right)\log(1+y_1) + \left(\frac{1}{2}-\frac{1}{2}(y^*)^2\right)\log(1-y_1)\\
+&\qquad + \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_2) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_2)\\
+&\qquad + \log(1+y_2) + \log(1+w) - \log 32\\
+&:= \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1)\\
+&\qquad + C_{x_1}(x_2,y_1,y_2,w).
+\end{align*}
+where $C_{x_1}$ is a function of $y_1,x_2,y_2,$ and $w$ and
 \[
-\hat{x}_1 = 2 \cdot \left(p_{\emptyset} + p_2 + p_{123} + p_{13}\right) - 1 = (x^*)^2.
+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j = p_{\emptyset} + p_2 + p_3 + p_{23} = \frac{1}{2} + \frac{1}{2}x^*(y^*)^2.
 \]
-There may be no $x^*$ and $y^*$ that yield this maximum (Fig.~\ref{fig:max-anc-state}), though it is a feasible solution to the general joint inference problem.
-In this case, $\hat{x}_1 = x^*$ implies consistency only occurs when $x^*=0$ or $x^*=1$.
-Another case,
-\[
-\hat{x}_1 = 2 \cdot \left(p_{\emptyset} + p_2 + p_{3} + p_{123} + p_{23} + p_{13}\right) - 1 = \frac{1}{2} + \frac{1}{2}(x^*)^2
-\]
-shows $\hat{x}_1 = x^*$ implies consistency only when $x^*=1$.
+Thus, $\hat{x}_1(x^*, y^*) = x^*(y^*)^2$, and it is possible to obtain $\hat{x}_1(x^*,y^*)=x^*$, such as when $y^*=1$, but we cannot have $\hat{x}(x^*,y^*)_1=x^*$ for all $x^*$ where $0 < x^*, y^* < 1$.
 
 We now proceed to show there exist $x^*$ and $y^*$ such that the interior branch parameter $w$ is estimated as exactly one, indicating convergence to a multifurcating topology.
 
@@ -677,16 +664,16 @@ We show the maximal ancestral states in Fig.~\ref{fig:max-anc-state}.
     \end{minipage}
     \begin{minipage}{\linewidth}
         \centering
-        Maximal ancestral state split definitions
-        \begin{tabular}{l}
+        Maximal ancestral state split definitions and $\hat{w}$
+        \begin{tabular}{ll}
         \hline
-        $\hat{\boldsymbol\xi} = \{\xi_{\emptyset},\xi_{1},\xi_{2},\xi_{3},\xi_{123},\xi_{12},\xi_{23},\xi_{13}\}$\\
+        $\hat{\boldsymbol\xi} = \{\xi_{\emptyset},\xi_{1},\xi_{2},\xi_{3},\xi_{123},\xi_{12},\xi_{23},\xi_{13}\}$ & $\hat{w}$\\
         \hline
-        $\hat{\boldsymbol\xi}_1 = \{\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset\}$\\
-        $\hat{\boldsymbol\xi}_2 = \{\emptyset,\emptyset,\emptyset,\emptyset,\{1,2\},\emptyset,\emptyset,\emptyset\}$\\
-        $\hat{\boldsymbol\xi}_3 = \{\emptyset,\emptyset,\emptyset,\emptyset,\{1,2\},\emptyset,\emptyset,\{1\}\}$\\
-        $\hat{\boldsymbol\xi}_4 = \{\emptyset,\emptyset,\emptyset,\emptyset,\{1,2\},\emptyset,\{1,2\},\{1\}\}$\\
-        $\hat{\boldsymbol\xi}_5 = \{\emptyset,\emptyset,\emptyset,\{1\},\{1\},\emptyset,\{1\},\{1\}\}$\\
+        $\hat{\boldsymbol\xi}_1 = \{\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset\}$ & $1$\\
+        $\hat{\boldsymbol\xi}_2 = \{\emptyset,\emptyset,\emptyset,\emptyset,\{1,2\},\emptyset,\emptyset,\emptyset\}$ & $1$\\
+        $\hat{\boldsymbol\xi}_3 = \{\emptyset,\emptyset,\emptyset,\emptyset,\{1,2\},\emptyset,\emptyset,\{1\}\}$ & $\frac{3}{4}+x^*(y^*)^2-\frac{1}{4}((x^*)^2+(y^*)^2+(x^*)^2(y^*)^2)$\\
+        $\hat{\boldsymbol\xi}_4 = \{\emptyset,\emptyset,\emptyset,\emptyset,\{1,2\},\emptyset,\{1,2\},\{1\}\}$ & $\frac{3}{4}+x^*(y^*)^2-\frac{1}{4}((x^*)^2+(y^*)^2+(x^*)^2(y^*)^2)$\\
+        $\hat{\boldsymbol\xi}_5 = \{\emptyset,\emptyset,\emptyset,\{1\},\{1\},\emptyset,\{1\},\{1\}\}$ & $x^*(y^*)^2$\\
         \hline
         \end{tabular}
     \end{minipage}
@@ -705,17 +692,24 @@ As the region of degeneracy in Fig.~\ref{fig:max-anc-state} gives the values of 
 It is easy to see that when $\emptyset$ is the maximal ancestral state split, we have the same log-likelihood for $\tau_1$ and $\tau_2$.
 Moreover, if $w=1$, the internal branch becomes zero-length and the two topologies are indistinguishable.
 %EM The rest of this paragraph is obvious, no?
-Let $\mathcal{T}_0$ be such that, for $t^*=\{x^*,y^*,x^*,y^*,y^*\}$, $t^*\in\mathcal{T}_0$ corresponds to $x^*$ and $y^*$ falling in the region in Fig.~\ref{fig:max-anc-state} where $\hat{\boldsymbol\xi}=\hat{\boldsymbol\xi}_1$.
-We can see this results in the likelihood of both topologies being equal, i.e.,
-\begin{align*}
-\max_{t : t^*\in\mathcal{T}_0} & \ \ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)\\
-&= \max_{t: \boldsymbol\xi=\hat{\boldsymbol\xi}_1, w=1, \tau=\tau_1} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, \{x_1,y_1,x_2,y_2,w\})\\
-&= \max_{t: \boldsymbol\xi=\hat{\boldsymbol\xi}_1, w=1, \tau=\tau_2} \ \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, \{x_1,y_1,x_2,y_2,w\}).
-\end{align*}
+%das: yeah seems like it.
 
 The boundaries determining maximal ancestral state splits (Fig.~\ref{fig:max-anc-state}) are obtained through maximizing over 81 separate functional values (Table~\ref{tab:likelihoods}).
 %EM Are you saying that we should be able to obtain this next display equation by maximizing over the entries in Table S3? I think this needs more explanation.
-Using the notation in the proof of Theorem~\ref{thm:bl_theorem}, we see that, in general, our likelihood given in~\eqref{eq:site_pattern_profile_likelihood_mean} has an exact, closed form maximum of
+%das: included more detail
+Referring to the proof of Theorem~\ref{thm:bl_theorem}, we see that
+\[
+\ell(x_1) \sim \left(\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) \log (1-x_1)
+\]
+and
+\[
+\hat{x}_1 = 2\cdot\left(\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) - 1
+\]
+so that the maximal value for $\ell(x_1)$ is
+\[
+\frac{1+\hat{x}_1}{2}\log(1+\hat{x}_1) + \frac{1-\hat{x}_1}{2}\log(1-\hat{x}_1).
+\]
+With similar forms for the remaining variables our likelihood given in~\eqref{eq:site_pattern_profile_likelihood_mean} has an exact, closed form maximum of
 \begin{align}
 \ell_{\tau^*,t^*}(\tau_1, \hat{t}; \boldsymbol\xi) &= \frac{1+\hat{x}_1}{2}\log(1+\hat{x}_1) + \frac{1-\hat{x}_1}{2}\log(1-\hat{x}_1)\nonumber\\
 &\qquad + \frac{1+\hat{y}_1}{2}\log(1+\hat{y}_1) + \frac{1-\hat{y}_1}{2}\log(1-\hat{y}_1)\nonumber\\
@@ -727,14 +721,15 @@ For example, in the lower right region of Fig.~\ref{fig:max-anc-state}, the maxi
 \[
 \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\} = \{x^*(y^*)^2,(y^*)^2,x^*(y^*)^2,1,1\}
 \]
-and the exact, closed form value of the likelihood is
+and the exact, closed form value of the likelihood is, as a function of $x^*$ and $y^*$,
 \begin{align}
 %EM I wouldn't introduce the \ell_{U,1} notation unless it's really needed for some reason I don't see yet.
-\ell_{U,1}(x^*,y^*) &= (1+x^*(y^*)^2)\log(1+x^*(y^*)^2) + (1-x^*(y^*)^2)\log(1-x^*(y^*)^2)\nonumber\\
+%das: written as just a function of x* and y*
+g_{\boldsymbol\xi_1}(x^*,y^*) &= (1+x^*(y^*)^2)\log(1+x^*(y^*)^2) + (1-x^*(y^*)^2)\log(1-x^*(y^*)^2)\nonumber\\
 &\qquad + \frac{1+(y^*)^2}{2}\log(1+(y^*)^2) + \frac{1-(y^*)^2}{2}\log(1-(y^*)^2)\nonumber\\
 &\qquad + 2\log(2).
 \end{align}
-We obtain similar maximal values as functions of $x^*$ and $y^*$ for each ancestral state split.
+We obtain similar maximal values as functions of $x^*$ and $y^*$ for each ancestral state split to get $g_{\boldsymbol\xi}$ for all relevant $\boldsymbol\xi$.
 The curves delineating maximal ancestral state splits (Fig.~\ref{fig:max-anc-state}) are determined by these 81 functions.
 
 %~~~
