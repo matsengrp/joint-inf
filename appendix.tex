@@ -555,26 +555,23 @@ For a fixed, known $\boldsymbol\xi$, there exists a closed form solution to $\ha
 \]
 We show in this case that the log-likelihood $\ell$ attains a unique maximum at $\hat{t}_{\boldsymbol\xi}$.
 For fixed $\boldsymbol\xi$, the log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
-%EM These c_j's and their properties need to be explained a lot more clearly. What are they, how can we know that the likelihood has this form, and why they have the properties below.
-%das: heh they must have been carried over---they're actually p_yj's
+%EM The previous version switched between only looking at x_1 and the general case. Here I tried to make that more flexible and explicit.
 \begin{align*}
 \ell_{\tau^*,t^*}(\tau^*, t, \boldsymbol\xi) &= \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_2}(x_2)\\
 &\qquad + \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,y_2}(y_2)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,w}(w).
 \end{align*}
 Due to this additive form, all off-diagonal terms of the Hessian for this function are zero, so we show that the diagonal terms are nonpositive.
-Without loss of generality we focus on the variable $x_1$ and the function
+For example, if we focus on the variable $x_1$, holding other variables constant, then
 \[
 \ell(x_1) \sim \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_1}(x_1).
 \]
 where $\sim$ denotes equality up to an additive constant.
-Doing calculation as in Figure~\ref{fig:example_likelihoods}, each functional form, suppressing constants with respect to $x_1$ and the initial $1/32$ constant, is
+Doing calculation as in Figure~\ref{fig:example_likelihoods}, each functional form, suppressing constants with respect to the focal variable (here $x_1$) and the initial $1/32$ constant, takes the form
 \[
 h_{j,x_1}(x_1) = (1+x_1)^{e_j}(1-x_1)^{1-e_j}
 \]
 for $e_j\in\{0,1\}$, which, simplifying, results in
 \begin{align}
-%EM Here's this propto thing again. It's up to a constant, not propto, right?
-%das: right---reverted to \sim
 \ell(x_1) &\sim \left(\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) \log(1+x_1) + \left(\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}(1-e_j)\right) \log (1-x_1)\\
                   &= \left(\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) \log (1-x_1), \label{eq:closed-form-x}
 \end{align}
@@ -583,8 +580,6 @@ which has second derivative
 \ell''(x_1) = -\left(\frac{\sum_j p_{\siteSplit_j}e_j}{(1+x_1)^2}+\frac{1-\sum_j p_{\siteSplit_j}e_j}{(1-x_1)^2}\right).
 \]
 As $x_1\in(0,1]$, we need only $0 \le \sum_j p_{\siteSplit_j}e_j \le 1$ to imply the diagonal terms of the Hessian are nonpositive.
-%EM We need to hear why both of these properties hold.
-%das: now that c_j is changed to the probability maybe it's more clear? e_j in {0,1} is by definition above
 Since $p_{\siteSplit_j}$ are probabilities, then $\sum_j p_{\siteSplit_j} = 1$.
 As $e_j\in\{0,1\}$ by definition, this implies $0 \le \sum_j p_{\siteSplit_j}e_j \le 1$ and $\ell''(x_1) \le 0$.
 Applying similar arguments to the other variables, the Hessian for the log-likelihood has nonpositive diagonal terms and off-diagonal terms equal to zero, and $\hat{t}$ uniquely maximizes $\ell$.
@@ -598,10 +593,8 @@ where
 \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j = \sum_{j=1}^\nSiteSplits \mathbf{1}\{\mbox{site split $j$ has term $(1+x_1)$}\} \cdot p_{\siteSplit_j}.
 \]
 
-%EM Isn't this table redundant given Table S3?
-%das: I wrote out the likelihood in the example after the proof
 
-We show that solutions of this form never obtain $\hat{t} = t^*$ except on a set of measure zero.
+Next we show that solutions of this form never obtain $\hat{t} = t^*$ except on a set of measure zero.
 Given Table~\ref{tab:gen-sitepatprob}, all solutions $\hat{x}_1$ have the form
 \[
 \hat{x}_1(x^*,y^*) = a_{x_1,0} + a_{x_1,1}(x^*)^2 + a_{x_1,2}(y^*)^2 + a_{x_1,3} x^*(y^*)^2 + a_{x_1,4}(x^*)^2(y^*)^2,
@@ -613,9 +606,9 @@ f_{y^*}(x^*) = \hat{x}_1(x^*,y^*) - x^*
 \]
 is zero.
 As the number of zeros of $f_{y^*}(x^*)$ is finite for $0 < x^*, y^* < 1$, consistency holds only on a set of measure zero.
-%EM The following sentence falls short of getting us rigorously to where we need to go, which is the measure zero statement. Doesn't that just follow from the number of zeros of a polynomial being finite?
-%das: fixed
 The same is true for $x_2$, and a similar argument for $y_1,y_2,$ and $w$ shows that estimates can only be consistent on a set of measure zero.
+
+%EM This is much improved, thanks! It seems like we need a little more to complete the proof in the general case. We start the proof hypothesizing a fixed \xi. When do we relax that assumption?
 \end{proof}
 
 %EM I don't see this paragraph being helpful.
@@ -634,7 +627,7 @@ where $C_{x_1}$ is a function of $y_1,x_2,y_2,$ and $w$ and
 \[
 \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j = p_{\emptyset} + p_2 + p_3 + p_{23} = \frac{1}{2} + \frac{1}{2}x^*(y^*)^2.
 \]
-Thus, $\hat{x}_1(x^*, y^*) = x^*(y^*)^2$, and it is possible to obtain $\hat{x}_1(x^*,y^*)=x^*$, such as when $y^*=1$, but we cannot have $\hat{x}(x^*,y^*)_1=x^*$ for all $x^*$ where $0 < x^*, y^* < 1$.
+Thus, $\hat{x}_1(x^*, y^*) = x^*(y^*)^2$, and it is possible to obtain $\hat{x}_1(x^*,y^*)=x^*$, such as when $y^*=1$, but we cannot have $\hat{x}_1(x^*,y^*)=x^*$ for all $x^*$ where $0 < x^*, y^* < 1$.
 
 We now proceed to show there exist $x^*$ and $y^*$ such that the interior branch parameter $w$ is estimated as exactly one, indicating convergence to a multifurcating topology.
 
@@ -691,12 +684,8 @@ The regions in Fig.~\ref{fig:max-anc-state} are analytically-derived regions of 
 As the region of degeneracy in Fig.~\ref{fig:max-anc-state} gives the values of $x^*$ and $y^*$ where $\hat{w}$ is guaranteed to be one, we converge on a multifurcating topology in these cases.
 It is easy to see that when $\emptyset$ is the maximal ancestral state split, we have the same log-likelihood for $\tau_1$ and $\tau_2$.
 Moreover, if $w=1$, the internal branch becomes zero-length and the two topologies are indistinguishable.
-%EM The rest of this paragraph is obvious, no?
-%das: yeah seems like it.
 
 The boundaries determining maximal ancestral state splits (Fig.~\ref{fig:max-anc-state}) are obtained through maximizing over 81 separate functional values (Table~\ref{tab:likelihoods}).
-%EM Are you saying that we should be able to obtain this next display equation by maximizing over the entries in Table S3? I think this needs more explanation.
-%das: included more detail
 Referring to the proof of Theorem~\ref{thm:bl_theorem}, we see that
 \[
 \ell(x_1) \sim \left(\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) \log(1+x_1) + \left(1-\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}e_j\right) \log (1-x_1)
@@ -709,6 +698,7 @@ so that the maximal value for $\ell(x_1)$ is
 \[
 \frac{1+\hat{x}_1}{2}\log(1+\hat{x}_1) + \frac{1-\hat{x}_1}{2}\log(1-\hat{x}_1).
 \]
+%EM The following sentence needs revision.... read aloud?
 With similar forms for the remaining variables our likelihood given in~\eqref{eq:site_pattern_profile_likelihood_mean} has an exact, closed form maximum of
 \begin{align}
 \ell_{\tau^*,t^*}(\tau_1, \hat{t}; \boldsymbol\xi) &= \frac{1+\hat{x}_1}{2}\log(1+\hat{x}_1) + \frac{1-\hat{x}_1}{2}\log(1-\hat{x}_1)\nonumber\\
@@ -723,9 +713,7 @@ For example, in the lower right region of Fig.~\ref{fig:max-anc-state}, the maxi
 \]
 and the exact, closed form value of the likelihood is, as a function of $x^*$ and $y^*$,
 \begin{align}
-%EM I wouldn't introduce the \ell_{U,1} notation unless it's really needed for some reason I don't see yet.
-%das: written as just a function of x* and y*
-g_{\boldsymbol\xi_1}(x^*,y^*) &= (1+x^*(y^*)^2)\log(1+x^*(y^*)^2) + (1-x^*(y^*)^2)\log(1-x^*(y^*)^2)\nonumber\\
+g_{\boldsymbol\xi_1}(x^*,y^*) &:= (1+x^*(y^*)^2)\log(1+x^*(y^*)^2) + (1-x^*(y^*)^2)\log(1-x^*(y^*)^2)\nonumber\\
 &\qquad + \frac{1+(y^*)^2}{2}\log(1+(y^*)^2) + \frac{1-(y^*)^2}{2}\log(1-(y^*)^2)\nonumber\\
 &\qquad + 2\log(2).
 \end{align}

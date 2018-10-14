@@ -109,12 +109,13 @@
 
 \begin{abstract}
 Maximum likelihood estimation in phylogenetics requires a means of handling unknown ancestral states.
-Classical maximum likelihood averages over these unknown intermediate states, leading to consistent estimation of the topology and continuous model parameters.
+Classical maximum likelihood averages over these unknown intermediate states, leading to provably consistent estimation of the topology and continuous model parameters.
 Recently, a computationally-efficient approach has been proposed to jointly maximize over these unknown states and phylogenetic parameters.
 Although this method of joint maximum likelihood estimation can obtain estimates more quickly, its properties as an estimator are not yet clear.
 We show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
-We find a set of parameters that generate data under a four-taxon tree for which this joint method estimates a multifurcating topology in the limit of infinite-length sequences by estimating one or more branches to be zero length.
-For branch length estimation on the correct topology, we show that this joint method cannot correctly estimate branch lengths except on a set of measure zero, and we show empirically that branch lengths are biased in this setting even for short branches, with bias of the same order as the branch lengths themselves.
+We find a sizeable region of parameter space that generates data on a four-taxon tree for which this joint method estimates a multifurcating topology in the limit of infinite-length sequences by estimating one or more branches to be zero length.
+More generally, we show that this joint method only estimates branch lengths correctly on a set of measure zero.
+We show empirically that branch length estimates are biased even for short branches, with bias of the same order as the branch lengths themselves.
 \end{abstract}
 
 \newpage
@@ -268,8 +269,8 @@ There exists an open set of $0 < x^*, y^* < 1$ such that the solution $\hat{t} :
 has the property $\hat{w}\equiv 1$.
 \end{restatable}
 
-This result implies an inconsistency as we estimate the interior branch length to be zero (i.e., interior branch fidelity is one) in an open set of values for $x^*$ and $y^*$ (Fig.~\ref{fig:bl-general-inconsistency}).
-Although the regions seem coarse, $\hat{w}$ has a closed form in the entire space of $x^*$ and $y^*$ (table in bottom panel of Fig.~\ref{fig:max-anc-state}).
+This result implies an inconsistency because the joint estimate of the interior branch length is zero (i.e., interior branch fidelity is one) in an open set of values for $x^*$ and $y^*$ (Fig.~\ref{fig:bl-general-inconsistency}).
+$\hat{w}$ is available in closed form in the entire space of $x^*$ and $y^*$ (table in bottom panel of Fig.~\ref{fig:max-anc-state}).
 As we consider different topologies $\tau_1$ and $\tau_2$ for $\hat{t}$, the incorrect topology $\tau_2$ attains a likelihood value at its maximum equal to that of the true topology $\tau_1$ in the limit.
 In other words, if $w=1$ the objective functions $\ell_{\tau^*,t^*}(\tau_1, t; \boldsymbol\xi)$ and $\ell_{\tau^*,t^*}(\tau_2, t; \boldsymbol\xi)$ are equivalent.
 We elaborate on this point in the Appendix.
@@ -309,8 +310,6 @@ In estimating the interior branch length $w$, we find a systematic bias in the j
 As data are generated with parameters $\{x^*, y^*, x^*, y^*, y^*\}$, the true value for $w$ is $y^*$.
 There are discontinuities in the fit (Fig.~\ref{fig:bl-general-inconsistency}) due to the choice of which ancestral state splits are maximal, so we investigate the bias in the region where $p_{x^*}$ and $p_{y^*}$ are both small, i.e., $p_{x^*}, p_{y^*} \le .1$, as these short-branch cases should be the best settings for joint optimization \citep{Sagulenko2018-xl}.
 Although the estimates for $\hat{p}_w$ are better than the estimates when $p_{y^*}$ is small and $p_{x^*}$ is large (Fig.~\ref{fig:bl-general-inconsistency}), joint inference still predictably underestimates the interior branch length.
-%EM I don't feel like this "range" is a very strong statement. What if we just repeat that the bias is of the same order as the branch lengths and give an example?
-%das: that works, though I'm not too clear on what kind of example you're talking about. Maybe Fig. 3 is enough?
 Additionally, the bias estimates $\hat{p}_w-p_{y^*}$ given $p_{x^*}, p_{y^*} \le .1$ are on the same order as the branch lengths (Fig.~\ref{fig:empirical-bias}), showing that even in cases where joint inference is supposed to do well, it still fails to achieve a low error from truth.
 
 In contrast, inference on the integrated likelihood performs as expected, such that $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$ (Fig.~\ref{fig:bl-general-marginal}).
