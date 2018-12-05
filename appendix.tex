@@ -13,8 +13,6 @@ Define the complement of $\alignmentColumn$ as $\overline{\alignmentColumn}$, an
 We define the site split $\siteSplit$ for a $\alignmentColumn_i$ as the set of tips labeled with $1$ in $\alignmentColumn_i$ if the $\nSiteRows$th tip is not labeled with $1$, and as the set of tips labeled with $1$ in $\overline{\alignmentColumn}_i$ if the $\nSiteRows$th tip is labeled with $1$.
 Taking such a complement simplifies but does not change the result of likelihood computation because the probability of observing a particular collection of binary characters is equivalent to the probability of its complement under the binary symmetric model.
 
-%EM This is very minor compared to the below comments, so address it second in a separate commit, please, if you wish to address it. Curly braces are really for unordered sets, right? I suggest round parensI suggest round parens.
-%das: on second thought, this is using notation like in Semple/Steel. If we change this here, I think we'd have to change almost all curly braces in the document, including the ones that use the Semple/Steel notation. I'm not necessarily opposed, but I think it might be confusing, especially because we use their notation a lot throughout. Thoughts?
 For a fixed topology $\tau$, we define an ordered set of internal node labels $\{1,\ldots,\nAncestralStateRows\}$ for $\ancestralStateColumn_i$ and similarly use a subset of characters $\ancestralSplit\subseteq\ancestralSplitSet:=\{1,\ldots,\nAncestralStateRows\}$ to describe a realization $\ancestralStateColumn_i$.
 In this case we cannot use the same complement trick as before: the probability of observing an ancestral state split conditional on a site split is not invariant to taking its complement.
 We thus define an ``ancestral state split'' $\ancestralSplit$ for an internal node $\ancestralStateColumn_i$ to be the set of internal nodes labeled with $1$ if the $\nSiteRows$th tip is not labeled with $1$, and as the set of internal nodes labeled with $1$ in $\overline{\ancestralStateColumn}_i$ if the $\nSiteRows$th tip is labeled with $1$.
@@ -363,14 +361,6 @@ By combinations of $\ancestralSplit_k$, there are $3^5\cdot 4^2=3,888$ possible 
 
 \subsection*{Convergence of branch parameters}
 
-%das: @EM I think this is actually the same Wald reference that Felsenstein tried to use.
-%It works here for a fixed topology, and didn't work for him or your reference because I think the upper-semicontinuous condition doesn't hold for trees in general.
-%Also I don't think the compactness condition holds---tree space isn't compact is it?
-%However we now have a potential snag in that we are doing what Yang (1994) in his intro says is bad, i.e., doing ML for fixed, separate topologies and comparing them.
-%We still have the behavior in the plots and the proofs, since they all assumed a fixed topology, and I think everything's fine with the arguments about Fels vs InvFels, but maybe you can let me know what you think?
-%EM @das I think that ^ is all resolved, right?
-%das: I think to be fair I should add that we don't actually show a real inconsistency in topology because we haven't shown this functional convergence for it, only for branch lengths with a fixed topology. I added a paragraph hedging a bit. Let me know what you think.
-%das: bump
 For a fixed $\tau$, we show that $\hat{t}_\nCols \rightarrow \hat{t}$ for
 \[
 \hat{t}_\nCols = \arg\max_{t\in\mathcal{T}} \ \frac{1}{n}\log L_\nCols'(\tau, t; \fullAlignment)
@@ -556,8 +546,6 @@ For a fixed, known $\boldsymbol\xi$, there exists a closed form solution to $\ha
 \]
 We show in this case that the log-likelihood $\ell$ attains a unique maximum at $\hat{t}_{\boldsymbol\xi}$.
 For fixed $\boldsymbol\xi$, the log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
-%EM The previous version switched between only looking at x_1 and the general case. Here I tried to make that more flexible and explicit.
-%das: looks good :+1:
 \begin{align*}
 \ell_{\tau^*,t^*}(\tau^*, t, \boldsymbol\xi) &= \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_2}(x_2)\\
 &\qquad + \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,y_2}(y_2)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,w}(w).
@@ -612,14 +600,8 @@ Since we have inconsistency in $\hat{t}_{\boldsymbol\xi}$ for each $\boldsymbol\
 
 The same is true for $x_2$, and a similar argument for $y_1,y_2,$ and $w$ shows that estimates can only be consistent on a set of measure zero.
 
-%EM This is much improved, thanks! It seems like we need a little more to complete the proof in the general case. We start the proof hypothesizing a fixed \xi. When do we relax that assumption?
-%das: yah, maximizing over xi is straightforward since it takes values on a finite set. I changed a bit of notation so hope it's more clear now.
 \end{proof}
 
-%EM I don't see this paragraph being helpful.
-%EM It's a confusing read. First you say that we're going to look at examples, but then perhaps you cast doubt on if the examples exist "There may be no..."
-%das: moved some things around so the example is outside of the proof
-%das: bump
 As an example solution for maximizing $x_1$, the maximal ancestral state splits for $\hat{\boldsymbol\xi}_1 = \{\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset,\emptyset\}$ (Table~\ref{tab:likelihoods}) yields the log-likelihood
 \begin{align*}
 \ell_{\tau^*,t^*}(x_1; \hat{\boldsymbol\xi}_1) &= \left(\frac{1}{2}+\frac{1}{2}x^*(y^*)^2\right)\log(1+x_1) + \left(\frac{1}{2}-\frac{1}{2}x^*(y^*)^2\right)\log(1-x_1)\\
@@ -704,8 +686,6 @@ so that the maximal value for $\ell(x_1)$ is
 \[
 \frac{1+\hat{x}_1}{2}\log(1+\hat{x}_1) + \frac{1-\hat{x}_1}{2}\log(1-\hat{x}_1)
 \]
-%EM The following sentence needs revision.... read aloud?
-%das: changed
 with similar forms for the remaining variables.
 Our likelihood~\eqref{eq:site_pattern_profile_likelihood_mean} has an exact, closed form maximum of
 \begin{align}
