@@ -1,0 +1,30 @@
+January 10, 2019
+
+Dear MBE Editorial Board,
+
+Please consider our revised manuscript entitled ``Joint maximum-likelihood of phylogeny and ancestral states is not consistent'' for publication in *Molecular Biology and Evolution*.
+In this paper, my co-authors, David Shaw and Vu Dinh, along with myself, investigate the statistical properties of joint maximum-likelihood estimation of trees and ancestral sequences.
+We were motivated to do so by recent work from Richard Neher's group (http://dx.doi.org/10.1093/ve/vex042) that employs such joint optimization as an efficient alternative to the standard Felsenstein marginalization.
+
+We show that such joint inference is not consistent, both for topology inference and branch length optimization.
+For a fixed topology, almost the entirety of the parameter space yields inconsistent branch length estimates.
+Additionally, there are sizeable regions of parameter space in which this joint inference gives the wrong topology in the limit of large data.
+This is not a case of long branch attraction.
+Indeed, the inconsistency in Felsenstein 1978 requires a combination of long and short branches, whereas our inconsistency arises in roughly half of the parameter space.
+
+Although the proofs in our paper require detailed examination of likelihood functions, we have written the paper to be broadly accessible.
+The paper has two illustrations showing regions of inconsistency for topology and branch length inconsistency, respectively, and provides intuitive summaries of the results in the main text.
+A complete set of proofs appears in the appendix.
+
+We feel that it is important for this paper to get a critical review by a mathematically-oriented phylogenetics expert.
+We suggest Elizabeth Allman (esallman@alaska.edu), Laura Kubatko (lkubatko@stat.osu.edu), Mike Steel (mike.steel@canterbury.ac.nz), Ed Susko (susko@mathstat.dal.ca).
+Although Mike is somewhat conflicted as my postdoc advisor, he would do an excellent job reviewing this paper.
+
+Thank you for your consideration.
+
+Sincerely,
+
+Frederick "Erick" Matsen IV, Ph.D.
+Associate Member, Computational Biology Program
+Affiliate Associate Professor, University of Washington Depts of Statistics and Genome Sciences
+HHMI/Simons Faculty Scholar

@@ -1,0 +1,28 @@
+A few more questions for you (sorry!):
+
+* Okay to keep "supplementary information" in the main text? I listed the info for the main text (18pgs, 5 figs instead of 46pgs, 8 figs) but they say they want the supplements in a separate file. Hopefully it's not a big deal.
+* They require at least 5 recommended reviewers. Thoughts on a fifth?
+* They require at least 3 recommended editors from the attached excel file. After looking under "likelihood methods" the ones I know well enough are Wilke, Pond, Pupko, but do you have alternative suggestions?
+* No conflicts of interest, correct?
+
+Finally, they have some details to add during the submission process. Let me know if this sounds good:
+
+* Proposed keywords
+maximum likelihood; phylogenetics; profile likelihood; statistical consistency; joint optimization; Hadamard representation
+
+* List significant discoveries reported in this manuscript, if any. (Not more than 150 words)	
+Using maximum likelihood to jointly infer phylogenetic parameters and ancestral states is not consistent in general, both in cases of a variable and a fixed topology. Numerous settings of data generation for a binary symmetric model produce datasets that, as data becomes plentiful, result in maximum likelihood converging on incorrect topology and/or branch lengths.
+  
+* List significant methodological or theoretical advances reported, if any. (Not more than 150 words)	
+The methods employed involve converting data generating probabilities into closed form values that are easy to compute using the Hadamard representation. Then, a detailed examination of likelihood functions and basic algebraically derived bounds provide proofs of inconsistency in joint maximum likelihood inference.
+
+* List significant new or updated tools or resources reported, if any. (Not more than 150 words)
+None.	
+  
+* Describe how this work will have broad impact on science or on the community. (Not more than 150 words)	
+We have shown that, perhaps not intuitively, jointly inferring phylogenetic parameters and ancestral states using maximum likelihood does not admit desirable statistical properties. As this joint inference procedure is attractive due to its computational simplicity, it is important to outline cases where it performs poorly or is entirely inappropriate to use. This work will benefit and give guidance to those looking to perform sound phylogenetic inference.
+
+* Is this in response to an invitation or Call for Papers? If yes, please provide details. (Not more than 50 words)	
+No.
+
+Whew, after all that I think we'll be good to go.
