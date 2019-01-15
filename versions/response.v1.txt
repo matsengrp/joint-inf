@@ -8,23 +8,18 @@
 > requested examples, and address suggestions on how the results could
 > be even further improved.
 
-Thank you for your helpful comments. We think that this version of the paper is significantly improved, and we hope you agree.
+We are grateful to the reviewers for their helpful comments. Here we submit a very substantial revision implementing almost all of them.
+
+We realize that this paper is being resubmitted well beyond the typical deadline for responses. We apologize for that, however we hope the reviewers understand that in the interim the first author has gotten an industry job, we have added an author, and we have rewritten a sizeable fraction of the proofs.
 
 Outline of major revisions:
 1. We have generalized the results to arbitrary branch lengths and not restricting the top and bottom two branches to be equal. The previous version presented an argument that the ML branch lengths would have this property, but this argument did not hold up to further scrutiny.
 2. We have expanded and clarified the exposition of the mathematics and the motivation for the Hadamard representation.
 3. We have changed discussion and plots to involve branch lengths and not fidelities.
 
-Some of the reviewers have expressed their opinion that we reduce our emphasis on mathematical development in exchange for a more numerical-optimization-based approach.
-Our primary goal was to mathematically prove inconsistency of joint inference, which is what we have done.
-As pointed out by reviewer 4, this answers an open question, which has special relevance given the recent work of Sagulenko et al.
-We provide some numerical results to confirm our derivations and to provide a comparison.
+Some of the reviewers have expressed their opinion that we reduce our emphasis on mathematical development in exchange for a more numerical-optimization-based approach. Our primary goal was to mathematically prove inconsistency of joint inference, which is what we have done. As pointed out by reviewer 4, this answers an open question, which has special relevance given the recent work of Sagulenko et al. We provide some numerical results to confirm our derivations and to provide a comparison.
 
-This work is not the final word on the joint inference question from an applied perspective, as we now emphasize with an expanded Discussion section.
-Even if we were to greatly expand the sections doing numerical optimization, these results would only be for the binary symmetric model, which is never applied in practice.
-An investigation of these aspects deserves another paper.
-We have added clarification of these points to the discussion:
-"All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases, such as applied examples with larger trees or more realistic mutation models that are of interest to practitioners."
+This work is not the final word on the joint inference question from an applied perspective, as we now emphasize with an expanded Discussion section. Even if we were to greatly expand the sections doing numerical optimization, these results would only be for the binary symmetric model, which is never applied in practice. An investigation of bigger trees and more complex models deserves another paper. We have added clarification of these points to the discussion: "All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases, such as applied examples with larger trees or more realistic mutation models that are of interest to practitioners."
 
 > Finally, please pay VERY careful attention to improving your
 > literature review (reviewer 4) and making a very clear case about how
@@ -33,16 +28,9 @@ We have added clarification of these points to the discussion:
 > results that have to do with ML estimation, given the long and
 > torturous efforts of cladists to undermine the entire line of inquiry.
 
-We are grateful to reviewer 4 for pointing us to literature of which we were not aware.
-We have greatly expanded on the discussion in Goldman (1990) about the limitations of joint optimization of phylogenetic parameters and ancestral states (the newly added fourth paragraph of the Discussion section), and have chosen to use his terminology of "integrated likelihood" to avoid confusion.
-The previous work concerns an example where branch lengths are fixed and equal, while here we show cases where inconsistency arises when branch lengths are treated as unknown parameters.
-Additionally, we have placed joint optimization and maximum likelihood on level footing by viewing them both as optimization procedures over topologies and branch lengths.
-Goldman (1990) does not compare maximum integrated likelihood and maximum relative likelihood as the latter assumes equal branch lengths while the former does not.
-We have added this to our discussion as well.
+We are grateful to reviewer 4 for pointing us to literature of which we were not aware. We have greatly expanded on the discussion in Goldman (1990) about the limitations of joint optimization of phylogenetic parameters and ancestral states (the newly added fourth paragraph of the Discussion section), and have chosen to use his terminology of "integrated likelihood" to avoid confusion. The previous work concerns an example where branch lengths are fixed and equal, while here we show cases where inconsistency arises when branch lengths are treated as unknown parameters. Additionally, we have placed joint optimization and maximum likelihood on level footing by viewing them both as optimization procedures over topologies and branch lengths. Goldman (1990) does not compare maximum integrated likelihood and maximum relative likelihood as the latter assumes equal branch lengths while the former does not. We have added this to our discussion as well.
 
-We have complied with the request regarding the use of "Farris tree," despite it going against current practice.
-Indeed, Felsenstein's book has a subsection entitled "The Farris zone" spanning two pages (pp 120-121), a figure entitled "A tree in the Farris zone.", and a table with a caption "Properties of the Felsenstein and Farris zones...".
-The term "Farris zone" has almost 7 times as many citations as the term "inverse Felsenstein zone" on Google Scholar.
+We have complied with the request regarding the use of "Farris tree," despite it going against current practice. Indeed, Felsenstein's book has a subsection entitled "The Farris zone" spanning two pages (pp 120-121), a figure entitled "A tree in the Farris zone.", and a table with a caption "Properties of the Felsenstein and Farris zones...". The term "Farris zone" has almost 7 times as many citations as the term "inverse Felsenstein zone" on Google Scholar.
 
 
 > Reviewer: 1
@@ -72,9 +60,7 @@ The term "Farris zone" has almost 7 times as many citations as the term "inverse
 > arguments. For most readers, out of Fig 3 and Fig 5, only Fig 5 is of
 > interest.
 
-Thank you for the opportunity to improve on our analytically-derived regions of inconsistency.
-Indeed, obtaining these regions in closed form is feasible, though it involves comparing a large number of two-variable functions to one another.
-Fig. S2 shows the regions where a particular likelihood equation will be maximal, and allows us to compute---in closed form---the value of the branch parameter in Fig. 2.
+Thank you for the opportunity to improve on our analytically-derived regions of inconsistency. Indeed, obtaining these regions in closed form is feasible, though it involves comparing a large number of two-variable functions to one another. Fig. S2 shows the regions where a particular likelihood equation will be maximal, and allows us to compute---in closed form---the value of the branch parameter in Fig. 2.
 
 > Getting exact regions is what I think the authors should do. The
 > approach used to obtain Fig 5 is generally applicable. Explicit,
@@ -105,9 +91,7 @@ Fig. S2 shows the regions where a particular likelihood equation will be maximal
 > to grid approximation) region of topological inconsistency and Figs
 > 3-5 with heat maps of limiting (x,y,w) for tau_1.
 
-Another thanks for this suggestion.
-As noted, we can in fact get exact regions, and have done so.
-Our line of argument starting on page 25, line 541 in the section "Properties of the joint objective function" allows us to pare down the 4^8 possible ancestral states to just 81, and we obtain exact, analytic results in a reasonable amount of time.
+Another thanks for this suggestion. As noted, we can in fact get exact regions, and have done so. Our line of argument starting on page 25, line 541 in the section "Properties of the joint objective function" allows us to pare down the 4^8 possible ancestral states to just 81, and we obtain exact, analytic results in a reasonable amount of time.
 
 > The other main concern that I have is with the restriction that
 > t=(x,y,x,y,w) in estimation rather than t=(t_1,...,t_5). On the one
@@ -127,16 +111,12 @@ Our line of argument starting on page 25, line 541 in the section "Properties of
 > estimation. The issue deserves discussion because I don't think it is
 > transparent.
 
-We thank this reviewer for highlighting an omission in our argument.
-We had initially simplified the results by making the erroneous assumption that t_1=t_3 and t_2=t_4.
-It can be shown that this assumption ignores potential feasible parameter sets, and we have removed it.
-This requires a change in the arguments in the theorems as well, though the conclusions are similar.
+We thank this reviewer for highlighting an omission in our argument. We had initially simplified the results by making the erroneous assumption that t_1=t_3 and t_2=t_4. It can be shown that this assumption ignores potential feasible parameter sets, and we have removed it. This requires a change in the arguments in the theorems as well, though the conclusions are similar.
 
 > I don't think the restricted case of p8-9 will be of interest to
 > readers. Only the general case.
 
-We have removed the restricted case as it does not reflect how inference is performed and was only included as an expository example.
-Given the change to the theorem arguments, we do not believe this case is necessary for highlighting inconsistency.
+We have removed the restricted case as it does not reflect how inference is performed and was only included as an expository example. Given the change to the theorem arguments, we do not believe this case is necessary for highlighting inconsistency.
 
 > Minor Comments:
 
@@ -149,8 +129,8 @@ Given the change to the theorem arguments, we do not believe this case is necess
 > of the authors to do the conversions that will make the figs more
 > natural for readers.
 
-Thank you for this suggestion.
-We have implemented it in all the plots and have been careful to clarify that "fidelities" do not correspond to "lengths" in the text, deferring to "lengths" where appropriate.
+Thank you for this suggestion. We have implemented it in all the plots and have been careful to clarify that "fidelities" do not correspond to "lengths" in the text, deferring to "lengths" where appropriate.
+
 
 > Reviewer: 2
 
@@ -180,16 +160,13 @@ We have implemented it in all the plots and have been careful to clarify that "f
 > demonstrate that the inference gives the wrong result by explicitly
 > computing the likelihood.
 
-We agree that understanding the implications of our derivation is a very interesting avenue for future work.
-However, to do such a project justice would require a separate paper.
-We suspect that once our paper demonstrates this inconsistency, others will quickly follow to write such a paper.
+We agree that understanding the implications of our derivation is a very interesting avenue for future work. However, to do such a project justice would require a separate paper. We suspect that once our paper demonstrates this inconsistency, others will quickly follow to write such a paper.
 
 > Also, laying out the theory a little bit more step-by-step so that a
 > general quantitative reader doesn't struggle too much to follow would
 > help (suggestions below).
 
-Thank you very much for reading the derivations and for your suggestions.
-As noted inline we have revised the text accordingly.
+Thank you very much for reading the derivations and for your suggestions. As noted inline we have revised the text accordingly.
 
 > I know that it's not feasible to explicitly compute (analytically)
 > these likelihoods for bigger trees. But one of the main motivations
@@ -207,8 +184,7 @@ We have considered how to extend these results to larger trees but this does not
 > Some detailed comments and questions:
 > – line 85 some cut/paste or sentence issue
 
-We have added the definition of a "generating probability" to ease confusion in this sentence:
-"As data becomes plentiful, we use the Hadamard transform (see (8) in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form."
+We have added the definition of a "generating probability" to ease confusion in this sentence: "As data becomes plentiful, we use the Hadamard transform (see (8) in the Appendix) to compute the exact probabilities that generate each particular configuration of taxa---we call these ``generating probabilities''---and these have an especially simple form."
 
 > - line 97 below (2) define A^p
 
@@ -223,8 +199,7 @@ For this reason, in practice, the joint inference strategy estimates $\hat{\full
 
 > - l 118-124: clarify are tau1 and tau2 Farris and Felsenstein?
 
-Thank you for highlighting this omission.
-You are correct, and we have added parenthetical notes to remind the reader where appropriate.
+Thank you for highlighting this omission. You are correct, and we have added parenthetical notes to remind the reader where appropriate.
 
 > L 132 clarify “equivalent but different notion” – different from what?
 
@@ -260,8 +235,7 @@ We have now made this much more explicit with three additional display equations
 > L354 why does psi take the complement of site patterns? Just above it
 > is defined as a random variable psi (Y) where Y is a site pattern
 
-We apologize for the confusion, as this was not as clear as it should have been.
-We have revised to:
+We apologize for the confusion, as this was not as clear as it should have been. We have revised to:
 "The mapping $\patternToSplit$ operates by returning the tips labeled as $1$ in a site pattern to obtain a site split in $\mathcal{P}(\siteSplitSet)$ if the set of tips labeled $1$ is not in $\mathcal{P}(\siteSplitSet)$.
 The mapping $\ancestralToSplit$ is defined by whether the tip states have their complements taken or not: if the set of tips labeled $1$ in $\alignmentColumn$ is in $\mathcal{P}(\siteSplitSet)$, $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is the set of tips labeled $1$ in $\ancestralStateColumn$; otherwise, the set of tips labeled $1$ in $\overline{\alignmentColumn}$ necessarily is in $\mathcal{P}(\siteSplitSet)$."
 
@@ -325,10 +299,7 @@ This is referenced at the beginning of the section:
 > order 10-20%, which is consistent with results reported by Sagulenko
 > et al.
 
-Thank you for your thoughts, and we have worked hard to not oversell our results.
-The TreeTime paper does present joint optimization as an approximate approach, and described that it is for short branch lengths.
-However, in our assessment the word "approximate" doesn't completely describe a situation in which there is significant bias.
-The TreeTime paper says that its use is appropriate when "ancestral sequence inference has little ambiguity" but as we show the bias in branch lengths persists even in these cases.
+Thank you for your thoughts, and we have worked hard to not oversell our results. The TreeTime paper does present joint optimization as an approximate approach, and described that it is for short branch lengths. However, in our assessment the word "approximate" doesn't completely describe a situation in which there is significant bias. The TreeTime paper says that its use is appropriate when "ancestral sequence inference has little ambiguity" but as we show the bias in branch lengths persists even in these cases.
 
 We clarify our aim and warnings from Sagulenko et al. (2017) in the Introduction:
 "Although \citet{Sagulenko2018-xl} explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference.
@@ -369,24 +340,17 @@ This expands on the empirical findings of poor estimation given long branches in
 > me, this would be much more useful than to know that joint inference
 > will fail if branches are long.
 
-This is an interesting suggestion but is different than our goal, which was to establish inconsistency.
-Moreover, in the revised manuscript we see cases where assigning ML ancestral states results in longer branches, not shorter ones (see the discussion after the proof of Theorem 1, page 31, line 627).
-We believe the inaccuracies have more to do with the specific choice of which ancestral state is maximal than asymmetries in the tree:
+This is an interesting suggestion but is different than our goal, which was to establish inconsistency. Moreover, in the revised manuscript we see cases where assigning ML ancestral states results in longer branches, not shorter ones (see the discussion after the proof of Theorem 1, page 31, line 627). We believe the inaccuracies have more to do with the specific choice of which ancestral state is maximal than asymmetries in the tree:
 "This is apparent in the ``long $x^*$, short $y^*$'' scenario as these are the cases in which the most likely ancestral states are the same for each internal node letting $x_1=x_2=x^*$ and $y_1=y_2=y^*$ ($\boldsymbol\xi=\emptyset$ in Table~\ref{tab:likelihoods})."
 
-Asymmetries can drive these particular choices, but Fig. 2 in the revised manuscript shows that almost half of the parameter space results in an interior branch length being estimated as zero.
-We do not think providing an argument about accumulating inaccuracies would elucidate why such starkly-defined regions of inconsistency exist.
-For reasonable parameter settings, one could investigate the error accumulation given fixed ancestral states, but this was not our goal and will require another paper.
-
+Asymmetries can drive these particular choices, but Fig. 2 in the revised manuscript shows that almost half of the parameter space results in an interior branch length being estimated as zero. We do not think providing an argument about accumulating inaccuracies would elucidate why such starkly-defined regions of inconsistency exist. For reasonable parameter settings, one could investigate the error accumulation given fixed ancestral states, but this was not our goal and will require another paper.
 
 > Specific comments:
 >  - when y=x=w, the two topologies are indistinguishable other than for
 >  the labeling of the leaves. What happens in Fig 2 on the diagonal?
 >  Does it degenerate into a star?
 
-It is true when y=x=w we are unable to distinguish the topologies apart from the labeling, though the labeling is what distinguishes the topologies.
-As shown in Goldman (1990), with all branch lengths fixed and equal the joint inference procedure degenerates into parsimony, which has well known inconsistency issues.
-We have added discussion of this point:
+It is true when y=x=w we are unable to distinguish the topologies apart from the labeling, though the labeling is what distinguishes the topologies. As shown in Goldman (1990), with all branch lengths fixed and equal the joint inference procedure degenerates into parsimony, which has well known inconsistency issues. We have added discussion of this point:
 "The case of joint inference of a phylogenetic likelihood is discussed in \citet{Goldman1990-dk}.
 There, Goldman provides a worked example in which estimating a topology with fixed branch lengths is equivalent to parsimony and thus not guaranteed to be consistent, though he does not discuss the inconsistency of joint inference in general."
 
@@ -395,15 +359,13 @@ There, Goldman provides a worked example in which estimating a topology with fix
 >  check. The back and forth between fidelity and branch length can be
 >  confusing.
 
-Thank you for bringing this to our attention.
-We have tried to use branch lengths in as many instances as we could in the discussions, using fidelities only in the computations as they allow for great simplifications.
+Thank you for bringing this to our attention. We have tried to use branch lengths in as many instances as we could in the discussions, using fidelities only in the computations as they allow for great simplifications.
 
 >  - Fig 5: it is surprising that \hat{w} seems completely flat as a
 >  function of x* until it jumps discontinuously to 0. Why not include
 >  the analytical bound in Fig 5?
 
-The discontinuity is a reflection of the change in ancestral states when the generating parameters change.
-As the true generating parameters change, we become more likely to choose a different ancestral state as most likely, resulting in an entirely different objective function to be optimized.
+The discontinuity is a reflection of the change in ancestral states when the generating parameters change. As the true generating parameters change, we become more likely to choose a different ancestral state as most likely, resulting in an entirely different objective function to be optimized.
 We have added the following:
 "There are discontinuities in the fit (Fig.~\ref{fig:bl-general-inconsistency}) due to the choice of which ancestral state splits are maximal."
 
@@ -420,8 +382,7 @@ In the revised manuscript, all region bounds are analytical as we have determine
 We have added the line:
 "Although \citet{Sagulenko2018-xl} explicitly warn that the approximation is for the case where ``branch lengths are short and only a minority of sites change on a given branch,'' their work motivates understanding the general properties of such joint inference."
 
-We believe it's important not to mischaracterize the suggested use of joint inference, though we would like to emphasize to the reader that problems are apparent in large regions of the parameter space.
-We think the current discussion treats this optimization procedure as fairly as possible.
+We believe it's important not to mischaracterize the suggested use of joint inference, though we would like to emphasize to the reader that problems are apparent in large regions of the parameter space. We think the current discussion treats this optimization procedure as fairly as possible, although we would gladly accept any further specific suggestions.
 
 > Richard Neher
 
@@ -447,8 +408,7 @@ We think the current discussion treats this optimization procedure as fairly as 
 > they will be useful.  Hopefully, other reviewers were able to check
 > the correctness of the mathematical results more carefully.
 
-Thank you for your assessment.
-We have worked hard in our initial submission and in our revision to write out the argument in great (indeed, excruciating) detail, and hope that you will be able to read the revision more fully.
+Thank you for your assessment. We have worked hard in our initial submission and in our revision to write out the argument in great (indeed, excruciating) detail, and hope that reviewers will be able to read the revision more fully.
 
 > The only real criticism I have of the paper is that the authors could
 > have done a better job in connecting their new work to previous
@@ -468,33 +428,20 @@ We have worked hard in our initial submission and in our revision to write out t
 > 60:713–718) in addition to crediting Roychoudhury 2015 for
 > establishing ML consistency.
 
-We are very grateful to this reviewer for pointing out the Goldman paper.
-We were not aware of this paper and now have a paragraph describing it and comparing to our work.
-See the fourth paragraph of the Discussion section.
-Additionally, we have used his terminology of "integrated likelihood" to avoid confusion.
+We are very grateful to this reviewer for pointing out the Goldman paper. We were not aware of this paper and now have a paragraph describing it and comparing to our work. See the fourth paragraph of the Discussion section. Additionally, we have used his terminology of "integrated likelihood" to avoid confusion.
 
 It's also a good idea to cite additional papers about identifiability, and we have done so in the Introduction:
 "An estimator is said to be statistically consistent if it converges to the generating model with probability one in the large-data limit; existing consistency proofs for maximum likelihood phylogenetics \citep{Allman2008-wd,Chai2011-ff,RoyChoudhury2015-ta} apply only to estimating model parameters when the ancestral sequences have been integrated out of the likelihood."
 and Discussion sections:
 "Consistency proofs of standard maximum likelihood estimates of phylogeny \eqref{eq:marginal_likelihood} are recent \citep{Allman2008-wd,Chai2011-ff,RoyChoudhury2015-ta}, and no results have been obtained for profile likelihood."
 
----
-
-Goldman (1990) concerns estimating both structural (e.g., topology, branch lengths) and incidental (e.g., ancestral states) parameters simultaneously, though the only worked example is in the case of a topology with equal branch lengths.
-Goldman shows that for certain special cases, "maximum relative likelihood," i.e., performing maximum likelihood over both topology and ancestral states, is equivalent to parsimony, and thus inconsistent.
-He says
+Goldman (1990) concerns estimating both structural (e.g., topology, branch lengths) and incidental (e.g., ancestral states) parameters simultaneously, though the only worked example is in the case of a topology with equal branch lengths. Goldman shows that for certain special cases, "maximum relative likelihood," i.e., performing maximum likelihood over both topology and ancestral states, is equivalent to parsimony, and thus inconsistent. He says
 "Consistent estimates of incidental parameters are unobtainable, as it is not possible to increase indefinitely the number of observations (data) pertinent to each."
 However, he also says "results may be unpredictable" and "estimates of the structural parameters (e.g., the tree T) may also be inconsistent."
-He does not discuss the inconsistency of maximum relative likelihood in general, and proceeds to show that parsimony analysis is a specific instance of maximum relative likelihood, implying maximum relative likelihood of topology given equal branch lengths cannot be consistent in general, but stops there.
-We show cases where the estimates of the topology will be inconsistent if we are estimating both topology and branch lengths, and, moreover, even if we know the correct topology, we show cases where branch lengths will be inconsistent.
-Finally, just prior to his conclusion, he discusses when parsimony will give the same answer as ML, concluding that the question is ill-posed since parsimony estimates different parameters than ML, i.e., it assumes equal branch lengths.
-He states that if the expected amount of change along a branch is "very small" then parsimony will recover the same tree as ML (under a Poisson process model).
-We are able to quantify how small is "very small" in the case of general joint ML---estimating topology and branch lengths together---and not just parsimony in particular.
+He does not discuss the inconsistency of maximum relative likelihood in general, and proceeds to show that parsimony analysis is a specific instance of maximum relative likelihood, implying maximum relative likelihood of topology given equal branch lengths cannot be consistent in general, but stops there. We show cases where the estimates of the topology will be inconsistent if we are estimating both topology and branch lengths, and, moreover, even if we know the correct topology, we show cases where branch lengths will be inconsistent. Finally, just prior to his conclusion, he discusses when parsimony will give the same answer as ML, concluding that the question is ill-posed since parsimony estimates different parameters than ML, i.e., it assumes equal branch lengths. He states that if the expected amount of change along a branch is "very small" then parsimony will recover the same tree as ML (under a Poisson process model). We are able to quantify how small is "very small" in the case of general joint ML---estimating topology and branch lengths together---and not just parsimony in particular.
 
 quote:
 "The second approach is to estimate the random variables as though they were parameters of the model. However, in this case they will be incidental parameters: as the amount of data (i.e., the number of characters) increases, the number of parameters also increases. For each additional character (labeled a, for instance), there are additional data xa, consisting of the states for all n species, and additional parameters Ya, consisting of the states for all the internal nodes {NI: I = 1,2, . . , m}. Although this method is the only one possible if we wish to estimate the internal node character states, the results may be unpredictable. As noted above, these estimates cannot be consistent. Further, the estimates of the structural parameters (e.g., the tree T) may also be inconsistent. Indeed, under certain models, this approach renders inferences virtually impossible (Cavalli-Sforza et al., 1964; Cavalli-Sforza and Edwards, 1966; Kendall and Stuart, 1979). Examples of both approaches are investigated below."
-
----
 
 > Finally, let me just add that I hate the term "Farris Zone".  The
 > "Felsenstein Zone" was a name applied to Felsenstein's important
