@@ -14,6 +14,9 @@ converted_pdfs = [env.Inkscape(target="figures/" + os.path.basename(svg).replace
 
 joint_inf, = env.PDF(target='_build/joint_inf.pdf',source='joint_inf.tex')
 
+env.Latexdiff(target='diff.tex',source=['versions/joint_inf.v1.tex','joint_inf.tex'])
+diff = env.PDF(target='diff.pdf',source='diff.tex')
+
 Depends(Flatten([joint_inf]),
         Flatten([converted_pdfs, 'joint_inf.bib']))
 
