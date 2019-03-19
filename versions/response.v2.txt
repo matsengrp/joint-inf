@@ -1,0 +1,248 @@
+> The reviewers have universally viewed the revision as much improved.
+> That said, 3/4 maintain that further changes are necessary prior to
+> publication. It is our view that the remaining criticisms are "minor",
+> and should you address them thoroughly and convincingly, we expect
+> that final acceptance of the revision can be done editorially.
+
+XXX
+
+> Reviewers' comments:
+> Reviewer: 1
+
+> Comments to the Author
+> As with the previous version, I believe the topic matter will be of
+> interest. For me, however, the work is incomplete in important ways
+> that I believe can be relatively easily addressed. The authors went
+> beyond my expectations in calculating explicit solutions for the
+> limiting edge-lengths (Fig S2) when tau1 is the putative topology of
+> estimation. This allows them to draw conclusions about edge-length
+> inconsistency but there is no definitive conclusion about `strict'
+> topological inconsistency (in the sense of converging upon the wrong
+> tree rather than a multifurcating one). From the statements near l238
+> it seems the authors have completed some preliminary investigation on
+> strict topological inconsistency and find no evidence for it at
+> present. Assuming that remains true, the findings of the current ms
+> are of a different nature than the previous version where strict
+> topological inconsistency was found. In settings with a limiting
+> multifurcating topology, because it is multifurcating, for finite but
+> large sequence-lengths, measures of uncertainty (eg. bootstrap
+> support) will suggest that there is substantial uncertainty in
+> whatever topology gets estimated (this probably deserves discussion).
+> The joint optimization approach thus lacks the power to estimate the
+> correct topology where ML would but is not being positively mislead.
+> Assuming the lack of strict topological inconsistency holds, the
+> results for the method are not as negative as they were in the
+> previous version.
+
+TODO: add discussion of bootstrap
+
+> Getting complete results about topological consistency is feasible.
+> The arguments that led to the closed form solution for the limiting
+> edge-length estimates for tau_1 can be repeated similarly for tau2.
+> This would allow, for any given x* & y*, comparison of the limiting
+> lnl per site for tau1 vs tau2. Whichever topology has the larger lnl
+> is the long-run estimated topology. In cases where hat w=1 for both
+> topologies, conclusions are different but definite. Thus it seems a
+> relatively straightforward exercise given the work the authors have
+> already done (I hope I am not missing a subtle difficulty) to have a
+> computer determine for a grid of (x*,y*) whether (a) hat w=1 exactly
+> for both topologies, (b) the difference in limiting lnl over
+> topologies is either positive or negative or (c) hat w neq 1 for at
+> least one of the topologies and the difference in limiting lnl is 0 up
+> to machine precision. I would emphasize that the cases (a) and (b)
+> constitute rigorous proof. The cases (c) likely are rare and
+> correspond to boundary cases, so the boundary may have some slight
+> uncertainty. There may be some aesthetic appeal to getting analytical
+> results rather than using a computer but being able to draw clear
+> conclusions about strict topological inconsistency is important.
+
+DISCUSS: we have no evidence of topological inconsistency
+
+> The language used to refer to the approach and references to the
+> literature are awkward. The references to profile likelihood work
+> suggest that there is a theoretical basis for the approach (that paper
+> suggests consistency) but the settings considered in such work are
+> quite different, I believe. Integrated likelihood usually refers to
+> something different too. Finally, as Reviewer 3 makes clear the only
+> current implementation of the approach was intended as an
+> approximation to ML rather than as ML. The central issue is whether
+> treating unobserved data (ancestral states here) as parameters
+> sometimes works; the EM algorithm were developed with the idea that
+> this is not what should be done. In any case, references directly tied
+> to that issue would be more relevant. Additional suggestions include:
+> 1) Make a clear statement in the intro about why the usual likelihood
+> is considered the right likelihood: it is the probability of the
+> *observed* data. 2) The point that large numbers of parameters need
+> not defeat likelihood methods is valid but it should be made clear
+> when referencing such work that the setting is different.
+
+
+> -l21: Some rewording is needed. The joint method will, as n gets
+> large, continue to estimate a well-resolved topology with positive
+> probability; albeit with small middle edge-length.
+
+> -l131: A reader might be able to avoid the appendix (which is
+> difficult to wade into) if an example zeta in a four taxon case was
+> given as illustration.
+
+> -l150: I initially found this paragraph confusing. Table S1 is a
+> result that you are using as intuition, so you can't be giving
+> intuition for the entire result (otherwise it gets circular). I think
+> you are trying to give intuition for the `everywhere except a set of
+> measure' portion of the result rather than entire result. Perhaps `the
+> proof that hat t neq t* except on a set of measure 0 can be seen
+> intuitively...'.
+
+> -l154 and (should check elsewhere): `the limiting value of the
+> estimator' rather than `the estimator' is what is being referred to
+> here.
+
+> -l186: which `likelihood terms' is not that clear to me: `each site
+> results in multiple factors, only one of which depends on w with
+> dependence being through (1+w) or (1-w) depending ...'
+
+> -l189: `depends on the values of other branch parameters' or some
+> other rewording. I don't think it is that they are unknown. It is that
+> they need optimization, so you can't optimize w independently of them.
+
+> -l201, Figs 2 and 3: I don't understand why direct numerical
+> optimization was needed. You have the exact expressions for hat w in
+> Fig S2. So you could have plotted them as Fig 2. A similar comment
+> applies to Fig 3. Are you trying to convince the reader that your
+> proofs have no errors? That seems more an issue for supp material.
+
+> -l252-259: I don't think this is an example of profile likelihood as
+> considered in Murphy and Van der Vaart.
+
+> -l264: Do you mean that `consistency can hold even when the numbers of
+> parameters tend to infinity'? The statement `not a necessary
+> condition' just means that inconsistency can arise in different ways
+> (eg. lack of identifiability).
+
+
+> Reviewer: 2
+
+> Comments to the Author
+> Shaw et al provided a revised version of the manuscript that I
+> reviewed about a year ago showing that joint estimation of ancestral
+> states and branch length is in general not consistent. The authors now
+> map out the regions in which topologies are incorrectly estimated and
+> include a plot that shows the bias of the internal branch length for
+> different tree configurations. I think this is a useful piece of work.
+> But some parts are completely unsurprising, while some empirical
+> results seem inaccurate or misleading.
+
+> The most important results/claims by Shaw et al are:
+
+> 1) "jointly estimating phylogenetic parameters along with ancestral
+> states is not consistent in general"... "only correct on a set of
+> measure 0".
+> It is clearly true that branch length will be biased. But the fact
+> that joint estimation will not recover the true branch lengths is not
+> surprising but perfectly expected. Joint estimation ignores subleading
+> configurations of internal states. Since the subleading terms
+> typically require more state changes, branch length estimates ignoring
+> them are biased. In a similar way a Taylor expansion is almost nowhere
+> "correct", but still a useful and insightful approximation (a better
+> analogy is ignoring looped diagram in a diagrammatic expansion.).
+
+
+
+> 2) In some parameter regions the internal branch of the four taxon
+> tree collapses to 0.
+> Again, this is true and identifying regions in parameter space where
+> the internal branch collapses to zero is the most interesting part of
+> the manuscript in my opinion. Unfortunately, the manuscript doesn't
+> give much insight as to why the length of the internal branch shrinks
+> to zero in some regions of parameter space. There is, however, a
+> rather intuitive explanation for this. In the inv Fels topology, the
+> internal branch collapses to 0 if
+>
+> p_x^2 > c p_y
+>
+> (the prefactor c depends on specifics like alphabet size etc). And
+> this has an intuitive interpretation: if p_x^2 > p_y, it is more
+> likely to observe a mutation twice on two branches of length p_x than
+> once on a branch of length p_y. As a result, the joint inference will
+> push p_w to zero and assign all state changes on the terminal branches
+> of length p_x. But for short branches, this corresponding sector of
+> parameter space is a small (tending to zero for a fixed p_x/p_y with
+> p_x \to 0).
+>
+> My empirical tests of the approximate joint inference scheme suggest
+> this region is much smaller than the one identified by Shaw et al in
+> Fig 3.
+
+
+
+> 3) "[The bias is] of the same order as the branch lengths themselves."
+> This is incorrect or misleading, depending on how you read it. In
+> typically cases, the error made by this procedure should be quadratic
+> in branch length and hence of higher order than the branch length
+> itself. All empirical test we have done via numerically optimizing
+> branch lengths suggests this is true for typical trees and that the
+> errors made are small provided ALL adjacent branch lengths are short.
+> That said, relative error of one branch can be large if adjacant
+> branches are long such as the case above. In this case the error is
+> quadratic in the length of the longer adjacent branches rather than
+> the branch itself.
+
+
+
+> Reviewer: 3
+
+> Comments to the Author
+> This a resubmission of an earlier version of the paper, for which I
+> was reviewer #4.  The other reviewers of the previous submission did
+> an excellent job in pointing out minor problems and making suggestions
+> for improvement.  It seems that Shaw et al. have addressed all of
+> these suggestions in exemplary fashion, and  think the result is a
+> much stronger paper.  I especially appreciate the authors' efforts to
+> make the mathematical derivations and proofs more accessible to
+> general readers (like myself).
+
+> I often write long reviews but given the careful attention to detail
+> in responding to the previous reviews of an already good paper, I have
+> nothing further to add.
+
+
+
+> Reviewer: 4
+
+> Comments to the Author
+> The authors have made some substantial changes addressing the concerns
+> of the last round and I think that has improved the clarity and in
+> some instances also strengthened the results.
+> Remaining comments are mostly about the notation which I still find a
+> bit hard to follow.
+> Why are site and ancestral node splits carrying this distinction of
+> whether the m'th taxon (or node) has a 1?
+
+> Perhaps it's a latexdiff leftover but eq 6 in line 151 seems to have a
+> line with just a ; \xi )
+
+> Line 593 p 25 I don't understand "the mapping \psi operates by
+> returning the tips labeled as 1 in a site pattern to obtain a site
+> split in P(Y) if the set of tips labeled 1 is not in P(Y)" and this
+> mapping seems fundamental. Perhaps you mean to refer to the m'th taxon
+> (or node)..?
+
+> The symmetric model is assumed strongly in the first part of the
+> appendix, with the factor of 2; my guess is that the results hold in
+> asymmetric models but the notation is harder, is that correct?
+
+> What's q in equation 7 in the appendix (line 655) ?
+
+> More substantitvely, the limit in (8) seems not established because as
+> n -> \infty so would q and n_j, so these can't be treated as fixed .
+
+> page 9 - at this point in the paper, unless the reader has already
+> read the appendix they don't know what the estimator means or what the
+> p_ytilde j are - so this text doesn't make sense at this point.
+
+> page 30 line 667-8 what are S and Y and what makes a path? I gather
+> from the math that you mean paths in the tree, since the sum is over
+> ancestral states and there's a product of probabilities of changes on
+> branches but (perhaps my lack of background) the form of (9) isn't
+> obvious I think because I am not exactly clear on what the notation
+> means.
