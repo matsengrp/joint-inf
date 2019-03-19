@@ -34,7 +34,7 @@ XXX
 > results for the method are not as negative as they were in the
 > previous version.
 
-TODO: add discussion of bootstrap
+E TODO: add discussion of bootstrap
 
 > Getting complete results about topological consistency is feasible.
 > The arguments that led to the closed form solution for the limiting
@@ -76,14 +76,19 @@ DISCUSS: we have no evidence of topological inconsistency
 > not defeat likelihood methods is valid but it should be made clear
 > when referencing such work that the setting is different.
 
+D TODO
 
 > -l21: Some rewording is needed. The joint method will, as n gets
 > large, continue to estimate a well-resolved topology with positive
 > probability; albeit with small middle edge-length.
 
+It will estimate a branch length of zero which is equivalent to a multifurcating topology.
+
 > -l131: A reader might be able to avoid the appendix (which is
 > difficult to wade into) if an example zeta in a four taxon case was
 > given as illustration.
+
+E TODO
 
 > -l150: I initially found this paragraph confusing. Table S1 is a
 > result that you are using as intuition, so you can't be giving
@@ -93,17 +98,25 @@ DISCUSS: we have no evidence of topological inconsistency
 > proof that hat t neq t* except on a set of measure 0 can be seen
 > intuitively...'.
 
+E TODO
+
 > -l154 and (should check elsewhere): `the limiting value of the
 > estimator' rather than `the estimator' is what is being referred to
 > here.
+
+DISCUSS
 
 > -l186: which `likelihood terms' is not that clear to me: `each site
 > results in multiple factors, only one of which depends on w with
 > dependence being through (1+w) or (1-w) depending ...'
 
+E TODO
+
 > -l189: `depends on the values of other branch parameters' or some
 > other rewording. I don't think it is that they are unknown. It is that
 > they need optimization, so you can't optimize w independently of them.
+
+E TODO
 
 > -l201, Figs 2 and 3: I don't understand why direct numerical
 > optimization was needed. You have the exact expressions for hat w in
@@ -111,14 +124,19 @@ DISCUSS: we have no evidence of topological inconsistency
 > applies to Fig 3. Are you trying to convince the reader that your
 > proofs have no errors? That seems more an issue for supp material.
 
+E TODO
+
 > -l252-259: I don't think this is an example of profile likelihood as
 > considered in Murphy and Van der Vaart.
+
+D TODO
 
 > -l264: Do you mean that `consistency can hold even when the numbers of
 > parameters tend to infinity'? The statement `not a necessary
 > condition' just means that inconsistency can arise in different ways
 > (eg. lack of identifiability).
 
+D TODO
 
 > Reviewer: 2
 
@@ -146,7 +164,7 @@ DISCUSS: we have no evidence of topological inconsistency
 > "correct", but still a useful and insightful approximation (a better
 > analogy is ignoring looped diagram in a diagrammatic expansion.).
 
-
+E TODO
 
 > 2) In some parameter regions the internal branch of the four taxon
 > tree collapses to 0.
@@ -173,7 +191,8 @@ DISCUSS: we have no evidence of topological inconsistency
 > this region is much smaller than the one identified by Shaw et al in
 > Fig 3.
 
-
+We have worked this out with Dr. Neher and found that the difference lay in that he was not optimizing the objective function from both sides.
+This also demonstrated that the above-listed intuitive explanation was incorrect.
 
 > 3) "[The bias is] of the same order as the branch lengths themselves."
 > This is incorrect or misleading, depending on how you read it. In
@@ -221,24 +240,36 @@ DISCUSS: we have no evidence of topological inconsistency
 > Perhaps it's a latexdiff leftover but eq 6 in line 151 seems to have a
 > line with just a ; \xi )
 
+Indeed.
+
 > Line 593 p 25 I don't understand "the mapping \psi operates by
 > returning the tips labeled as 1 in a site pattern to obtain a site
 > split in P(Y) if the set of tips labeled 1 is not in P(Y)" and this
 > mapping seems fundamental. Perhaps you mean to refer to the m'th taxon
 > (or node)..?
 
+E TODO add example
+
 > The symmetric model is assumed strongly in the first part of the
 > appendix, with the factor of 2; my guess is that the results hold in
 > asymmetric models but the notation is harder, is that correct?
 
+You have to have symmetry in order to have stationarity
+
 > What's q in equation 7 in the appendix (line 655) ?
+
+The number of site splits.
 
 > More substantitvely, the limit in (8) seems not established because as
 > n -> \infty so would q and n_j, so these can't be treated as fixed .
 
+E TODO
+
 > page 9 - at this point in the paper, unless the reader has already
 > read the appendix they don't know what the estimator means or what the
 > p_ytilde j are - so this text doesn't make sense at this point.
+
+E TODO
 
 > page 30 line 667-8 what are S and Y and what makes a path? I gather
 > from the math that you mean paths in the tree, since the sum is over
@@ -246,3 +277,5 @@ DISCUSS: we have no evidence of topological inconsistency
 > branches but (perhaps my lack of background) the form of (9) isn't
 > obvious I think because I am not exactly clear on what the notation
 > means.
+
+E TODO
