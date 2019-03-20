@@ -4,7 +4,7 @@
 > and should you address them thoroughly and convincingly, we expect
 > that final acceptance of the revision can be done editorially.
 
-XXX
+Thank you for handling the manuscript, and please thank the reviewers for their helpful comments. As stated by Reviewer 3, we believe that the review process has significantly improved the manuscript.
 
 > Reviewers' comments:
 > Reviewer: 1
@@ -34,7 +34,9 @@ XXX
 > results for the method are not as negative as they were in the
 > previous version.
 
-E TODO: add discussion of bootstrap
+%EM I honestly can't figure out what the reviewer wants to see re the bootstrap. Branch length inferences don't come into the bootstrap unless you contract things with zero branch lengths, which isn't generally done when doing bootstrap estimation.
+
+The reviewer is correct that this story is different than the one in the previous version of the paper.
 
 > Getting complete results about topological consistency is feasible.
 > The arguments that led to the closed form solution for the limiting
@@ -98,7 +100,7 @@ E TODO
 > proof that hat t neq t* except on a set of measure 0 can be seen
 > intuitively...'.
 
-E TODO
+We have added the suggested wording, thanks.
 
 > -l154 and (should check elsewhere): `the limiting value of the
 > estimator' rather than `the estimator' is what is being referred to
@@ -110,13 +112,13 @@ DISCUSS
 > results in multiple factors, only one of which depends on w with
 > dependence being through (1+w) or (1-w) depending ...'
 
-E TODO
+We have clarified this by specifying that we're talking about the joint likelihood expression here.
 
 > -l189: `depends on the values of other branch parameters' or some
 > other rewording. I don't think it is that they are unknown. It is that
 > they need optimization, so you can't optimize w independently of them.
 
-E TODO
+We have adopted the suggested wording, thanks.
 
 > -l201, Figs 2 and 3: I don't understand why direct numerical
 > optimization was needed. You have the exact expressions for hat w in
@@ -124,7 +126,8 @@ E TODO
 > applies to Fig 3. Are you trying to convince the reader that your
 > proofs have no errors? That seems more an issue for supp material.
 
-E TODO
+%EM David, am I right with this?
+Although we have expressions for the likelihoods, it is not trivial to infer the branch lengths maximizing those likelihoods.
 
 > -l252-259: I don't think this is an example of profile likelihood as
 > considered in Murphy and Van der Vaart.
