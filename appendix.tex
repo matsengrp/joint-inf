@@ -60,7 +60,7 @@ and
 \ancestralSplitRV := \ancestralToSplit(\alignmentColumnRV, \ancestralStateColumnRV).
 \]
 \end{definition}
-The mapping $\patternToSplit$ operates by returning the tips labeled as $1$ in a site pattern to obtain a site split in $\mathcal{P}(\siteSplitSet)$ if the set of tips labeled $1$ is not in $\mathcal{P}(\siteSplitSet)$.
+To explain the above definition in words, the mapping $\patternToSplit$ operates by taking the complement of a site pattern to obtain a site split in $\mathcal{P}(\siteSplitSet)$ if the set of tips labeled $1$ is not in $\mathcal{P}(\siteSplitSet)$.
 The mapping $\ancestralToSplit$ is defined by whether the tip states have their complements taken or not: if the set of tips labeled $1$ in $\alignmentColumn$ is in $\mathcal{P}(\siteSplitSet)$, $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is the set of tips labeled $1$ in $\ancestralStateColumn$; otherwise, the set of tips labeled $1$ in $\overline{\alignmentColumn}$ necessarily is in $\mathcal{P}(\siteSplitSet)$ and so $\ancestralToSplit(\alignmentColumn, \ancestralStateColumn)$ is $\overline{\ancestralStateColumn}$.
 
 We now consider the $i$th factor of \eqref{eq:full_likelihood}.
@@ -199,21 +199,26 @@ so that, in the $\nCols\rightarrow\infty$ limit,
 \begin{equation}
 \begin{split}
 &    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) \\
-&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t). \label{eq:site_pattern_profile_likelihood_mean}
+&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t) \label{eq:site_pattern_profile_likelihood_mean}
 \end{split}
 \end{equation}
+because
+$\frac{\nCols_j(\fullAlignment)}{\nCols}$ converges to $\Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)$.
 %EM das I believe this is the definition of \ell-- this should be made more explicit.
 %EM Also, in the main text we read that \ell is the limit of L' as n goes to infinity, but here it's L''.
+Here $j$ indexes the site splits, of which there are a fixed number $q$.
+
 
 \subsection*{Hadamard representation}
 
 We state the Hadamard representation of site split generating probabilities---that is, probabilities of obtaining particular site splits given a tree---following Section 8.6 of \citet{Semple2003-em}.
+For additional detail on the proofs in that section, see \url{http://i.imgur.com/T5XLPLB.jpg}.
 For each edge $e$ define the edge ``fidelity'' for that edge as
 \[
 \theta(e) = 1-2p(e)
 \]
 where $p(e)$ is the probability of a character change along edge $e$.
-For an even-sized subset of $Y\subseteq\mathcal{S}$, let the path set $P(Y)$ be the set of edges in the path connecting both elements of $Y$.
+For an even-sized subset $Y$ of a taxon set $\mathcal{S}$, let the path set $P(Y)$ be the set of edges in the graph-theoretic path connecting both elements of $Y$.
 For $n$ taxa, the probability of observing site split $A\in\mathcal{P}(\siteSplitSet)$ is
 \begin{equation}
 \label{eq:hadamard_probability}

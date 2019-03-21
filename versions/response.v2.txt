@@ -34,11 +34,11 @@ Thank you for handling the manuscript, and please thank the reviewers for their 
 > results for the method are not as negative as they were in the
 > previous version.
 
-%EM I honestly can't figure out what the reviewer wants to see re the bootstrap. Branch length inferences don't come into the bootstrap unless you contract things with zero branch lengths, which isn't generally done when doing bootstrap estimation.
+DISCUSS I honestly can't figure out what the reviewer wants to see re the bootstrap. Branch length inferences don't come into the bootstrap unless you contract things with zero branch lengths, which isn't generally done when doing bootstrap estimation.
 
 The reviewer is correct that this story is different than the one in the previous version of the paper.
 
-%EM Shall we strike the speculation about higher likelihoods on the wrong topology?
+DISCUSS Shall we strike the speculation about higher likelihoods on the wrong topology?
 
 > Getting complete results about topological consistency is feasible.
 > The arguments that led to the closed form solution for the limiting
@@ -92,7 +92,7 @@ It will estimate a branch length of zero which is equivalent to a multifurcating
 > difficult to wade into) if an example zeta in a four taxon case was
 > given as illustration.
 
-E TODO
+DISCUSS eliminating xi
 
 > -l150: I initially found this paragraph confusing. Table S1 is a
 > result that you are using as intuition, so you can't be giving
@@ -104,6 +104,7 @@ E TODO
 
 We have added the suggested wording, thanks.
 
+
 > -l154 and (should check elsewhere): `the limiting value of the
 > estimator' rather than `the estimator' is what is being referred to
 > here.
@@ -111,17 +112,20 @@ We have added the suggested wording, thanks.
 We focus in this paper in the limiting case only.
 We have added a sentence clarifying language: (INSERT)
 
+
 > -l186: which `likelihood terms' is not that clear to me: `each site
 > results in multiple factors, only one of which depends on w with
 > dependence being through (1+w) or (1-w) depending ...'
 
 We have clarified this by specifying that we're talking about the joint likelihood expression here.
 
+
 > -l189: `depends on the values of other branch parameters' or some
 > other rewording. I don't think it is that they are unknown. It is that
 > they need optimization, so you can't optimize w independently of them.
 
 We have adopted the suggested wording, thanks.
+
 
 > -l201, Figs 2 and 3: I don't understand why direct numerical
 > optimization was needed. You have the exact expressions for hat w in
@@ -133,9 +137,7 @@ We have rewritten this section to clarify what is being used where.
 %EM das-- is this right?
 Specifically, although we can find the regions for which the various ancestral state splits are optimal, we cannot obtain optimal branch lengths analytically.
 
-We moved these figures around in response to a previous reviewer comment, who thought that Figure S2 was quite uninteresting while Figure 2 was relevant.
-We would prefer to leave them be.
-Figure 3 is an essential part of our argument that the internal branch length has substantial deviation from truth.
+We moved these figures around in response to a previous reviewer comment, who thought that Figure S2 was quite uninteresting while Figure 2 was relevant. We would prefer to leave them be. Figure 3 is an essential part of our argument that the internal branch length has substantial deviation from truth.
 
 
 > -l252-259: I don't think this is an example of profile likelihood as
@@ -143,12 +145,14 @@ Figure 3 is an essential part of our argument that the internal branch length ha
 
 das TODO
 
+
 > -l264: Do you mean that `consistency can hold even when the numbers of
 > parameters tend to infinity'? The statement `not a necessary
 > condition' just means that inconsistency can arise in different ways
 > (eg. lack of identifiability).
 
 das TODO
+
 
 > Reviewer: 2
 
@@ -178,6 +182,7 @@ das TODO
 
 I'm afraid that this fact wasn't obvious to us at the outset of this project. The interest that the other reviewers have shown in the manuscript confirms that it is not broadly obvious.
 
+
 > 2) In some parameter regions the internal branch of the four taxon
 > tree collapses to 0.
 > Again, this is true and identifying regions in parameter space where
@@ -203,8 +208,8 @@ I'm afraid that this fact wasn't obvious to us at the outset of this project. Th
 > this region is much smaller than the one identified by Shaw et al in
 > Fig 3.
 
-We have worked this out with Dr. Neher and found that the difference lay in that he was not optimizing the objective function from both sides.
-This also demonstrated that the above-listed intuitive explanation was incorrect.
+We have worked this out with Dr. Neher and found that the difference lay in that he was not optimizing the objective function from both sides. This simulation work also demonstrated that the intuitive explanation by this reviewer is incorrect.
+
 
 > 3) "[The bias is] of the same order as the branch lengths themselves."
 > This is incorrect or misleading, depending on how you read it. In
@@ -237,6 +242,7 @@ We have removed the "order" language, instead just focusing on the downward bias
 > in responding to the previous reviews of an already good paper, I have
 > nothing further to add.
 
+Thank you for your kind words.
 
 
 > Reviewer: 4
@@ -253,7 +259,8 @@ We have removed the "order" language, instead just focusing on the downward bias
 > Perhaps it's a latexdiff leftover but eq 6 in line 151 seems to have a
 > line with just a ; \xi )
 
-Indeed.
+Indeed, this was not present in the non-latexdiff pdf.
+
 
 > Line 593 p 25 I don't understand "the mapping \psi operates by
 > returning the tips labeled as 1 in a site pattern to obtain a site
@@ -261,28 +268,35 @@ Indeed.
 > mapping seems fundamental. Perhaps you mean to refer to the m'th taxon
 > (or node)..?
 
-E TODO add example
+We have rewritten this confusing sentence in terms of complements, and have added a little bit of text pointing the reader to the formal definition just above.
+
 
 > The symmetric model is assumed strongly in the first part of the
 > appendix, with the factor of 2; my guess is that the results hold in
 > asymmetric models but the notation is harder, is that correct?
 
-You have to have symmetry in order to have stationarity
+Unfortunately a lot would have to change to generalize from the symmetric model. We would not be able to "collapse" site splits, and the Hadamard transform only works for submodels of the Kimura 3 parameter model. See, for example:
+
+Bryant, D. (2009). Hadamard Phylogenetic Methods and the n-taxon Process. Bulletin of Mathematical Biology, 71(2), 339–351. https://doi.org/10.1007/s11538-008-9364-8
+
 
 > What's q in equation 7 in the appendix (line 655) ?
 
-The number of site splits.
+We now remind the reader that this is the number of site splits.
+
 
 > More substantitvely, the limit in (8) seems not established because as
 > n -> \infty so would q and n_j, so these can't be treated as fixed .
 
-No, the number of taxa is fixed so this is fixed.
+We now emphasize that the number of taxa is fixed so q is fixed, and that although n_j goes to infinity the ratio n_j/n converges to the probability of seeing that column.
+
 
 > page 9 - at this point in the paper, unless the reader has already
 > read the appendix they don't know what the estimator means or what the
 > p_ytilde j are - so this text doesn't make sense at this point.
 
-E TODO
+This is a good point! We have rephrased things, eliminating p_ytilde_j except for a parenthetical reference to the Appendix. We believe that the result is much more readable.
+
 
 > page 30 line 667-8 what are S and Y and what makes a path? I gather
 > from the math that you mean paths in the tree, since the sum is over
@@ -291,4 +305,4 @@ E TODO
 > obvious I think because I am not exactly clear on what the notation
 > means.
 
-E TODO
+We have clarified the definitions of S and Y, and added that by path we mean graph-theoretic path. We are afraid that adding more detail about the Hadamard transform is beyond the scope of this paper, though we have added a link to a scanned page of the Semple and Steel book where I (Erick) have added some details on the proofs.

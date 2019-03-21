@@ -252,11 +252,11 @@ has the property that $\hat{t} \neq t^*$ everywhere except a set of measure zero
 \end{restatable}
 
 In words, the joint estimation procedure does not recover the true generating $t^*$ almost everywhere in the space of generating parameters.
-The proof that $\hat{t} \neq t^*$ everywhere except a set of measure zero can be seen intuitively through the fact that the estimator for a given branch fidelity cannot isolate the individual generating parameter as a linear term since the estimator itself is a combination of nonlinear functions in $(x^*,y^*)$ of generating fidelities.
-For example, in estimating $x_1$, $\hat{x}_1$ is a linear combination of $p_{\siteSplit_j}$ values.
-For the generating probabilities (top panel of Table~\ref{tab:gen-sitepatprob}), there is no linear combination that results in an isolated $x^*$ term, as all terms are either quadratic, i.e., $(x^*)^2$ or $(x^*)^2(y^*)^2$, or have both $x^*$ and $y^*$, i.e., $x^*(y^*)^2$.
+The fact that $\hat{t} \neq t^*$ everywhere except a set of measure zero can be seen intuitively through the fact that the estimator for a given branch fidelity cannot isolate the individual generating parameter as a linear term since the estimator itself is a combination of nonlinear functions in $(x^*,y^*)$ of generating fidelities.
+For example, in estimating $x_1$, $\hat{x}_1$ is a linear combination of data-generating probabilities; these probabilities are polynomials in $x^*$ and $y^*$.
+For the generating probabilities (these are called $p_{\siteSplit_j}$ values in the Appendix; see Table~\ref{tab:gen-sitepatprob} for a complete tabulation), there is no linear combination that results in an isolated $x^*$ term, as all terms are either quadratic, i.e., $(x^*)^2$ or $(x^*)^2(y^*)^2$, or have both $x^*$ and $y^*$, i.e., $x^*(y^*)^2$.
 Thus, we cannot obtain a linear combination that in the general case yields $x^*$.
-We may have special cases where certain $x^*$ and $y^*$ values yield consistent estimates for $\hat{t}$, but consistency does not hold in general.
+Although there may be special cases in which certain $x^*$ and $y^*$ values yield consistent estimates for $\hat{t}$, but consistency does not hold in general.
 We give an example of consistency in a degenerate case in the Appendix following the proof of Theorem~\ref{thm:bl_theorem}.
 
 \subsection*{Convergence to the degenerate topology}
