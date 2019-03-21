@@ -38,6 +38,8 @@ Thank you for handling the manuscript, and please thank the reviewers for their 
 
 The reviewer is correct that this story is different than the one in the previous version of the paper.
 
+%EM Shall we strike the speculation about higher likelihoods on the wrong topology?
+
 > Getting complete results about topological consistency is feasible.
 > The arguments that led to the closed form solution for the limiting
 > edge-length estimates for tau_1 can be repeated similarly for tau2.
@@ -78,7 +80,7 @@ DISCUSS: we have no evidence of topological inconsistency
 > not defeat likelihood methods is valid but it should be made clear
 > when referencing such work that the setting is different.
 
-D TODO
+das TODO
 
 > -l21: Some rewording is needed. The joint method will, as n gets
 > large, continue to estimate a well-resolved topology with positive
@@ -106,7 +108,8 @@ We have added the suggested wording, thanks.
 > estimator' rather than `the estimator' is what is being referred to
 > here.
 
-DISCUSS
+We focus in this paper in the limiting case only.
+We have added a sentence clarifying language: (INSERT)
 
 > -l186: which `likelihood terms' is not that clear to me: `each site
 > results in multiple factors, only one of which depends on w with
@@ -126,20 +129,26 @@ We have adopted the suggested wording, thanks.
 > applies to Fig 3. Are you trying to convince the reader that your
 > proofs have no errors? That seems more an issue for supp material.
 
-%EM David, am I right with this?
-Although we have expressions for the likelihoods, it is not trivial to infer the branch lengths maximizing those likelihoods.
+We have rewritten this section to clarify what is being used where.
+%EM das-- is this right?
+Specifically, although we can find the regions for which the various ancestral state splits are optimal, we cannot obtain optimal branch lengths analytically.
+
+We moved these figures around in response to a previous reviewer comment, who thought that Figure S2 was quite uninteresting while Figure 2 was relevant.
+We would prefer to leave them be.
+Figure 3 is an essential part of our argument that the internal branch length has substantial deviation from truth.
+
 
 > -l252-259: I don't think this is an example of profile likelihood as
 > considered in Murphy and Van der Vaart.
 
-D TODO
+das TODO
 
 > -l264: Do you mean that `consistency can hold even when the numbers of
 > parameters tend to infinity'? The statement `not a necessary
 > condition' just means that inconsistency can arise in different ways
 > (eg. lack of identifiability).
 
-D TODO
+das TODO
 
 > Reviewer: 2
 
@@ -167,7 +176,7 @@ D TODO
 > "correct", but still a useful and insightful approximation (a better
 > analogy is ignoring looped diagram in a diagrammatic expansion.).
 
-E TODO
+I'm afraid that this fact wasn't obvious to us at the outset of this project. The interest that the other reviewers have shown in the manuscript confirms that it is not broadly obvious.
 
 > 2) In some parameter regions the internal branch of the four taxon
 > tree collapses to 0.
@@ -209,6 +218,7 @@ This also demonstrated that the above-listed intuitive explanation was incorrect
 > quadratic in the length of the longer adjacent branches rather than
 > the branch itself.
 
+We have removed the "order" language, instead just focusing on the downward bias.
 
 
 > Reviewer: 3
@@ -266,7 +276,7 @@ The number of site splits.
 > More substantitvely, the limit in (8) seems not established because as
 > n -> \infty so would q and n_j, so these can't be treated as fixed .
 
-E TODO
+No, the number of taxa is fixed so this is fixed.
 
 > page 9 - at this point in the paper, unless the reader has already
 > read the appendix they don't know what the estimator means or what the

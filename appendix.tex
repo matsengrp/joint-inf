@@ -126,7 +126,7 @@ Internal node $1$ is the node connected to leaves $1$ and $3$ while internal nod
 The mapping from characters to splits in this case depends on the characters at the tips and the ancestral states.
 For example, we take both $\patternToSplit(0000)=\emptyset$ and $\patternToSplit(1111)=\emptyset$.
 Similarly, we have $\ancestralToSplit(0000, 00) = \emptyset$ and $\ancestralToSplit(1111, 11)=\emptyset$, needing to take the complement of all the characters present on the tree to identify splits.
-We cannot identify complements for ancestral states in the same way as tip states since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
+We cannot identify complements for ancestral states We have added a sentence clarifying language:
 \[
 \Pr(\siteSplitRV=\siteSplit, \ancestralSplitRV=\emptyset \mid \tau, t)\neq \Pr(\siteSplitRV=\siteSplit, \ancestralSplitRV=\{1,2\} \mid \tau, t)
 \]
@@ -202,6 +202,8 @@ so that, in the $\nCols\rightarrow\infty$ limit,
 &\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t). \label{eq:site_pattern_profile_likelihood_mean}
 \end{split}
 \end{equation}
+%EM das I believe this is the definition of \ell-- this should be made more explicit.
+%EM Also, in the main text we read that \ell is the limit of L' as n goes to infinity, but here it's L''.
 
 \subsection*{Hadamard representation}
 
