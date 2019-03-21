@@ -112,7 +112,7 @@ Maximum likelihood estimation in phylogenetics requires a means of handling unkn
 Classical maximum likelihood averages over these unknown intermediate states, leading to provably consistent estimation of the topology and continuous model parameters.
 Recently, a computationally-efficient approach has been proposed to jointly maximize over these unknown states and phylogenetic parameters.
 Although this method of joint maximum likelihood estimation can obtain estimates more quickly, its properties as an estimator are not yet clear.
-We show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
+In this paper, we show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
 We find a sizeable region of parameter space that generates data on a four-taxon tree for which this joint method estimates a multifurcating topology in the limit of infinite-length sequences by estimating one or more branches to be zero length.
 More generally, we show that this joint method only estimates branch lengths correctly on a set of measure zero.
 We show empirically that branch length estimates are systematically biased downward, even for short branches.
@@ -368,7 +368,7 @@ We are able to provide much more detail on how large branch lengths must be for 
 We have shown an inconsistency when performing joint inference on branch lengths given an InvFels topology and investigated the performance of branch parameter estimation.
 There is substantial scope for future work to make these results more precise and more general.
 All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases, such as applied examples with larger trees or more realistic mutation models that are of interest to practitioners.
-Initial simulation-based results by Dr\. Neher using the TreeTime \citep{Sagulenko2018-xl} package has shown that the region of parameter space on which joint inference infers a zero internal branch length for 4-state DNA models is smaller than that for 2-state binary models.
+Initial simulation-based results by Dr.\ Neher using the TreeTime \citep{Sagulenko2018-xl} package has shown that the region of parameter space on which joint inference infers a zero internal branch length for 4-state DNA models is smaller than that for 2-state binary models.
 On the other hand, when the joint inference optimization is started with a small branch length, the region ending up with a zero branch length is much larger, even for 4-state DNA models.
 In a more mathematical direction, given that many of the bounds presented here are in the form of level sets of multivariate polynomials, a more formal approach using algebraic geometric techniques may reveal more stable or interesting patterns of inconsistency; see \citet{Sturmfels2002} for a thorough treatment of solving systems of polynomial equations.
 Finally, all of the material presented here concerns joint estimation under maximum likelihood, and does not pose any problem for other settings, such as joint sampling of trees and ancestral sequences in a Bayesian framework.
