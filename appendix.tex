@@ -126,7 +126,7 @@ Internal node $1$ is the node connected to leaves $1$ and $3$ while internal nod
 The mapping from characters to splits in this case depends on the characters at the tips and the ancestral states.
 For example, we take both $\patternToSplit(0000)=\emptyset$ and $\patternToSplit(1111)=\emptyset$.
 Similarly, we have $\ancestralToSplit(0000, 00) = \emptyset$ and $\ancestralToSplit(1111, 11)=\emptyset$, needing to take the complement of all the characters present on the tree to identify splits.
-We cannot identify complements for ancestral states We have added a sentence clarifying language:
+We cannot identify complements for ancestral states in the same way as tip states since, for $\siteSplit\in\mathcal{P}(\siteSplitSet)$,
 \[
 \Pr(\siteSplitRV=\siteSplit, \ancestralSplitRV=\emptyset \mid \tau, t)\neq \Pr(\siteSplitRV=\siteSplit, \ancestralSplitRV=\{1,2\} \mid \tau, t)
 \]
@@ -179,17 +179,13 @@ The likelihood~\eqref{eq:profile_likelihood} can be written as
 \begin{align}
 L_\nCols'(\tau, t; \fullAlignment) &= \max_{\fullAncestralStates} \ L_\nCols(\tau, t; \fullAlignment, \fullAncestralStates) \nonumber \\
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \Pr(\alignmentColumnRV=\alignmentColumn_i, \ancestralStateColumnRV=\ancestralStateColumn_i \mid \tau, t) \nonumber \\
-                             &\propto \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t) \nonumber \\
-                             &= \prod_{i=1}^{\nCols} \ \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t) \nonumber \\
-                             &= \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)} \label{eq:site_pattern_likelihood}
+                             &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \frac{1}{2}\Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t) \nonumber \\
+                             &= \prod_{i=1}^{\nCols} \ \frac{1}{2}\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t) \nonumber \\
+                             &= \prod_{j=1}^{\nSiteSplits} \ \left[\frac{1}{2}\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)} \nonumber\\
+                             &:= \left(\frac{1}{2}\right)^n L_\nCols''(\tau, t; \fullAlignment) \label{eq:site_pattern_likelihood}
 \end{align}
 for $\siteSplit_j\in\mathcal{P}(\siteSplitSet)$ and some $\xi_{\siteSplit_j}\in\ancestralSplitPartition_j(\tau, t)$ with $1 \le j \le q$ where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ that project to site split $\siteSplit_j$.
 
-Let
-\[
-L_\nCols''(\tau, t; \fullAlignment) = \prod_{j=1}^{\nSiteSplits} \ \left[\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)}
-\]
-be the final product in \eqref{eq:site_pattern_likelihood}.
 Assume $\nCols$ observations are generated from a model with parameters $(\tau^*, t^*)$.
 We have
 \begin{equation*}
@@ -199,13 +195,14 @@ so that, in the $\nCols\rightarrow\infty$ limit,
 \begin{equation}
 \begin{split}
 &    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) \\
-&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t) \label{eq:site_pattern_profile_likelihood_mean}
+&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t) \\
+&\qquad := \ell_{\tau^*,t^*}(\tau, t) \label{eq:site_pattern_profile_likelihood_mean}
 \end{split}
 \end{equation}
-because
-$\frac{\nCols_j(\fullAlignment)}{\nCols}$ converges to $\Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)$.
+because $\nCols_j(\fullAlignment)/\nCols$ converges to $\Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)$.
 %EM das I believe this is the definition of \ell-- this should be made more explicit.
 %EM Also, in the main text we read that \ell is the limit of L' as n goes to infinity, but here it's L''.
+%das: L'' is the value that L' is proportional to. It does read kinda awkward, so I just explicitly added the 1/2.
 Here $j$ indexes the site splits, of which there are a fixed number $q$.
 
 
@@ -374,7 +371,7 @@ For a fixed $\tau$, we show that $\hat{t}_\nCols \rightarrow \hat{t}$ for
 \]
 and
 \[
-\hat{t} = \arg\max_{t\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi).
+\hat{t} = \arg\max_{t\in\mathcal{T}} \ \ell_{\tau^*,t^*}(\tau, t).
 \]
 Using the notation in Section 5.2.1 in \citet{van1998asymptotic}, we let
 \[
@@ -386,7 +383,7 @@ so that
 \]
 and
 \[
-\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi) = E[m_t].
+\ell_{\tau^*,t^*}(\tau, t) = E[m_t].
 \]
 To show $\hat{t}_\nCols \rightarrow \hat{t}$, we use Wald's consistency proof \citep[p. 48, Theorem 5.14 of ][]{van1998asymptotic}, which requires four conditions.
 The first is that $\mathcal{T}$ is compact, which is obviously true.
@@ -407,7 +404,7 @@ We need the first map to be measurable, which is evident since the domain $\alph
 Finally, we must have the the second mapping be upper-semicontinuous for almost all $\alignmentColumn$.
 For a fixed ancestral state split $t \mapsto m_t(\alignmentColumn)$ is continuous for all $\alignmentColumn$.
 If we move about in $\mathcal{T}$, a different ancestral state split becomes more likely, though when we maximize over ancestral state splits we obtain a continuous function since the maximum over continuous functions is also continuous.
-This ensures the upper-semicontinuous property of this mapping, and shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)$.
+This ensures the upper-semicontinuous property of this mapping, and shows $\hat{t}_\nCols \rightarrow \hat{t}$, allowing our consistency results to be proved using $\ell_{\tau^*,t^*}(\tau, t)$.
 
 This Wald-type consistency does not extend readily to convergence of topology, i.e., we cannot use the above arguments to say that, for
 \[
@@ -415,7 +412,7 @@ This Wald-type consistency does not extend readily to convergence of topology, i
 \]
 and
 \[
-(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ \ell_{\tau^*,t^*}(\tau, t; \boldsymbol\xi)
+(\hat{\tau}, \hat{t}) = \arg\max_{\tau, t} \ \ell_{\tau^*,t^*}(\tau, t)
 \]
 then
 \[
@@ -427,7 +424,7 @@ For this reason we do not claim joint inference is inconsistent in estimating to
 \subsection*{Properties of the joint objective function}
 
 Consider the InvFels tree $\tau_1$ with arbitrary fidelities, i.e., $t=\{x_1,y_1,x_2,y_2,w\}$.
-Next we show that the likelihood $\ell_{\tau_1,t}(\tau_1, t; \boldsymbol\xi)$ remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
+Next we show that the likelihood $\ell_{\tau_1,t}(\tau_1, t)$ remains unchanged if $x_1$ and $x_2$ are exchanged or if $y_1$ and $y_2$ are.
 Although this property should not be surprising due to symmetry, we write it out for completeness.
 This holds for a general $t$, and thus holds setting $t=t^*$.
 Using the Hadamard transform, we calculate the generating probabilities on the InvFels tree.
@@ -495,7 +492,7 @@ By exchanging only $x_1$ with $x_2$, the generating probabilities and likelihood
 The same is true of the generating probabilities if we exchange only $y_1$ and $y_2$, except, for the case of the likelihood values, we again look at the complement of the most likely ancestral state split as in the case of splits $\{2\}$ and $\{1,2,3\}$.
 Now, if we exchange both $x_1$ with $x_2$ and $y_1$ with $y_2$, we see these generating probabilities remain unchanged, and, for the likelihood values, we look at the complement of the most likely ancestral state split and see these values also remain unchanged.
 
-Thus exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t}(\tau_1, t; \boldsymbol\xi)$.
+Thus exchanging $x_1$ with $x_2$ and $y_1$ with $y_2$ does not change the value of the log-likelihood $\ell_{\tau_1,t}(\tau_1, t)$.
 Therefore we can reduce the number of candidate likelihoods we need to search by, without loss of generality, assuming $x_2 \ge x_1$ and $y_2 \ge y_1$, with these likelihoods given in Table~\ref{tab:likelihoods} after maximizing over ancestral state splits.
 
 \begin{table}
@@ -547,14 +544,19 @@ We begin by showing an inconsistency in branch length estimation on the InvFels 
 \blInconsist*
 
 \begin{proof}
-For a fixed, known $\boldsymbol\xi$, there exists a closed form solution to $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ solving
+Consider a version of $\ell$ given by
+\[
+\ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi)
+\]
+where we fix a known value of $\boldsymbol\xi$.
+Then, there exists a closed form solution to $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ solving
 \[
 \hat{t}_{\boldsymbol\xi} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi).
 \]
 We show in this case that the log-likelihood $\ell$ attains a unique maximum at $\hat{t}_{\boldsymbol\xi}$.
 For fixed $\boldsymbol\xi$, the log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
 \begin{align*}
-\ell_{\tau^*,t^*}(\tau^*, t, \boldsymbol\xi) &= \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_2}(x_2)\\
+\ell_{\tau^*,t^*}(\tau^*, t; \boldsymbol\xi) &= \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_2}(x_2)\\
 &\qquad + \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,y_2}(y_2)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,w}(w).
 \end{align*}
 Due to this additive form, all off-diagonal terms of the Hessian for this function are zero, so we show that the diagonal terms are nonpositive.
