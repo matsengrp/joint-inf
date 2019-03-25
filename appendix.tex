@@ -182,7 +182,7 @@ L_\nCols'(\tau, t; \fullAlignment) &= \max_{\fullAncestralStates} \ L_\nCols(\ta
                              &= \prod_{i=1}^{\nCols} \ \max_{\ancestralStateColumn_i} \ \frac{1}{2}\Pr(\siteSplitRV=\patternToSplit(\alignmentColumn_i), \ancestralSplitRV=\ancestralToSplit(\alignmentColumn_i, \ancestralStateColumn_i) \mid \tau, t) \nonumber \\
                              &= \prod_{i=1}^{\nCols} \ \frac{1}{2}\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t) \nonumber \\
                              &= \prod_{j=1}^{\nSiteSplits} \ \left[\frac{1}{2}\Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t)\right] ^{\nCols_j(\fullAlignment)} \nonumber\\
-                             &:= \left(\frac{1}{2}\right)^n L_\nCols''(\tau, t; \fullAlignment) \label{eq:site_pattern_likelihood}
+                             &=: \left(\frac{1}{2}\right)^n L_\nCols''(\tau, t; \fullAlignment) \label{eq:site_pattern_likelihood}
 \end{align}
 for $\siteSplit_j\in\mathcal{P}(\siteSplitSet)$ and some $\xi_{\siteSplit_j}\in\ancestralSplitPartition_j(\tau, t)$ with $1 \le j \le q$ where $\nCols_j(\fullAlignment)$ is the number of columns in $\fullAlignment$ that project to site split $\siteSplit_j$.
 
@@ -195,21 +195,17 @@ so that, in the $\nCols\rightarrow\infty$ limit,
 \begin{equation}
 \begin{split}
 &    \frac{1}{\nCols} \log L_\nCols''(\tau, t; \fullAlignment) \\
-&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t) \\
-&\qquad := \ell_{\tau^*,t^*}(\tau, t) \label{eq:site_pattern_profile_likelihood_mean}
+&\qquad \rightarrow \sum_{j=1}^\nSiteSplits \Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*) \cdot \log \Pr(\siteSplitRV=\siteSplit_j, \ancestralSplitRV=\xi_{\siteSplit_j} \mid \tau, t) \label{eq:site_pattern_profile_likelihood_mean}
 \end{split}
 \end{equation}
 because $\nCols_j(\fullAlignment)/\nCols$ converges to $\Pr(\siteSplitRV=\siteSplit_j \mid \tau^*, t^*)$.
-%EM das I believe this is the definition of \ell-- this should be made more explicit.
-%EM Also, in the main text we read that \ell is the limit of L' as n goes to infinity, but here it's L''.
-%das: L'' is the value that L' is proportional to. It does read kinda awkward, so I just explicitly added the 1/2.
+We define this limit to be $\ell_{\tau^*,t^*}(\tau, t)$.
 Here $j$ indexes the site splits, of which there are a fixed number $q$.
 
 
 \subsection*{Hadamard representation}
 
 We state the Hadamard representation of site split generating probabilities---that is, probabilities of obtaining particular site splits given a tree---following Section 8.6 of \citet{Semple2003-em}.
-For additional detail on the proofs in that section, see \url{http://i.imgur.com/T5XLPLB.jpg}.
 For each edge $e$ define the edge ``fidelity'' for that edge as
 \[
 \theta(e) = 1-2p(e)
@@ -548,7 +544,7 @@ Consider a version of $\ell$ given by
 \[
 \ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi)
 \]
-where we fix a known value of $\boldsymbol\xi$.
+where we fix a given value of $\boldsymbol\xi$.
 Then, there exists a closed form solution to $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ solving
 \[
 \hat{t}_{\boldsymbol\xi} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi).

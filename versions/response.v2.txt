@@ -6,6 +6,7 @@
 
 Thank you for handling the manuscript, and please thank the reviewers for their helpful comments. As stated by Reviewer 3, we believe that the review process has significantly improved the manuscript.
 
+
 > Reviewers' comments:
 > Reviewer: 1
 
@@ -34,13 +35,8 @@ Thank you for handling the manuscript, and please thank the reviewers for their 
 > results for the method are not as negative as they were in the
 > previous version.
 
-DISCUSS I honestly can't figure out what the reviewer wants to see re the bootstrap. Branch length inferences don't come into the bootstrap unless you contract things with zero branch lengths, which isn't generally done when doing bootstrap estimation.
-das: I think the reviewer is saying that, since in the case of infinite data we converge on a multifurcating topology, that, for finite sequence lengths, we *might* estimate the incorrect topology to be of higher likelihood. The bootstrap support would just be one way to estimate how frequently this happens for different sequence lengths. We're only interested in the case of infinite data, though, so I don't think there's any benefit to this---it would just be more speculation, which we below say we don't want to do.
+The reviewer is correct that this story is slightly different than the one in the previous version of the paper. Regarding the bootstrap, we remind the reviewer that we are interested in the case of "infinite data," and thus the bootstrap doesn't apply. We have also taken out the speculation about higher likelihoods on the wrong topology.
 
-The reviewer is correct that this story is different than the one in the previous version of the paper.
-
-DISCUSS Shall we strike the speculation about higher likelihoods on the wrong topology?
-das: I am fine with striking the speculation (and have done so, so let me know what you think). I guess I agree the results are "not as negative," though I don't think they are positive. Strong topological inconsistency would have been dope, but I don't see any way we can get it out of our method, so we'll have to settle with regular old branch length inconsistency. 
 
 > Getting complete results about topological consistency is feasible.
 > The arguments that led to the closed form solution for the limiting
@@ -62,8 +58,8 @@ das: I am fine with striking the speculation (and have done so, so let me know w
 > results rather than using a computer but being able to draw clear
 > conclusions about strict topological inconsistency is important.
 
-DISCUSS: we have no evidence of topological inconsistency
-das: I still don't quite understand what this reviewer is saying: w=1 yields the highest likelihood, so the difference in lnl will always be zero. There is no "machine precision" involved in any of it---w is one exactly. That's its optimal value. Should we change some of the discussion to hammer this home?
+In our revised work we have found no evidence of topological inconsistency, and as mentioned above we have removed such speculation from the paper. "Machine precision" is not involved: w exactly equal to 1. That's its optimal value.
+
 
 > The language used to refer to the approach and references to the
 > literature are awkward. The references to profile likelihood work
@@ -83,25 +79,25 @@ das: I still don't quite understand what this reviewer is saying: w=1 yields the
 > not defeat likelihood methods is valid but it should be made clear
 > when referencing such work that the setting is different.
 
-We use "integrated likelihood" in the same manner as Goldman.
-We have removed references that are unrelated to the approaches considered in the manuscript, and defer these to the discussion for the interested reader to follow up with if they so choose.
-We have made various terminology changes throughout.
+We use "integrated likelihood" in the same manner as Goldman. We have replaced "profile likelihood" with "joint objective function" throughout, unless we were specifically making a comparison with profile methods. We have removed references that are unrelated to the approaches considered in the manuscript, and defer these to the discussion for the interested reader to follow up with if they so choose. Thanks.
+
 Thank you for your suggestion in point 1; we have added it to the introduction.
-das: @EM I think your discussion with Richard over an approximation being consistently biased might be helpful to answer some of the above.
+We have also clarified re point 2 that the joint objective function is related to profile likelihoods, but is not the same thing.
+
 
 > -l21: Some rewording is needed. The joint method will, as n gets
 > large, continue to estimate a well-resolved topology with positive
 > probability; albeit with small middle edge-length.
 
-It will estimate a branch length of zero which is equivalent to a multifurcating topology.
+We have removed all instances of "multifurcating" with "zero internal branch length" except for two occurrences in the Discussion.
+
 
 > -l131: A reader might be able to avoid the appendix (which is
 > difficult to wade into) if an example zeta in a four taxon case was
 > given as illustration.
 
-DISCUSS eliminating xi
-das: I think we should, as you're correct that we marginalize over it.
-I redefined a version of it at the beginning of the proof.
+We realized that we could eliminate the xi (xi looks like zeta) from the notation in the main text. This is definitely an improvement in readability-- thanks!
+
 
 > -l150: I initially found this paragraph confusing. Table S1 is a
 > result that you are using as intuition, so you can't be giving
@@ -119,7 +115,7 @@ We have added the suggested wording, thanks.
 > here.
 
 We focus in this paper in the limiting case only.
-We have added a sentence clarifying language: (INSERT)
+We have added a sentence clarifying language: "Because we are interested in the properties of joint inference in the limit of $n$ going to infinity, we will focus on estimates in this case and simply refer to the right hand side of \eqref{eq:exp-log-lik} as ``the estimator.''"
 
 
 > -l186: which `likelihood terms' is not that clear to me: `each site
@@ -142,18 +138,15 @@ We have adopted the suggested wording, thanks.
 > applies to Fig 3. Are you trying to convince the reader that your
 > proofs have no errors? That seems more an issue for supp material.
 
-We have rewritten this section to clarify what is being used where.
-%EM das-- is this right?
-Specifically, although we can find the regions for which the various ancestral state splits are optimal, we cannot obtain optimal branch lengths analytically.
-das: Yeah, the only "numerical optimization" is for the marginal likelihood. What's numerical in our setup is determining the regions of maximal ancestral states, and the only reason it's numerical is that analytically it would requires 72 (maybe fewer?) inequalities, so getting them "numerically" was easier.
+We have rewritten this section to clarify what is being used where. Specifically, although we can find the regions for which the various ancestral state splits are optimal, we cannot obtain optimal branch lengths analytically.
 
-We moved these figures around in response to a previous reviewer comment, who thought that Figure S2 was quite uninteresting while Figure 2 was relevant. We would prefer to leave them be. Figure 3 is an essential part of our argument that the internal branch length has substantial deviation from truth.
+We moved these figures into their current locations in response to a previous reviewer comment, who thought that Figure S2 was quite uninteresting while Figure 2 was relevant. We would prefer to leave them be. Figure 3 is an essential part of our argument that the internal branch length has substantial deviation from truth.
 
 
 > -l252-259: I don't think this is an example of profile likelihood as
 > considered in Murphy and Van der Vaart.
 
-We agree, and have made the requisite changes.
+We agree, and have made the requisite changes: both replacing references to "profile likelihood" in the body of the text with "joint objective function", and by clarifying that they aren't quite the same things in the Discussion.
 
 
 > -l264: Do you mean that `consistency can hold even when the numbers of
@@ -161,11 +154,8 @@ We agree, and have made the requisite changes.
 > condition' just means that inconsistency can arise in different ways
 > (eg. lack of identifiability).
 
-We have removed this reference in the discussion (though we keep it in the introduction).
-We use it to show a relatively well-known example where maximum likelihood fails for a similar reason as in the current case of joint inference of phylogeny.
-The discussion preceding this sentence shows that parameters tending to infinity are not a sufficient condition for inconsistency, which we believe is more clear having removed the reference to Neyman and Scott.
-We have removed the reference to the paper by LeCam.
-It explains various setting where maximum likelihood fails, including Neyman and Scott's example, but is not directly relevant to our argument.
+We have removed this reference in the Discussion. We use it to show a relatively well-known example where maximum likelihood fails for a similar reason as in the current case of joint inference of phylogeny. The discussion preceding this sentence shows that parameters tending to infinity are not a sufficient condition for inconsistency, which we believe is more clear having removed the reference to Neyman and Scott. We have removed the reference to the paper by LeCam. It explains various setting where maximum likelihood fails, including Neyman and Scott's example, but is not directly relevant to our argument.
+
 
 
 > Reviewer: 2
@@ -217,12 +207,15 @@ I'm afraid that this fact wasn't obvious to us at the outset of this project. Th
 > of length p_x. But for short branches, this corresponding sector of
 > parameter space is a small (tending to zero for a fixed p_x/p_y with
 > p_x \to 0).
->
+
+We have added this intuition, thank you!
+
+
 > My empirical tests of the approximate joint inference scheme suggest
 > this region is much smaller than the one identified by Shaw et al in
 > Fig 3.
 
-We have worked this out with Dr. Neher and found that the difference lay in that he was not optimizing the objective function from both sides. This simulation work also demonstrated that the intuitive explanation by this reviewer is incorrect.
+We have worked this out with Dr. Neher and found that the difference lay in that he was not optimizing the objective function thoroughly and was getting stuck in a local optimum.
 
 
 > 3) "[The bias is] of the same order as the branch lengths themselves."
@@ -238,6 +231,7 @@ We have worked this out with Dr. Neher and found that the difference lay in that
 > the branch itself.
 
 We have removed the "order" language, instead just focusing on the downward bias.
+
 
 
 > Reviewer: 3
@@ -257,6 +251,7 @@ We have removed the "order" language, instead just focusing on the downward bias
 > nothing further to add.
 
 Thank you for your kind words.
+
 
 
 > Reviewer: 4
@@ -296,13 +291,13 @@ Bryant, D. (2009). Hadamard Phylogenetic Methods and the n-taxon Process. Bullet
 
 > What's q in equation 7 in the appendix (line 655) ?
 
-We now remind the reader that this is the number of site splits.
+We have inserted text reminding the reader that this is the number of site splits.
 
 
 > More substantitvely, the limit in (8) seems not established because as
 > n -> \infty so would q and n_j, so these can't be treated as fixed .
 
-We now emphasize that the number of taxa is fixed so q is fixed, and that although n_j goes to infinity the ratio n_j/n converges to the probability of seeing that column.
+We have added text emphasizing that the number of taxa is fixed so q is fixed, and that although n_j goes to infinity the ratio n_j/n converges to the probability of seeing that column.
 
 
 > page 9 - at this point in the paper, unless the reader has already
@@ -319,6 +314,4 @@ This is a good point! We have rephrased things, eliminating p_ytilde_j except fo
 > obvious I think because I am not exactly clear on what the notation
 > means.
 
-We have clarified the definitions of S and Y, and added that by path we mean graph-theoretic path. We are afraid that adding more detail about the Hadamard transform is beyond the scope of this paper, though we have added a link to a scanned page of the Semple and Steel book where I (Erick) have added some details on the proofs.
-
-das: @EM are we keeping this imgur link or is this a placeholder for a specific reference we want to make? Do you think they'd accept this?
+We have clarified the definitions of S and Y, and added that by path we mean graph-theoretic path. We are afraid that adding more detail about the Hadamard transform is beyond the scope of this paper, and it is well described in Semple and Steel's book.

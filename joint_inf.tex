@@ -7,7 +7,8 @@
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage[colorinlistoftodos]{todonotes}
-\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage[hidelinks]{hyperref}
+%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
 % \usepackage{showlabels}
 \usepackage{palatino}
 \usepackage{hyphenat}
@@ -90,7 +91,7 @@
 
 \allowdisplaybreaks
 
-\title{Joint maximum-likelihood of phylogeny and ancestral states is not consistent}
+\title{Joint maximum likelihood of phylogeny and ancestral states is not consistent}
 
 \author[1]{David A. Shaw}
 \author[2]{Vu C. Dinh}
@@ -113,7 +114,7 @@ Classical maximum likelihood averages over these unknown intermediate states, le
 Recently, a computationally-efficient approach has been proposed to jointly maximize over these unknown states and phylogenetic parameters.
 Although this method of joint maximum likelihood estimation can obtain estimates more quickly, its properties as an estimator are not yet clear.
 In this paper, we show that this method of jointly estimating phylogenetic parameters along with ancestral states is not consistent in general.
-We find a sizeable region of parameter space that generates data on a four-taxon tree for which this joint method estimates a multifurcating topology in the limit of infinite-length sequences by estimating one or more branches to be zero length.
+We find a sizeable region of parameter space that generates data on a four-taxon tree for which this joint method estimates the internal branch length to be exactly zero, even in the limit of infinite-length sequences.
 More generally, we show that this joint method only estimates branch lengths correctly on a set of measure zero.
 We show empirically that branch length estimates are systematically biased downward, even for short branches.
 \end{abstract}
@@ -122,7 +123,7 @@ We show empirically that branch length estimates are systematically biased downw
 
 \section*{Introduction}
 
-Classical maximum likelihood (ML) estimation in phylogenetics operates by integrating out latent ancestral states at the internal nodes of the tree, obtaining an integrated likelihood \citep{Goldman1990-dk}.
+Classical maximum likelihood (ML) estimation in phylogenetics operates by integrating out latent ancestral states at the internal nodes of the tree, obtaining an integrated likelihood \citep{Felsenstein1973-ba,Goldman1990-dk}.
 In a recent paper, \citet{Sagulenko2018-xl} suggest using an approximation to ML inference in which the likelihood is maximized jointly across model parameters and ancestral sequences on a fixed topology.
 This is attractive from a computational perspective: such joint inference can proceed according to an iterative procedure in which ancestral sequences are first estimated and model parameters are optimized conditional on these estimates.
 This latter conditional optimization is simpler and more computationally efficient than optimizing the integrated likelihood.
@@ -137,7 +138,7 @@ Although \citet{Sagulenko2018-xl} explicitly warn that the approximation is for 
 One would like to know when this approximate technique breaks down, even when sequence data is ``perfect,'' i.e., is generated without sampling error according to the exact model used for inference.
 
 In this paper, we show that jointly inferring trees and ancestral sequences is not consistent in general.
-To do so, we use a binary symmetric model with data generated on a four-taxon tree: we compute closed form solutions to the joint objective function and demarcate a sizeable area of branch lengths in which joint inference is guaranteed to give a multifurcating tree in the case of perfect sequence data with an infinite number of sites by estimating one or more branch lengths to be exactly zero.
+To do so, we use a binary symmetric model with data generated on a four-taxon tree: we compute closed form solutions to the joint objective function and demarcate a sizeable area of branch lengths in which joint inference is guaranteed to estimate the internal branch length to be exactly zero, even in the case of perfect sequence data with an infinite number of sites.
 We show that, when the topology is known and fixed, joint inference for branch length estimation cannot be consistent except on a set of measure zero (i.e.\ a set that occupies zero volume in parameter space).
 Empirically, we find that joint inference consistently underestimates interior branch lengths, even when branch lengths are small.
 
@@ -309,8 +310,10 @@ As data are generated with parameters $\{x^*, y^*, x^*, y^*, y^*\}$, the true va
 There are discontinuities in the fit (Fig.~\ref{fig:bl-general-inconsistency}) due to the choice of which ancestral state splits are maximal, so we investigate the bias in the region where $p_{x^*}$ and $p_{y^*}$ are both small, i.e., $p_{x^*}, p_{y^*} \le .1$, as these short-branch cases should be the best settings for joint optimization \citep{Sagulenko2018-xl}.
 Although the estimates for $\hat{p}_w$ are better than the estimates when $p_{y^*}$ is small and $p_{x^*}$ is large (Fig.~\ref{fig:bl-general-inconsistency}), joint inference still predictably underestimates the interior branch length.
 Additionally, the bias estimates $\hat{p}_w-p_{y^*}$ given $p_{x^*}, p_{y^*} \le .1$ are comparable to the branch lengths (Fig.~\ref{fig:empirical-bias}), showing that even in cases where joint inference is supposed to do well, it still fails to achieve a low error from truth.
+One can see the region in which the internal branch length is estimated to be zero under the curve in the lower right of this plot.
+Dr.\ Neher has pointed out in his review that the shape of this region can be intuitively understood as that where two mutations on the longer pendant branches are more likely ($p_{x^*}^2$) than one mutation on the internal branch ($p_{y^*}$).
 
-In contrast, inference on the integrated likelihood performs as expected, such that $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$ (Fig.~\ref{fig:bl-general-marginal}).
+In contrast, inference on the classically-used integrated likelihood performs as expected, such that $\hat{w}$ is equal to $y^*$ regardless of the value of $x^*$ (Fig.~\ref{fig:bl-general-marginal}).
 The errors in this case \eqref{eq:marginal_likelihood} via optimization with L-BFGS-B are lower than machine tolerance.
 Our optimization code can be found at \url{https://github.com/matsengrp/joint-inf/}.
 
@@ -335,7 +338,7 @@ Also, the incorrect topology attains the same likelihood as the topology that ge
 The regions of inconsistency we found arise when one set of sister branches of the generating trees are ``long,'' that is, when the top branch fidelities tend to be small, and when the lower branches are ``short,'' i.e., have large fidelities.
 We see that this inconsistency occurs even if some branches are short.
 This expands on the empirical findings of poor estimation given long branches in \citet{Sagulenko2018-xl} (their Figures~2 and~3).
-However, the problems are not just for long branches as \citet{Sagulenko2018-xl} imply: even when all branches are short there is a consistent bias, and the bias is comparable to the magnitude of the parameters (Fig.~\ref{fig:empirical-bias}).
+However, the problems are not just for long branches as \citet{Sagulenko2018-xl} imply: even when all branches are short there is a consistent bias, and the bias can be comparable to the magnitude of the parameters (Fig.~\ref{fig:empirical-bias}).
 
 Joint inference of tree parameters and ancestral sequences is related to maximizing profile likelihoods, a well-studied subject in statistics \citep{Murphy2000-ry}.
 Many properties regarding the performance of maximum likelihood estimates obtained using this approach are known, and many methods exist to overcome their undesirable properties, e.g., the method of sieves \citep{Geman1982}.
@@ -366,18 +369,19 @@ We have shown an inconsistency when performing joint inference on branch lengths
 There is substantial scope for future work to make these results more precise and more general.
 All of these results hold only for a simple binary symmetric model on four-taxon trees, and extensive simulation is necessary to understand how these results extend to more complicated general cases, such as applied examples with larger trees or more realistic mutation models that are of interest to practitioners.
 %das: @EM do we have to add "private communication" or something here?
+%Erick response: I don't know, but the copyeditors will tell us.
 Initial simulation-based results by Dr.\ Neher using the TreeTime \citep{Sagulenko2018-xl} package has shown that the region of parameter space on which joint inference infers a zero internal branch length for 4-state DNA models is smaller than that for 2-state binary models.
 On the other hand, when the joint inference optimization is started with a small branch length, the region ending up with a zero branch length is much larger, even for 4-state DNA models.
 In a more mathematical direction, given that many of the bounds presented here are in the form of level sets of multivariate polynomials, a more formal approach using algebraic geometric techniques may reveal more stable or interesting patterns of inconsistency; see \citet{Sturmfels2002} for a thorough treatment of solving systems of polynomial equations.
 Finally, all of the material presented here concerns joint estimation under maximum likelihood, and does not pose any problem for other settings, such as joint sampling of trees and ancestral sequences in a Bayesian framework.
 
-On a practical note, we would like to emphasize that TreeTime has implemented marginal mode inference since the publication of the \citet{Sagulenko2018-xl} paper.
+On a practical note, we would like to emphasize that TreeTime implements marginal mode inference.
 In January 2019 a warning was added, in all caps, that is triggered when joint inference is used for trees such that any branch length is greater than 0.15.
 
 
 \section*{Acknowledgements}
 We thank Richard Neher, Vladimir Minin, and Joe Felsenstein for helpful discussions.
-We are especially thankful to Dr.\ Neher for providing TreeTime simulation code that allowed us to test our conclusions on simulated data.
+We are especially thankful to Dr.\ Neher for his helpful suggestions and for providing TreeTime simulation code that verified our conclusions on simulated data.
 Insight from the reviewers and the editors greatly improved this manuscript.
 
 This work was supported by National Institutes of Health grants R01-GM113246, R01-AI120961, U19-AI117891, and U54-GM111274 as well as National Science Foundation grants CISE-1561334 and CISE-1564137.
