@@ -536,20 +536,21 @@ Because in 4 cases there are 3 possibilities for $\xi_{\siteSplit_j}$, there are
 %where data is generated on the InvFels tree with two top branches of fidelity $x^*$ and all other branches of fidelity $y^*$ (Fig.~\ref{fig:farris-fels-top}).
 
 We begin by showing an inconsistency in branch length estimation on the InvFels tree.
+In this proof and other material below, we will use a version of $\ell$ given by
+\[
+\ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi)
+\]
+where we fix a given value of the ancestral state split $\boldsymbol\xi$.
+
 
 \blInconsist*
 
 \begin{proof}
-Consider a version of $\ell$ given by
-\[
-\ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi)
-\]
-where we fix a given value of $\boldsymbol\xi$.
-Then, there exists a closed form solution to $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ solving
+When $\boldsymbol\xi$ is fixed, there exists a closed form solution to $\hat{t} := \{\hat{x}_1,\hat{y}_1,\hat{x}_2,\hat{y}_2,\hat{w}\}$ solving
 \[
 \hat{t}_{\boldsymbol\xi} = \arg\max_t \ell_{\tau^*, t^*}(\tau_1, t; \boldsymbol\xi).
 \]
-We show in this case that the log-likelihood $\ell$ attains a unique maximum at $\hat{t}_{\boldsymbol\xi}$.
+We first show that this maximum is unique.
 For fixed $\boldsymbol\xi$, the log-likelihood can be decomposed into a sum of functions of each variable, i.e.,
 \begin{align*}
 \ell_{\tau^*,t^*}(\tau^*, t; \boldsymbol\xi) &= \sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_1}(x_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,y_1}(y_1)+\sum_{j=1}^\nSiteSplits p_{\siteSplit_j}\cdot\log h_{j,x_2}(x_2)\\
