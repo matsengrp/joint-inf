@@ -58,7 +58,7 @@ The reviewer is correct that this story is slightly different than the one in th
 > results rather than using a computer but being able to draw clear
 > conclusions about strict topological inconsistency is important.
 
-In our revised work we have found no evidence of topological inconsistency, and as mentioned above we have removed such speculation from the paper. "Machine precision" is not involved: w exactly equal to 1. That's its optimal value.
+In our revised work we found no evidence of topological inconsistency, and as mentioned above we have removed such speculation from the paper. "Machine precision" is not involved: the optimal value of w is exactly equal to 1 in the limit.
 
 
 > The language used to refer to the approach and references to the
@@ -82,7 +82,7 @@ In our revised work we have found no evidence of topological inconsistency, and 
 We use "integrated likelihood" in the same manner as Goldman. We have replaced "profile likelihood" with "joint objective function" throughout, unless we were specifically making a comparison with profile methods. We have removed references that are unrelated to the approaches considered in the manuscript, and defer these to the discussion for the interested reader to follow up with if they so choose. Thanks.
 
 Thank you for your suggestion in point 1; we have added it to the introduction.
-We have also clarified re point 2 that the joint objective function is related to profile likelihoods, but is not the same thing.
+We have also clarified in regards to point 2 that the joint objective function is related to profile likelihoods, but is not the same thing.
 
 
 > -l21: Some rewording is needed. The joint method will, as n gets
@@ -114,7 +114,7 @@ We have added the suggested wording, thanks.
 > estimator' rather than `the estimator' is what is being referred to
 > here.
 
-We focus in this paper in the limiting case only.
+We focus in this paper on the limiting case only.
 We have added a sentence clarifying language: "Because we are interested in the properties of joint inference in the limit of $n$ going to infinity, we will focus on estimates in this case and simply refer to the right hand side of \eqref{eq:exp-log-lik} as ``the estimator.''"
 
 
